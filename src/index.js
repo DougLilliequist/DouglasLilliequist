@@ -1,12 +1,13 @@
-import App from "./App.svelte";
+import WebGLContext from "./Webgl/WebGLContext.js";
 
-import "../styles/main.scss";
+import viewMediator from "./ViewMediator";
 
-const app = new App({
-  target: document.querySelector(".app"),
-  props: {
-    name: "Douglas"
-  }
-});
+window.viewMediator = viewMediator;
 
-export default app;
+export default class App {
+    constructor() {
+        const webGLCTX = new WebGLContext();
+    }
+}
+
+window.onload = () => new App();

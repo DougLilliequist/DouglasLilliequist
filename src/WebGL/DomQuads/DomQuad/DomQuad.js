@@ -6,17 +6,19 @@ import {
   Plane
 } from 'ogl'
 
-const glslify = require('glslify');
-
 import {
   getCameraViewplaneSize
 } from '../../utils/getCameraViewplaneSize';
+
+const vert = require('./shaders/domQuad.vert');
+const frag = require('./shaders/domQuad.frag');
 
 export default class DomQuad extends Mesh {
 
   constructor(gl, camera, domElement, {
     widthSegments = 1.0,
-    heightSegments = 1.0
+    heightSegments = 1.0,
+    posOffset = 0.0
   }) {
 
     super(gl);
@@ -39,6 +41,8 @@ export default class DomQuad extends Mesh {
       domElement: domElement,
       camera: camera
     });
+
+    this.position.z = -1.0 - posOffset;
 
   }
 
@@ -83,10 +87,35 @@ export default class DomQuad extends Mesh {
     }
 
     this.program = new Program(this.gl, {
-      vertex: glslify('./shaders/domQuad.vs.glsl'),
-      fragment: glslify('./shaders/domQuad.fs.glsl'),
-      uniforms: u
+      vertex: vert,
+      fragment: frag,
+      uniforms: u,
+      transparent: true
     });
+
+  }
+
+  update(force) {
+
+    this.position.z += force;
+
+    // if (this.position.z < -5.0) {
+    //   this.position.z = 1.0
+    // } else if (this.position.z > 1.0) {
+    //   this.position.z = -5.0
+    // }
+
+    // if (this.position.z < -3.0) {
+    //   this.position.z = 1.0
+    // } else if (this.position.z > 1.0) {
+    //   this.position.z = -3.0
+    // }
+
+    if (this.position.z < -2.0) {
+      this.position.z = 2.0
+    } else if (this.position.z > 2.0) {
+      this.position.z = -2.0
+    }
 
   }
 
