@@ -1,5 +1,8 @@
 <script>
     
+    //Pass reference dom elements as props
+    //and use them to init the dom quad manager
+
     import {onMount} from 'svelte'
         
     import WebGLContext from './WebGLContext.js';
