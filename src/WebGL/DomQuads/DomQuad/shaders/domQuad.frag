@@ -108,7 +108,9 @@ void main() {
     vec4 img = texture2D(_Image, uv);
 
     float len = (vMvPos.z * vMvPos.z);
-    float alpha = smoothstep(1.0, 2.0, len);
+    // float alpha = smoothstep(1.0, 2.0, len);
+    // float alpha = smoothstep(2.0, 4.0, len);
+    float alpha = smoothstep(2.0, 10.0, len);
     // float alpha = dither8x8(gl_FragCoord.xy, smoothstep(2.0, 1.0, len));
     // float alpha = dither8x8(gl_FragCoord.xy, vMvPos.z);
     alpha = dither8x8(gl_FragCoord.xy,alpha);

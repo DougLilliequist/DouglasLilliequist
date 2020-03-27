@@ -4,23 +4,25 @@ import {
   Vec2,
   Texture,
   Plane
-} from 'ogl'
+} from "ogl";
 
 import {
   getCameraViewplaneSize
-} from '../../utils/getCameraViewplaneSize';
+} from "../../utils/getCameraViewplaneSize";
 
-const vert = require('./shaders/domQuad.vert');
-const frag = require('./shaders/domQuad.frag');
+const vert = require("./shaders/domQuad.vert");
+const frag = require("./shaders/domQuad.frag");
 
 export default class DomQuad extends Mesh {
-
-  constructor(gl, camera, domElement, {
-    widthSegments = 1.0,
-    heightSegments = 1.0,
-    posOffset = 0.0
-  }) {
-
+  constructor(
+    gl,
+    camera,
+    domElement, {
+      widthSegments = 1.0,
+      heightSegments = 1.0,
+      posOffset = 0.0
+    }
+  ) {
     super(gl);
 
     this.geometry = new Plane(gl, {
@@ -42,12 +44,13 @@ export default class DomQuad extends Mesh {
       camera: camera
     });
 
-    this.position.z = -1.0 - posOffset;
+    // this.position.z = -1.0 - posOffset;
+    this.position.z = -posOffset;
 
+    console.log(this.position.z);
   }
 
   initProgram(domElement) {
-
     const elementHasImage = domElement.children[0] instanceof HTMLImageElement;
 
     this.texture = new Texture(this.gl);
@@ -67,7 +70,6 @@ export default class DomQuad extends Mesh {
 
     //MAKE ONE SINGLE UNIFORM FOR THE WIDTH AND HEIGHT OF THE QUAD
     const u = {
-
       _ViewplaneSize: {
         value: new Vec2(1.0, 1.0)
       },
@@ -83,8 +85,7 @@ export default class DomQuad extends Mesh {
       _Aspect: {
         value: rect.height / rect.width
       }
-
-    }
+    };
 
     this.program = new Program(this.gl, {
       vertex: vert,
@@ -92,33 +93,21 @@ export default class DomQuad extends Mesh {
       uniforms: u,
       transparent: true
     });
-
   }
 
+  //https://torstencurdt.com/tech/posts/modulo-of-negative-numbers/
   update(force) {
 
+    // this.position.z += force;
+    // this.position.z %= -5.0; //hard coded mod for now
+    // this.position.z = this.position.z > 0.5 ? this.position.z - 5.0 : this.position.z;
+
+
     this.position.z += force;
-
-    // if (this.position.z < -5.0) {
-    //   this.position.z = 1.0
-    // } else if (this.position.z > 1.0) {
-    //   this.position.z = -5.0
-    // }
-
-    // if (this.position.z < -3.0) {
-    //   this.position.z = 1.0
-    // } else if (this.position.z > 1.0) {
-    //   this.position.z = -3.0
-    // }
-
-    if (this.position.z < -2.0) {
-      this.position.z = 2.0
-    } else if (this.position.z > 2.0) {
-      this.position.z = -2.0
-    }
+    this.position.z %= -3.0; //hard coded mod for now
+    this.position.z = this.position.z > 0.75 ? this.position.z - 3.0 : this.position.z;
 
   }
-
 
   //get camera's current viewplane dimensions as well as the reference dom's scale phase
   //based on the viewport's current size to determine final width and height
@@ -127,7 +116,6 @@ export default class DomQuad extends Mesh {
     domElement,
     camera
   }) {
-
     //get current viewplane size based on perspective camera's fov and desired plane distance
     this.cameraViewplaneSize = getCameraViewplaneSize(camera); //make this globally available
 
@@ -139,30 +127,26 @@ export default class DomQuad extends Mesh {
     const w = this.cameraViewplaneSize.x * this.viewportScalePhase.x;
     const h = this.cameraViewplaneSize.y * this.viewportScalePhase.y;
     this.program.uniforms._ViewplaneSize.value.set(w, h);
-
   }
 
   calcViewportScalePhase(domElement) {
-
     const rect = domElement.getBoundingClientRect();
     const viewportScaleX = rect.width / window.innerWidth;
     const viewportScaleY = rect.height / window.innerHeight;
 
     //should not be here anymore
     if (this.program) {
-      this.program.uniforms._Aspect.value = rect.height / rect.width
+      this.program.uniforms._Aspect.value = rect.height / rect.width;
     }
 
     return new Vec2(viewportScaleX, viewportScaleY);
-
   }
 
   //tranlate the dom elements position in "dom space" to a position relative
   //to the calculted view plane's dimensions
   calcDomToWebGLPos({
-    domElement,
+    domElement
   }) {
-
     //get reference div
     const rect = domElement.getBoundingClientRect();
 
@@ -173,15 +157,16 @@ export default class DomQuad extends Mesh {
     //the dom's position by half it's width and height in order to move the origin
     //to the center
 
-    const posPhaseX = (2.0 * ((rect.left + (rect.width * 0.5)) / window.innerWidth) - 1.0);
-    const posPhaseY = (2.0 * ((rect.top + (rect.height * 0.5)) / window.innerHeight) - 1.0);
+    const posPhaseX =
+      2.0 * ((rect.left + rect.width * 0.5) / window.innerWidth) - 1.0;
+    const posPhaseY =
+      2.0 * ((rect.top + rect.height * 0.5) / window.innerHeight) - 1.0;
 
-    const posX = (posPhaseX * this.cameraViewplaneSize.x);
-    const posY = (posPhaseY * this.cameraViewplaneSize.y) * -1.0;
+    const posX = posPhaseX * this.cameraViewplaneSize.x;
+    const posY = posPhaseY * this.cameraViewplaneSize.y * -1.0;
 
     //set position of quad
     this.position.x = posX;
     this.position.y = posY;
   }
-
 }

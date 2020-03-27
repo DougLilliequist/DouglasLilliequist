@@ -69,7 +69,8 @@ export default class WebGLContext {
       passive: true
     });
 
-    window.addEventListener('wheel', this.onScroll.bind(this));
+    // window.addEventListener("wheel", this.onScroll.bind(this));
+    window.addEventListener("wheel", this.onScroll.bind(this));
 
     this.prevScrollPos = 0;
     this.currentScrollPos = 0;
@@ -80,9 +81,11 @@ export default class WebGLContext {
   }
 
   onScroll(e) {
-
-    this.scrollForce += Math.sign(e.deltaY) * 0.005;
-
+    // console.log(e);
+    // this.scrollForce += Math.sign(e.deltaY) * 0.005;
+    // this.scrollForce = 0.025 * Math.sign(e.deltaY);
+    // this.scrollForce += 0.005 * Math.min(1.0, e.deltaY);
+    this.scrollForce += e.deltaY * 0.01;
   }
 
   start() {
@@ -102,8 +105,6 @@ export default class WebGLContext {
     this.deltaTime = (this.currentTime - this.prevtime) / 1000.0;
 
     this.scrollForce *= 0.98;
-    // if (Math.abs(this.scrollForce < 0.01)) this.scrollForce = 0;
-
     this.domQuadsManager.update(this.deltaTime, this.scrollForce);
 
     this.render();
