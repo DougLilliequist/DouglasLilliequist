@@ -11,6 +11,7 @@ export default class Projects extends View {
   }
 
   onLeave() {
+    emitter.emit("removeDOMGL");
     super.onLeave();
   }
 
@@ -21,6 +22,5 @@ export default class Projects extends View {
 
   onLeaveCompleted() {
     super.onLeaveCompleted();
-    emitter.emit("removeDOMGL");
   }
 }

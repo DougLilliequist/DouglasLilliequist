@@ -1,12 +1,15 @@
 precision highp float;
 
 uniform sampler2D _Image;
+uniform float _InputForce;
+uniform float _AlphaPhase;
 uniform float _ImageAspect;
 uniform float _Aspect;
 uniform float _Time;
 
 varying vec2 vUv;
 varying vec3 vMvPos;
+varying vec3 mPos;
 
 #define PI 3.14159265359
 #define PI2 3.14159265359 * 2.0
@@ -106,13 +109,12 @@ void main() {
     uv += 0.5;
 
     vec4 img = texture2D(_Image, uv);
-
     float len = (vMvPos.z * vMvPos.z);
-    // float alpha = smoothstep(1.0, 2.0, len);
-    // float alpha = smoothstep(2.0, 4.0, len);
-    float alpha = smoothstep(2.0, 10.0, len);
-    // float alpha = dither8x8(gl_FragCoord.xy, smoothstep(2.0, 1.0, len));
-    // float alpha = dither8x8(gl_FragCoord.xy, vMvPos.z);
+
+    // float alphaDist = mix(3.0, 30.0, _InputForce);
+    // float alpha = smoothstep(2.0, 3.0, len);
+    float alpha = smoothstep(2.5, 3.0, len) ;
+
     alpha = dither8x8(gl_FragCoord.xy,alpha);
     // float alpha = dither8x8(gl_FragCoord.xy, len);
     //float alpha = smoothstep(5.0, 0.1, len);

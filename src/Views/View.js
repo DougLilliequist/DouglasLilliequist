@@ -7,7 +7,18 @@ export default class View extends Highway.Renderer {
 
     onLeave() {}
 
-    onEnterCompleted() {}
+    onEnterCompleted() {
+        // document.readyState === 'complete'
+        // ? this.initOnComplete()
+        // : listener(window, 'a', 'load', () =>  {
+            
+        //     console.log('loaded');
+        
+        //     this.initOnComplete()
+        
+        // })
+        console.log('loaded');
+    }
 
     onLeaveCompleted() {}
 }

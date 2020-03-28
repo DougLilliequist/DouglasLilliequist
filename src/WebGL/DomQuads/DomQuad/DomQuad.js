@@ -20,19 +20,20 @@ export default class DomQuad extends Mesh {
     domElement, {
       widthSegments = 1.0,
       heightSegments = 1.0,
-      posOffset = 0.0
+      posOffset = 0.0,
+      phase = 0.0
     }
   ) {
     super(gl);
 
     this.geometry = new Plane(gl, {
-      width: 2,
-      height: 2,
+      width: 1,
+      height: 1,
       widthSegments: widthSegments,
       heightSegments: heightSegments
     });
 
-    this.initProgram(domElement);
+    this.initProgram({el: domElement, alphaPhase: phase});
 
     this.updateDimensions({
       domElement,
@@ -44,20 +45,20 @@ export default class DomQuad extends Mesh {
       camera: camera
     });
 
-    // this.position.z = -1.0 - posOffset;
+    this.name = `PROJECT ${posOffset}`
+
     this.position.z = -posOffset;
 
-    console.log(this.position.z);
   }
 
-  initProgram(domElement) {
-    const elementHasImage = domElement.children[0] instanceof HTMLImageElement;
+  initProgram({el, alphaPhase}) {
+    const elementHasImage = el.children[0] instanceof HTMLImageElement;
 
     this.texture = new Texture(this.gl);
     let imageAspect;
 
     if (elementHasImage) {
-      this.texture.image = domElement.children[0];
+      this.texture.image = el.children[0];
       imageAspect = this.texture.width / this.texture.height;
     } else {
       imageAspect = 1.0;
@@ -66,7 +67,7 @@ export default class DomQuad extends Mesh {
     this.cameraViewplaneSize = new Vec2(1.0, 1.0);
     this.viewportScalePhase = new Vec2(1.0, 1.0);
 
-    const rect = domElement.getBoundingClientRect();
+    const rect = el.getBoundingClientRect();
 
     //MAKE ONE SINGLE UNIFORM FOR THE WIDTH AND HEIGHT OF THE QUAD
     const u = {
@@ -78,6 +79,12 @@ export default class DomQuad extends Mesh {
       },
       _Image: {
         value: this.texture
+      },
+      _InputForce: {
+        value: 0.0
+      },
+      _AlphaPhase: {
+        value: alphaPhase
       },
       _ImageAspect: {
         value: 1.0 //hard coded based on proved image
@@ -98,14 +105,17 @@ export default class DomQuad extends Mesh {
   //https://torstencurdt.com/tech/posts/modulo-of-negative-numbers/
   update(force) {
 
-    // this.position.z += force;
-    // this.position.z %= -5.0; //hard coded mod for now
-    // this.position.z = this.position.z > 0.5 ? this.position.z - 5.0 : this.position.z;
-
-
     this.position.z += force;
-    this.position.z %= -3.0; //hard coded mod for now
-    this.position.z = this.position.z > 0.75 ? this.position.z - 3.0 : this.position.z;
+    
+    this.position.z %= -5.0; //hard coded mod for now
+    this.position.z = this.position.z > 0.0 ? this.position.z - 5.0 : this.position.z;
+
+    // this.position.z %= -2.0; //hard coded mod for now
+    // this.position.z = this.position.z > 0.0 ? this.position.z - 2.0 : this.position.z;
+
+    // this.position.z += force;
+    // this.position.z %= -3.0; //hard coded mod for now
+    // this.position.z = this.position.z > 0.75 ? this.position.z - 3.0 : this.position.z;
 
   }
 

@@ -6,6 +6,7 @@ attribute vec3 normal;
 
 uniform mat4 projectionMatrix;
 uniform mat4 modelViewMatrix;
+uniform mat4 modelMatrix;
 
 uniform float _Time;
 
@@ -13,6 +14,7 @@ uniform vec2 _ViewplaneSize;
 // uniform vec2 _CameraViewportSize;
 // uniform vec2 _ViewportScale;
 varying vec3 vMvPos;
+varying vec3 mPos;
 
 varying vec2 vUv;
 
@@ -30,5 +32,6 @@ void main() {
     gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
     vUv = uv;
     vMvPos = (modelViewMatrix * vec4(pos, 1.0)).xyz;
+    mPos = (modelMatrix * vec4(pos, 1.0)).xyz;
 
 }

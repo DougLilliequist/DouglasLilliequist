@@ -26,7 +26,7 @@ export default class DomQuadManager {
 
     this.camera = camera;
 
-    this.quads = [];
+    // this.quads = [];
 
     this.referenceElements = [];
 
@@ -36,22 +36,28 @@ export default class DomQuadManager {
 
     this.transform.setParent(this.scene);
 
-    this.transform.position.z = -1.0;
+    this.transform.position.z = 0.0;
 
     this.initEvents();
   }
 
   initEvents() {
-    emitter.on("initDOMGL", this.initQuads.bind(this));
-    emitter.on("removeDOMGL", this.disposeActiveQuads.bind(this));
+    emitter.on("initDOMGL", (data) => {
+      this.initQuads(data);
+    });
+    emitter.on("removeDOMGL", () => {
+      this.disposeActiveQuads();
+    });
   }
 
   //applies appropriate sizes and positions based on reference dom elements
   //bounding rects
   initQuads(el) {
-    const domElements = el.children;
 
-    console.log(domElements);
+    this.quads = [];
+
+    console.log('initQuads');
+    const domElements = el.children;
 
     if (domElements === null || domElements.length === 0) {
       console.error("reference dom elements not available");
@@ -64,15 +70,17 @@ export default class DomQuadManager {
 
     let i = 0;
     while (i < this.referenceElements.length) {
+
+      let phase = i / (this.referenceElements.length - 1.0)
+
       this.quads[i] = new DomQuad(
         this.gl,
         this.camera,
         this.referenceElements[i], {
           widthSegments: 1.0,
           heightSegments: 1.0,
-          posOffset: (i / (this.referenceElements.length)) * 3.0
-          // posOffset: 0.0 - (i)
-          // posOffset: i
+          posOffset: i,
+          phase: phase
         }
       );
 
@@ -91,64 +99,53 @@ export default class DomQuadManager {
   }
 
   update(dt, force) {
-    if (this.quadsLoaded === true && this.quads.length > 0) {
-      for (let i = 0; i < this.referenceElements.length; i++) {
-        const quad = this.quads[i];
 
-        quad.update(force);
-        //update uniforms
-        quad.program.uniforms._Time.value += dt;
-      }
+    if(this.quadsLoaded) {
 
-      this.updateQuadDimensions();
-      this.updateQuadPositions();
+      // if (this.quadsLoaded === true && this.quads.length > 0) {
+        for (let i = 0; i < this.referenceElements.length; i++) {
+          const quad = this.quads[i];
+          const el = this.referenceElements[i];
+
+          quad.updateDimensions({
+            domElement: el,
+            camera: this.camera
+          });
+
+          quad.calcDomToWebGLPos({
+            domElement: el,
+            camera: this.camera
+          });
+  
+          quad.update(force);
+          //update uniforms
+
+          // quad.program.uniforms._FadeDirection.value = Math.sign(force) * 0.5 + 0.5;
+          quad.program.uniforms._InputForce.value = Math.min(1.0, Math.abs(force * 1.0));
+          quad.program.uniforms._Time.value += dt;
+        }
+
+        // console.log(this.quads[0].position.z);
+  
+      // }
+
     }
 
-    if (this.quads.length > 0) {
-      // console.log(this.quads[0].position.z);
-    }
-
-    // this.transform.position.z += 0.01;
-  }
-
-  //update sizes of quads based on reference dom elements
-  updateQuadDimensions() {
-    if (this.quadsLoaded) {
-      this.referenceElements.forEach((el, i) => {
-        const quad = this.quads[i];
-        quad.updateDimensions({
-          domElement: el,
-          camera: this.camera
-        });
-      });
-    }
-  }
-
-  // // update position of quads based on reference dom elements position
-  updateQuadPositions() {
-    if (this.quadsLoaded) {
-      this.referenceElements.forEach((el, i) => {
-        const quad = this.quads[i];
-        quad.calcDomToWebGLPos({
-          domElement: el,
-          camera: this.camera
-        });
-      });
-    }
   }
 
   //removes geometry and shader data from all active quads
   //as well as the mesh itself
   disposeActiveQuads() {
-    this.quads.map((quad, i) => {
+    for(let i = 0; i < this.quads.length; i++) {
+      const quad = this.quads[i];
+      this.transform.removeChild(quad);
       quad.geometry.remove();
       quad.program.remove();
       quad.texture = null;
-      this.scene.removeChild(quad);
       quad = null;
-      this.quads.splice(i, 1);
-    });
-
+    }
+    this.quads.length = 0;
     this.quadsLoaded = false;
+    console.log(this.scene);
   }
 }
