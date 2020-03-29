@@ -9,16 +9,16 @@ import {
 } from "../../vendors/ogl/src/core/Camera";
 
 import {
-  Raycast
-} from "../../vendors/ogl/src/extras/Raycast";
-
-import {
   Vec2
 } from "../../vendors/ogl/src/math/Vec2";
 
 import DomQuadManager from "./DomQuads/DomQuadManager.js";
 
-const emitter = require('tiny-emitter/instance');
+// const emitter = require('tiny-emitter/instance');
+
+import eventEmitter from '../EventEmitter';
+const emitter = eventEmitter.emitter;
+import events from '../../utils/events';
 
 import * as dat from 'dat.gui';
 
@@ -61,7 +61,7 @@ export default class WebGLContext {
     this.scene = new Transform();
 
     this.domQuadsManager = new DomQuadManager(this.gl, this.scene, this.camera);
-    
+
   }
 
   initQuads(domElements) {
@@ -71,35 +71,35 @@ export default class WebGLContext {
   }
 
   initEvents() {
-    window.addEventListener("resize", this.onResize.bind(this), {
-      passive: true
-    });
-    this.isResizing = false;
 
-    // window.addEventListener('wheel', this.onScroll.bind(this));
+    emitter.on(events.MOUSE_DOWN, this.onMouseDown);
+    emitter.on(events.MOUSE_MOVE, this.onMouseMove);
+    emitter.on(events.MOUSE_UP, this.onMouseUp);
+
+    // window.addEventListener('wheel', this.onScroll);
     // this.scrollForce = 0;
-    
-    window.addEventListener('mousemove', this.onMouseMove.bind(this), false);
-    window.addEventListener('mousedown', this.onMouseDown.bind(this), false);
-    window.addEventListener('mouseup', this.onMouseUp.bind(this), false);
 
     this.isInteracting = false;
     this.inputPos = new Vec2(0.0, 0.0);
     this.prevInputPos = new Vec2(0.0, 0.0);
     this.inputForce = new Vec2(0.0, 0.0);
 
+    emitter.on(events.RESIZE, this.onResize);
+    this.isResizing = false;
+
   }
 
-  onMouseDown(e) {
+  onMouseDown = (e) => {
 
     this.isInteracting = true;
     this.prevInputPos.copy(this.inputPos);
     this.inputPos.x = 2.0 * (e.x / window.innerWidth) - 1.0;
     this.inputPos.y = -1 * (2.0 * (e.y / window.innerHeight) - 1.0);
+    emitter.emit(events.ENTER_SCROLL_MODE);
 
   }
 
-  onMouseMove(e) {
+  onMouseMove = (e) => {
 
         this.inputPos.x = 2.0 * (e.x / window.innerWidth) - 1.0;
         this.inputPos.y = -1 * (2.0 * (e.y / window.innerHeight) - 1.0);
@@ -110,20 +110,23 @@ export default class WebGLContext {
 
   }
 
-  onMouseUp() {
+  onMouseUp = () => {
 
     this.isInteracting = false;
     this.firstMove = false;
     this.domQuadsManager.captureLastPosition();
     const quad = this.domQuadsManager.getQuadInView();
+    emitter.emit(events.EXIT_SCROLL_MODE);
 
   }
 
-  onScroll(e) {
+  onScroll = (e) => {
 
     if(this.updateInteractionState) {
       clearTimeout(this.updateInteractionState);
     }
+
+    if(this.isInteracting === false) 
     this.isInteracting = true;  
     this.scrollForce += e.deltaY * 0.0001;
 
@@ -173,13 +176,15 @@ export default class WebGLContext {
   updateScrollingAnim() {
 
 
-    // this.scrollForce *= 0.99;
+    this.scrollForce *= 0.99;
+    // console.log(this.scrollForce)
     this.domQuadsManager.update(this.deltaTime, this.inputForce.y, this.isInteracting);
     // this.domQuadsManager.update(this.deltaTime, this.scrollForce, this.isInteracting);
 
   }
 
-  onResize() {
+  onResize = () => {
+
     const w = window.innerWidth;
     const h = window.innerHeight;
 

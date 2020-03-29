@@ -15,6 +15,8 @@ import {loopNegativeNumber} from '../../../../utils/Math';
 const vert = require("./shaders/domQuad.vert");
 const frag = require("./shaders/domQuad.frag");
 
+import {gsap} from 'gsap';
+
 export default class DomQuad extends Mesh {
   constructor(
     gl,
@@ -49,13 +51,13 @@ export default class DomQuad extends Mesh {
 
     this.name = `PROJECT ${posOffset}`
 
+    this.phase = phase; //rename later
+
     this.position.z = -posOffset;
 
     this.resetPosition = false;
 
     this.prevPosition = this.targetPos = this.position.z;
-
-    console.log(this.position.z);
 
   }
 
@@ -92,7 +94,10 @@ export default class DomQuad extends Mesh {
         value: 0.0
       },
       _AlphaPhase: {
-        value: alphaPhase
+        value: 0.0
+      },
+      _Alpha: {
+        value: 1.0
       },
       _ImageAspect: {
         value: 1.0 //hard coded based on proved image
@@ -108,6 +113,39 @@ export default class DomQuad extends Mesh {
       uniforms: u,
       transparent: true
     });
+  }
+
+  //make animations into timeline anims
+  applyScrollMode() {
+
+    gsap.to(this.program.uniforms._Alpha, {
+      value: 0.5,
+      duration: 0.5,
+      ease: "power2.inOut"
+    })
+
+    gsap.to(this.program.uniforms._AlphaPhase, {
+      value: 1.0,
+      duration: 0.5,
+      ease: "power2.inOut"
+    })
+
+  }
+
+  removeScrollMode() {
+
+    gsap.to(this.program.uniforms._Alpha, {
+      value: 1.0,
+      duration: 0.5,
+      ease: "power2.inOut"
+    })
+
+    gsap.to(this.program.uniforms._AlphaPhase, {
+      value: 0.0,
+      duration: 0.5,
+      ease: "power2.inOut"
+    })
+
   }
 
   update(force, interacting) {

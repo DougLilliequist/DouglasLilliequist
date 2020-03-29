@@ -2,7 +2,10 @@ import DomQuad from "./DomQuad/DomQuad.js";
 import {
   Transform
 } from "../../../vendors/ogl/src/core/Transform.js";
-const emitter = require("tiny-emitter/instance");
+// const emitter = require("tiny-emitter/instance");
+import eventEmitter from '../../EventEmitter.js';
+const emitter = eventEmitter.emitter;
+
 import events from '../../../utils/events';
 
 /**
@@ -40,13 +43,16 @@ export default class DomQuadManager {
   }
 
   initEvents() {
+
     emitter.on(events.INIT_DOMGL, (data) => {
-      console.log(data);
       this.initQuads({domElementContainer: data.el, getQuad: data.getFirstQuad});
     });
-    emitter.on(events.REMOVE_DOMGL, () => {
-      this.disposeActiveQuads();
-    });
+
+    emitter.on(events.REMOVE_DOMGL, this.disposeActiveQuads);
+
+    emitter.on(events.ENTER_SCROLL_MODE, this.enterScrollMode);
+    emitter.on(events.EXIT_SCROLL_MODE, this.exitScrollMode);
+
   }
 
   //applies appropriate sizes and positions based on reference dom elements
@@ -102,6 +108,22 @@ export default class DomQuadManager {
 
   }
 
+  enterScrollMode = () => {
+
+    this.quads.map((quad) => {
+      quad.applyScrollMode();
+    })
+
+  }
+
+  exitScrollMode = () => {
+
+    this.quads.map((quad) => {
+      quad.removeScrollMode();
+    })
+    
+  }
+
   update(dt, force, interacting) {
 
     if(this.quadsLoaded) {
@@ -151,7 +173,7 @@ export default class DomQuadManager {
         }
   
       });
-  
+      console.log('get quad');
       emitter.emit(events.LOAD_PROJECT_CONTENT, quadInView.name)
       return quadInView;
     
@@ -169,7 +191,7 @@ export default class DomQuadManager {
 
   //removes geometry and shader data from all active quads
   //as well as the mesh itself
-  disposeActiveQuads() {
+  disposeActiveQuads = () => {
     for(let i = 0; i < this.quads.length; i++) {
       const quad = this.quads[i];
       this.transform.removeChild(quad);

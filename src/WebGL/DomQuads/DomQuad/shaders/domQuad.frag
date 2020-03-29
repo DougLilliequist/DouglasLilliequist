@@ -3,6 +3,7 @@ precision highp float;
 uniform sampler2D _Image;
 uniform float _InputForce;
 uniform float _AlphaPhase;
+uniform float _Alpha;
 uniform float _ImageAspect;
 uniform float _Aspect;
 uniform float _Time;
@@ -110,16 +111,9 @@ void main() {
 
     vec4 img = texture2D(_Image, uv);
     float len = (vMvPos.z * vMvPos.z);
+    // alpha = dither8x8(gl_FragCoord.xy, alpha);
 
-    // float alphaDist = mix(3.0, 30.0, _InputForce);
-    // float alpha = smoothstep(2.0, 3.0, len);
-    float alpha = smoothstep(0.0, 5.0, len) ;
-
-    alpha = dither8x8(gl_FragCoord.xy,alpha);
-    // float alpha = dither8x8(gl_FragCoord.xy, len);
-    //float alpha = smoothstep(5.0, 0.1, len);
-    if(alpha <= 0.0) discard;
-    // gl_FragColor = vec4(vUv.x, vUv.y, 1.0, abs(vMvPos.z));
-    gl_FragColor = vec4(vUv.x, vUv.y, 1.0, 1.0);
+    float alpha = _Alpha * smoothstep(0.35, 1.0, len);
+    gl_FragColor = vec4(vUv.x, vUv.y, 1.0, alpha);
 
 }
