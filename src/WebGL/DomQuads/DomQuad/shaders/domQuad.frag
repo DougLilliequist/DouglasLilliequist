@@ -113,7 +113,10 @@ void main() {
     float len = (vMvPos.z * vMvPos.z);
     // alpha = dither8x8(gl_FragCoord.xy, alpha);
 
-    float alpha = _Alpha * smoothstep(0.35, 1.0, len);
+    float alpha = _Alpha * smoothstep(0.25, 1.0, len);
+    // float dither = dither8x8(gl_FragCoord.xy, smoothstep(1.0, 10.0, len));
+    // if(dither <= 0.0) discard;
+    // // gl_FragColor = vec4(vUv.x, vUv.y, 1.0, alpha);
     gl_FragColor = vec4(vUv.x, vUv.y, 1.0, alpha);
 
 }

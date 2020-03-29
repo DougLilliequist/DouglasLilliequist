@@ -104,10 +104,6 @@ export default class WebGLContext {
         this.inputPos.x = 2.0 * (e.x / window.innerWidth) - 1.0;
         this.inputPos.y = -1 * (2.0 * (e.y / window.innerHeight) - 1.0);
 
-        if(this.isInteracting) {
-  
-      }
-
   }
 
   onMouseUp = () => {
@@ -128,7 +124,7 @@ export default class WebGLContext {
 
     if(this.isInteracting === false) 
     this.isInteracting = true;  
-    this.scrollForce += e.deltaY * 0.0001;
+    this.scrollForce += e.deltaY * 0.01;
 
     this.updateInteractionState = setTimeout(() => {
       this.isInteracting = false;
@@ -141,6 +137,7 @@ export default class WebGLContext {
 
     this.inputDir = new Vec2().sub(this.inputPos, this.prevInputPos);
     this.inputForce.y = this.inputDir.y * 10.0;
+    // this.inputForce.y = this.inputDir.y;
   }
 
   start() {
@@ -177,9 +174,7 @@ export default class WebGLContext {
 
 
     this.scrollForce *= 0.99;
-    // console.log(this.scrollForce)
     this.domQuadsManager.update(this.deltaTime, this.inputForce.y, this.isInteracting);
-    // this.domQuadsManager.update(this.deltaTime, this.scrollForce, this.isInteracting);
 
   }
 

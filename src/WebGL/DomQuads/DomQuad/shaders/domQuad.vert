@@ -8,6 +8,7 @@ uniform mat4 projectionMatrix;
 uniform mat4 modelViewMatrix;
 uniform mat4 modelMatrix;
 
+uniform float _Scale;
 uniform float _Time;
 
 uniform vec2 _ViewplaneSize;
@@ -23,9 +24,10 @@ varying vec2 vUv;
 void main() {
 
     vec3 pos = vec3(position.x * _ViewplaneSize.x, position.y * _ViewplaneSize.y, 0.0);
+    pos *= _Scale;
     // vec3 pos = vec3(position.x, position.y, 0.0);
     // pos.xy *= _CameraViewportSize;
-    float phase = length(pos.xy);
+    // float phase = length(pos.xy);
     // phase = phase;
     // pos.xyz += (0.5 + sin(14.0 * phase + _Time) * 0.5) * .04 * (1.0 - phase);
 

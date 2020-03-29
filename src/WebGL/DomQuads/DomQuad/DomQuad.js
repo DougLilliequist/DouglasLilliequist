@@ -99,6 +99,9 @@ export default class DomQuad extends Mesh {
       _Alpha: {
         value: 1.0
       },
+      _Scale: {
+        value: 1.0
+      },
       _ImageAspect: {
         value: 1.0 //hard coded based on proved image
       },
@@ -119,16 +122,22 @@ export default class DomQuad extends Mesh {
   applyScrollMode() {
 
     gsap.to(this.program.uniforms._Alpha, {
-      value: 0.5,
+      value: 0.65,
       duration: 0.5,
       ease: "power2.inOut"
     })
 
-    gsap.to(this.program.uniforms._AlphaPhase, {
-      value: 1.0,
+    gsap.to(this.program.uniforms._Scale, {
+      value: 0.85,
       duration: 0.5,
       ease: "power2.inOut"
     })
+
+    // gsap.to(this.program.uniforms._AlphaPhase, {
+    //   value: 1.0,
+    //   duration: 0.5,
+    //   ease: "power2.inOut"
+    // })
 
   }
 
@@ -140,11 +149,18 @@ export default class DomQuad extends Mesh {
       ease: "power2.inOut"
     })
 
-    gsap.to(this.program.uniforms._AlphaPhase, {
-      value: 0.0,
+    
+    gsap.to(this.program.uniforms._Scale, {
+      value: 1.0,
       duration: 0.5,
       ease: "power2.inOut"
     })
+
+    // gsap.to(this.program.uniforms._AlphaPhase, {
+    //   value: 0.0,
+    //   duration: 0.5,
+    //   ease: "power2.inOut"
+    // })
 
   }
 
