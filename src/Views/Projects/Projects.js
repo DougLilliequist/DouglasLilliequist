@@ -1,5 +1,6 @@
 import View from "../View.js";
 const emitter = require("tiny-emitter/instance");
+import events from '../../../utils/events';
 
 import "../../../styles/projects.scss";
 
@@ -11,13 +12,13 @@ export default class Projects extends View {
   }
 
   onLeave() {
-    emitter.emit("removeDOMGL");
+    emitter.emit(events.REMOVE_DOMGL);
     super.onLeave();
   }
 
   onEnterCompleted() {
     super.onEnterCompleted();
-    emitter.emit("initDOMGL", this.container);
+    emitter.emit(events.INIT_DOMGL, {el: this.container, getQuad: true});
   }
 
   onLeaveCompleted() {

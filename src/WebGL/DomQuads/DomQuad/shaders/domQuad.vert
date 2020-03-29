@@ -18,10 +18,12 @@ varying vec3 mPos;
 
 varying vec2 vUv;
 
+//GET CLIP POSITIONS AND COMPARE WITH MOUSE TO DISPLACE VERTICES
+
 void main() {
 
-    // vec3 pos = vec3(position.x * _CameraViewportSize.x, position.y * _CameraViewportSize.y, 0.0);
     vec3 pos = vec3(position.x * _ViewplaneSize.x, position.y * _ViewplaneSize.y, 0.0);
+    // vec3 pos = vec3(position.x, position.y, 0.0);
     // pos.xy *= _CameraViewportSize;
     float phase = length(pos.xy);
     // phase = phase;

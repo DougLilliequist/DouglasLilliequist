@@ -10,6 +10,8 @@ import {
   getCameraViewplaneSize
 } from "../../utils/getCameraViewplaneSize";
 
+import {loopNegativeNumber} from '../../../../utils/Math';
+
 const vert = require("./shaders/domQuad.vert");
 const frag = require("./shaders/domQuad.frag");
 
@@ -108,26 +110,15 @@ export default class DomQuad extends Mesh {
     });
   }
 
-  //https://torstencurdt.com/tech/posts/modulo-of-negative-numbers/
-  update(force) {
-    // console.log(force)
-    this.position.z += force;
-    this.position.z %= -5.0; //hard coded mod for now
-    this.position.z = this.position.z > 0.0 ? this.position.z - 5.0 : this.position.z;
+  update(force, interacting) {
 
-  }
-
-  restorePosition() {
-
-    const delta = this.targetPos - this.position.z;
-    this.resetPosition = Math.abs(delta) > 0.001 ? true : false;
-
-    if(this.resetPosition) {
+    if(interacting) {
+      this.position.z += force;
+    } else {
       this.position.z += (this.targetPos - this.position.z) * 0.05;
     }
 
-    this.position.z %= -5.0; //hard coded mod for now
-    this.position.z = this.position.z > 0.0 ? this.position.z - 5.0 : this.position.z;
+    this.position.z = loopNegativeNumber({a: this.position.z, b: -5.0});
 
   }
 
@@ -169,6 +160,7 @@ export default class DomQuad extends Mesh {
   calcDomToWebGLPos({
     domElement
   }) {
+    
     //get reference div
     const rect = domElement.getBoundingClientRect();
 

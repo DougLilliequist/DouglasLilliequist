@@ -3,8 +3,7 @@ import {
   Transform
 } from "../../../vendors/ogl/src/core/Transform.js";
 const emitter = require("tiny-emitter/instance");
-
-import {gsap} from 'gsap';
+import events from '../../../utils/events';
 
 /**
  * TODO: Provide a shader program as argument so
@@ -33,30 +32,30 @@ export default class DomQuadManager {
     this.quadsLoaded = false;
 
     this.transform = new Transform();
+    this.transform.position.z = 1.0;
 
     this.transform.setParent(this.scene);
-
-    this.transform.position.z = 1.0;
 
     this.initEvents();
   }
 
   initEvents() {
-    emitter.on("initDOMGL", (data) => {
-      this.initQuads(data);
+    emitter.on(events.INIT_DOMGL, (data) => {
+      console.log(data);
+      this.initQuads({domElementContainer: data.el, getQuad: data.getFirstQuad});
     });
-    emitter.on("removeDOMGL", () => {
+    emitter.on(events.REMOVE_DOMGL, () => {
       this.disposeActiveQuads();
     });
   }
 
   //applies appropriate sizes and positions based on reference dom elements
   //bounding rects
-  initQuads(el) {
+  initQuads({domElementContainer, getQuad}) {
 
     this.quads = [];
 
-    const domElements = el.children;
+    const domElements = domElementContainer.children;
 
     if (domElements === null || domElements.length === 0) {
       console.error("reference dom elements not available");
@@ -78,6 +77,7 @@ export default class DomQuadManager {
         this.referenceElements[i], {
           widthSegments: 1.0,
           heightSegments: 1.0,
+          // posOffset: i,
           posOffset: i,
           phase: phase
         }
@@ -95,6 +95,11 @@ export default class DomQuadManager {
     }
 
     this.quadsLoaded = true;
+
+    if(getQuad) {
+      this.getQuadInView();
+    }
+
   }
 
   update(dt, force, interacting) {
@@ -116,13 +121,7 @@ export default class DomQuadManager {
             camera: this.camera
           });
           
-          if(interacting) {
-            quad.update(force);
-          } else {
-            quad.restorePosition();
-          }
-          //update uniforms
-
+          quad.update(force, interacting);
           quad.program.uniforms._InputForce.value = Math.min(1.0, Math.abs(force * 1.0));
           quad.program.uniforms._Time.value += dt;
           
@@ -134,20 +133,33 @@ export default class DomQuadManager {
 
   }
 
-  //remove
-  saveLastPositions() {
+  //get the quad whose position equals to the camera's position along Z
+  //and offsetted by the parents transform. That way you'll get the quad
+  //that is in view of the camera (or simply in front)
 
-    this.quads.map((quad) => {
-      quad.prevPosition = Math.trunc(quad.position.z);
-      quad.prevPosition %= -5.0;
-      // console.log(quad.prevPosition)
-    })
+  //rename to something that implies I'm emitting what quad is in front?
+  getQuadInView() {
+
+    if(this.quadsLoaded) {
+      
+      let quadInView;
+
+      this.quads.map((quad) => {
+  
+        if(Math.round(quad.position.z) === 0 - this.transform.position.z) {
+          quadInView = quad;
+        }
+  
+      });
+  
+      emitter.emit(events.LOAD_PROJECT_CONTENT, quadInView.name)
+      return quadInView;
+    
+    }
 
   }
 
-  //rename to something like capture last position
-  fixQuadPositions(interacting, dir) {
-
+  captureLastPosition() {
     if(this.quadsLoaded) {
           this.quads.map((quad) => {
             quad.targetPos = Math.round(quad.position.z);
