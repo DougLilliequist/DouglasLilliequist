@@ -4,6 +4,8 @@ import {
 } from "../../../vendors/ogl/src/core/Transform.js";
 const emitter = require("tiny-emitter/instance");
 
+import {gsap} from 'gsap';
+
 /**
  * TODO: Provide a shader program as argument so
  * the appropriate shader is applied to the created quads
@@ -26,8 +28,6 @@ export default class DomQuadManager {
 
     this.camera = camera;
 
-    // this.quads = [];
-
     this.referenceElements = [];
 
     this.quadsLoaded = false;
@@ -36,7 +36,7 @@ export default class DomQuadManager {
 
     this.transform.setParent(this.scene);
 
-    this.transform.position.z = 0.0;
+    this.transform.position.z = 1.0;
 
     this.initEvents();
   }
@@ -56,7 +56,6 @@ export default class DomQuadManager {
 
     this.quads = [];
 
-    console.log('initQuads');
     const domElements = el.children;
 
     if (domElements === null || domElements.length === 0) {
@@ -98,15 +97,15 @@ export default class DomQuadManager {
     this.quadsLoaded = true;
   }
 
-  update(dt, force) {
+  update(dt, force, interacting) {
 
     if(this.quadsLoaded) {
 
-      // if (this.quadsLoaded === true && this.quads.length > 0) {
+      if (this.quads.length > 0) {
         for (let i = 0; i < this.referenceElements.length; i++) {
           const quad = this.quads[i];
           const el = this.referenceElements[i];
-
+          
           quad.updateDimensions({
             domElement: el,
             camera: this.camera
@@ -116,21 +115,44 @@ export default class DomQuadManager {
             domElement: el,
             camera: this.camera
           });
-  
-          quad.update(force);
+          
+          if(interacting) {
+            quad.update(force);
+          } else {
+            quad.restorePosition();
+          }
           //update uniforms
 
-          // quad.program.uniforms._FadeDirection.value = Math.sign(force) * 0.5 + 0.5;
           quad.program.uniforms._InputForce.value = Math.min(1.0, Math.abs(force * 1.0));
           quad.program.uniforms._Time.value += dt;
+          
         }
 
-        // console.log(this.quads[0].position.z);
-  
-      // }
+      }
 
     }
 
+  }
+
+  //remove
+  saveLastPositions() {
+
+    this.quads.map((quad) => {
+      quad.prevPosition = Math.trunc(quad.position.z);
+      quad.prevPosition %= -5.0;
+      // console.log(quad.prevPosition)
+    })
+
+  }
+
+  //rename to something like capture last position
+  fixQuadPositions(interacting, dir) {
+
+    if(this.quadsLoaded) {
+          this.quads.map((quad) => {
+            quad.targetPos = Math.round(quad.position.z);
+          })
+      }
   }
 
   //removes geometry and shader data from all active quads
@@ -146,6 +168,5 @@ export default class DomQuadManager {
     }
     this.quads.length = 0;
     this.quadsLoaded = false;
-    console.log(this.scene);
   }
 }

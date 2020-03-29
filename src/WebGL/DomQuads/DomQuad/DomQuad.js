@@ -49,6 +49,12 @@ export default class DomQuad extends Mesh {
 
     this.position.z = -posOffset;
 
+    this.resetPosition = false;
+
+    this.prevPosition = this.targetPos = this.position.z;
+
+    console.log(this.position.z);
+
   }
 
   initProgram({el, alphaPhase}) {
@@ -104,18 +110,24 @@ export default class DomQuad extends Mesh {
 
   //https://torstencurdt.com/tech/posts/modulo-of-negative-numbers/
   update(force) {
-
+    // console.log(force)
     this.position.z += force;
-    
     this.position.z %= -5.0; //hard coded mod for now
     this.position.z = this.position.z > 0.0 ? this.position.z - 5.0 : this.position.z;
 
-    // this.position.z %= -2.0; //hard coded mod for now
-    // this.position.z = this.position.z > 0.0 ? this.position.z - 2.0 : this.position.z;
+  }
 
-    // this.position.z += force;
-    // this.position.z %= -3.0; //hard coded mod for now
-    // this.position.z = this.position.z > 0.75 ? this.position.z - 3.0 : this.position.z;
+  restorePosition() {
+
+    const delta = this.targetPos - this.position.z;
+    this.resetPosition = Math.abs(delta) > 0.001 ? true : false;
+
+    if(this.resetPosition) {
+      this.position.z += (this.targetPos - this.position.z) * 0.05;
+    }
+
+    this.position.z %= -5.0; //hard coded mod for now
+    this.position.z = this.position.z > 0.0 ? this.position.z - 5.0 : this.position.z;
 
   }
 

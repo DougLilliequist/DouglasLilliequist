@@ -113,7 +113,7 @@ void main() {
 
     // float alphaDist = mix(3.0, 30.0, _InputForce);
     // float alpha = smoothstep(2.0, 3.0, len);
-    float alpha = smoothstep(2.5, 3.0, len) ;
+    float alpha = smoothstep(0.0, 10.0, len) ;
 
     alpha = dither8x8(gl_FragCoord.xy,alpha);
     // float alpha = dither8x8(gl_FragCoord.xy, len);

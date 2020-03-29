@@ -22,7 +22,7 @@ const emitter = require('tiny-emitter/instance');
 
 import * as dat from 'dat.gui';
 
-window.gui = new dat.GUI({});
+// window.gui = new dat.GUI({});
 
 export default class WebGLContext {
   constructor(container) {
@@ -52,7 +52,7 @@ export default class WebGLContext {
       far: 50.0
     });
 
-    this.camera.position.set(0.0, 0.0, 2.0);
+    this.camera.position.set(0.0, 0.0, 1.0);
 
     this.currentTime = 0;
     this.prevtime = 0;
@@ -74,64 +74,90 @@ export default class WebGLContext {
       passive: true
     });
     this.isResizing = false;
-    // window.addEventListener("wheel", this.onScroll.bind(this));
-    window.addEventListener("wheel", this.onScroll.bind(this), {
-      passive: true
-    });
-    // this.prevScrollPos = 0;
-    // this.currentScrollPos = 0;
-     // this.scrollPhase = 0.0;    
-    this.isScrolling = false;
+
+    window.addEventListener('wheel', this.onScroll.bind(this));
     this.scrollForce = 0;
-    this.scrollTimeOut = 2.0 * 1000.0;
     
     window.addEventListener('mousemove', this.onMouseMove.bind(this), false);
+    window.addEventListener('mousedown', this.onMouseDown.bind(this), false);
+    window.addEventListener('mouseup', this.onMouseUp.bind(this), false);
 
     this.rayCast = new Raycast(this.gl);
     this.isInteracting = false;
-    this.inputPos = new Vec2(0.0, 0.0)
+    this.inputPhase = new Vec2(0.0, 0.0);
+    this.inputPos = new Vec2(0.0, 0.0);
+    this.prevInputPos = new Vec2(0.0, 0.0);
+    this.inputForce = new Vec2(0.0, 0.0);
+
+  }
+
+  onMouseDown(e) {
+
+    this.isInteracting = true;
+    this.prevInputPos.copy(this.inputPos);
+    this.inputPos.x = 2.0 * (e.x / window.innerWidth) - 1.0;
+    this.inputPos.y = -1 * (2.0 * (e.y / window.innerHeight) - 1.0);
+    this.domQuadsManager.saveLastPositions();
 
   }
 
   onMouseMove(e) {
 
-    if(this.updateInteractionState) {
-      clearTimeout(this.updateInteractionState);
-    }
+        this.inputPos.x = 2.0 * (e.x / window.innerWidth) - 1.0;
+        this.inputPos.y = -1 * (2.0 * (e.y / window.innerHeight) - 1.0);
 
-    this.isInteracting = true;
-    this.inputPos.x = 2.0 * (e.x / window.innerWidth) - 1.0;
-    this.inputPos.y = -1 * (2.0 * (e.y / window.innerHeight) - 1.0);
+        if(this.isInteracting) {
 
-    this.rayCast.castMouse(this.camera, this.inputPos);
-    
-    const intersections = this.rayCast.intersectBounds(this.domQuadsManager.quads);
-    intersections.forEach((intersection) => {
-      console.log(intersection);
-    })
+        this.updateInputPhase();
+  
+      }
 
-    setTimeout(() => {
+      this.updateRayCast();
+  }
 
-      this.isInteracting = false;
+  onMouseUp() {
 
-    }, 1000.0);
+    this.isInteracting = false;
+    this.firstMove = false;
+    this.domQuadsManager.fixQuadPositions(this.isInteracting, this.inputForce);
 
   }
 
   onScroll(e) {
 
-    if(this.updateSrollPhase) {
-      clearTimeout(this.updateSrollPhase);
+    if(this.updateInteractionState) {
+      clearTimeout(this.updateInteractionState);
     }
+    this.isInteracting = true;  
+    this.scrollForce += e.deltaY * 0.0001;
 
-    this.isScrolling = true;
-    this.scrollForce += e.deltaY * 0.001;
+    this.updateInteractionState = setTimeout(() => {
+      this.isInteracting = false;
+      this.domQuadsManager.fixQuadPositions(this.isInteracting, this.inputForce);
+    }, 1000.0)
 
-    setTimeout(()=> {
+  }
 
-      this.isScrolling = false;
-      console.log('no longer scrolling')
-    }, this.scrollTimeOut);
+  updateInputForce() {
+
+    this.inputDir = new Vec2().sub(this.inputPos, this.prevInputPos);
+    this.inputForce.y = this.inputDir.y * 10.0;
+  }
+
+
+  updateInputPhase() {
+    this.inputPhase.y = Math.sign(this.inputPos.y);
+
+  }
+
+  updateRayCast() {
+
+    this.rayCast.castMouse(this.camera, this.inputPos);
+    
+    const intersections = this.rayCast.intersectBounds(this.domQuadsManager.quads);
+    intersections.forEach((intersection) => {
+      // console.log(intersection)
+    });
 
   }
 
@@ -150,18 +176,28 @@ export default class WebGLContext {
     window.requestAnimationFrame(() => this.update());
     this.currentTime = performance.now();
     this.deltaTime = (this.currentTime - this.prevtime) / 1000.0;
+    
+    if(this.isInteracting) {
+      this.updateInputForce();
+      this.updateInputPhase();
+    }
 
     this.updateScrollingAnim();
 
     this.render();
+    
+    this.prevInputPos.copy(this.inputPos);
 
     this.prevtime = this.currentTime;
+
   }
 
   updateScrollingAnim() {
 
+
     this.scrollForce *= 0.99;
-    this.domQuadsManager.update(this.deltaTime, this.scrollForce);
+    this.domQuadsManager.update(this.deltaTime, this.inputForce.y, this.isInteracting);
+    // this.domQuadsManager.update(this.deltaTime, this.scrollForce, this.isInteracting);
 
   }
 
