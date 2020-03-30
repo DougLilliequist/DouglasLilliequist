@@ -35,7 +35,11 @@ export default class DomQuad extends Mesh {
 
     this.name = `PROJECT ${posOffset}`
 
+
     this.phase = phase; //rename later
+    this.initIndex = posOffset;
+    this.index = posOffset;
+    this.prevIndex = this.index;
 
     this.position.z = -posOffset;
 
@@ -123,6 +127,9 @@ export default class DomQuad extends Mesh {
       _Scale: {
         value: 1.0
       },
+      _RestorePhase: {
+        value: 0.0
+      },
       _ImageAspect: {
         value: 1.0 //hard coded based on proved image
       },
@@ -160,11 +167,11 @@ export default class DomQuad extends Mesh {
       ease: "power2.inOut"
     })
 
-    // gsap.to(this.program.uniforms._AlphaPhase, {
-    //   value: 1.0,
-    //   duration: 0.5,
-    //   ease: "power2.inOut"
-    // })
+    gsap.to(this.program.uniforms._AlphaPhase, {
+      value: 1.0,
+      duration: 0.5,
+      ease: "power2.inOut"
+    })
 
   }
 
@@ -189,11 +196,11 @@ export default class DomQuad extends Mesh {
       ease: "power2.inOut"
     })
 
-    // gsap.to(this.program.uniforms._AlphaPhase, {
-    //   value: 0.0,
-    //   duration: 0.5,
-    //   ease: "power2.inOut"
-    // })
+    gsap.to(this.program.uniforms._AlphaPhase, {
+      value: 0.0,
+      duration: 0.5,
+      ease: "power2.inOut"
+    })
 
   }
 
@@ -209,6 +216,8 @@ export default class DomQuad extends Mesh {
       this.position.z += (this.targetPos - this.position.z) * 0.05;
     }
 
+    this.reArrangeProjectIndex();
+
     this.position.z = loopNegativeNumber({a: this.position.z, b: -5.0});
 
   }
@@ -223,6 +232,7 @@ export default class DomQuad extends Mesh {
 
   }
 
+  //double make sure that video texture is not being updated
   updateVideoTexture() {
 
       if (this.video.readyState >= this.video.HAVE_ENOUGH_DATA) {
@@ -243,6 +253,22 @@ export default class DomQuad extends Mesh {
 
     if(this.video === null) return;
     this.video.pause();
+
+  }
+
+  reArrangeProjectIndex() {
+
+    //array loop logic...
+    if(this.initIndex === 1) {
+          //store current index;
+    if(this.position.z > 0.0) {
+      this.index -= 1.0
+    } else if(this.position.z < - 5.0) { //magic number 5: max distanc based on quads current 1 unit spacing
+      this.index += 1.0;
+    }
+      this.index = (((this.index % 10.0) + 10.0) % 10.0); //magic number 10: project amount
+      // console.log(this.index)
+    }
 
   }
 

@@ -101,11 +101,11 @@ void main() {
 
     vec2 uv = vUv;
 
-    float aspect = _ImageAspect / _Aspect;
+    // float aspect = _ImageAspect / _Aspect;
 
     uv -= 0.5;
     // uv.x /= _ImageAspect;
-    uv.x *= aspect;
+    // uv.y *= _Aspect;
     // uv /= aspect;
     uv += 0.5;
 
