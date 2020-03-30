@@ -109,7 +109,7 @@ void main() {
     // uv /= aspect;
     uv += 0.5;
 
-    vec4 img = texture2D(_Image, uv);
+    vec3 img = texture2D(_Image, uv).xyz;
     float len = (vMvPos.z * vMvPos.z);
     // alpha = dither8x8(gl_FragCoord.xy, alpha);
 
@@ -117,6 +117,7 @@ void main() {
     // float dither = dither8x8(gl_FragCoord.xy, smoothstep(1.0, 10.0, len));
     // if(dither <= 0.0) discard;
     // // gl_FragColor = vec4(vUv.x, vUv.y, 1.0, alpha);
-    gl_FragColor = vec4(vUv.x, vUv.y, 1.0, alpha);
+    // gl_FragColor = vec4(vUv.x, vUv.y, 1.0, alpha);
+    gl_FragColor = vec4(img, alpha);
 
 }

@@ -36,7 +36,7 @@ export default class Projects extends View {
 
   loadProjectContent = (data) => {
 
-    console.log(data);
+    // console.log(data);
 
   }
 

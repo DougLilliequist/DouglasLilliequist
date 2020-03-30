@@ -14,11 +14,11 @@ import {
 
 import DomQuadManager from "./DomQuads/DomQuadManager.js";
 
-// const emitter = require('tiny-emitter/instance');
-
 import eventEmitter from '../EventEmitter';
 const emitter = eventEmitter.emitter;
 import events from '../../utils/events';
+
+const Stats = require('stats-js'); 
 
 import * as dat from 'dat.gui';
 
@@ -26,8 +26,6 @@ import * as dat from 'dat.gui';
 
 export default class WebGLContext {
   constructor(container) {
-
-    console.log('webgl created');
     this.initScene(container);
     this.initEvents();
     this.start();
@@ -41,7 +39,7 @@ export default class WebGLContext {
       dpr: 1.5
     });
     this.gl = this.renderer.gl;
-    this.gl.clearColor(1.0, 1.0, 1.0, 1.0);
+    this.gl.clearColor(0.97, 0.97, 0.97, 1.0);
     // container.appendChild(this.gl.canvas);
     document.body.appendChild(this.gl.canvas);
 
@@ -61,6 +59,9 @@ export default class WebGLContext {
     this.scene = new Transform();
 
     this.domQuadsManager = new DomQuadManager(this.gl, this.scene, this.camera);
+
+    this.stats = new Stats();
+    document.body.appendChild(this.stats.dom);
 
   }
 
@@ -153,6 +154,7 @@ export default class WebGLContext {
 
   update() {
     window.requestAnimationFrame(() => this.update());
+    this.stats.begin();
     this.currentTime = performance.now();
     this.deltaTime = (this.currentTime - this.prevtime) / 1000.0;
     
@@ -167,6 +169,8 @@ export default class WebGLContext {
     this.prevInputPos.copy(this.inputPos);
 
     this.prevtime = this.currentTime;
+
+    this.stats.end();
 
   }
 
@@ -194,7 +198,7 @@ export default class WebGLContext {
     });
 
     this.updateDimensions = setTimeout(() => {
-      // this.domQuadsManager.updateQuadDimensions();
+      this.domQuadsManager.updateQuadDimensions();
     }, 60);
   }
 }

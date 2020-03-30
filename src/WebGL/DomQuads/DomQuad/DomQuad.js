@@ -10,10 +10,13 @@ import {
   getCameraViewplaneSize
 } from "../../utils/getCameraViewplaneSize";
 
-import {loopNegativeNumber} from '../../../../utils/Math';
-
 const vert = require("./shaders/domQuad.vert");
 const frag = require("./shaders/domQuad.frag");
+
+import {loopNegativeNumber} from '../../../../utils/Math';
+import eventEmitter from '../../../EventEmitter.js'
+const emitter = eventEmitter.emitter;
+import events from '../../../../utils/events.js';
 
 import {gsap} from 'gsap';
 
@@ -29,6 +32,20 @@ export default class DomQuad extends Mesh {
     }
   ) {
     super(gl);
+
+    this.name = `PROJECT ${posOffset}`
+
+    this.phase = phase; //rename later
+
+    this.position.z = -posOffset;
+
+    this.resetPosition = false;
+
+    this.prevPosition = this.targetPos = this.position.z; //remove prev position
+
+    this.inScrollMode = false;
+
+    // this.inView = false;
 
     this.geometry = new Plane(gl, {
       width: 1,
@@ -49,26 +66,31 @@ export default class DomQuad extends Mesh {
       camera: camera
     });
 
-    this.name = `PROJECT ${posOffset}`
-
-    this.phase = phase; //rename later
-
-    this.position.z = -posOffset;
-
-    this.resetPosition = false;
-
-    this.prevPosition = this.targetPos = this.position.z;
+    emitter.on(events.PLAY_VIDEO, this.playVideo);
+    emitter.on(events.PAUSE_VIDEO, this.pauseVideo);
 
   }
 
   initProgram({el, alphaPhase}) {
-    const elementHasImage = el.children[0] instanceof HTMLImageElement;
+    const elementHasImage = el.children[0] instanceof HTMLImageElement || el.children[0] instanceof HTMLVideoElement;
 
-    this.texture = new Texture(this.gl);
+    this.video = null;
+
+    this.texture = new Texture(this.gl, {
+      generateMipmaps: false,
+      width: 512,
+      height: 512
+    });
     let imageAspect;
 
     if (elementHasImage) {
-      this.texture.image = el.children[0];
+
+      if(el.children[0] instanceof HTMLVideoElement) this.video = el.children[0];
+      
+      this.video.muted = true;
+      this.video.loop = true;
+
+
       imageAspect = this.texture.width / this.texture.height;
     } else {
       imageAspect = 1.0;
@@ -79,7 +101,6 @@ export default class DomQuad extends Mesh {
 
     const rect = el.getBoundingClientRect();
 
-    //MAKE ONE SINGLE UNIFORM FOR THE WIDTH AND HEIGHT OF THE QUAD
     const u = {
       _ViewplaneSize: {
         value: new Vec2(1.0, 1.0)
@@ -121,6 +142,12 @@ export default class DomQuad extends Mesh {
   //make animations into timeline anims
   applyScrollMode() {
 
+    this.inScrollMode = true;
+
+    // if(this.video) {
+    //   this.video.pause();
+    // }
+
     gsap.to(this.program.uniforms._Alpha, {
       value: 0.65,
       duration: 0.5,
@@ -142,6 +169,12 @@ export default class DomQuad extends Mesh {
   }
 
   removeScrollMode() {
+
+    this.inScrollMode = false;
+
+    // if(this.inView({inViewPosZ: 0 - this.parent.position.z})) {
+    //   this.video.play();
+    // }
 
     gsap.to(this.program.uniforms._Alpha, {
       value: 1.0,
@@ -166,6 +199,10 @@ export default class DomQuad extends Mesh {
 
   update(force, interacting) {
 
+    if(this.video !== null) {
+      this.updateVideoTexture();
+    }
+
     if(interacting) {
       this.position.z += force;
     } else {
@@ -173,6 +210,39 @@ export default class DomQuad extends Mesh {
     }
 
     this.position.z = loopNegativeNumber({a: this.position.z, b: -5.0});
+
+  }
+
+  inView({inViewPosZ = 0}) {
+
+    if(Math.round(this.position.z) === inViewPosZ) {
+      return true;
+    } else {
+      return false;
+    }
+
+  }
+
+  updateVideoTexture() {
+
+      if (this.video.readyState >= this.video.HAVE_ENOUGH_DATA) {
+        this.texture.image = this.video;
+        this.texture.needsUpdate = true;
+      }
+
+  }
+
+  playVideo = () => {
+
+    if(this.video === null) return;
+    if(this.inView({inViewPosZ: 0 - this.parent.position.z})) this.video.play();
+
+  }
+
+  pauseVideo = () => {
+
+    if(this.video === null) return;
+    this.video.pause();
 
   }
 
@@ -186,9 +256,6 @@ export default class DomQuad extends Mesh {
     //get current viewplane size based on perspective camera's fov and desired plane distance
     this.cameraViewplaneSize = getCameraViewplaneSize(camera); //make this globally available
 
-    //determine within a range between 0 and 1 how much a given dom element's
-    //width and height is filling the viewport and use that to scale the calculated
-    //camera viewport size
     this.viewportScalePhase = this.calcViewportScalePhase(domElement);
 
     const w = this.cameraViewplaneSize.x * this.viewportScalePhase.x;
@@ -215,15 +282,7 @@ export default class DomQuad extends Mesh {
     domElement
   }) {
     
-    //get reference div
     const rect = domElement.getBoundingClientRect();
-
-    //Get top and left of rect (dom elements "origin" is at top left corner).
-    //Then find out where on the screen the dom element is drawn in range between -1 and 1
-
-    //Because domElements origin starts from the top-left corner, we also need to offset
-    //the dom's position by half it's width and height in order to move the origin
-    //to the center
 
     const posPhaseX =
       2.0 * ((rect.left + rect.width * 0.5) / window.innerWidth) - 1.0;

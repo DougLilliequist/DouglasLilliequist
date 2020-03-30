@@ -77,7 +77,7 @@ export default class DomQuadManager {
 
       let phase = i / (this.referenceElements.length - 1.0)
 
-      this.quads[i] = new DomQuad(
+      const quad = new DomQuad(
         this.gl,
         this.camera,
         this.referenceElements[i], {
@@ -89,13 +89,19 @@ export default class DomQuadManager {
         }
       );
 
-      this.quads[i].setParent(this.scene);
-      this.quads[i].calcDomToWebGLPos({
+      // this.quads[i].setParent(this.scene); //??
+      quad.calcDomToWebGLPos({
         domElement: this.referenceElements[i],
         camera: this.camera
       });
 
-      this.quads[i].setParent(this.transform);
+      quad.setParent(this.transform);
+
+      if(quad.inView({inViewPosZ: 0 - this.transform.position.z})) {
+        quad.playVideo();
+      }
+
+      this.quads[i] = quad;
 
       i++;
     }
@@ -110,6 +116,7 @@ export default class DomQuadManager {
 
   enterScrollMode = () => {
 
+    emitter.emit(events.PAUSE_VIDEO);
     this.quads.map((quad) => {
       quad.applyScrollMode();
     })
@@ -118,6 +125,7 @@ export default class DomQuadManager {
 
   exitScrollMode = () => {
 
+    emitter.emit(events.PLAY_VIDEO);
     this.quads.map((quad) => {
       quad.removeScrollMode();
     })
@@ -133,10 +141,10 @@ export default class DomQuadManager {
           const quad = this.quads[i];
           const el = this.referenceElements[i];
           
-          quad.updateDimensions({
-            domElement: el,
-            camera: this.camera
-          });
+          // quad.updateDimensions({
+          //   domElement: el,
+          //   camera: this.camera
+          // });
 
           quad.calcDomToWebGLPos({
             domElement: el,
@@ -155,6 +163,21 @@ export default class DomQuadManager {
 
   }
 
+  updateQuadDimensions() {
+
+    for(let i = 0; i < this.referenceElements.length; i++) {
+
+      const el = this.referenceElements[i];
+
+      this.quads[i].updateDimensions({
+        domElement: el,
+        camera: this.camera
+      });
+
+  }
+
+}
+
   //get the quad whose position equals to the camera's position along Z
   //and offsetted by the parents transform. That way you'll get the quad
   //that is in view of the camera (or simply in front)
@@ -164,19 +187,17 @@ export default class DomQuadManager {
 
     if(this.quadsLoaded) {
       
-      let quadInView;
-
       this.quads.map((quad) => {
   
-        if(Math.round(quad.position.z) === 0 - this.transform.position.z) {
-          quadInView = quad;
+        if(quad.inView({inViewPosZ: 0 - this.transform.position.z})) {
+          emitter.emit(events.LOAD_PROJECT_CONTENT, quad.name)
+          return quad;
+        } else {
+          return;
         }
   
       });
-      console.log('get quad');
-      emitter.emit(events.LOAD_PROJECT_CONTENT, quadInView.name)
-      return quadInView;
-    
+      
     }
 
   }
