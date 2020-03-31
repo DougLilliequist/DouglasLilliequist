@@ -38,6 +38,7 @@ export default class DomQuad extends Mesh {
 
 
     this.phase = phase; //rename later
+    
     this.index = posOffset;
 
     this.video = media;

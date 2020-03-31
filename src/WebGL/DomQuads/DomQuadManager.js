@@ -198,15 +198,15 @@ export default class DomQuadManager {
       }
   }
 
-  updateQuadArrangement = ({index, direction}) => {
-    this.transform.removeChild(this.transform.children[index]);
 
-    this.quadIndexOffset++;
+  updateQuadArrangement = ({index, direction}) => {
+    
+    this.transform.removeChild(this.transform.children[index]);
+    this.quadIndexOffset += direction
     let desiredIndex = this.quadIndexOffset + this.transform.children.length;
-    desiredIndex %= this.quads.length;
     desiredIndex = (((desiredIndex % this.quads.length) + this.quads.length) % this.quads.length);
-    console.log(desiredIndex);
     this.quads[desiredIndex].setParent(this.transform);
+
   }
 
   //removes geometry and shader data from all active quads
