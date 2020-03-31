@@ -1,3 +1,2 @@
 [submodule "ogl"]
-	path = ogl
 	url = https://github.com/DougLilliequist/ogl.git

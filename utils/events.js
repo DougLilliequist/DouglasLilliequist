@@ -15,6 +15,8 @@ const events = {
     TOUCH_MOVE: 'touch_move',
     TOUCH_END: 'touch_end',
 
+    REPLACE_QUAD: 'replace_quad',
+
     PLAY_VIDEO: 'play_video',
     PAUSE_VIDEO: 'pause_video',
     

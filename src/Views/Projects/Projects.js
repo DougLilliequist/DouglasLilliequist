@@ -5,12 +5,13 @@ const emitter = eventEmitter.emitter;
 
 import events from '../../../utils/events';
 
+import mediaManager from '../../MediaManager';
 import "../../../styles/projects.scss";
 
 export default class Projects extends View {
   onEnter() {
     super.onEnter();
-    this.container = this.el.querySelector(".main-container");
+    this.referenceElement = this.el.querySelector(".main-container").querySelector('.project');
     this.initEvents();
   }
 
@@ -21,7 +22,7 @@ export default class Projects extends View {
 
   onEnterCompleted() {
     super.onEnterCompleted();
-    emitter.emit(events.INIT_DOMGL, {el: this.container, getFirstQuad: true});
+    emitter.emit(events.INIT_DOMGL, {el: this.referenceElement, media: mediaManager.videos, getFirstQuad: true});
   }
 
   onLeaveCompleted() {

@@ -5,7 +5,6 @@ import Projects from "./Views/Projects/Projects.js";
 import About from "./Views/About/About.js";
 
 import Transition from "./Transitions/Transition.js";
-
 import ViewMediator from './ViewMediator.js';
 
 // import viewMediator from "./ViewMediator";

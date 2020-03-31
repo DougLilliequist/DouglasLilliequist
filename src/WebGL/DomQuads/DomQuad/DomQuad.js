@@ -24,7 +24,8 @@ export default class DomQuad extends Mesh {
   constructor(
     gl,
     camera,
-    domElement, {
+    domElement,
+    media, {
       widthSegments = 1.0,
       heightSegments = 1.0,
       posOffset = 0.0,
@@ -37,19 +38,17 @@ export default class DomQuad extends Mesh {
 
 
     this.phase = phase; //rename later
-    this.initIndex = posOffset;
     this.index = posOffset;
-    this.prevIndex = this.index;
+
+    this.video = media;
 
     this.position.z = -posOffset;
 
     this.resetPosition = false;
 
-    this.prevPosition = this.targetPos = this.position.z; //remove prev position
+    this.targetPos = this.position.z; //remove prev position
 
     this.inScrollMode = false;
-
-    // this.inView = false;
 
     this.geometry = new Plane(gl, {
       width: 1,
@@ -70,15 +69,19 @@ export default class DomQuad extends Mesh {
       camera: camera
     });
 
+    this.initEvents();
+
+  }
+
+  initEvents() {
+
     emitter.on(events.PLAY_VIDEO, this.playVideo);
+
     emitter.on(events.PAUSE_VIDEO, this.pauseVideo);
 
   }
 
   initProgram({el, alphaPhase}) {
-    const elementHasImage = el.children[0] instanceof HTMLImageElement || el.children[0] instanceof HTMLVideoElement;
-
-    this.video = null;
 
     this.texture = new Texture(this.gl, {
       generateMipmaps: false,
@@ -87,18 +90,12 @@ export default class DomQuad extends Mesh {
     });
     let imageAspect;
 
-    if (elementHasImage) {
+    this.video.muted = true;
+    this.video.loop = true;
+    this.video.currentTime = 0.001; //ugly
 
-      if(el.children[0] instanceof HTMLVideoElement) this.video = el.children[0];
-      
-      this.video.muted = true;
-      this.video.loop = true;
-
-
-      imageAspect = this.texture.width / this.texture.height;
-    } else {
-      imageAspect = 1.0;
-    }
+    imageAspect = this.texture.width / this.texture.height;
+    
 
     this.cameraViewplaneSize = new Vec2(1.0, 1.0);
     this.viewportScalePhase = new Vec2(1.0, 1.0);
@@ -151,10 +148,6 @@ export default class DomQuad extends Mesh {
 
     this.inScrollMode = true;
 
-    // if(this.video) {
-    //   this.video.pause();
-    // }
-
     gsap.to(this.program.uniforms._Alpha, {
       value: 0.65,
       duration: 0.5,
@@ -179,10 +172,6 @@ export default class DomQuad extends Mesh {
 
     this.inScrollMode = false;
 
-    // if(this.inView({inViewPosZ: 0 - this.parent.position.z})) {
-    //   this.video.play();
-    // }
-
     gsap.to(this.program.uniforms._Alpha, {
       value: 1.0,
       duration: 0.5,
@@ -204,11 +193,9 @@ export default class DomQuad extends Mesh {
 
   }
 
-  update(force, interacting) {
+  // update(force, interacting) {
+  update({index, force, interacting}) {
 
-    if(this.video !== null) {
-      this.updateVideoTexture();
-    }
 
     if(interacting) {
       this.position.z += force;
@@ -216,15 +203,20 @@ export default class DomQuad extends Mesh {
       this.position.z += (this.targetPos - this.position.z) * 0.05;
     }
 
-    this.reArrangeProjectIndex();
-
+    this.isOutofBounds(index);
     this.position.z = loopNegativeNumber({a: this.position.z, b: -5.0});
+    
+    if(this.video !== null) {
+      this.updateVideoTexture();
+    }
+
 
   }
 
-  inView({inViewPosZ = 0}) {
+  inView({inViewPosZ}) {
 
     if(Math.round(this.position.z) === inViewPosZ) {
+      console.log('in view!')
       return true;
     } else {
       return false;
@@ -245,7 +237,9 @@ export default class DomQuad extends Mesh {
   playVideo = () => {
 
     if(this.video === null) return;
-    if(this.inView({inViewPosZ: 0 - this.parent.position.z})) this.video.play();
+    if(this.parent) {
+      if(this.inView({inViewPosZ: 0 - this.parent.position.z})) this.video.play();
+    }
 
   }
 
@@ -256,21 +250,25 @@ export default class DomQuad extends Mesh {
 
   }
 
-  reArrangeProjectIndex() {
+  isOutofBounds(index) { //change name of function
 
     //array loop logic...
-    if(this.initIndex === 1) {
+    // if(this.initIndex === 1) {
           //store current index;
     if(this.position.z > 0.0) {
-      this.index -= 1.0
+      // this.index -= 1.0
+      emitter.emit(events.REPLACE_QUAD, {index, direction: 1.0});
     } else if(this.position.z < - 5.0) { //magic number 5: max distanc based on quads current 1 unit spacing
-      this.index += 1.0;
+      // this.index += 1.0;
+      emitter.emit(events.REPLACE_QUAD, {index, direction: -1.0});
     }
-      this.index = (((this.index % 10.0) + 10.0) % 10.0); //magic number 10: project amount
-      // console.log(this.index)
+      // this.index = (((this.index % this.projectCount) + this.projectCount) % this.projectCount); //magic number 10: project amount
+      // this.video = this.projects[this.index];
     }
 
-  }
+
+
+  // }
 
   //get camera's current viewplane dimensions as well as the reference dom's scale phase
   //based on the viewport's current size to determine final width and height
