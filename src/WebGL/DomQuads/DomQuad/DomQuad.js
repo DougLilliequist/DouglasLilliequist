@@ -41,7 +41,9 @@ export default class DomQuad extends Mesh {
     
     this.index = posOffset;
 
-    this.video = media;
+    this.videos = media;
+
+    this.video = this.videos[this.index];
 
     this.position.z = -posOffset;
 
@@ -228,6 +230,8 @@ export default class DomQuad extends Mesh {
   //double make sure that video texture is not being updated
   updateVideoTexture() {
 
+      this.video = this.videos[this.index];
+
       if (this.video.readyState >= this.video.HAVE_ENOUGH_DATA) {
         this.texture.image = this.video;
         this.texture.needsUpdate = true;
@@ -257,15 +261,16 @@ export default class DomQuad extends Mesh {
     // if(this.initIndex === 1) {
           //store current index;
     if(this.position.z > 0.0) {
-      // this.index -= 1.0
-      emitter.emit(events.REPLACE_QUAD, {index, direction: 1.0});
+      this.index -= 1.0
+      // emitter.emit(events.REPLACE_QUAD, {index, direction: 1.0});
     } else if(this.position.z < - 5.0) { //magic number 5: max distanc based on quads current 1 unit spacing
-      // this.index += 1.0;
-      emitter.emit(events.REPLACE_QUAD, {index, direction: -1.0});
+      this.index += 1.0;
+      // emitter.emit(events.REPLACE_QUAD, {index, direction: -1.0});
     }
-      // this.index = (((this.index % this.projectCount) + this.projectCount) % this.projectCount); //magic number 10: project amount
-      // this.video = this.projects[this.index];
-    }
+      
+    this.index = (((this.index % this.videos.length) + this.videos.length) % this.videos.length);
+  
+  }
 
 
 

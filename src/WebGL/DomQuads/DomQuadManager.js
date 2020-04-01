@@ -7,6 +7,7 @@ import eventEmitter from '../../EventEmitter.js';
 const emitter = eventEmitter.emitter;
 
 import events from '../../../utils/events';
+import { loopNegativeNumber } from "../../../utils/Math.js";
 
 export default class DomQuadManager {
   constructor(gl, scene, camera) {
@@ -64,7 +65,7 @@ export default class DomQuadManager {
 
     this.referenceElement = referenceElement;
     this.quads = [];
-    this.quadCount = media.length; //temporary for now;
+    this.quadCount = 5; //temporary for now;
 
     let i = 0;
     while (i < this.quadCount) {
@@ -75,7 +76,7 @@ export default class DomQuadManager {
         this.gl,
         this.camera,
         this.referenceElement,
-        media[i], {
+        media, {
           widthSegments: 1.0,
           heightSegments: 1.0,
           posOffset: i,
@@ -200,12 +201,43 @@ export default class DomQuadManager {
 
 
   updateQuadArrangement = ({index, direction}) => {
+
+    // const prevPosition = this.transform.children[index].position.z;
+
+
+    // this.quadIndexOffset += direction;
+    // let desiredIndex = this.quadIndexOffset + this.quads.length;
+    // desiredIndex = (((desiredIndex % this.quads.length) + this.quads.length) % this.quads.length)
+    // this.transform.children[index] = this.quads[desiredIndex];
+    // this.transform.children[index].position.z = prevPosition;
+    // this.transform.children[index].position.z = loopNegativeNumber({a: this.transform.children[index].position.z, b: -5});
+    // this.transform.children[index].position.z = prevPosition;
+    // const previousPositions = this.transform.children.map((quad) => {
+    //   return quad.position.z;
+    // });
+
+    // // this.transform.children.length = 0; //not a good way of doing it.
+
+    // this.quadIndexOffset += direction
+    // for(let i = 0; i < 5; i++) { //hard-hard coded quad amount
+
+    //   const desiredIndex = i + this.quadIndexOffset;
+    //   desiredIndex = (((desiredIndex % this.quads.length) + this.quads.length) % this.quads.length)
+    //   this.transform.children[i] = this.quads[desiredIndex];
+    //   // this.quads[desiredIndex].setParent(this.transform);
+    //   this.transform.children[i].position.z = previousPositions[i];
+    //   this.transform.children[i].position.z = loopNegativeNumber({a: this.transform.children[i].position.z, b: -5});
+
+    // }
+    // let desiredIndex = this.quadIndexOffset + this.transform.children.length;
+    // desiredIndex = (((desiredIndex % this.quads.length) + this.quads.length) % this.quads.length);
+    // this.quads[desiredIndex].setParent(this.transform);
     
-    this.transform.removeChild(this.transform.children[index]);
-    this.quadIndexOffset += direction
-    let desiredIndex = this.quadIndexOffset + this.transform.children.length;
-    desiredIndex = (((desiredIndex % this.quads.length) + this.quads.length) % this.quads.length);
-    this.quads[desiredIndex].setParent(this.transform);
+    // this.transform.removeChild(this.transform.children[index]);
+    // this.quadIndexOffset += direction
+    // let desiredIndex = this.quadIndexOffset + this.transform.children.length;
+    // desiredIndex = (((desiredIndex % this.quads.length) + this.quads.length) % this.quads.length);
+    // this.quads[desiredIndex].setParent(this.transform);
 
   }
 

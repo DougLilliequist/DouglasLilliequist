@@ -10,7 +10,9 @@ class MediaManager {
             "https://s3.eu-west-3.amazonaws.com/douglaslilliequist/intrnshpproj.mp4",
             "https://s3.eu-west-3.amazonaws.com/douglaslilliequist/needahand.mp4",
             "https://s3.eu-west-3.amazonaws.com/douglaslilliequist/gdnghtswthrtweb.mp4",
-            "https://s3.eu-west-3.amazonaws.com/douglaslilliequist/wormhole.mp4"
+            "https://s3.eu-west-3.amazonaws.com/douglaslilliequist/wormhole.mp4",
+            'https://s3.eu-west-3.amazonaws.com/douglaslilliequist/doli.mp4',
+            
 
         ]
 
@@ -21,6 +23,10 @@ class MediaManager {
             const video = document.createElement('video');
             video.src = this.sources[i];
             video.crossOrigin = "*";
+            video.muted = true;
+            video.loop = true;
+            video.currentTime = 0.0001;
+            // video.play();
             video.onloadeddata = () => {
                 console.log('loaded and ready');
             }
