@@ -5,4 +5,109 @@ body {
     top: 0;
     left: 0;
     margin: 0;
+    overflow: hidden;
 }
+
+.canvas-container {
+
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: fixed;
+    z-index: -1;
+    margin: 0;
+
+}
+
+.navigation {
+
+    position: absolute;
+    right: 3%;
+    top: 50%;
+    transform: translate(0.0%, -50%);
+    writing-mode: vertical-lr;
+
+    // &__links {
+        
+    //     list-style: none;
+    //     display: flex;
+    //     justify-content: space-around;
+        
+    //     a {
+    //         text-decoration: none;
+    //         color: black;
+    //         display: inline-block;
+    //         margin-top: 1em;
+    //         margin-bottom: 1em;
+    //         position: relative;
+
+    //         &::before {
+
+    //             position: absolute;
+    //             width: 2px;
+    //             left: -20%;
+    //             height: 100%;
+    //             background-color: black;
+    //             content: '';
+    //             transform: scaleY(0);
+    //             transform-origin: bottom left;
+    //             transition: transform .2s;
+    
+    //         }
+
+    //     }
+    //     a:hover {
+
+    //         &::before {
+    //             transform: scaleY(1);
+    //             transform-origin: top left;
+    //             transition: transform .5s;
+    //         }
+
+    //     }
+
+    // }
+
+    &__links {
+        
+        list-style: none;
+        display: flex;
+        justify-content: space-around;
+        
+        a {
+            text-decoration: none;
+            color:#000000;
+            display: inline-block;
+            margin-top: 1em;
+            margin-bottom: 1em;
+            position: relative;
+
+            &::before {
+
+                position: absolute;
+                width: 2px;
+                left: -20%;
+                height: 100%;
+                background-color: black;
+                content: '';
+                transform: scaleY(0);
+                transform-origin: bottom left;
+                transition: transform .2s;
+    
+            }
+
+        }
+        a:hover {
+
+            &::before {
+                transform: scaleY(1);
+                transform-origin: top left;
+                transition: transform .5s;
+            }
+
+        }
+
+    }
+
+}   

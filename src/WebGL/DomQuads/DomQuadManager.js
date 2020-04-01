@@ -1,20 +1,21 @@
 import DomQuad from "./DomQuad/DomQuad.js";
+import {
+  Transform
+} from "../../../vendors/ogl/src/core/Transform.js";
 
-/**
- * TODO: Provide a shader program as argument so
- * the appropriate shader is applied to the created quads
- * 
- * Aspect ratio correction is a bit unclear right now.
- * Currently doing educted guess on which side(s) to use
- * for determining correction
- * 
- */
+import eventEmitter from '../../EventEmitter.js';
+const emitter = eventEmitter.emitter;
+
+import events from '../../../utils/events';
+import { loopNegativeNumber } from "../../../utils/Math.js";
 
 export default class DomQuadManager {
+  constructor(gl, scene, camera) {
+    this.init(gl, scene, camera);
+  }
 
-  constructor(scene, camera) {
-
-    this.quads = [];
+  init(gl, scene, camera) {
+    this.gl = gl;
 
     this.scene = scene;
 
@@ -22,51 +23,116 @@ export default class DomQuadManager {
 
     this.quadsLoaded = false;
 
+    this.transform = new Transform();
+    
+    this.transform.position.z = 1.0;
+
+    this.transform.setParent(this.scene);
+
+    this.initEvents();
+  }
+
+  initEvents() {
+
+    emitter.on(events.INIT_DOMGL, (data) => {
+      this.initQuads({referenceElement: data.el, media: data.media, getQuad: data.getFirstQuad});
+    });
+
+    emitter.on(events.REMOVE_DOMGL, this.disposeActiveQuads);
+
+    emitter.on(events.ENTER_SCROLL_MODE, this.enterScrollMode);
+    emitter.on(events.EXIT_SCROLL_MODE, this.exitScrollMode);
+
   }
 
   //applies appropriate sizes and positions based on reference dom elements
   //bounding rects
-  init(gl, {
-    domElements
-  }) {
+  initQuads({referenceElement, media, getQuad}) {
 
-    if (domElements === null || domElements.length === 0) {
-      console.error('reference dom elements not available')
+    if (referenceElement === null) {
+      console.error("reference dom elements not available");
       return;
     }
 
-    this.referenceElements = domElements;
+    this.referenceElement = referenceElement;
+    this.quads = [];
+    this.quadCount = 5;
 
     let i = 0;
-    while (i < this.referenceElements.length) {
-      this.quads[i] = new DomQuad(gl, this.camera, this.referenceElements[i], {
-        widthSegments: 32.0,
-        heightSegments: 32.0
-      });
+    while (i < this.quadCount) {
 
-      this.quads[i].setParent(this.scene);
-      this.quads[i].calcDomToWebGLPos({
-        domElement: this.referenceElements[i],
+      let phase = i / (this.quadCount - 1.0)
+
+      const quad = new DomQuad(
+        this.gl,
+        this.camera,
+        this.referenceElement,
+        media, {
+          widthSegments: 1.0,
+          heightSegments: 1.0,
+          posOffset: i, //rename or make new prop for index?
+          phase: phase
+        }
+      );
+
+      quad.calcDomToWebGLPos({
+        domElement: this.referenceElement,
         camera: this.camera
       });
 
+      quad.playVideo();
+
+      this.quads[i] = quad;
+      this.quads[i].setParent(this.transform);
       i++;
     }
 
     this.quadsLoaded = true;
 
+    if(getQuad) {
+      const quad = this.getQuadInView();
+      quad.playVideo();
+    }
+
   }
 
-  update(dt) {
+  enterScrollMode = () => {
 
-    if (this.quadsLoaded === true && this.quads.length > 0) {
+    emitter.emit(events.PAUSE_VIDEO);
+    this.transform.children.map((quad) => {
+      quad.applyScrollMode();
+    })
 
-      for (let i = 0; i < this.referenceElements.length; i++) {
+  }
 
-        const quad = this.quads[i];
+  exitScrollMode = () => {
 
-        //update uniforms
-        quad.program.uniforms._Time.value += dt;
+    emitter.emit(events.PLAY_VIDEO);
+    this.transform.children.map((quad) => {
+      quad.removeScrollMode();
+    })
+    
+  }
+
+  update(dt, force, interacting) {
+
+    if(this.quadsLoaded) {
+
+      if (this.transform.children.length > 0) {
+        for (let i = 0; i < this.transform.children.length; i++) {
+
+          let quad = this.transform.children[i];
+
+          quad.calcDomToWebGLPos({
+            domElement: this.referenceElement,
+            camera: this.camera
+          });
+          
+          quad.update({index: i, force, interacting});
+          quad.program.uniforms._InputForce.value = Math.min(1.0, Math.abs(force * 1.0));
+          quad.program.uniforms._Time.value += dt;
+          
+        }
 
       }
 
@@ -74,51 +140,62 @@ export default class DomQuadManager {
 
   }
 
-  //update sizes of quads based on reference dom elements
   updateQuadDimensions() {
 
-    this.referenceElements.forEach((el, i) => {
-      const quad = this.quads[i];
-      quad.updateDimensions({
-        domElement: el,
+    this.transform.children.map((quad, i) => {
+      this.transform.children[i].updateDimensions({
+        domElement: this.referenceElement,
         camera: this.camera
       });
+    })
 
-    });
+}
+
+  //get the quad whose position equals to the camera's position along Z
+  //and offsetted by the parents transform. That way I'll get the quad
+  //that is in view of the camera (or simply in front)
+  getQuadInView() {
+
+    if(this.quadsLoaded) {
+      
+      let quadInView;
+
+      this.transform.children.map((quad) => {  
+        if(quad.inView({inViewPosZ: 0 - this.transform.position.z})) {
+          quadInView = quad;
+          emitter.emit(events.LOAD_PROJECT_CONTENT, quadInView.name);
+        }
+      });
+
+      return quadInView;
+      
+    }
 
   }
 
-  // update position of quads based on reference dom elements position
-  updateQuadPositions() {
-
-    this.referenceElements.forEach((el, i) => {
-      const quad = this.quads[i];
-      quad.calcDomToWebGLPos({
-        domElement: el,
-        camera: this.camera
-      });
-
-    })
-
+  captureLastPosition() {
+    if(this.quadsLoaded) {
+          this.transform.children.map((quad) => {
+            quad.targetPos = Math.round(quad.position.z);
+          })
+      }
   }
 
   //removes geometry and shader data from all active quads
   //as well as the mesh itself
-  disposeActiveQuads() {
+  disposeActiveQuads = () => {
 
-    this.quads.map((quad, i) => {
+    this.quads.map((quad) => {
 
+      this.transform.removeChild(quad);
       quad.geometry.remove();
       quad.program.remove();
       quad.texture = null;
-      this.scene.removeChild(quad);
       quad = null;
-      this.quads.splice(i, 1);
+      
+    })
 
-    });
-
+    this.quads.length = 0;
     this.quadsLoaded = false;
-
   }
-
 }

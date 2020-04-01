@@ -1,123 +1,204 @@
 import {
-    Transform
+  Transform
 } from "../../vendors/ogl/src/core/Transform";
 import {
-    Renderer
+  Renderer
 } from "../../vendors/ogl/src/core/Renderer";
 import {
-    Camera
+  Camera
 } from "../../vendors/ogl/src/core/Camera";
 
-import TestShape from './TestShape/TestShape.js';
+import {
+  Vec2
+} from "../../vendors/ogl/src/math/Vec2";
 
 import DomQuadManager from "./DomQuads/DomQuadManager.js";
 
+import eventEmitter from '../EventEmitter';
+const emitter = eventEmitter.emitter;
+import events from '../../utils/events';
+
+const Stats = require('stats-js'); 
+
+import * as dat from 'dat.gui';
+
+// window.gui = new dat.GUI({});
+
 export default class WebGLContext {
-    constructor(container) {
-        this.initScene(container);
-        this.initEvents();
-        this.start();
+  constructor(container) {
+    this.initScene(container);
+    this.initEvents();
+    this.start();
+  }
+
+  initScene(container) {
+    this.renderer = new Renderer({
+      width: window.innerWidth,
+      height: window.innerHeight,
+      antialias: true,
+      dpr: 1.5
+    });
+    this.gl = this.renderer.gl;
+    this.gl.clearColor(0.97, 0.97, 0.97, 1.0);
+    // container.appendChild(this.gl.canvas);
+    document.body.appendChild(this.gl.canvas);
+
+    this.camera = new Camera(this.gl, {
+      fov: 35,
+      aspect: window.innerWidth / window.innerHeight,
+      near: 0.1,
+      far: 50.0
+    });
+
+    this.camera.position.set(0.0, 0.0, 1.0);
+
+    this.currentTime = 0;
+    this.prevtime = 0;
+    this.deltaTime = 1;
+
+    this.scene = new Transform();
+
+    this.domQuadsManager = new DomQuadManager(this.gl, this.scene, this.camera);
+
+    this.stats = new Stats();
+    document.body.appendChild(this.stats.dom);
+
+  }
+
+  initQuads(domElements) {
+    this.domQuadsManager.init(this.gl, {
+      domElements: domElements
+    });
+  }
+
+  initEvents() {
+
+    emitter.on(events.MOUSE_DOWN, this.onMouseDown);
+    emitter.on(events.MOUSE_MOVE, this.onMouseMove);
+    emitter.on(events.MOUSE_UP, this.onMouseUp);
+
+    // window.addEventListener('wheel', this.onScroll);
+    // this.scrollForce = 0;
+
+    this.isInteracting = false;
+    this.inputPos = new Vec2(0.0, 0.0);
+    this.prevInputPos = new Vec2(0.0, 0.0);
+    this.inputForce = new Vec2(0.0, 0.0);
+
+    emitter.on(events.RESIZE, this.onResize);
+    this.isResizing = false;
+
+  }
+
+  onMouseDown = (e) => {
+
+    this.isInteracting = true;
+    this.prevInputPos.copy(this.inputPos);
+    this.inputPos.x = 2.0 * (e.x / window.innerWidth) - 1.0;
+    this.inputPos.y = -1 * (2.0 * (e.y / window.innerHeight) - 1.0);
+    emitter.emit(events.ENTER_SCROLL_MODE);
+
+  }
+
+  onMouseMove = (e) => {
+
+        this.inputPos.x = 2.0 * (e.x / window.innerWidth) - 1.0;
+        this.inputPos.y = -1 * (2.0 * (e.y / window.innerHeight) - 1.0);
+
+  }
+
+  onMouseUp = () => {
+
+    this.isInteracting = false;
+    this.firstMove = false;
+    this.domQuadsManager.captureLastPosition();
+    const quad = this.domQuadsManager.getQuadInView();
+    emitter.emit(events.EXIT_SCROLL_MODE);
+
+  }
+
+  onScroll = (e) => {
+
+    if(this.updateInteractionState) {
+      clearTimeout(this.updateInteractionState);
     }
 
-    initScene(container) {
-        this.renderer = new Renderer({
-            width: window.innerWidth,
-            height: window.innerHeight,
-            antialias: true,
-            dpr: 1.5
-        });
-        this.gl = this.renderer.gl;
-        this.gl.clearColor(1.0, 1.0, 1.0, 1.0);
-        container.appendChild(this.gl.canvas);
+    if(this.isInteracting === false) 
+    this.isInteracting = true;  
+    this.scrollForce += e.deltaY * 0.01;
 
-        this.camera = new Camera(this.gl, {
-            fov: 35,
-            aspect: window.innerWidth / window.innerHeight,
-            near: 0.1,
-            far: 1000.0
-        });
+    this.updateInteractionState = setTimeout(() => {
+      this.isInteracting = false;
+      this.domQuadsManager.captureLastPosition();
+    }, 1000.0)
 
-        this.camera.position.set(0.0, 0.0, 1.0);
+  }
 
-        this.currentTime = 0;
-        this.prevtime = 0;
-        this.deltaTime = 1;
+  updateInputForce() {
 
-        this.scene = new Transform();
+    this.inputDir = new Vec2().sub(this.inputPos, this.prevInputPos);
+    this.inputForce.y = this.inputDir.y * 10.0;
+    // this.inputForce.y = this.inputDir.y;
+  }
 
-        this.testShape = new TestShape(this.gl);
-        this.testShape.setParent(this.scene);
+  start() {
+    this.update();
+  }
 
-        this.testShape.position.z = -10.0;
+  render() {
+    this.renderer.render({
+      scene: this.scene,
+      camera: this.camera
+    });
+  }
 
-        this.domQuadsManager = new DomQuadManager(this.scene, this.camera);
+  update() {
+    window.requestAnimationFrame(() => this.update());
+    this.stats.begin();
+    this.currentTime = performance.now();
+    this.deltaTime = (this.currentTime - this.prevtime) / 1000.0;
+    
+    if(this.isInteracting) {
+      this.updateInputForce();
+    }
+    
+    this.updateScrollingAnim();
 
+    this.render();
+    
+    this.prevInputPos.copy(this.inputPos);
+
+    this.prevtime = this.currentTime;
+
+    this.stats.end();
+
+  }
+
+  updateScrollingAnim() {
+
+
+    this.scrollForce *= 0.99;
+    this.domQuadsManager.update(this.deltaTime, this.inputForce.y, this.isInteracting);
+
+  }
+
+  onResize = () => {
+
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+
+    if (this.updateDimensions) {
+      clearTimeout(this.updateDimensions);
     }
 
-    //TODO: set up the class for fetching relevant DOM bounding rect and check
-    //if element has image attached, if so: load image and set it as uniform for quad
+    this.renderer.setSize(w, h);
+    const aspectRatio = w / h;
+    this.camera.perspective({
+      aspect: aspectRatio
+    });
 
-    initQuads(domElements) {
-
-        this.domQuadsManager.init(this.gl, {
-            domElements: domElements
-        });
-
-    }
-
-    initEvents() {
-        window.addEventListener("resize", this.onResize.bind(this), {
-            passive: true
-        });
-
-        this.prevScrollPos = 0;
-        this.currentScrollPos = 0;
-        this.scrollPhase = 0.0;
-        this.isScrolling = false;
-        this.isResizing = false;
-
-    }
-
-    start() {
-        this.update();
-    }
-
-    render() {
-        this.renderer.render({
-            scene: this.scene,
-            camera: this.camera
-        });
-    }
-
-    update() {
-        window.requestAnimationFrame(() => this.update());
-        this.currentTime = performance.now();
-        this.deltaTime = (this.currentTime - this.prevtime) / 1000.0;
-
-        this.render();
-
-        this.prevtime = this.currentTime;
-    }
-
-    onResize() {
-
-        const w = window.innerWidth;
-        const h = window.innerHeight;
-
-        if (this.updateDimensions) {
-            clearTimeout(this.updateDimensions);
-        }
-
-        this.renderer.setSize(w, h);
-        const aspectRatio = w / h;
-        this.camera.perspective({
-            aspect: aspectRatio
-        });
-
-        this.updateDimensions = setTimeout(() => {
-            // this.domQuadsManager.updateQuadDimensions();
-        }, 60)
-
-    };
-
+    this.updateDimensions = setTimeout(() => {
+      this.domQuadsManager.updateQuadDimensions();
+    }, 60);
+  }
 }
