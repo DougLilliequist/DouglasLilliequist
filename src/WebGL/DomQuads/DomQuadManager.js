@@ -21,19 +21,13 @@ export default class DomQuadManager {
 
     this.camera = camera;
 
-    this.referenceElements = [];
-
     this.quadsLoaded = false;
-
-    this.inScrollMode = false;
 
     this.transform = new Transform();
     
     this.transform.position.z = 1.0;
 
     this.transform.setParent(this.scene);
-
-    this.quadIndexOffset = 0;
 
     this.initEvents();
   }
@@ -46,8 +40,6 @@ export default class DomQuadManager {
 
     emitter.on(events.REMOVE_DOMGL, this.disposeActiveQuads);
 
-    emitter.on(events.REPLACE_QUAD, this.updateQuadArrangement);
-
     emitter.on(events.ENTER_SCROLL_MODE, this.enterScrollMode);
     emitter.on(events.EXIT_SCROLL_MODE, this.exitScrollMode);
 
@@ -55,7 +47,6 @@ export default class DomQuadManager {
 
   //applies appropriate sizes and positions based on reference dom elements
   //bounding rects
-  // initQuads({referenceElement, getQuad}) {
   initQuads({referenceElement, media, getQuad}) {
 
     if (referenceElement === null) {
@@ -65,7 +56,7 @@ export default class DomQuadManager {
 
     this.referenceElement = referenceElement;
     this.quads = [];
-    this.quadCount = 5; //temporary for now;
+    this.quadCount = 5;
 
     let i = 0;
     while (i < this.quadCount) {
@@ -79,7 +70,7 @@ export default class DomQuadManager {
         media, {
           widthSegments: 1.0,
           heightSegments: 1.0,
-          posOffset: i,
+          posOffset: i, //rename or make new prop for index?
           phase: phase
         }
       );
@@ -92,14 +83,6 @@ export default class DomQuadManager {
       quad.playVideo();
 
       this.quads[i] = quad;
-
-      i++;
-    }
-
-    //make variable for visible amount
-    const visibleQuadCount = 5.0;
-    i = 0;
-    while(i < visibleQuadCount) {
       this.quads[i].setParent(this.transform);
       i++;
     }
@@ -107,14 +90,14 @@ export default class DomQuadManager {
     this.quadsLoaded = true;
 
     if(getQuad) {
-      this.getQuadInView();
+      const quad = this.getQuadInView();
+      quad.playVideo();
     }
 
   }
 
   enterScrollMode = () => {
 
-    this.inScrollMode = true;
     emitter.emit(events.PAUSE_VIDEO);
     this.transform.children.map((quad) => {
       quad.applyScrollMode();
@@ -124,7 +107,6 @@ export default class DomQuadManager {
 
   exitScrollMode = () => {
 
-    this.inScrollMode = false;
     emitter.emit(events.PLAY_VIDEO);
     this.transform.children.map((quad) => {
       quad.removeScrollMode();
@@ -146,7 +128,6 @@ export default class DomQuadManager {
             camera: this.camera
           });
           
-          // quad.update(i, force, interacting);
           quad.update({index: i, force, interacting});
           quad.program.uniforms._InputForce.value = Math.min(1.0, Math.abs(force * 1.0));
           quad.program.uniforms._Time.value += dt;
@@ -177,15 +158,16 @@ export default class DomQuadManager {
 
     if(this.quadsLoaded) {
       
+      let quadInView;
+
       this.transform.children.map((quad) => {  
         if(quad.inView({inViewPosZ: 0 - this.transform.position.z})) {
-          emitter.emit(events.LOAD_PROJECT_CONTENT, quad.name)
-          return quad;
-        } else {
-          return;
+          quadInView = quad;
+          emitter.emit(events.LOAD_PROJECT_CONTENT, quadInView.name);
         }
-  
       });
+
+      return quadInView;
       
     }
 
@@ -199,63 +181,20 @@ export default class DomQuadManager {
       }
   }
 
-
-  updateQuadArrangement = ({index, direction}) => {
-
-    // const prevPosition = this.transform.children[index].position.z;
-
-
-    // this.quadIndexOffset += direction;
-    // let desiredIndex = this.quadIndexOffset + this.quads.length;
-    // desiredIndex = (((desiredIndex % this.quads.length) + this.quads.length) % this.quads.length)
-    // this.transform.children[index] = this.quads[desiredIndex];
-    // this.transform.children[index].position.z = prevPosition;
-    // this.transform.children[index].position.z = loopNegativeNumber({a: this.transform.children[index].position.z, b: -5});
-    // this.transform.children[index].position.z = prevPosition;
-    // const previousPositions = this.transform.children.map((quad) => {
-    //   return quad.position.z;
-    // });
-
-    // // this.transform.children.length = 0; //not a good way of doing it.
-
-    // this.quadIndexOffset += direction
-    // for(let i = 0; i < 5; i++) { //hard-hard coded quad amount
-
-    //   const desiredIndex = i + this.quadIndexOffset;
-    //   desiredIndex = (((desiredIndex % this.quads.length) + this.quads.length) % this.quads.length)
-    //   this.transform.children[i] = this.quads[desiredIndex];
-    //   // this.quads[desiredIndex].setParent(this.transform);
-    //   this.transform.children[i].position.z = previousPositions[i];
-    //   this.transform.children[i].position.z = loopNegativeNumber({a: this.transform.children[i].position.z, b: -5});
-
-    // }
-    // let desiredIndex = this.quadIndexOffset + this.transform.children.length;
-    // desiredIndex = (((desiredIndex % this.quads.length) + this.quads.length) % this.quads.length);
-    // this.quads[desiredIndex].setParent(this.transform);
-    
-    // this.transform.removeChild(this.transform.children[index]);
-    // this.quadIndexOffset += direction
-    // let desiredIndex = this.quadIndexOffset + this.transform.children.length;
-    // desiredIndex = (((desiredIndex % this.quads.length) + this.quads.length) % this.quads.length);
-    // this.quads[desiredIndex].setParent(this.transform);
-
-  }
-
   //removes geometry and shader data from all active quads
   //as well as the mesh itself
   disposeActiveQuads = () => {
 
-    // this.transform.children.map((child) => {
-    //   this.transform.removeChild(child);
-    // })
+    this.quads.map((quad) => {
 
-    for(let i = 0; i < this.quads.length; i++) {
-      const quad = this.quads[i];
+      this.transform.removeChild(quad);
       quad.geometry.remove();
       quad.program.remove();
       quad.texture = null;
       quad = null;
-    }
+      
+    })
+
     this.quads.length = 0;
     this.quadsLoaded = false;
   }

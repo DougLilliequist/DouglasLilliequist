@@ -93,13 +93,8 @@ export default class DomQuad extends Mesh {
     });
     let imageAspect;
 
-    this.video.muted = true;
-    this.video.loop = true;
-    this.video.currentTime = 0.001; //ugly
-
     imageAspect = this.texture.width / this.texture.height;
     
-
     this.cameraViewplaneSize = new Vec2(1.0, 1.0);
     this.viewportScalePhase = new Vec2(1.0, 1.0);
 
@@ -219,7 +214,6 @@ export default class DomQuad extends Mesh {
   inView({inViewPosZ}) {
 
     if(Math.round(this.position.z) === inViewPosZ) {
-      console.log('in view!')
       return true;
     } else {
       return false;

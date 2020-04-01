@@ -6,7 +6,6 @@ const emitter = eventEmitter.emitter;
 import events from '../../../utils/events';
 
 import mediaManager from '../../MediaManager';
-import "../../../styles/projects.scss";
 
 export default class Projects extends View {
   onEnter() {

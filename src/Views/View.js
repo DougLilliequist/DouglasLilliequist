@@ -1,5 +1,7 @@
 import Highway from "@dogstudio/highway";
 
+// import "../../../styles/projects.scss";
+
 export default class View extends Highway.Renderer {
     onEnter() {
         this.el = this.wrap.lastElementChild;
