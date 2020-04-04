@@ -29,6 +29,8 @@ export default class DomQuadManager {
 
     this.transform.setParent(this.scene);
 
+    this.scrollPhase = 0.0;
+
     this.initEvents();
   }
 
@@ -55,6 +57,7 @@ export default class DomQuadManager {
     }
 
     this.referenceElement = referenceElement;
+    this.media = media;
     this.quads = [];
     this.quadCount = 5;
 
@@ -67,7 +70,7 @@ export default class DomQuadManager {
         this.gl,
         this.camera,
         this.referenceElement,
-        media, {
+        this.media, {
           widthSegments: 1.0,
           heightSegments: 1.0,
           posOffset: i, //rename or make new prop for index?
@@ -118,7 +121,6 @@ export default class DomQuadManager {
 
     if(this.quadsLoaded) {
 
-      if (this.transform.children.length > 0) {
         for (let i = 0; i < this.transform.children.length; i++) {
 
           let quad = this.transform.children[i];
@@ -133,8 +135,6 @@ export default class DomQuadManager {
           quad.program.uniforms._Time.value += dt;
           
         }
-
-      }
 
     }
 

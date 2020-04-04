@@ -5,8 +5,8 @@ class EventEmitter {
 
     constructor() {
 
-        this.initEvents();
         this.emitter = new Emitter();
+        this.initEvents();
 
     }
 
@@ -16,6 +16,7 @@ class EventEmitter {
         window.addEventListener('mousemove', this.onMouseMove);
         window.addEventListener('mouseup', this.onMouseUp);
         window.addEventListener('resize', this.onResize);
+        this.tick();
 
     }
 
@@ -34,6 +35,13 @@ class EventEmitter {
     onMouseUp = () => {
 
         this.emitter.emit(events.MOUSE_UP, false);
+
+    }
+
+    tick = () => {
+
+        window.requestAnimationFrame(() => this.tick());
+        this.emitter.emit(events.UPDATE)
 
     }
 

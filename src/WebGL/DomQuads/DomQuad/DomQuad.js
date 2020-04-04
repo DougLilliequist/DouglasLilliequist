@@ -39,7 +39,9 @@ export default class DomQuad extends Mesh {
 
     this.phase = phase; //rename later
     
-    this.index = posOffset;
+    this.initIndex = this.index = posOffset;
+
+    this.indexOffset = 0.0;
 
     this.videos = media;
 
@@ -249,17 +251,15 @@ export default class DomQuad extends Mesh {
 
   }
 
-  isOutofBounds(index) { //change name of function
+  //I have no idea how it makes sense, but after some pen & paper coding I noticed
+  //that applying the delta between the video count and the quad count gives me the desired index?
+  isOutofBounds() { //change name of function
 
-    //array loop logic...
-    // if(this.initIndex === 1) {
-          //store current index;
     if(this.position.z > 0.0) {
-      this.index -= 1.0
-      // emitter.emit(events.REPLACE_QUAD, {index, direction: 1.0});
+      this.index += this.parent.children.length;
+
     } else if(this.position.z < - 5.0) { //magic number 5: max distanc based on quads current 1 unit spacing
-      this.index += 1.0;
-      // emitter.emit(events.REPLACE_QUAD, {index, direction: -1.0});
+      this.index -= this.parent.children.length;
     }
       
     this.index = (((this.index % this.videos.length) + this.videos.length) % this.videos.length);

@@ -28,7 +28,7 @@ export default class WebGLContext {
   constructor(container) {
     this.initScene(container);
     this.initEvents();
-    this.start();
+    // this.start();
   }
 
   initScene(container) {
@@ -40,7 +40,7 @@ export default class WebGLContext {
     });
     this.gl = this.renderer.gl;
     this.gl.clearColor(0.97, 0.97, 0.97, 1.0);
-    // container.appendChild(this.gl.canvas);
+
     document.body.appendChild(this.gl.canvas);
 
     this.camera = new Camera(this.gl, {
@@ -76,6 +76,7 @@ export default class WebGLContext {
     emitter.on(events.MOUSE_DOWN, this.onMouseDown);
     emitter.on(events.MOUSE_MOVE, this.onMouseMove);
     emitter.on(events.MOUSE_UP, this.onMouseUp);
+    emitter.on(events.UPDATE, this.update);
 
     // window.addEventListener('wheel', this.onScroll);
     // this.scrollForce = 0;
@@ -84,6 +85,7 @@ export default class WebGLContext {
     this.inputPos = new Vec2(0.0, 0.0);
     this.prevInputPos = new Vec2(0.0, 0.0);
     this.inputForce = new Vec2(0.0, 0.0);
+    this.inputForceInertia = 0.93;
 
     emitter.on(events.RESIZE, this.onResize);
     this.isResizing = false;
@@ -137,8 +139,8 @@ export default class WebGLContext {
   updateInputForce() {
 
     this.inputDir = new Vec2().sub(this.inputPos, this.prevInputPos);
-    this.inputForce.y = this.inputDir.y * 10.0;
-    // this.inputForce.y = this.inputDir.y;
+    this.inputForce.y += this.inputDir.y * 0.01 / this.deltaTime;
+
   }
 
   start() {
@@ -152,8 +154,7 @@ export default class WebGLContext {
     });
   }
 
-  update() {
-    window.requestAnimationFrame(() => this.update());
+  update = () => {
     this.stats.begin();
     this.currentTime = performance.now();
     this.deltaTime = (this.currentTime - this.prevtime) / 1000.0;
@@ -176,8 +177,7 @@ export default class WebGLContext {
 
   updateScrollingAnim() {
 
-
-    this.scrollForce *= 0.99;
+    this.inputForce.y *= this.inputForceInertia;
     this.domQuadsManager.update(this.deltaTime, this.inputForce.y, this.isInteracting);
 
   }

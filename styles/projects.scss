@@ -1,9 +1,43 @@
+.project-container {
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80vw;
+    height: 100vh;
+
+    &__title {
+        
+        font-family: Arial, Helvetica, sans-serif;
+        position: absolute;
+        top: 27.5%;
+        left: 24%;
+        margin: 0;
+        font-size: 27px;
+        writing-mode: vertical-lr;
+        transform: scale(-1);
+        letter-spacing: 0.1em;
+    }
+
+    &__content-container {
+        font-family: Arial, Helvetica, sans-serif;
+        position: absolute;
+        top: 27.5%;
+        right: 18%;
+        margin: 0;
+    }
+
+}
+
 .project {
 
     // width: 45vw;
     // height: 50vh;
-    width: 35vw;
-    height: 45vh;
+    // width: 35vw;
+    // height: 45vh;
+    width: 45%;
+    height: 50%;
     position: absolute;
     top: 50%;
     left: 50%;
