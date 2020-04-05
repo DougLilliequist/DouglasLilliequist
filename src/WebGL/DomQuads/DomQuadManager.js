@@ -163,7 +163,7 @@ export default class DomQuadManager {
       this.transform.children.map((quad) => {  
         if(quad.inView({inViewPosZ: 0 - this.transform.position.z})) {
           quadInView = quad;
-          emitter.emit(events.LOAD_PROJECT_CONTENT, quadInView.name);
+          emitter.emit(events.LOAD_PROJECT_CONTENT, quadInView.index);
         }
       });
 

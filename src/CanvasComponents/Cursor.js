@@ -60,7 +60,7 @@ export default class Cursor {
         
         this.inScrollMode = false;
 
-        this.defaultRadius = 10.0;
+        this.defaultRadius = 15.0;
 
         this.scrollModeRadius = 20.0;
 
@@ -103,6 +103,8 @@ export default class Cursor {
         emitter.on(events.MOUSE_DOWN, this.onMouseDown);
         emitter.on(events.MOUSE_MOVE, this.onMouseMove);
         emitter.on(events.MOUSE_UP, this.onMouseUp);
+        emitter.on(events.HOVERING_LINK, this.animteHoverMode)
+        emitter.on(events.LEAVING_LINK, this.restore)
         emitter.on(events.UPDATE, this.update);
         emitter.on(events.RESIZE, this.onResize);
 
@@ -151,7 +153,7 @@ export default class Cursor {
 
     }
 
-    restore() {
+    restore = () => {
 
         gsap.to(this, {
             duration: 0.2,
@@ -166,6 +168,15 @@ export default class Cursor {
                 this.inScrollMode = false;
             }
         })
+
+    }
+
+    animteHoverMode = (r) => {
+
+        gsap.to(this, {
+            duration: 0.2,
+            radius: r,
+        });
 
     }
 

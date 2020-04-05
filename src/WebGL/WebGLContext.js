@@ -61,7 +61,7 @@ export default class WebGLContext {
     this.domQuadsManager = new DomQuadManager(this.gl, this.scene, this.camera);
 
     this.stats = new Stats();
-    document.body.appendChild(this.stats.dom);
+    // document.body.appendChild(this.stats.dom);
 
   }
 
@@ -98,7 +98,7 @@ export default class WebGLContext {
     this.prevInputPos.copy(this.inputPos);
     this.inputPos.x = 2.0 * (e.x / window.innerWidth) - 1.0;
     this.inputPos.y = -1 * (2.0 * (e.y / window.innerHeight) - 1.0);
-    emitter.emit(events.ENTER_SCROLL_MODE);
+    // emitter.emit(events.ENTER_SCROLL_MODE);
 
   }
 
@@ -115,7 +115,7 @@ export default class WebGLContext {
     this.firstMove = false;
     this.domQuadsManager.captureLastPosition();
     const quad = this.domQuadsManager.getQuadInView();
-    emitter.emit(events.EXIT_SCROLL_MODE);
+    // emitter.emit(events.EXIT_SCROLL_MODE);
 
   }
 

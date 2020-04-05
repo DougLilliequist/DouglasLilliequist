@@ -18,6 +18,9 @@ const events = {
     UPDATE: 'update',
     UPDATE_SCROLL_PHASE: 'update_scroll_phase',
 
+    HOVERING_LINK: 'hovering_link',
+    LEAVING_LINK: 'leaving_link',
+    
     REPLACE_QUAD: 'replace_quad',
 
     PLAY_VIDEO: 'play_video',
