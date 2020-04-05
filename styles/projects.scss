@@ -10,6 +10,7 @@
     padding: 0;
     display: inline-flex;
     justify-content: center;
+    z-index: 1;
 
     &__title-container {
 
@@ -18,20 +19,32 @@
         height: 100%;
         width: 20%;
 
-        &__title {
-        
-            font-family: Arial, Helvetica, sans-serif;
+        &__clip-reveal {
+
             position: absolute;
-            margin: 0;
-            font-size: 27px;
-            writing-mode: vertical-rl;
-            transform: scale(-1);
-            letter-spacing: 0.1em;
-            right: 15%;
+            display: inline-block;
+            right: 20%;
+            height: 100%;
+            overflow: hidden;
+
+            &__title {
+        
+                font-family: Arial, Helvetica, sans-serif;
+                position: relative;
+                margin: 0;
+                font-size: 27px;
+                writing-mode: vertical-rl;
+                transform: scale(-1);
+                letter-spacing: 0.1em;
+                text-align: end;
+            }
+
         }
+
     }
 
     &__content-container {
+        
         font-family: Arial, Helvetica, sans-serif;
         position: absolute;
         right: 0%;
@@ -41,18 +54,35 @@
 
         h3 {
             font-size: 15px;
+            margin: 0;
+            user-select: none;
+
         }
 
         p {
             font-size: 14px;
+            margin: 0;
+            user-select: none;
+
         }
 
-        &__description {
+        &__content {
 
             position: absolute;
             top: 50%;
-            left:15%;
-            transform: translate(0%, -50%);
+            left:20%;
+            // transform: translate(0%, -50%);
+
+            &__clip-reveal {
+                display: inline-block;
+                overflow: hidden;
+                margin-bottom: .85em;
+
+                // &:first-child {
+                //     margin-bottom: 2.15em;
+                // }
+    
+            }
 
         }
 
@@ -60,7 +90,14 @@
 
             position: absolute;
             bottom: 0%;
-            left: 15%;
+            left: 20%;
+
+            &__clip-reveal {
+
+                display: inline-block;
+                overflow: hidden;
+
+            }
 
             p {
                 margin: 0;
@@ -84,5 +121,7 @@
     height: 100%;
     margin: 0;
     position: absolute;
+    z-index: 10;
+    user-select: none;
 
 }

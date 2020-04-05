@@ -10,7 +10,7 @@ class MediaManager {
             "https://s3.eu-west-3.amazonaws.com/douglaslilliequist/intrnshpproj.mp4",
             "https://s3.eu-west-3.amazonaws.com/douglaslilliequist/needahand.mp4",
             "https://s3.eu-west-3.amazonaws.com/douglaslilliequist/gdnghtswthrtweb.mp4",
-            "https://s3.eu-west-3.amazonaws.com/douglaslilliequist/wormhole.mp4",
+            // "https://s3.eu-west-3.amazonaws.com/douglaslilliequist/wormhole.mp4",
             'https://s3.eu-west-3.amazonaws.com/douglaslilliequist/doli.mp4',
 
 

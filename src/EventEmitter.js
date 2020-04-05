@@ -49,7 +49,7 @@ class EventEmitter {
 
         this.emitter.emit(events.RESIZE, {
             passive: true
-        });
+        }, false);
 
     }
 
