@@ -28,7 +28,8 @@ export default class Projects extends View {
 
   onEnterCompleted() {
     super.onEnterCompleted();
-    emitter.emit(events.INIT_DOMGL, {el: this.domGLReferenceElement, media: mediaManager.videos, getFirstQuad: true});
+    // emitter.emit(events.INIT_PROJECTS_DOMGL, {el: this.domGLReferenceElement, media: mediaManager.videos, getFirstQuad: true});
+    emitter.emit(events.INIT_PROJECTS_DOMGL, {referenceElement: this.domGLReferenceElement, media: mediaManager.videos, getFirstQuad: true});
   }
 
   onLeaveCompleted() {

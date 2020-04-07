@@ -1,20 +1,17 @@
-import ProjectQuad from "./ProjectQuad/ProjectQuad.js";
+import ProjectQuad from "../Projects/ProjectQuad/ProjectQuad";
 import {
   Transform
-} from "../../../vendors/ogl/src/core/Transform.js";
+} from "../../../../vendors/ogl/src/core/Transform.js";
 
-import eventEmitter from '../../EventEmitter.js';
+import eventEmitter from '../../../EventEmitter.js';
 const emitter = eventEmitter.emitter;
-import events from '../../../utils/events';
+import events from '../../../../utils/events.js';
 
 import {gsap} from 'gsap';
 
 export default class ProjectQuadManager {
   constructor(gl, scene, camera) {
-    this.init(gl, scene, camera);
-  }
 
-  init(gl, scene, camera) {
     this.gl = gl;
 
     this.scene = scene;
@@ -27,31 +24,23 @@ export default class ProjectQuadManager {
     
     this.transform.position.z = 1.0;
 
-    this.transform.setParent(this.scene);
-
-    this.scrollPhase = 0.0;
-
     this.initEvents();
-    
+
   }
 
   initEvents() {
-
-    emitter.on(events.INIT_DOMGL, (data) => {
-      this.initQuads({referenceElement: data.el, media: data.media, getQuad: data.getFirstQuad});
-    });
-
-    // emitter.on(events.REMOVE_DOMGL, this.disposeActiveQuads);
-    emitter.on(events.REMOVE_DOMGL, this.hideQuads);
 
     emitter.on(events.ENTER_SCROLL_MODE, this.enterScrollMode);
     emitter.on(events.EXIT_SCROLL_MODE, this.exitScrollMode);
 
   }
 
-  //applies appropriate sizes and positions based on reference dom elements
-  //bounding rects
-  initQuads({referenceElement, media, getQuad}) {
+  removeEvents() {
+    emitter.off(events.ENTER_SCROLL_MODE, this.enterScrollMode);
+    emitter.off(events.EXIT_SCROLL_MODE, this.exitScrollMode);
+  }
+
+  initQuads({referenceElement, media, getFirstQuad}) {
 
     if (referenceElement === null) {
       console.error("reference dom elements not available");
@@ -62,6 +51,8 @@ export default class ProjectQuadManager {
     this.media = media;
     this.quads = [];
     this.quadCount = 5;
+
+    this.transform.setParent(this.scene);
 
     let i = 0;
     while (i < this.quadCount) {
@@ -94,9 +85,8 @@ export default class ProjectQuadManager {
 
     this.quadsLoaded = true;
 
-    if(getQuad) {
-      const quad = this.getQuadInView();
-      quad.playVideo();
+    if(getFirstQuad) {
+      this.getQuadInView().playVideo();
     }
 
     this.revealQuads();
@@ -115,6 +105,7 @@ export default class ProjectQuadManager {
   exitScrollMode = () => {
 
     emitter.emit(events.PLAY_VIDEO);
+    this.captureLastPosition();
     this.transform.children.map((quad) => {
       quad.removeScrollMode();
     })
@@ -159,42 +150,22 @@ export default class ProjectQuadManager {
 
     if(this.quadsLoaded) {
 
-        for (let i = 0; i < this.transform.children.length; i++) {
-
-          let quad = this.transform.children[i];
-
-          quad.calcDomToWebGLPos({
-            domElement: this.referenceElement,
-            camera: this.camera
-          });
+        this.transform.children.map((quad, i) => {
           
           quad.update({index: i, force, interacting});
           quad.program.uniforms._InputForce.value = Math.min(1.0, Math.abs(force * 1.0));
           quad.program.uniforms._Time.value += dt;
           
-        }
+        });
 
     }
 
   }
 
-  updateQuadDimensions() {
-
-    this.transform.children.map((quad, i) => {
-      this.transform.children[i].updateDimensions({
-        domElement: this.referenceElement,
-        camera: this.camera
-      });
-    })
-
-}
-
   //get the quad whose position equals to the camera's position along Z
   //and offsetted by the parents transform. That way I'll get the quad
   //that is in view of the camera (or simply in front)
   getQuadInView() {
-
-    if(this.quadsLoaded) {
       
       let quadInView;
 
@@ -207,8 +178,6 @@ export default class ProjectQuadManager {
 
       return quadInView;
       
-    }
-
   }
 
   captureLastPosition() {
@@ -219,21 +188,4 @@ export default class ProjectQuadManager {
       }
   }
 
-  //removes geometry and shader data from all active quads
-  //as well as the mesh itself
-  disposeActiveQuads = () => {
-
-    this.quads.map((quad) => {
-
-      this.transform.removeChild(quad);
-      quad.geometry.remove();
-      quad.program.remove();
-      quad.texture = null;
-      quad = null;
-      
-    })
-
-    this.quads.length = 0;
-    this.quadsLoaded = false;
-  }
 }

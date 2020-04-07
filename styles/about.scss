@@ -1,0 +1,71 @@
+.content {
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80vw;
+    height: 50vw;
+    display: flex;
+    justify-content: space-evenly;
+
+    &__copy-container {
+
+        position: relative;
+        width: 50%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        // right: 0%;
+
+    }
+
+    &__about-copy {
+
+        &__header {
+            margin-top: 0em;
+            margin-bottom: 1.0em;
+        }
+
+        &__body-text {
+            margin: 0;
+        }
+
+    }
+
+    &__portrait__container {
+
+        position: relative;
+        width: 50%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+    }
+
+    &__portrait {
+
+        position: absolute;
+        width: 80%;
+        height: 80%;
+
+    }
+
+    &__contact {
+
+        // position: absolute;
+        // top: 20%;
+
+        &__methods {
+            display: flex;
+            flex-direction: column;
+
+            a {
+                margin-bottom: 0.5em;
+            }
+        }
+
+    }
+
+}

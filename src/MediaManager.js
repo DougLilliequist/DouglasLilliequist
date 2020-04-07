@@ -30,10 +30,6 @@ class MediaManager {
             video.muted = true;
             video.loop = true;
             video.currentTime = 0.0001;
-            // video.play();
-            // video.onloadeddata = () => {
-            //     console.log('loaded and ready');
-            // }
             this.videos[i] = video;
 
         }

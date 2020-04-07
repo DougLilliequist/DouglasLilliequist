@@ -12,7 +12,7 @@ import {
   Vec2
 } from "../../vendors/ogl/src/math/Vec2";
 
-import ProjectQuadManager from "./DomQuads/ProjectQuadManager.js";
+import DomQuadManager from './DomQuads/DomQuadManager.js'
 
 import eventEmitter from '../EventEmitter';
 const emitter = eventEmitter.emitter;
@@ -58,17 +58,11 @@ export default class WebGLContext {
 
     this.scene = new Transform();
 
-    this.projectQuadManager = new ProjectQuadManager(this.gl, this.scene, this.camera);
+    this.domQuadManager = new DomQuadManager(this.gl, this.scene, this.camera);
 
     this.stats = new Stats();
     document.body.appendChild(this.stats.dom);
 
-  }
-
-  initQuads(domElements) {
-    this.projectQuadManager.init(this.gl, {
-      domElements: domElements
-    });
   }
 
   initEvents() {
@@ -77,9 +71,6 @@ export default class WebGLContext {
     emitter.on(events.MOUSE_MOVE, this.onMouseMove);
     emitter.on(events.MOUSE_UP, this.onMouseUp);
     emitter.on(events.UPDATE, this.update);
-
-    // window.addEventListener('wheel', this.onScroll);
-    // this.scrollForce = 0;
 
     this.isInteracting = false;
     this.inputPos = new Vec2(0.0, 0.0);
@@ -112,8 +103,6 @@ export default class WebGLContext {
 
     this.isInteracting = false;
     this.firstMove = false;
-    this.projectQuadManager.captureLastPosition();
-    const quad = this.projectQuadManager.getQuadInView();
 
   }
 
@@ -129,7 +118,6 @@ export default class WebGLContext {
 
     this.updateInteractionState = setTimeout(() => {
       this.isInteracting = false;
-      this.projectQuadManager.captureLastPosition();
     }, 1000.0)
 
   }
@@ -176,7 +164,7 @@ export default class WebGLContext {
   updateScrollingAnim() {
 
     this.inputForce.y *= this.inputForceInertia;
-    this.projectQuadManager.update(this.deltaTime, this.inputForce.y, this.isInteracting);
+    this.domQuadManager.update({dt: this.deltaTime, inputForce: this.inputForce.y, isInteracting: this.isInteracting});
 
   }
 
@@ -196,7 +184,7 @@ export default class WebGLContext {
     });
 
     this.updateDimensions = setTimeout(() => {
-      this.projectQuadManager.updateQuadDimensions();
+      this.domQuadManager.updateQuadDimensions();
     }, 60);
   }
 }

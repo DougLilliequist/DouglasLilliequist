@@ -1,4 +1,4 @@
-import DomQuad from '../../extras/DomQuad/DomQuad';
+import DomQuad from '../../../extras/DomQuad/DomQuad.js';
 import {
     Program,
     Vec2,
@@ -8,10 +8,10 @@ import {
   const vert = require("./shaders/projectQuad.vert");
   const frag = require("./shaders/projectQuad.frag");
   
-  import {loopNegativeNumber} from '../../../../utils/Math';
-  import eventEmitter from '../../../EventEmitter.js'
+  import {loopNegativeNumber} from '../../../../../utils/Math.js';
+  import eventEmitter from '../../../../EventEmitter.js'
   const emitter = eventEmitter.emitter;
-  import events from '../../../../utils/events.js';
+  import events from '../../../../../utils/events.js';
   
   import {gsap} from 'gsap';
   
