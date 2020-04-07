@@ -5,9 +5,9 @@ import {
 
 import eventEmitter from '../../EventEmitter.js';
 const emitter = eventEmitter.emitter;
-
 import events from '../../../utils/events';
-import { loopNegativeNumber } from "../../../utils/Math.js";
+
+import {gsap} from 'gsap';
 
 export default class DomQuadManager {
   constructor(gl, scene, camera) {
@@ -32,6 +32,7 @@ export default class DomQuadManager {
     this.scrollPhase = 0.0;
 
     this.initEvents();
+    
   }
 
   initEvents() {
@@ -40,7 +41,8 @@ export default class DomQuadManager {
       this.initQuads({referenceElement: data.el, media: data.media, getQuad: data.getFirstQuad});
     });
 
-    emitter.on(events.REMOVE_DOMGL, this.disposeActiveQuads);
+    // emitter.on(events.REMOVE_DOMGL, this.disposeActiveQuads);
+    emitter.on(events.REMOVE_DOMGL, this.hideQuads);
 
     emitter.on(events.ENTER_SCROLL_MODE, this.enterScrollMode);
     emitter.on(events.EXIT_SCROLL_MODE, this.exitScrollMode);
@@ -97,6 +99,8 @@ export default class DomQuadManager {
       quad.playVideo();
     }
 
+    this.revealQuads();
+
   }
 
   enterScrollMode = () => {
@@ -115,6 +119,40 @@ export default class DomQuadManager {
       quad.removeScrollMode();
     })
     
+  }
+
+  revealQuads = () => {
+
+    const quadAlphas = this.transform.children.map((quad) => {
+      return quad.program.uniforms._Alpha;
+    });
+
+    gsap.to(quadAlphas, {
+      duration: 1,
+      value: 1.0,
+      stagger: -0.3,
+      // ease: "sine.in"
+      ease: "sine.in"
+    })
+
+  }
+
+  hideQuads = () => {
+    const quadAlphas = this.transform.children.map((quad) => {
+      return quad.program.uniforms._Alpha;
+    });
+
+    gsap.to(quadAlphas, {
+      duration: 0.45,
+      value: 0.0,
+      stagger: 0.0,
+      // ease: "sine.in"
+      ease: "sine.in",
+      onComplete: () => {
+        this.disposeActiveQuads();
+      }
+    })
+
   }
 
   update(dt, force, interacting) {

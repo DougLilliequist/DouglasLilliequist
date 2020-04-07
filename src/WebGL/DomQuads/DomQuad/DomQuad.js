@@ -36,7 +36,6 @@ export default class DomQuad extends Mesh {
 
     this.name = `PROJECT ${posOffset}`
 
-
     this.phase = phase; //rename later
     
     this.initIndex = this.index = posOffset;
@@ -119,7 +118,7 @@ export default class DomQuad extends Mesh {
         value: 0.0
       },
       _Alpha: {
-        value: 1.0
+        value: 0.0
       },
       _Scale: {
         value: 1.0

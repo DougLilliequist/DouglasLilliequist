@@ -56,11 +56,6 @@ export default class Projects extends View {
 
   }
 
-
-  /**
-   * Make this component emit the scroll mode event, not the event emitter
-   * meaning, listen to mosedown events here
-   */
   initEvents() {
 
     this.enableUserInteraction = true;
@@ -73,7 +68,7 @@ export default class Projects extends View {
 
     this.projectLink.addEventListener('mouseenter', () => {
 
-      emitter.emit(events.HOVERING_LINK, this.projectLink.getBoundingClientRect().width * .75)
+      emitter.emit(events.HOVERING_LINK)
       this.hoveringLink = true;
     }, false);
 
@@ -81,13 +76,6 @@ export default class Projects extends View {
       emitter.emit(events.LEAVING_LINK)
       this.hoveringLink = false;
     }, false);
-
-    // emitter.on(events.ENTER_SCROLL_MODE, this.enableScrollMode);
-    // emitter.on(events.EXIT_SCROLL_MODE, this.disableScrollMode);
-
-    // this.referenceElement.addEventListener('mouseenter', this.onProjectHover, false);
-    // this.referenceElement.addEventListener('mouseleave', this.onProjectHoverLeave, false);
-    // emitter.on(events.UPDATE_SCROLL_PHASE, this.updateScrollCircle)
 
   }
 
@@ -98,9 +86,6 @@ export default class Projects extends View {
     emitter.off(events.LOAD_PROJECT_CONTENT, this.loadProjectContent);
     emitter.off(events.MOUSE_DOWN, this.enableScrollMode);
     emitter.off(events.MOUSE_UP, this.disableScrollMode);
-
-    // this.referenceElement.removeEventListener('mouseenter', this.onProjectHover, false);
-    // this.referenceElement.removeEventListener('mouseleave', this.onProjectHoverLeave, false);
 
   }
 
@@ -132,9 +117,7 @@ export default class Projects extends View {
   disableScrollMode = () => {
     this.enableUserInteraction = true;
     emitter.emit(events.EXIT_SCROLL_MODE);
-    if(this.hoveringProject === false) {
-      this.revealProjectContent();
-    }
+    this.revealProjectContent();
   }
 
   onProjectHover = () => {
@@ -178,6 +161,7 @@ export default class Projects extends View {
 
     gsap.to(this.projectTitleClipReveal.children[0], {
       duration: 0.75,
+      opacity: 1,
       x: 0
     })
 
@@ -187,35 +171,42 @@ export default class Projects extends View {
 
     gsap.to(this.projectTitleClipReveal.children[0], {
       duration: 0.75,
+      opacity: 0,
       x: -50
-    })
+    });
 
   }
 
   revealProjectDescription() {
 
-    if(this.projectDescRevealAnim) {
-      this.projectDescRevealAnim.kill();
-    }
+    // if(this.projectDescRevealAnim) {
+    //   this.projectDescRevealAnim.kill();
+    // }
 
     this.projectDescRevealAnim = gsap.to(this.projectClipRevealElements, {
-      y: 0,
+      opacity: 1,
       duration: 0.5,
       stagger: 0.1
-    })
+    });
+
+    // this.projectClipRevealElements.map((el, i) => {
+
+
+
+    // });
 
   }
 
   hideProjectDescription() {
 
-    if(this.projectDescHideAnim) {
-      this.projectDescHideAnim.kill();
-    }
+    // if(this.projectDescHideAnim) {
+    //   this.projectDescHideAnim.kill();
+    // }
 
     this.projectDescHideAnim = gsap.to(this.projectClipRevealElements, {
-      y: 50,
+      opacity: 0,
       duration: 0.5,
-      stagger: -0.1
+      stagger: 0.1
     })
 
   }
@@ -225,7 +216,7 @@ export default class Projects extends View {
     gsap.to(this.projectLinkClipReveal.children[0], {
       duration: 0.75,
       y: 0
-    })
+    });
 
   }
 
@@ -234,7 +225,13 @@ export default class Projects extends View {
     gsap.to(this.projectLinkClipReveal.children[0], {
       duration: 0.75,
       y: 25
-    })
+    });
+
+  }
+
+  getAnimPhase({a, b}) {
+
+    return a / Math.max(1.0, b - 1.0)
 
   }
 

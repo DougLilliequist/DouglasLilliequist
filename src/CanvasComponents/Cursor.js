@@ -66,7 +66,7 @@ export default class Cursor {
 
         this.radius = this.defaultRadius;
 
-        this.strokeWidth = 1.5;
+        this.strokeWidth = 1.0;
 
         this.startAngle = 0;
 
@@ -175,7 +175,7 @@ export default class Cursor {
 
         gsap.to(this, {
             duration: 0.2,
-            radius: r,
+            radius: 0,
         });
 
     }
