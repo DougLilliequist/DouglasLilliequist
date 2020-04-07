@@ -1,6 +1,9 @@
 const events = {
 
     INIT_DOMGL: 'init_DomGL',
+    INIT_PROJECTS_DOMGL: 'init_projects_domgl',
+    QUADS_LOADED: 'quads_loaded',
+
     REMOVE_DOMGL: 'remove_DOMGL',
     LOAD_PROJECT_CONTENT: 'load_Project_Content',
 

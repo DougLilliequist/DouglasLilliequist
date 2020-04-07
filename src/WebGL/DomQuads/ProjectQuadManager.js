@@ -1,4 +1,4 @@
-import DomQuad from "./DomQuad/DomQuad.js";
+import ProjectQuad from "./ProjectQuad/ProjectQuad.js";
 import {
   Transform
 } from "../../../vendors/ogl/src/core/Transform.js";
@@ -9,7 +9,7 @@ import events from '../../../utils/events';
 
 import {gsap} from 'gsap';
 
-export default class DomQuadManager {
+export default class ProjectQuadManager {
   constructor(gl, scene, camera) {
     this.init(gl, scene, camera);
   }
@@ -68,7 +68,7 @@ export default class DomQuadManager {
 
       let phase = i / (this.quadCount - 1.0)
 
-      const quad = new DomQuad(
+      const quad = new ProjectQuad(
         this.gl,
         this.camera,
         this.referenceElement,

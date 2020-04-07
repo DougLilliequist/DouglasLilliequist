@@ -12,7 +12,7 @@ import {
   Vec2
 } from "../../vendors/ogl/src/math/Vec2";
 
-import DomQuadManager from "./DomQuads/DomQuadManager.js";
+import ProjectQuadManager from "./DomQuads/ProjectQuadManager.js";
 
 import eventEmitter from '../EventEmitter';
 const emitter = eventEmitter.emitter;
@@ -58,7 +58,7 @@ export default class WebGLContext {
 
     this.scene = new Transform();
 
-    this.domQuadsManager = new DomQuadManager(this.gl, this.scene, this.camera);
+    this.projectQuadManager = new ProjectQuadManager(this.gl, this.scene, this.camera);
 
     this.stats = new Stats();
     document.body.appendChild(this.stats.dom);
@@ -66,7 +66,7 @@ export default class WebGLContext {
   }
 
   initQuads(domElements) {
-    this.domQuadsManager.init(this.gl, {
+    this.projectQuadManager.init(this.gl, {
       domElements: domElements
     });
   }
@@ -112,8 +112,8 @@ export default class WebGLContext {
 
     this.isInteracting = false;
     this.firstMove = false;
-    this.domQuadsManager.captureLastPosition();
-    const quad = this.domQuadsManager.getQuadInView();
+    this.projectQuadManager.captureLastPosition();
+    const quad = this.projectQuadManager.getQuadInView();
 
   }
 
@@ -129,7 +129,7 @@ export default class WebGLContext {
 
     this.updateInteractionState = setTimeout(() => {
       this.isInteracting = false;
-      this.domQuadsManager.captureLastPosition();
+      this.projectQuadManager.captureLastPosition();
     }, 1000.0)
 
   }
@@ -176,7 +176,7 @@ export default class WebGLContext {
   updateScrollingAnim() {
 
     this.inputForce.y *= this.inputForceInertia;
-    this.domQuadsManager.update(this.deltaTime, this.inputForce.y, this.isInteracting);
+    this.projectQuadManager.update(this.deltaTime, this.inputForce.y, this.isInteracting);
 
   }
 
@@ -196,7 +196,7 @@ export default class WebGLContext {
     });
 
     this.updateDimensions = setTimeout(() => {
-      this.domQuadsManager.updateQuadDimensions();
+      this.projectQuadManager.updateQuadDimensions();
     }, 60);
   }
 }
