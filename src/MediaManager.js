@@ -7,7 +7,14 @@ class MediaManager {
 
     constructor() {
 
-        this.sources = [
+        this.loadVideos();
+        this.loadImages();
+
+    }
+
+    loadVideos() {
+
+        this.vidSources = [
 
             "https://s3.eu-west-3.amazonaws.com/douglaslilliequist/intrnshpproj.mp4",
             'https://s3.eu-west-3.amazonaws.com/douglaslilliequist/doli.mp4',
@@ -22,10 +29,10 @@ class MediaManager {
 
         this.videos = []
 
-        for(let i = 0; i < this.sources.length; i++) {
+        for(let i = 0; i < this.vidSources.length; i++) {
 
             const video = document.createElement('video');
-            video.src = this.sources[i];
+            video.src = this.vidSources[i];
             video.crossOrigin = "*";
             video.muted = true;
             video.loop = true;
@@ -33,6 +40,15 @@ class MediaManager {
             this.videos[i] = video;
 
         }
+
+    }
+
+    loadImages() {
+
+        this.imgSources = [
+
+        ]
+
 
     }
 

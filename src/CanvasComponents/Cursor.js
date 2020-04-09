@@ -100,9 +100,9 @@ export default class Cursor {
 
     initEvents() {
 
-        emitter.on(events.MOUSE_DOWN, this.onMouseDown);
         emitter.on(events.MOUSE_MOVE, this.onMouseMove);
-        emitter.on(events.MOUSE_UP, this.onMouseUp);
+        emitter.on(events.ENTER_SCROLL_MODE, this.onMouseDown);
+        emitter.on(events.EXIT_SCROLL_MODE, this.onMouseUp);
         emitter.on(events.HOVERING_LINK, this.animteHoverMode)
         emitter.on(events.LEAVING_LINK, this.restore)
         emitter.on(events.UPDATE, this.update);

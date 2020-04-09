@@ -19,22 +19,23 @@ export default class Projects extends View {
     this.initReferences();
 
     this.initEvents();
+
+    emitter.emit(events.INIT_DOMGL, {view: "PROJECTS", params: {referenceElement: this.domGLReferenceElement, media: mediaManager.videos, getFirstQuad: true}});
   
   }
 
   onLeave() {
     super.onLeave();
+    this.removeEvents();
   }
 
   onEnterCompleted() {
     super.onEnterCompleted();
-    // emitter.emit(events.INIT_PROJECTS_DOMGL, {el: this.domGLReferenceElement, media: mediaManager.videos, getFirstQuad: true});
-    emitter.emit(events.INIT_PROJECTS_DOMGL, {referenceElement: this.domGLReferenceElement, media: mediaManager.videos, getFirstQuad: true});
   }
 
   onLeaveCompleted() {
-    emitter.emit(events.REMOVE_DOMGL);
     super.onLeaveCompleted();
+    emitter.emit(events.REMOVE_DOMGL);
   }
 
   //assign variables to dom elements
@@ -180,29 +181,15 @@ export default class Projects extends View {
 
   revealProjectDescription() {
 
-    // if(this.projectDescRevealAnim) {
-    //   this.projectDescRevealAnim.kill();
-    // }
-
     this.projectDescRevealAnim = gsap.to(this.projectClipRevealElements, {
       opacity: 1,
       duration: 0.5,
       stagger: 0.1
     });
 
-    // this.projectClipRevealElements.map((el, i) => {
-
-
-
-    // });
-
   }
 
   hideProjectDescription() {
-
-    // if(this.projectDescHideAnim) {
-    //   this.projectDescHideAnim.kill();
-    // }
 
     this.projectDescHideAnim = gsap.to(this.projectClipRevealElements, {
       opacity: 0,

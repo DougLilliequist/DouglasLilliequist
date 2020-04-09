@@ -1,30 +1,28 @@
 import ProjectQuad from "../Projects/ProjectQuad/ProjectQuad";
-import {
-  Transform
-} from "../../../../vendors/ogl/src/core/Transform.js";
+import DomquadMediator from '../../extras/DomQuad/DomquadMediator';
 
 import eventEmitter from '../../../EventEmitter.js';
 const emitter = eventEmitter.emitter;
 import events from '../../../../utils/events.js';
 
 import {gsap} from 'gsap';
+import { Vec2 } from "../../../../vendors/ogl/src/math/Vec2";
 
-export default class ProjectQuadManager {
+export default class ProjectQuadMediator extends DomquadMediator {
   constructor(gl, scene, camera) {
+    super(gl, scene, camera);
 
     this.gl = gl;
 
-    this.scene = scene;
-
-    this.camera = camera;
-
-    this.quadsLoaded = false;
-
-    this.transform = new Transform();
+    this.quadCount = 5;
     
-    this.transform.position.z = 1.0;
+    this.position.z = 1.0;
 
-    this.initEvents();
+    this.inputForce = new Vec2(0.0, 0.0);
+
+    this.inputForceInertia = 0.93;
+
+    this.inScrollMode = false;
 
   }
 
@@ -32,27 +30,30 @@ export default class ProjectQuadManager {
 
     emitter.on(events.ENTER_SCROLL_MODE, this.enterScrollMode);
     emitter.on(events.EXIT_SCROLL_MODE, this.exitScrollMode);
+    emitter.on(events.PREPARE_UNMOUNT, this.hideQuads);
 
   }
 
   removeEvents() {
+
     emitter.off(events.ENTER_SCROLL_MODE, this.enterScrollMode);
     emitter.off(events.EXIT_SCROLL_MODE, this.exitScrollMode);
+    emitter.off(events.PREPARE_UNMOUNT, this.hideQuads);
+
   }
 
-  initQuads({referenceElement, media, getFirstQuad}) {
+  initQuads = ({referenceElement, media, getFirstQuad}) => {
+
+    this.setParent(this.scene);
 
     if (referenceElement === null) {
       console.error("reference dom elements not available");
       return;
     }
 
-    this.referenceElement = referenceElement;
     this.media = media;
-    this.quads = [];
-    this.quadCount = 5;
 
-    this.transform.setParent(this.scene);
+    this.referenceElement = referenceElement;
 
     let i = 0;
     while (i < this.quadCount) {
@@ -61,8 +62,6 @@ export default class ProjectQuadManager {
 
       const quad = new ProjectQuad(
         this.gl,
-        this.camera,
-        this.referenceElement,
         this.media, {
           widthSegments: 1.0,
           heightSegments: 1.0,
@@ -70,24 +69,26 @@ export default class ProjectQuadManager {
           phase: phase
         }
       );
-
-      quad.calcDomToWebGLPos({
+      
+      quad.updateDimensions({
         domElement: this.referenceElement,
         camera: this.camera
       });
 
-      quad.playVideo();
+      quad.calcDomToWebGLPos({
+        domElement: this.referenceElement,
+      });
 
-      this.quads[i] = quad;
-      this.quads[i].setParent(this.transform);
+      quad.setParent(this);
       i++;
+    
     }
 
     this.quadsLoaded = true;
 
-    if(getFirstQuad) {
-      this.getQuadInView().playVideo();
-    }
+  if(getFirstQuad) {
+    this.getQuadInView().playVideo();
+  }
 
     this.revealQuads();
 
@@ -95,8 +96,9 @@ export default class ProjectQuadManager {
 
   enterScrollMode = () => {
 
+    this.inScrollMode = true;
     emitter.emit(events.PAUSE_VIDEO);
-    this.transform.children.map((quad) => {
+    this.children.map((quad) => {
       quad.applyScrollMode();
     })
 
@@ -104,9 +106,10 @@ export default class ProjectQuadManager {
 
   exitScrollMode = () => {
 
+    this.inScrollMode = false;
     emitter.emit(events.PLAY_VIDEO);
     this.captureLastPosition();
-    this.transform.children.map((quad) => {
+    this.children.map((quad) => {
       quad.removeScrollMode();
     })
     
@@ -114,52 +117,50 @@ export default class ProjectQuadManager {
 
   revealQuads = () => {
 
-    const quadAlphas = this.transform.children.map((quad) => {
-      return quad.program.uniforms._Alpha;
+    this.children.map((quad) => {
+      gsap.to(quad.program.uniforms._Alpha, {
+        duration: 1,
+        value: 1.0,
+        stagger: -0.3,
+        // ease: "sine.in"
+        ease: "sine.in"
+      });
     });
-
-    gsap.to(quadAlphas, {
-      duration: 1,
-      value: 1.0,
-      stagger: -0.3,
-      // ease: "sine.in"
-      ease: "sine.in"
-    })
 
   }
 
   hideQuads = () => {
-    const quadAlphas = this.transform.children.map((quad) => {
-      return quad.program.uniforms._Alpha;
+   
+    this.children.map((quad) => {
+      gsap.to(quad.program.uniforms._Alpha, {
+        duration: 0.5,
+        value: 0.0,
+        stagger: -0.3,
+        // ease: "sine.in"
+        ease: "sine.in",
+      });
     });
-
-    gsap.to(quadAlphas, {
-      duration: 0.45,
-      value: 0.0,
-      stagger: 0.0,
-      // ease: "sine.in"
-      ease: "sine.in",
-      onComplete: () => {
-        this.disposeActiveQuads();
-      }
-    })
 
   }
 
-  update(dt, force, interacting) {
+  updateInputForce({inputDelta, dt = 14.0}) {
 
-    if(this.quadsLoaded) {
+    this.inputForce.y += inputDelta.y * 0.01 / dt;
 
-        this.transform.children.map((quad, i) => {
+  }
+
+  update({dt, inputPos, inputDelta} = {}) {
+
+        this.updateInputForce({inputDelta, dt});
+        this.children.map((quad, i) => {
           
-          quad.update({index: i, force, interacting});
-          quad.program.uniforms._InputForce.value = Math.min(1.0, Math.abs(force * 1.0));
+          quad.update({index: i, force: this.inputForce.y, isInteracting: this.inScrollMode});
+          quad.program.uniforms._InputForce.value = Math.min(1.0, Math.abs(this.inputForce.y * 1.0));
           quad.program.uniforms._Time.value += dt;
           
         });
 
-    }
-
+        this.inputForce.y *= this.inputForceInertia;
   }
 
   //get the quad whose position equals to the camera's position along Z
@@ -169,8 +170,8 @@ export default class ProjectQuadManager {
       
       let quadInView;
 
-      this.transform.children.map((quad) => {  
-        if(quad.inView({inViewPosZ: 0 - this.transform.position.z})) {
+      this.children.map((quad) => {  
+        if(quad.inView({inViewPosZ: 0 - this.position.z})) {
           quadInView = quad;
           emitter.emit(events.LOAD_PROJECT_CONTENT, quadInView.index);
         }
@@ -181,11 +182,9 @@ export default class ProjectQuadManager {
   }
 
   captureLastPosition() {
-    if(this.quadsLoaded) {
-          this.transform.children.map((quad) => {
-            quad.targetPos = Math.round(quad.position.z);
-          })
-      }
+      this.children.map((quad) => {
+          quad.targetPos = Math.round(quad.position.z);
+      })
   }
 
 }

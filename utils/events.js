@@ -1,10 +1,14 @@
 const events = {
 
     INIT_DOMGL: 'init_DomGL',
-    INIT_PROJECTS_DOMGL: 'init_projects_domgl',
+    INIT_DOMGL_PROJECTS: 'init_DOMGL_projects',
+    INIT_DOMGL_ABOUT: 'init_DOMGL_about',
     QUADS_LOADED: 'quads_loaded',
 
+    PREPARE_UNMOUNT: 'prepare_unmount',
     REMOVE_DOMGL: 'remove_DOMGL',
+    REMOVE_DOMGL_PROJECTS: 'remove_DOMGL_projects',
+    REMOVE_DOMGL_ABOUT: 'remove_DOMGL_about',
     LOAD_PROJECT_CONTENT: 'load_Project_Content',
 
     ENTER_SCROLL_MODE: 'enter_scroll_mode',

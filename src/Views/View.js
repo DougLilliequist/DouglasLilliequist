@@ -19,7 +19,6 @@ export default class View extends Highway.Renderer {
         //     this.initOnComplete()
         
         // })
-        console.log('loaded');
     }
 
     onLeaveCompleted() {}

@@ -2,7 +2,8 @@ import eventEmitter from '../../EventEmitter.js';
 const emitter = eventEmitter.emitter;
 import events from '../../../utils/events.js';
 
-import ProjectQuadManager from './Projects/ProjectQuadManager.js'
+import ProjectQuadMediator from './Projects/projectQuadMediator.js'
+import AboutQuadMediator from './About/AboutQudMediator.js';
 
 export default class DomQuadManager {
 
@@ -18,42 +19,51 @@ export default class DomQuadManager {
 
         this.initEvents();
 
-        this.activeMediator;
-
-        this.activeQuads = [];
-
     }
+
 
     initMediators() {
 
-        this.projectQuadMediator = new ProjectQuadManager(this.gl, this.scene, this.camera);
+        this.activeMediator = null;
+        this.mediators = {
+            PROJECTS: new ProjectQuadMediator(this.gl, this.scene, this.camera),
+            ABOUT: new AboutQuadMediator(this.gl, this.scene, this.camera)
+        }
 
     }
 
     initEvents() {
 
-        emitter.on(events.INIT_PROJECTS_DOMGL, this.initProjectQuads);
-        emitter.on(events.REMOVE_DOMGL, this.disposeActiveQuads);
+        emitter.on(events.INIT_DOMGL, this.loadMediator);
+        emitter.on(events.REMOVE_DOMGL, this.unloadActiveMediator);
+        emitter.on(events.RESIZE, this.resize)
 
     }
 
-    initProjectQuads = ({referenceElement, media, getFirstQuad}) => {
+    loadMediator = ({view, params}) => {
 
-        this.projectQuadMediator.initQuads({referenceElement, media, getFirstQuad});
-        this.activeQuads = [...this.projectQuadMediator.quads];
-        this.activeMediator = this.projectQuadMediator;
+        this.activeMediator = this.mediators[view];
+        this.activeMediator.initQuads(params);
+        this.activeMediator.initEvents();
 
     }
 
-    update({dt, inputForce, isInteracting}) {
+    unloadActiveMediator = () => {
 
-        this.projectQuadMediator.update(dt, inputForce, isInteracting)
+            this.activeMediator.removeEvents();
+            this.activeMediator.unloadQuads();
 
-        this.activeMediator.transform.children.map((quad, i) => {
+    }
+
+    update({dt, inputPos, inputDelta}) {
+
+        if(this.activeMediator === null) return;
+
+        this.activeMediator.update({dt, inputPos, inputDelta});
+        this.activeMediator.children.map((quad, i) => {
 
             quad.calcDomToWebGLPos({
                 domElement: this.activeMediator.referenceElement,
-                camera: this.camera
               });
 
         });
@@ -62,7 +72,9 @@ export default class DomQuadManager {
     
     updateQuadDimensions() {
 
-        this.activeMediator.transform.children.map((quad, i) => {
+        if(this.activeMediator === null) return;
+
+        this.activeMediator.children.map((quad, i) => {
           
             quad.updateDimensions({
             domElement: this.activeMediator.referenceElement,
@@ -73,27 +85,16 @@ export default class DomQuadManager {
 
     }
 
-    disposeActiveQuads = () => {
+    resize = () => {
 
-        this.activeMediator.removeEvents();
+        if (this.updateDimensions) {
+            clearTimeout(this.updateDimensions);
+          }
 
-        this.activeQuads.map((quad) => {
-    
-          this.activeMediator.transform.removeChild(quad);
-          quad.geometry.remove();
-          quad.program.remove();
-          quad.texture = null;
-          quad = null;
-          
-        })
-    
-        this.activeQuads.length = 0;
-        this.quadsLoaded = false;
+        this.updateDimensions = setTimeout(() => {
+            this.updateQuadDimensions();
+          }, 60);
 
-        if(this.activeMediator !== null) {
-            this.scene.removeChild(this.activeMediator.transform);
-        }
-      
     }
 
 }

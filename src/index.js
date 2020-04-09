@@ -9,13 +9,8 @@ import Cursor from '../src/CanvasComponents/Cursor.js';
 import Transition from "./Transitions/Transition.js";
 import ViewMediator from './ViewMediator.js';
 
-// import viewMediator from "./ViewMediator";
-
 export default class App {
     constructor() {
-        
-        const cursor = new Cursor();
-        const webGLCTX = new WebGLContext();
 
         window.viewMediator = new ViewMediator({
             home: Home,
@@ -23,6 +18,9 @@ export default class App {
             about: About,
             transition: Transition
         });
+
+        const cursor = new Cursor();
+        const webGLCTX = new WebGLContext();
 
     }
 }

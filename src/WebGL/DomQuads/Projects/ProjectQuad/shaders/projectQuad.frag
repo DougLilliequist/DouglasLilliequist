@@ -103,11 +103,11 @@ void main() {
 
     // float aspect = _ImageAspect / _Aspect;
 
-    uv -= 0.5;
+    // uv -= 0.5;
     // uv.x /= _ImageAspect;
     // uv.y *= _Aspect;
     // uv /= aspect;
-    uv += 0.5;
+    // uv += 0.5;
 
     vec3 img = texture2D(_Image, uv).xyz;
     float len = (vMvPos.z * vMvPos.z);

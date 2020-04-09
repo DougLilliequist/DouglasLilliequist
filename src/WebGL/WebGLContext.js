@@ -28,7 +28,6 @@ export default class WebGLContext {
   constructor(container) {
     this.initScene(container);
     this.initEvents();
-    // this.start();
   }
 
   initScene(container) {
@@ -75,8 +74,7 @@ export default class WebGLContext {
     this.isInteracting = false;
     this.inputPos = new Vec2(0.0, 0.0);
     this.prevInputPos = new Vec2(0.0, 0.0);
-    this.inputForce = new Vec2(0.0, 0.0);
-    this.inputForceInertia = 0.93;
+    this.inputDelta = new Vec2(0.0, 0.0);
 
     emitter.on(events.RESIZE, this.onResize);
     this.isResizing = false;
@@ -89,13 +87,14 @@ export default class WebGLContext {
     this.prevInputPos.copy(this.inputPos);
     this.inputPos.x = 2.0 * (e.x / window.innerWidth) - 1.0;
     this.inputPos.y = -1 * (2.0 * (e.y / window.innerHeight) - 1.0);
+    this.inputDelta = this.inputPos.clone().sub(this.prevInputPos);
 
   }
 
   onMouseMove = (e) => {
 
-        this.inputPos.x = 2.0 * (e.x / window.innerWidth) - 1.0;
-        this.inputPos.y = -1 * (2.0 * (e.y / window.innerHeight) - 1.0);
+     this.inputPos.x = 2.0 * (e.x / window.innerWidth) - 1.0;
+     this.inputPos.y = -1 * (2.0 * (e.y / window.innerHeight) - 1.0);
 
   }
 
@@ -103,29 +102,6 @@ export default class WebGLContext {
 
     this.isInteracting = false;
     this.firstMove = false;
-
-  }
-
-  onScroll = (e) => {
-
-    if(this.updateInteractionState) {
-      clearTimeout(this.updateInteractionState);
-    }
-
-    if(this.isInteracting === false) 
-    this.isInteracting = true;  
-    this.scrollForce += e.deltaY * 0.01;
-
-    this.updateInteractionState = setTimeout(() => {
-      this.isInteracting = false;
-    }, 1000.0)
-
-  }
-
-  updateInputForce() {
-
-    this.inputDir = new Vec2().sub(this.inputPos, this.prevInputPos);
-    this.inputForce.y += this.inputDir.y * 0.01 / this.deltaTime;
 
   }
 
@@ -144,12 +120,14 @@ export default class WebGLContext {
     this.stats.begin();
     this.currentTime = performance.now();
     this.deltaTime = (this.currentTime - this.prevtime) / 1000.0;
-    
-    if(this.isInteracting) {
-      this.updateInputForce();
-    }
-    
-    this.updateScrollingAnim();
+
+    if(this.isInteracting) this.inputDelta = this.inputPos.clone().sub(this.prevInputPos);
+
+    this.domQuadManager.update({
+      dt: this.deltaTime, 
+      inputPos: this.inputPos, 
+      inputDelta: this.inputDelta, 
+    });
 
     this.render();
     
@@ -161,21 +139,10 @@ export default class WebGLContext {
 
   }
 
-  updateScrollingAnim() {
-
-    this.inputForce.y *= this.inputForceInertia;
-    this.domQuadManager.update({dt: this.deltaTime, inputForce: this.inputForce.y, isInteracting: this.isInteracting});
-
-  }
-
   onResize = () => {
 
     const w = window.innerWidth;
     const h = window.innerHeight;
-
-    if (this.updateDimensions) {
-      clearTimeout(this.updateDimensions);
-    }
 
     this.renderer.setSize(w, h);
     const aspectRatio = w / h;
@@ -183,8 +150,5 @@ export default class WebGLContext {
       aspect: aspectRatio
     });
 
-    this.updateDimensions = setTimeout(() => {
-      this.domQuadManager.updateQuadDimensions();
-    }, 60);
   }
 }

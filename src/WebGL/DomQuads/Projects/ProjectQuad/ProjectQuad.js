@@ -1,9 +1,14 @@
 import DomQuad from '../../../extras/DomQuad/DomQuad.js';
-import {
-    Program,
-    Vec2,
-    Texture,
-  } from "ogl";
+import { Program } from '../../../../../vendors/ogl/src/core/Program.js';
+import { Texture } from '../../../../../vendors/ogl/src/core/Texture.js';
+import { Vec2 } from '../../../../../vendors/ogl/src/math/Vec2.js';
+import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
+
+// import {
+//     Program,
+//     Vec2,
+//     Texture,
+//   } from "ogl";
   
   const vert = require("./shaders/projectQuad.vert");
   const frag = require("./shaders/projectQuad.frag");
@@ -18,8 +23,6 @@ import {
   export default class ProjectQuad extends DomQuad {
     constructor(
       gl,
-      camera,
-      domElement,
       media, {
         widthSegments = 1.0,
         heightSegments = 1.0,
@@ -33,6 +36,8 @@ import {
             widthSegments,
             heightSegments,
         } = {});
+
+        this.gl = gl;
   
       this.name = `PROJECT ${posOffset}`
   
@@ -53,18 +58,8 @@ import {
       this.targetPos = this.position.z; //remove prev position
   
       this.inScrollMode = false;
-  
-      this.initProgram({el: domElement});
-  
-      super.updateDimensions({
-        domElement,
-        camera
-      });
-  
-      super.calcDomToWebGLPos({
-        domElement: domElement,
-        camera: camera
-      });
+        
+      this.initProgram();
   
       this.initEvents();
   
@@ -78,25 +73,27 @@ import {
   
     }
   
-    initProgram({el}) {
+    initProgram = () => {
+
+          
+    this.geometry = new Plane(this.gl, {
+      width: 2,
+      height: 2,
+      widthSegments: 1.0,
+      heightSegments: 1.0
+    });
   
       this.texture = new Texture(this.gl, {
         generateMipmaps: false,
         width: 512,
         height: 512
       });
-      let imageAspect;
   
-      imageAspect = this.texture.width / this.texture.height;
-      
-      this.cameraViewplaneSize = new Vec2(1.0, 1.0);
-      this.viewportScalePhase = new Vec2(1.0, 1.0);
-  
-      const rect = el.getBoundingClientRect();
+      let imageAspect = this.texture.width / this.texture.height;
   
       const u = {
         _ViewplaneSize: {
-          value: super.viewPlaneSize
+          value: this.viewPlaneSize
         },
         _Time: {
           value: 0
@@ -123,7 +120,7 @@ import {
           value: 1.0 //hard coded based on proved image
         },
         _Aspect: {
-          value: super.aspect
+          value: this.aspect
         }
       };
   
@@ -185,11 +182,9 @@ import {
   
     }
   
-    // update(force, interacting) {
-    update({index, force, interacting}) {
-  
-  
-      if(interacting) {
+    update({index, force, isInteracting}) {
+    
+      if(isInteracting) {
         this.position.z += force;
       } else {
         this.position.z += (this.targetPos - this.position.z) * 0.05;
@@ -228,7 +223,7 @@ import {
     }
   
     playVideo = () => {
-  
+
       if(this.video === null) return;
       if(this.parent) {
         if(this.inView({inViewPosZ: 0 - this.parent.position.z})) this.video.play();

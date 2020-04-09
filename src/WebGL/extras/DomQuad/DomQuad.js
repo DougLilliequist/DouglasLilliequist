@@ -7,6 +7,7 @@ import {
 import {
   getCameraViewplaneSize
 } from "../../utils/getCameraViewplaneSize";
+import { Program } from "../../../../vendors/ogl/src/core/Program";
 
 export default class DomQuad extends Mesh {
   constructor(
@@ -16,17 +17,11 @@ export default class DomQuad extends Mesh {
       heightSegments = 1.0,
     }
   ) {
-    super(gl);
     
-    this.geometry = new Plane(gl, {
-      width: 1,
-      height: 1,
-      widthSegments: widthSegments,
-      heightSegments: heightSegments
-    });
+    super(gl);
 
-    this._viewPlaneSize = new Vec2(1.0, 1.0);
-    this._aspect = 1.0;
+    this.viewPlaneSize = new Vec2(1.0, 1.0);
+    this.aspect = 1.0;
 
   }
 
@@ -68,9 +63,12 @@ export default class DomQuad extends Mesh {
     const rect = domElement.getBoundingClientRect();
 
     const posPhaseX =
-      2.0 * ((rect.left + rect.width * 0.5) / window.innerWidth) - 1.0;
+      2.0 * ((rect.left + (rect.width * 0.5)) / window.innerWidth) - 1.0;
     const posPhaseY =
-      2.0 * ((rect.top + rect.height * 0.5) / window.innerHeight) - 1.0;
+      2.0 * ((rect.top + (rect.height * 0.5)) / window.innerHeight) - 1.0;
+
+    // const posX = posPhaseX * this.cameraViewplaneSize.x;
+    // const posY = posPhaseY * this.cameraViewplaneSize.y * -1.0;
 
     const posX = posPhaseX * this.cameraViewplaneSize.x;
     const posY = posPhaseY * this.cameraViewplaneSize.y * -1.0;
@@ -80,20 +78,15 @@ export default class DomQuad extends Mesh {
     this.position.y = posY;
   }
 
-  get viewPlaneSize() {
-    return this._viewPlaneSize;
-  }
+  dispose() {
 
-  set viewPlaneSize(v) {
-    this._viewPlaneSize.copy(v);
-  }
+    this.program.uniforms = null;
+    this.program.remove();
+    this.geometry.remove();
+    if(this.texture) this.texture = null;
+    this.geometry = null;
+    this.program = null;
 
-  get aspect() {
-    return this._aspect;
-  }
-
-  set aspect(a) {
-    this._aspect = a;
   }
 
 }
