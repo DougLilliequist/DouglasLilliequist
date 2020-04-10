@@ -39,7 +39,7 @@ body {
 
     position: absolute;
     right: 1%;
-    top: 12%;
+    top: 15%;
     transform: translate(0.0%, -50%);
     writing-mode: vertical-lr;
     z-index: 1000;
@@ -63,7 +63,7 @@ body {
             &::before {
 
                 position: absolute;
-                width: 2px;
+                width: 1px;
                 left: -20%;
                 height: 100%;
                 background-color: black;

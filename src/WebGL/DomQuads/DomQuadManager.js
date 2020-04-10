@@ -52,6 +52,7 @@ export default class DomQuadManager {
 
             this.activeMediator.removeEvents();
             this.activeMediator.unloadQuads();
+            this.scene.removeChild(this.activeMediator);
 
     }
 

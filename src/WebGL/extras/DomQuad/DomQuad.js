@@ -48,7 +48,7 @@ export default class DomQuad extends Mesh {
     const viewportScaleX = rect.width / window.innerWidth;
     const viewportScaleY = rect.height / window.innerHeight;
     
-    this.aspect = rect.height / rect.width;
+    this.aspect = rect.width / rect.height;
 
     return new Vec2(viewportScaleX, viewportScaleY);
   
@@ -66,9 +66,6 @@ export default class DomQuad extends Mesh {
       2.0 * ((rect.left + (rect.width * 0.5)) / window.innerWidth) - 1.0;
     const posPhaseY =
       2.0 * ((rect.top + (rect.height * 0.5)) / window.innerHeight) - 1.0;
-
-    // const posX = posPhaseX * this.cameraViewplaneSize.x;
-    // const posY = posPhaseY * this.cameraViewplaneSize.y * -1.0;
 
     const posX = posPhaseX * this.cameraViewplaneSize.x;
     const posY = posPhaseY * this.cameraViewplaneSize.y * -1.0;

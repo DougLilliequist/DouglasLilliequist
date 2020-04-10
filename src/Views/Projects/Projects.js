@@ -41,20 +41,21 @@ export default class Projects extends View {
   //assign variables to dom elements
   initReferences() {
 
-    this.projectTitle = this.el.querySelector(".main-container").querySelector('.project-container__title-container');
+    this.projectTitle = document.querySelector('.project-container__title-container');
     this.projectTitleClipReveal = this.projectTitle.children[0];
 
-    this.projectContent = this.el.querySelector(".main-container").querySelector(".project-container__content-container__content");
-    this.projectContentClipReveal = this.projectContent.querySelectorAll('.project-container__content-container__content__clip-reveal');
+    this.projectContent = document.querySelector(".project-container__content-container__content");
+    this.projectContentClipReveal = document.querySelectorAll('.project-container__content-container__content__clip-reveal');
     this.projectClipRevealElements = [];
     this.projectContentClipReveal.forEach((el, i) => {
       this.projectClipRevealElements[i] = el.children[0];
     });
 
-    this.projectLink = this.el.querySelector(".main-container").querySelector(".project-container__content-container__project-link");
+    this.projectLink = document.querySelector(".project-container__content-container__project-link");
     this.projectLinkClipReveal = this.projectLink.children[0];
+    console.log(this.projectLinkClipReveal)
 
-    this.domGLReferenceElement = this.el.querySelector(".main-container").querySelector('.project');
+    this.domGLReferenceElement = document.querySelector('.project');
 
   }
 
@@ -62,7 +63,6 @@ export default class Projects extends View {
 
     this.enableUserInteraction = true;
     this.hoveringProject = false;
-    this.hoveringLink = false;
 
     emitter.on(events.LOAD_PROJECT_CONTENT, this.loadProjectContent);
     emitter.on(events.MOUSE_DOWN, this.enableScrollMode);
@@ -71,12 +71,12 @@ export default class Projects extends View {
     this.projectLink.addEventListener('mouseenter', () => {
 
       emitter.emit(events.HOVERING_LINK)
-      this.hoveringLink = true;
+      window.hoveringLink = true;
     }, false);
 
     this.projectLink.addEventListener('mouseleave', () => {
       emitter.emit(events.LEAVING_LINK)
-      this.hoveringLink = false;
+      window.hoveringLink = false;
     }, false);
 
   }
@@ -108,7 +108,7 @@ export default class Projects extends View {
 
   enableScrollMode = () => {
 
-    if(this.hoveringLink) return;
+    if(window.hoveringLink) return;
 
     this.enableUserInteraction = false;
     emitter.emit(events.ENTER_SCROLL_MODE);
@@ -164,7 +164,7 @@ export default class Projects extends View {
     gsap.to(this.projectTitleClipReveal.children[0], {
       duration: 0.75,
       opacity: 1,
-      x: 0
+      x: 0,
     })
 
   }

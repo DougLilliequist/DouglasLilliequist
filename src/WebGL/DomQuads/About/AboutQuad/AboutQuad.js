@@ -35,13 +35,17 @@ export default class AboutQuad extends DomQuad {
 
       initProgram = () => {
 
-        // this.texture = new Texture(this.gl, {
-        //     generateMipmaps: false,
-        //     width: 1024,
-        //     height: 1024
-        // });
+        this.texture = new Texture(this.gl, {
+            generateMipmaps: false,
+            width: 1024,
+            height: 1024
+        });
 
-        // this.texture.image = this.media;
+        // const img = new Image();
+        // img.src = 'assets/img/portrait.png';
+        // img.onLoad = () => this.texture.image = img;
+        this.texture.image = this.image;
+        // this.image.onLoad = () => this.texture.image = this.image;
 
         this.geometry = new Plane(this.gl, {
             width: 2,
@@ -55,9 +59,9 @@ export default class AboutQuad extends DomQuad {
             _ViewplaneSize: {
                 value: this.viewPlaneSize
             },
-            // _Image: {
-            //     value: this.texture
-            // },
+            _Image: {
+                value: this.texture
+            },
             _Alpha: {
                 value: 0.0
             },
@@ -91,6 +95,12 @@ export default class AboutQuad extends DomQuad {
             duration: 1.0,
             value: 0.0
         });
+
+      }
+
+      update() {
+        
+        this.program.uniforms._Aspect.value = this.aspect;
 
       }
 

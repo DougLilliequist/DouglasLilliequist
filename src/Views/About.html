@@ -11,11 +11,10 @@
     <div class = "navigation">
         <ul class = "navigation__links">
             <li><a href = "./index.html">home</a></li>
-            <li><a href = "./About.html">about</a></li>
             <li><a href = "./Projects.html">projects</a></li>
+            <li><a href = "./About.html">about</a></li>
         </ul>
     </div>
-    <canvas class = "main-cursor"></canvas>
     <main data-router-wrapper>
         <article data-router-view="about">
             <div class = "content">
@@ -25,18 +24,26 @@
                 </div>
                 <div class = "content__copy-container">
                     <div class = "content__about-copy">
-                    <h1 class = "content__about-copy__header">Hi!</h1>
-                    <p class = "content__about-copy__body-text">
+                    <div class = "content__about-copy__intro">
+                    <h1 class = "content__about-copy__intro__header">Hi!</h1>
+                    <p class = "content__about-copy__intro__body-text">
                         I'm Swedish Creative Technologist at Adventure Club in Helsinki. I want to use my skills to create surreal and interactive experiences that in some way, makes one dream or feel inspired in some way! As well as be able to manifest my ideas and "dream while awake".
                     </p>
+                </div>
                     <div class = "content__contact">
                         <h3 class = "content__contact__header">
-                            Wanna say hello? Feel free to reach me on
+                        Feel free to reach me on...
                         </h3>
                         <div class = "content__contact__methods">
-                            <a class = "content__contact__twitter" target = "_blank" href = "mailto:douglas@adventureclub.io">mail</a>
-                            <a class = "content__contact__twitter" target = "_blank" href = "https://twitter.com/DougLilliequist">twitter</a>
-                            <a class = "content__contact__twitter" target = "_blank" href = "https://www.linkedin.com/in/douglas-lilliequist-a2798b110/">linkedIn</a>
+                            <div class = "content__contact__methods__wrapper">
+                                <a class = "content__contact__link" target = "_blank" href = "mailto:douglas@adventureclub.io">mail</a>
+                            </div>
+                            <div class = "content__contact__methods__wrapper">
+                                <a class = "content__contact__link" target = "_blank" href = "https://twitter.com/DougLilliequist">twitter</a>
+                            </div>
+                            <div class = "content__contact__methods__wrapper">
+                                <a class = "content__contact__link" target = "_blank" href = "https://www.linkedin.com/in/douglas-lilliequist-a2798b110/">linkedIn</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -44,6 +51,7 @@
             </div>        
         </article>
     </main>
+    <canvas class = "main-cursor"></canvas>
     <div class = "canvas-container"></div>
     <script src = "../index.js"></script>
 </body>

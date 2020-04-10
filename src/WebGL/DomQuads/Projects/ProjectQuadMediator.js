@@ -111,7 +111,8 @@ export default class ProjectQuadMediator extends DomquadMediator {
     this.captureLastPosition();
     this.children.map((quad) => {
       quad.removeScrollMode();
-    })
+    });
+    this.getQuadInView();
     
   }
 
@@ -121,10 +122,11 @@ export default class ProjectQuadMediator extends DomquadMediator {
       gsap.to(quad.program.uniforms._Alpha, {
         duration: 1,
         value: 1.0,
-        stagger: -0.3,
+        stagger: -0.5,
         // ease: "sine.in"
         ease: "sine.in"
       });
+      
     });
 
   }
@@ -133,9 +135,9 @@ export default class ProjectQuadMediator extends DomquadMediator {
    
     this.children.map((quad) => {
       gsap.to(quad.program.uniforms._Alpha, {
-        duration: 0.5,
+        duration: 0.8,
         value: 0.0,
-        stagger: -0.3,
+        stagger: 0.1,
         // ease: "sine.in"
         ease: "sine.in",
       });

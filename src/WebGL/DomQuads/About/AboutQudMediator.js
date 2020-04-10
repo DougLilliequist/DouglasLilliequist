@@ -61,6 +61,8 @@ export default class AboutQuadMediator extends DomquadMediator {
 
     update() {
 
+        this.quad.update();
+
     }
 
 }

@@ -46,9 +46,18 @@ class MediaManager {
     loadImages() {
 
         this.imgSources = [
-
+            'https://douglaslilliequist.s3.eu-west-3.amazonaws.com/portrait.png'
         ]
 
+        this.images = [];
+
+        for(let i = 0; i < this.imgSources.length; i++) {
+            // const img = new Image();
+            const img = document.createElement('img');
+            img.crossOrigin = "anonymous";
+            img.src = this.imgSources[i];
+            this.images[i] = img;
+        }
 
     }
 
