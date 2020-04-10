@@ -29,7 +29,8 @@
 
         &__intro {
 
-            top: 20%;
+            position: absolute;
+            top: 15%;
             
             &__header {
                 font-size: 30px;
@@ -85,6 +86,8 @@
                     text-decoration: none;
                     color:#000000;
                     margin: 0;
+                    opacity: 0.8;
+                    transition: opacity 0.2s;
         
                     &::before {
         
@@ -102,6 +105,9 @@
         
                 }
                 a:hover {
+
+                    opacity: 1;
+                    transition: opacity 0.2s;
         
                     &::before {
                         transform: scaleX(1);
