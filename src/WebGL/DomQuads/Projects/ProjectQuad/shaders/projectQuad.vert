@@ -34,9 +34,11 @@ void main() {
     vec3 pos = vec3(position.x * _ViewplaneSize.x, position.y * _ViewplaneSize.y, 0.0);
     pos *= _Scale;
 
+    mat4 modelViewProjection = projectionMatrix * modelViewMatrix;
+
     if(_InView) {
 
-        vec4 clipPos = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+        vec4 clipPos = modelViewProjection * vec4(pos, 1.0);
         clipPos.xyz /= clipPos.w;
         clipPos.xy = clipPos.xy * 0.5 + 0.5;
 
@@ -50,7 +52,7 @@ void main() {
 
     }
 
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+    gl_Position = modelViewProjection * vec4(pos, 1.0);
     vUv = uv;
     vMvPos = (modelViewMatrix * vec4(pos, 1.0)).xyz;
     mPos = (modelMatrix * vec4(pos, 1.0)).xyz;

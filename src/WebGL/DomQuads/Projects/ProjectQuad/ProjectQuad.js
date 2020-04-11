@@ -162,7 +162,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
 
         this.scrollModeTl.to(this.program.uniforms._FlowMapPhase, {
           value: 0.0,
-          duration: 0.85,
+          duration: 0.3,
           ease: "power2.inOut"
         }, "<");
   

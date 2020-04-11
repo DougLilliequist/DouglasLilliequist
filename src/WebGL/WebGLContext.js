@@ -175,5 +175,7 @@ export default class WebGLContext {
       aspect: aspectRatio
     });
 
+    this.mouseFlowmap.Aspect = w/h;
+
   }
 }

@@ -20,7 +20,9 @@ void main() {
     vec3 pos = position;
     pos.xy *= _ViewplaneSize;
 
-    vec4 clipPos = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+    mat4 modelViewProjection = projectionMatrix * modelViewMatrix;
+
+    vec4 clipPos = modelViewProjection * vec4(pos, 1.0);
     clipPos.xyz /= clipPos.w;
     clipPos.xy = clipPos.xy * 0.5 + 0.5;
 
@@ -33,7 +35,7 @@ void main() {
     float heightMap = (col.x + col.y + col.z) / 3.0;
     pos += distort * max(0.1, heightMap);
 
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+    gl_Position = modelViewProjection * vec4(pos, 1.0);
     vUv = uv;
     vClipPos = clipPos.xy;
 

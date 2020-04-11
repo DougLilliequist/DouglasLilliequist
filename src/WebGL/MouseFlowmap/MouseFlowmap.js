@@ -116,4 +116,14 @@ export default class MouseFlowmap {
         return this.read.texture;
     }
 
+    get Aspect() {
+        return this.flowMap.program.uniforms._Aspect.value;
+    }
+
+    set Aspect(a) {
+
+        this.flowMap.program.uniforms._Aspect.value = a;
+
+    }
+
 }
