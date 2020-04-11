@@ -14,6 +14,8 @@ import {
 
 import DomQuadManager from './DomQuads/DomQuadManager.js'
 
+import MouseFlowmap from './MouseFlowmap/MouseFlowmap';
+
 import eventEmitter from '../EventEmitter';
 const emitter = eventEmitter.emitter;
 import events from '../../utils/events';
@@ -28,6 +30,8 @@ export default class WebGLContext {
   constructor(container) {
     this.initScene(container);
     this.initEvents();
+    this.initDomQuadManager();
+    this.initMouseflowMap();
   }
 
   initScene(container) {
@@ -57,10 +61,20 @@ export default class WebGLContext {
 
     this.scene = new Transform();
 
-    this.domQuadManager = new DomQuadManager(this.gl, this.scene, this.camera);
-
     this.stats = new Stats();
     document.body.appendChild(this.stats.dom);
+
+  }
+
+  initDomQuadManager() {
+
+    this.domQuadManager = new DomQuadManager(this.gl, this.scene, this.camera);
+
+  }
+
+  initMouseflowMap() {
+
+    this.mouseFlowmap = new MouseFlowmap(this.gl, {size: 256});
 
   }
 
@@ -72,6 +86,7 @@ export default class WebGLContext {
     emitter.on(events.UPDATE, this.update);
 
     this.isInteracting = false;
+    this.firstMove = false;
     this.inputPos = new Vec2(0.0, 0.0);
     this.prevInputPos = new Vec2(0.0, 0.0);
     this.inputDelta = new Vec2(0.0, 0.0);
@@ -84,17 +99,23 @@ export default class WebGLContext {
   onMouseDown = (e) => {
 
     this.isInteracting = true;
-    this.prevInputPos.copy(this.inputPos);
     this.inputPos.x = 2.0 * (e.x / window.innerWidth) - 1.0;
     this.inputPos.y = -1 * (2.0 * (e.y / window.innerHeight) - 1.0);
+    this.prevInputPos.copy(this.inputPos);
     this.inputDelta = this.inputPos.clone().sub(this.prevInputPos);
 
   }
 
   onMouseMove = (e) => {
 
+
      this.inputPos.x = 2.0 * (e.x / window.innerWidth) - 1.0;
      this.inputPos.y = -1 * (2.0 * (e.y / window.innerHeight) - 1.0);
+     if(this.firstMove === false) {
+      this.firstMove = true;
+      this.prevInputPos.copy(this.inputPos);
+      this.inputDelta = this.inputPos.clone().sub(this.prevInputPos);
+    }
 
   }
 
@@ -121,12 +142,16 @@ export default class WebGLContext {
     this.currentTime = performance.now();
     this.deltaTime = (this.currentTime - this.prevtime) / 1000.0;
 
-    if(this.isInteracting) this.inputDelta = this.inputPos.clone().sub(this.prevInputPos);
+    // if(this.isInteracting) this.inputDelta = this.inputPos.clone().sub(this.prevInputPos);
+    this.inputDelta = this.inputPos.clone().sub(this.prevInputPos);
+
+    this.mouseFlowmap.update(this.renderer, {dt: this.deltaTime, inputPos: this.inputPos, inputDelta: this.inputDelta});
 
     this.domQuadManager.update({
       dt: this.deltaTime, 
       inputPos: this.inputPos, 
-      inputDelta: this.inputDelta, 
+      inputDelta: this.inputDelta,
+      flowMap: this.mouseFlowmap.Texture 
     });
 
     this.render();

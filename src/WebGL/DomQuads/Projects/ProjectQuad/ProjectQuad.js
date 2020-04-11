@@ -1,14 +1,7 @@
 import DomQuad from '../../../extras/DomQuad/DomQuad.js';
 import { Program } from '../../../../../vendors/ogl/src/core/Program.js';
 import { Texture } from '../../../../../vendors/ogl/src/core/Texture.js';
-import { Vec2 } from '../../../../../vendors/ogl/src/math/Vec2.js';
 import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
-
-// import {
-//     Program,
-//     Vec2,
-//     Texture,
-//   } from "ogl";
   
   const vert = require("./shaders/projectQuad.vert");
   const frag = require("./shaders/projectQuad.frag");
@@ -53,11 +46,13 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
   
       this.position.z = -posOffset;
   
-      this.resetPosition = false;
+      // this.resetPosition = false;
   
       this.targetPos = this.position.z; //remove prev position
   
       this.inScrollMode = false;
+
+      this.isInView = false;
         
       this.initProgram();
   
@@ -79,8 +74,8 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
     this.geometry = new Plane(this.gl, {
       width: 2,
       height: 2,
-      widthSegments: 1.0,
-      heightSegments: 1.0
+      widthSegments: 32.0,
+      heightSegments: 32.0
     });
   
       this.texture = new Texture(this.gl, {
@@ -101,11 +96,20 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
         _Image: {
           value: this.texture
         },
+        _FlowMap: {
+          value: null
+        },
+        _FlowMapPhase: {
+          value: 1.0
+        },
         _InputForce: {
           value: 0.0
         },
         _AlphaPhase: {
           value: 0.0
+        },
+        _InView: {
+          value: false
         },
         _Alpha: {
           value: 0.0
@@ -135,50 +139,62 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
     //make animations into timeline anims
     applyScrollMode() {
   
+      // this.inScrollMode = true;
       this.inScrollMode = true;
-  
-      gsap.to(this.program.uniforms._Alpha, {
+      this.killScrollModeAnim();
+      this.scrollModeTl = gsap.timeline({})
+      this.scrollModeTl.to(this.program.uniforms._Alpha, {
         value: 0.65,
-        duration: 0.5,
+        duration: 0.6,
         ease: "power2.inOut"
-      })
-  
-      gsap.to(this.program.uniforms._Scale, {
-        value: 0.85,
-        duration: 0.5,
-        ease: "power2.inOut"
-      })
-  
-      gsap.to(this.program.uniforms._AlphaPhase, {
-        value: 1.0,
-        duration: 0.5,
-        ease: "power2.inOut"
-      })
+      }, "<");
+      this.scrollModeTl.to(this.program.uniforms._Scale, {
+         value: 0.85,
+         duration: 0.5,
+         ease: "power2.inOut"
+      }, "<");
+
+      this.scrollModeTl.to(this.program.uniforms._AlphaPhase, {
+          value: 1.0,
+          duration: 0.5,
+          ease: "power2.inOut"
+        }, "<");
+
+        this.scrollModeTl.to(this.program.uniforms._FlowMapPhase, {
+          value: 0.0,
+          duration: 0.85,
+          ease: "power2.inOut"
+        }, "<");
   
     }
   
     removeScrollMode() {
-  
-      this.inScrollMode = false;
-  
-      gsap.to(this.program.uniforms._Alpha, {
-        value: 1.0,
-        duration: 0.5,
-        ease: "power2.inOut"
-      })
-  
       
-      gsap.to(this.program.uniforms._Scale, {
-        value: 1.0,
+      this.inScrollMode = false;
+      this.killScrollModeAnim();
+      this.scrollModeTl = gsap.timeline({})
+      this.scrollModeTl.to(this.program.uniforms._Alpha, {
+        value: this.isInView ? 1.0 : 0.0,
         duration: 0.5,
         ease: "power2.inOut"
-      })
-  
-      gsap.to(this.program.uniforms._AlphaPhase, {
-        value: 0.0,
-        duration: 0.5,
-        ease: "power2.inOut"
-      })
+      }, "<");
+      this.scrollModeTl.to(this.program.uniforms._Scale, {
+         value: 1.0,
+         duration: 0.5,
+         ease: "power2.inOut"
+      }, "<");
+
+      this.scrollModeTl.to(this.program.uniforms._AlphaPhase, {
+          value: 0.0,
+          duration: 0.5,
+          ease: "power2.inOut"
+        }, "<");
+
+        this.scrollModeTl.to(this.program.uniforms._FlowMapPhase, {
+          value: 1.0,
+          duration: 0.5,
+          ease: "power2.inOut"
+        }, "<");
   
     }
   
@@ -190,7 +206,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
         this.position.z += (this.targetPos - this.position.z) * 0.05;
       }
   
-      this.isOutofBounds(index);
+      this.updateIndex(index);
       this.position.z = loopNegativeNumber({a: this.position.z, b: -5.0});
       
       if(this.video !== null) {
@@ -203,9 +219,11 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
     inView({inViewPosZ}) {
   
       if(Math.round(this.position.z) === inViewPosZ) {
-        return true;
+        this.program.uniforms._InView.value = this.isInView = true;
+        return this.isInView;
       } else {
-        return false;
+        this.program.uniforms._InView.value = this.isInView = false;
+        return this.isInView;
       }
   
     }
@@ -237,12 +255,19 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
       this.video.pause();
   
     }
+
+    killScrollModeAnim() {
+
+      gsap.killTweensOf(this.program.uniforms._Alpha);
+      gsap.killTweensOf(this.program.uniforms._Scale);
+      gsap.killTweensOf(this.program.uniforms._AlphaPhase);
+      gsap.killTweensOf(this.program.uniforms._FlowMapPhase);
+
+    }
   
     //I have no idea how it makes sense, but after some pen & paper coding I noticed
     //that applying the delta between the video count and the quad count gives me the desired index?
-
-    //rename function name
-    isOutofBounds() { //change name of function
+    updateIndex() { //change name of function
   
       if(this.position.z > 0.0) {
         this.index += this.parent.children.length;

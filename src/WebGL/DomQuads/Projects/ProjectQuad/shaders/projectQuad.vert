@@ -8,8 +8,13 @@ uniform mat4 projectionMatrix;
 uniform mat4 modelViewMatrix;
 uniform mat4 modelMatrix;
 
+uniform sampler2D _FlowMap;
+uniform float _FlowMapPhase;
+
+uniform sampler2D _Image;
 uniform float _Scale;
 uniform float _Time;
+uniform bool _InView;
 
 uniform vec2 _ViewplaneSize;
 // uniform vec2 _CameraViewportSize;
@@ -18,20 +23,32 @@ varying vec3 vMvPos;
 varying vec3 mPos;
 
 varying vec2 vUv;
+varying vec2 vClipPos;
+
+#define distortStr 0.5
 
 //GET CLIP POSITIONS AND COMPARE WITH MOUSE TO DISPLACE VERTICES
 
 void main() {
 
     vec3 pos = vec3(position.x * _ViewplaneSize.x, position.y * _ViewplaneSize.y, 0.0);
-    
-    // vec3 pos = vec3(position.x, position.y, 0.0);
-    // pos.xy *= _CameraViewportSize;
-    // float phase = length(pos.xy);
-    // phase = phase;    
     pos *= _Scale;
 
-    // pos.xy *= mix(0.5, 1.0, (cos(_Time) * 0.5 + 0.5));
+    if(_InView) {
+
+        vec4 clipPos = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+        clipPos.xyz /= clipPos.w;
+        clipPos.xy = clipPos.xy * 0.5 + 0.5;
+
+        vec3 distort = texture2D(_FlowMap, clipPos.xy).xyz * distortStr;
+        vec3 col = texture2D(_Image, uv).xyz;
+        float heightMapDistort = (col.x + col.y + col.z) / 3.0;
+        // heightMapDistort *= heightMapDistort;
+        // pos += distort * min(0.7, max(0.1, heightMapDistort)) * _FlowMapPhase;
+        pos += distort * max(0.1, heightMapDistort) * _FlowMapPhase;
+        vClipPos = clipPos.xy;
+
+    }
 
     gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
     vUv = uv;

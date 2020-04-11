@@ -56,12 +56,12 @@ export default class DomQuadManager {
 
     }
 
-    update({dt, inputPos, inputDelta}) {
+    update({dt, inputPos, inputDelta, flowMap} = {}) {
 
         if(this.activeMediator === null) return;
 
-        this.activeMediator.update({dt, inputPos, inputDelta});
-        this.activeMediator.children.map((quad, i) => {
+        this.activeMediator.update({dt, inputPos, inputDelta, flowMap});
+        this.activeMediator.children.map((quad) => {
 
             quad.calcDomToWebGLPos({
                 domElement: this.activeMediator.referenceElement,
