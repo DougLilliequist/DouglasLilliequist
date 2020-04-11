@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "parcel src/Views/index.html --https",
+    "dev": "parcel src/Views/index.html",
     "build": "parcel build src/Views/index.html"
   },
   "repository": {

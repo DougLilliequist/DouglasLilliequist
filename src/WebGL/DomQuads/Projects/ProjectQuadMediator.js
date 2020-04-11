@@ -63,8 +63,8 @@ export default class ProjectQuadMediator extends DomquadMediator {
       const quad = new ProjectQuad(
         this.gl,
         this.media, {
-          widthSegments: 1.0,
-          heightSegments: 1.0,
+          widthSegments: 16.0,
+          heightSegments: 16.0,
           posOffset: i, //rename or make new prop for index?
           phase: phase
         }
@@ -151,14 +151,17 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
   }
 
-  update({dt, inputPos, inputDelta} = {}) {
+  update({dt, inputPos, inputDelta, flowMap}) {
 
-        this.updateInputForce({inputDelta, dt});
+        if(this.inScrollMode) {
+          this.updateInputForce({inputDelta, dt});
+        }
         this.children.map((quad, i) => {
           
           quad.update({index: i, force: this.inputForce.y, isInteracting: this.inScrollMode});
           quad.program.uniforms._InputForce.value = Math.min(1.0, Math.abs(this.inputForce.y * 1.0));
           quad.program.uniforms._Time.value += dt;
+          quad.program.uniforms._FlowMap.value = flowMap;
           
         });
 

@@ -15,15 +15,15 @@ export default class AboutQuad extends DomQuad {
     constructor(
         gl,
         media, {
-          widthSegments = 1.0,
-          heightSegments = 1.0,
+          widthSegments,
+          heightSegments,
         } = {}
       ) {
 
         super(gl, {
             widthSegments,
             heightSegments
-        } = {});
+        });
 
         this.gl = gl;
 
@@ -50,8 +50,8 @@ export default class AboutQuad extends DomQuad {
         this.geometry = new Plane(this.gl, {
             width: 2,
             height: 2,
-            widthSegments: 1.0,
-            heightSegments: 1.0
+            widthSegments: 32.0,
+            heightSegments: 32.0
           });
 
         const u = {
@@ -61,6 +61,9 @@ export default class AboutQuad extends DomQuad {
             },
             _Image: {
                 value: this.texture
+            },
+            _FlowMap: {
+                value: null
             },
             _Alpha: {
                 value: 0.0
@@ -98,9 +101,10 @@ export default class AboutQuad extends DomQuad {
 
       }
 
-      update() {
+      update(flowMap) {
         
         this.program.uniforms._Aspect.value = this.aspect;
+        this.program.uniforms._FlowMap.value = flowMap;
 
       }
 

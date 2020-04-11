@@ -32,8 +32,8 @@ export default class AboutQuadMediator extends DomquadMediator {
         this.referenceElement = referenceElement;
         
         this.quad = new AboutQuad(this.gl, media, {
-            widthSegments: 1.0,
-            heightSegments: 1.0
+            widthSegments: 16.0,
+            heightSegments: 16.0
         });
 
         this.quad.setParent(this);
@@ -59,9 +59,9 @@ export default class AboutQuadMediator extends DomquadMediator {
 
     }
 
-    update() {
-
-        this.quad.update();
+    update({flowMap}) {
+        
+        this.quad.update(flowMap);
 
     }
 

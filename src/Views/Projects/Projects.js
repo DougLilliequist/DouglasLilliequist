@@ -144,82 +144,53 @@ export default class Projects extends View {
 
   revealProjectContent() {
 
-    this.revealProjectTitle();
-    this.revealProjectDescription();
-    this.revealProjectLink();
+    this.killProjectContentAnim();
+
+    const revealTL = gsap.timeline();
+    revealTL.to(this.projectTitleClipReveal.children[0], {
+      duration: 0.75,
+      opacity: 1,
+      x: 0,
+    }, "<");
+    revealTL.to(this.projectClipRevealElements, {
+      opacity: 1,
+      duration: 1.0,
+      stagger: 0.1
+    }, "<0.3");
+    revealTL.to(this.projectLinkClipReveal.children[0], {
+      duration: 0.75,
+      y: 0
+    }, "<0.5");
 
   }
 
   hideProjectContent() {
 
-    this.hideProjectTitle();
-    this.hideProjectDescription();
-    this.hideProjectLink();
+    this.killProjectContentAnim();
 
-  }
-
-
-  revealProjectTitle() {
-
-    gsap.to(this.projectTitleClipReveal.children[0], {
-      duration: 0.75,
-      opacity: 1,
-      x: 0,
-    })
-
-  }
-
-  hideProjectTitle() {
-
-    gsap.to(this.projectTitleClipReveal.children[0], {
+    const hideTl = gsap.timeline();
+    hideTl.to(this.projectTitleClipReveal.children[0], {
       duration: 0.75,
       opacity: 0,
       x: -50
-    });
-
-  }
-
-  revealProjectDescription() {
-
-    this.projectDescRevealAnim = gsap.to(this.projectClipRevealElements, {
-      opacity: 1,
-      duration: 0.5,
-      stagger: 0.1
-    });
-
-  }
-
-  hideProjectDescription() {
-
-    this.projectDescHideAnim = gsap.to(this.projectClipRevealElements, {
+    }, "<");
+    hideTl.to(this.projectClipRevealElements, {
       opacity: 0,
-      duration: 0.5,
-      stagger: 0.1
-    })
-
-  }
-
-  revealProjectLink() {
-
-    gsap.to(this.projectLinkClipReveal.children[0], {
-      duration: 0.75,
-      y: 0
-    });
-
-  }
-
-  hideProjectLink() {
-
-    gsap.to(this.projectLinkClipReveal.children[0], {
+      duration: 0.3,
+      stagger: -0.1
+    }, "<")
+    hideTl.to(this.projectLinkClipReveal.children[0], {
       duration: 0.75,
       y: 25
-    });
+    }, "<");
 
   }
 
-  getAnimPhase({a, b}) {
+  killProjectContentAnim() {
 
-    return a / Math.max(1.0, b - 1.0)
+    gsap.killTweensOf(this.projectTitleClipReveal.children[0]);
+    gsap.killTweensOf(this.projectClipRevealElements);
+    gsap.killTweensOf(this.projectLinkClipReveal.children[0]);
 
   }
 

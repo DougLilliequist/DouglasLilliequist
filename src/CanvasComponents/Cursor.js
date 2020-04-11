@@ -72,7 +72,7 @@ export default class Cursor {
 
         this.endAngle = Math.PI * 2.0;
 
-        this.ease = 0.35;
+        this.ease = 0.7;
 
     }
 
