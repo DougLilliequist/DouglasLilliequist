@@ -15,6 +15,8 @@ uniform mat4 modelViewMatrix;
 varying vec2 vUv;
 varying vec2 vClipPos;
 
+#define DISTORTSTR 0.8
+
 void main() {
 
     vec3 pos = position;
@@ -26,14 +28,15 @@ void main() {
     clipPos.xyz /= clipPos.w;
     clipPos.xy = clipPos.xy * 0.5 + 0.5;
 
-    vec3 distort = texture2D(_FlowMap, clipPos.xy).xyz * 0.2;
+    vec3 distort = texture2D(_FlowMap, clipPos.xy).xyz * DISTORTSTR;
 
     vec2 imgCoord = uv;
     // imgCoord.x *= _Aspect;
 
     vec3 col = texture2D(_Image, imgCoord).xyz;
     float heightMap = (col.x + col.y + col.z) / 3.0;
-    pos += distort * max(0.1, heightMap);
+    heightMap *= heightMap;
+    pos += distort * max(0.2, heightMap) * distort.z;
 
     gl_Position = modelViewProjection * vec4(pos, 1.0);
     vUv = uv;

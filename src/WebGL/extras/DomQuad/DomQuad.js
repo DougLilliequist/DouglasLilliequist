@@ -77,12 +77,7 @@ export default class DomQuad extends Mesh {
 
   dispose() {
 
-    this.program.uniforms = null;
-    this.program.remove();
-    this.geometry.remove();
-    if(this.texture) this.texture = null;
-    this.geometry = null;
-    this.program = null;
+    this.visible = false;
 
   }
 

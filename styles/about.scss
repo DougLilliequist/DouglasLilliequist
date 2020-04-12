@@ -87,35 +87,35 @@
                     color:#000000;
                     margin: 0;
                     opacity: 0.8;
-                    transition: opacity 0.2s;
+                    // transition: opacity 0.2s;
         
-                    &::before {
+                    // &::before {
         
-                        position: absolute;
-                        height: 1px;
-                        bottom: 0%;
-                        width: 100%;
-                        background-color: black;
-                        content: "";
-                        transform: scaleX(0);
-                        transform-origin: top right;
-                        transition: transform 0.2s;
+                    //     position: absolute;
+                    //     height: 1px;
+                    //     bottom: 0%;
+                    //     width: 100%;
+                    //     background-color: black;
+                    //     content: "";
+                    //     transform: scaleX(0);
+                    //     transform-origin: top right;
+                    //     transition: transform 0.2s;
             
-                    }
+                    // }
         
                 }
-                a:hover {
+                // a:hover {
 
-                    opacity: 1;
-                    transition: opacity 0.2s;
+                //     opacity: 1;
+                //     // transition: opacity 0.2s;
         
-                    &::before {
-                        transform: scaleX(1);
-                        transform-origin: top left;
-                        transition: transform .5s;
-                    }
+                //     // &::before {
+                //     //     transform: scaleX(1);
+                //     //     transform-origin: top left;
+                //     //     transition: transform .5s;
+                //     // }
         
-                }
+                // }
 
             }
 

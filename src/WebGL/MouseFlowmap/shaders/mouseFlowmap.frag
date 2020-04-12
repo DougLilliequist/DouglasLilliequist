@@ -20,8 +20,13 @@ void main() {
     vec2 toInput = _InputPos - uv;
     toInput.x *= _Aspect;
 
-    float phase = smoothstep(0.3, 0.0, length(toInput));
+    float phase = smoothstep(_Radius, 0.0, length(toInput));
     vec3 vel = vec3(_InputVel,1.0 - pow(1.0 - min(1.0, length(_InputVel)), 2.0)) * phase * _Force;
+    
+    // vec3 vel = vec3(_InputVel,1.0 - pow(1.0 - min(1.0, length(_InputVel)), 2.0)) * _Force;
+    // float phase = smoothstep(vel.z * 0.5, 0.0, length(toInput));
+    // vel *= phase;
+
     vec3 prev = texture2D(_PrevFrame, vUv).xyz;
     vec3 outputPhase = mix(vel, prev, _FadeRate);
 

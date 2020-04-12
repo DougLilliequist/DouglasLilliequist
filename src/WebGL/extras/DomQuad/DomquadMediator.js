@@ -18,16 +18,10 @@ export default class DomquadMediator extends Transform {
     }
     
     unloadQuads = () => {
-
-        let quads = [...this.children];
         
-        quads.forEach((quad) => {
-            quad.dispose();
-            this.removeChild(quad);
+        this.children.map((quad) => {
+            quad.visible = false;
         });
-
-        quads.legth = 0;
-        quads = null;
 
     }
 

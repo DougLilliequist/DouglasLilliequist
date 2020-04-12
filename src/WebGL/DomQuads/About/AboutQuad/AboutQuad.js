@@ -86,17 +86,18 @@ export default class AboutQuad extends DomQuad {
       reveal() {
 
         gsap.to(this.program.uniforms._Alpha, {
-            duration: 1.0,
+            duration: 0.85,
             value: 1.0
-        })
+        });
 
       }
 
       hide() {
 
         gsap.to(this.program.uniforms._Alpha, {
-            duration: 1.0,
-            value: 0.0
+            duration: 0.75,
+            value: 0.0,
+            ease: "sine.inOut"
         });
 
       }

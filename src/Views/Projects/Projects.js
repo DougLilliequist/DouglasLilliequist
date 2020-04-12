@@ -10,6 +10,7 @@ import {gsap} from 'gsap';
 
 
 export default class Projects extends View {
+
   onEnter() {
   
     super.onEnter();
@@ -21,16 +22,20 @@ export default class Projects extends View {
     this.initEvents();
 
     emitter.emit(events.INIT_DOMGL, {view: "PROJECTS", params: {referenceElement: this.domGLReferenceElement, media: mediaManager.videos, getFirstQuad: true}});
-  
+
+    // this.playEnterAnim();
+
   }
 
   onLeave() {
     super.onLeave();
     this.removeEvents();
+    this.playLeaveAnim();
   }
 
   onEnterCompleted() {
     super.onEnterCompleted();
+    this.playEnterAnim();
   }
 
   onLeaveCompleted() {
@@ -53,16 +58,17 @@ export default class Projects extends View {
 
     this.projectLink = document.querySelector(".project-container__content-container__project-link");
     this.projectLinkClipReveal = this.projectLink.children[0];
-    console.log(this.projectLinkClipReveal)
 
     this.domGLReferenceElement = document.querySelector('.project');
+
+    this.clickAndDragCTA = document.querySelector('.cta_click-drag');
 
   }
 
   initEvents() {
 
     this.enableUserInteraction = true;
-    this.hoveringProject = false;
+    this.inScrollMode = false;
 
     emitter.on(events.LOAD_PROJECT_CONTENT, this.loadProjectContent);
     emitter.on(events.MOUSE_DOWN, this.enableScrollMode);
@@ -110,79 +116,155 @@ export default class Projects extends View {
 
     if(window.hoveringLink) return;
 
+    this.inScrollMode = true;
     this.enableUserInteraction = false;
     emitter.emit(events.ENTER_SCROLL_MODE);
-    this.hideProjectContent();
+    this.animateProjectContent();
 
   }
 
   disableScrollMode = () => {
+
+    this.inScrollMode = false;
     this.enableUserInteraction = true;
     emitter.emit(events.EXIT_SCROLL_MODE);
-    this.revealProjectContent();
-  }
-
-  onProjectHover = () => {
-
-    this.hoveringProject = true;
-
-    if(this.enableUserInteraction) {
-      this.hideProjectContent();
-    }
+    this.animateProjectContent();
 
   }
 
-  onProjectHoverLeave = () => {
+  playEnterAnim() {
 
-    this.hoveringProject = false;
+    this.killProjectContentAnim();
+    const ease = "linear";
+    const startY = 100;
+    const dur = 0.85
 
-    if(this.enableUserInteraction) {
-      this.revealProjectContent();
-    }
+    const transitionTl = gsap.timeline();
+    transitionTl.fromTo(this.projectTitle, {
+      opacity: 0,
+      y: startY,
+    }, {
+      duration: dur,
+      opacity: 1,
+      y: 0,
+      // ease: ease
+    }, "<");
+
+    transitionTl.fromTo(this.referenceElement, {
+      y: startY
+    }, {
+      duration: dur,
+      y: 0,
+      // ease: ease
+    }, "<0.1");
+
+    transitionTl.fromTo(this.projectContentClipReveal, {
+
+      opacity: 0,
+      y: startY
+
+    }, {
+
+      duration: dur,
+      opacity: 1,
+      y: 0,
+      stagger: 0.1,
+      // ease: ease
+
+    // }, "<0.3");
+    }, "<0.1");
+
+    transitionTl.fromTo(this.projectLink, {
+      opacity: 0,
+      y: startY
+    },
+    {
+      duration: dur,
+      opacity: 1.0,
+      y: 0,
+      // ease: ease
+    }, "<0.05");
+
+    transitionTl.fromTo(this.clickAndDragCTA, {
+      opacity: 0,
+      y: startY * 0.5
+    }, {
+      duration: dur,
+      opacity: 1.0,
+      y: 0
+    }, "<0.01");
 
   }
 
-  revealProjectContent() {
+  playLeaveAnim() {
 
     this.killProjectContentAnim();
 
-    const revealTL = gsap.timeline();
-    revealTL.to(this.projectTitleClipReveal.children[0], {
-      duration: 0.75,
-      opacity: 1,
-      x: 0,
-    }, "<");
-    revealTL.to(this.projectClipRevealElements, {
-      opacity: 1,
-      duration: 1.0,
-      stagger: 0.1
-    }, "<0.3");
-    revealTL.to(this.projectLinkClipReveal.children[0], {
-      duration: 0.75,
-      y: 0
-    }, "<0.5");
+    const transitionTl = gsap.timeline();
+    const ease = "sine.inOut";
+    const dur = 0.75;
+    const targetY = -100;
+
+    transitionTl.to(this.projectTitle, {
+      opacity: 0,
+      y: targetY,
+      duration: dur,
+      ease: ease
+    }, "<0.0");
+
+    transitionTl.to(this.referenceElement, {
+      duration: dur,
+      y: targetY,
+      ease: ease
+    }, "<0.1");
+
+    transitionTl.to(this.projectContentClipReveal, {
+
+      duration: dur,
+      opacity: 0,
+      y: targetY,
+      stagger: 0.08,
+      ease: ease
+    }, "<0.05");
+
+    transitionTl.to(this.projectLink,
+    {
+      duration: dur,
+      opacity: 0.0,
+      y: targetY,
+      ease: ease
+    }, "<0.05");
+
+    transitionTl.to(this.clickAndDragCTA, {
+      duration: dur,
+      opacity: 0.0,
+      y: targetY * 0.5,
+      ease: ease
+    }, "<0.01");
 
   }
 
-  hideProjectContent() {
+  animateProjectContent() { //rename later
+
+    const scrolling = this.inScrollMode;
 
     this.killProjectContentAnim();
 
     const hideTl = gsap.timeline();
     hideTl.to(this.projectTitleClipReveal.children[0], {
       duration: 0.75,
-      opacity: 0,
-      x: -50
+      opacity: scrolling ? 0 : 1,
+      x: scrolling ? -50 : 0
     }, "<");
     hideTl.to(this.projectClipRevealElements, {
-      opacity: 0,
-      duration: 0.3,
-      stagger: -0.1
-    }, "<")
+      opacity: scrolling ? 0 : 1,
+      duration: scrolling ? 0.3 : 1.0,
+      stagger: scrolling ? -0.1 : 0.1
+    }, "<0.1")
     hideTl.to(this.projectLinkClipReveal.children[0], {
       duration: 0.75,
-      y: 25
-    }, "<");
+      y: scrolling ? 30 : 0
+    }, "<0.2");
 
   }
 

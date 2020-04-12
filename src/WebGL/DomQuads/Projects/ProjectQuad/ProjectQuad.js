@@ -44,7 +44,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
   
       this.video = this.videos[this.index];
   
-      this.position.z = -posOffset;
+      this.initPos = this.position.z = -posOffset;
   
       // this.resetPosition = false;
   
@@ -63,8 +63,9 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
     initEvents() {
   
       emitter.on(events.PLAY_VIDEO, this.playVideo);
-  
       emitter.on(events.PAUSE_VIDEO, this.pauseVideo);
+      emitter.on(events.APPLY_SCROLL_MODE_ANIM, this.applyScrollMode);
+      emitter.on(events.REMOVE_SCROLL_MODE_ANIM, this.removeScrollMode);
   
     }
   
@@ -136,8 +137,8 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
       });
     }
   
-    //make animations into timeline anims
-    applyScrollMode() {
+    //consider making the animation faster
+    applyScrollMode = () => {
   
       // this.inScrollMode = true;
       this.inScrollMode = true;
@@ -168,7 +169,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
   
     }
   
-    removeScrollMode() {
+    removeScrollMode = () => {
       
       this.inScrollMode = false;
       this.killScrollModeAnim();
@@ -232,10 +233,14 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
     updateVideoTexture() {
   
         this.video = this.videos[this.index];
-  
-        if (this.video.readyState >= this.video.HAVE_ENOUGH_DATA) {
-          this.texture.image = this.video;
-          this.texture.needsUpdate = true;
+
+        if(this.inView) {
+          if (this.video.readyState >= this.video.HAVE_ENOUGH_DATA) {
+            this.texture.image = this.video;
+            this.texture.needsUpdate = true;
+          }
+        } else {
+          this.texture.needsUpdate = false;
         }
   
     }

@@ -30,16 +30,22 @@ export default class AboutQuadMediator extends DomquadMediator {
         this.setParent(this.scene);
 
         this.referenceElement = referenceElement;
-        
-        this.quad = new AboutQuad(this.gl, media, {
-            widthSegments: 16.0,
-            heightSegments: 16.0
-        });
 
-        this.quad.setParent(this);
+        if(this.quadsLoaded === false) {
 
-        this.quadsLoaded = true;
-        
+            this.quad = new AboutQuad(this.gl, media, {
+                widthSegments: 16.0,
+                heightSegments: 16.0
+            });
+    
+            this.quad.setParent(this);
+
+            this.quadsLoaded = true;
+
+        }
+
+        this.quad.visible = true;
+
         this.quad.updateDimensions({
             domElement: this.referenceElement,
             camera: this.camera

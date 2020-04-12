@@ -25,7 +25,7 @@ varying vec3 mPos;
 varying vec2 vUv;
 varying vec2 vClipPos;
 
-#define distortStr 0.5
+#define DISTORTSTR 1.0
 
 //GET CLIP POSITIONS AND COMPARE WITH MOUSE TO DISPLACE VERTICES
 
@@ -42,12 +42,12 @@ void main() {
         clipPos.xyz /= clipPos.w;
         clipPos.xy = clipPos.xy * 0.5 + 0.5;
 
-        vec3 distort = texture2D(_FlowMap, clipPos.xy).xyz * distortStr;
+        vec3 distort = texture2D(_FlowMap, clipPos.xy).xyz * DISTORTSTR;
         vec3 col = texture2D(_Image, uv).xyz;
         float heightMapDistort = (col.x + col.y + col.z) / 3.0;
         // heightMapDistort *= heightMapDistort;
         // pos += distort * min(0.7, max(0.1, heightMapDistort)) * _FlowMapPhase;
-        pos += distort * max(0.1, heightMapDistort) * _FlowMapPhase;
+        pos += distort * max(0.1, heightMapDistort) * _FlowMapPhase * distort.z;
         vClipPos = clipPos.xy;
 
     }

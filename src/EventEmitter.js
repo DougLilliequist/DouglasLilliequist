@@ -1,6 +1,8 @@
 const Emitter = require('tiny-emitter');
 import events from '../utils/events';
 
+import {gsap} from 'gsap';
+
 class EventEmitter {
 
     constructor() {
@@ -16,7 +18,7 @@ class EventEmitter {
         window.addEventListener('mousemove', this.onMouseMove);
         window.addEventListener('mouseup', this.onMouseUp);
         window.addEventListener('resize', this.onResize);
-        this.tick();
+        gsap.ticker.add(this.tick)
 
     }
 
@@ -40,7 +42,6 @@ class EventEmitter {
 
     tick = () => {
 
-        window.requestAnimationFrame(() => this.tick());
         this.emitter.emit(events.UPDATE)
 
     }

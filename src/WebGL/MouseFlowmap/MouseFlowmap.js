@@ -68,13 +68,13 @@ export default class MouseFlowmap {
                 value: new Vec2(0.0, 0.0)
             },
             _Force: {
-                value: 1.0
+                value: 1.5
             },
             _Radius: {
-                value: 3.0
+                value: 0.5
             },
             _FadeRate: {
-                value: 0.94
+                value: 0.97
             },
             _Aspect: {
                 value: this.gl.canvas.width / this.gl.canvas.height

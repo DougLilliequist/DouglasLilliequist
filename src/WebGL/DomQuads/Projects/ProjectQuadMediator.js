@@ -8,6 +8,17 @@ import events from '../../../../utils/events.js';
 import {gsap} from 'gsap';
 import { Vec2 } from "../../../../vendors/ogl/src/math/Vec2";
 
+/**
+ * Not sure what happened, but somewhere when
+ * I replaced the looping with emitting an event for telling
+ * quads to change to scroll mode or not...
+ * 
+ * The last quad visible in front of camera remains when going between different pages
+ * which was not the case as the quads would always start on the first project.
+ * 
+ * I would say it should be the intended effect but at the same time, do you want to start from the begning always...?
+ */
+
 export default class ProjectQuadMediator extends DomquadMediator {
   constructor(gl, scene, camera) {
     super(gl, scene, camera);
@@ -55,21 +66,36 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     this.referenceElement = referenceElement;
 
-    let i = 0;
-    while (i < this.quadCount) {
+    if(this.quadsLoaded === false) {
 
-      let phase = i / (this.quadCount - 1.0)
+      let i = 0;
+      while (i < this.quadCount) {
+  
+        let phase = i / (this.quadCount - 1.0)
+  
+        const quad = new ProjectQuad(
+          this.gl,
+          this.media, {
+            widthSegments: 16.0,
+            heightSegments: 16.0,
+            posOffset: i, //rename or make new prop for index?
+            phase: phase
+          }
+        );
 
-      const quad = new ProjectQuad(
-        this.gl,
-        this.media, {
-          widthSegments: 16.0,
-          heightSegments: 16.0,
-          posOffset: i, //rename or make new prop for index?
-          phase: phase
-        }
-      );
-      
+        quad.setParent(this);
+        i++;
+
+        this.quadsLoaded = true;
+
+    }
+    
+  }
+
+  this.children.map((quad) => {
+
+      quad.visible = true;
+              
       quad.updateDimensions({
         domElement: this.referenceElement,
         camera: this.camera
@@ -79,12 +105,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
         domElement: this.referenceElement,
       });
 
-      quad.setParent(this);
-      i++;
-    
-    }
-
-    this.quadsLoaded = true;
+  })
 
   if(getFirstQuad) {
     this.getQuadInView().playVideo();
@@ -98,21 +119,17 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     this.inScrollMode = true;
     emitter.emit(events.PAUSE_VIDEO);
-    this.children.map((quad) => {
-      quad.applyScrollMode();
-    })
+    emitter.emit(events.APPLY_SCROLL_MODE_ANIM);
 
   }
 
   exitScrollMode = () => {
 
     this.inScrollMode = false;
-    emitter.emit(events.PLAY_VIDEO);
     this.captureLastPosition();
-    this.children.map((quad) => {
-      quad.removeScrollMode();
-    });
     this.getQuadInView();
+    emitter.emit(events.PLAY_VIDEO);
+    emitter.emit(events.REMOVE_SCROLL_MODE_ANIM);
     
   }
 
@@ -120,7 +137,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     this.children.map((quad) => {
       gsap.to(quad.program.uniforms._Alpha, {
-        duration: 1,
+        duration: 0.85,
         value: 1.0,
         stagger: -0.5,
         // ease: "sine.in"
@@ -128,6 +145,13 @@ export default class ProjectQuadMediator extends DomquadMediator {
       });
       
     });
+    // gsap.fromTo(this.position, {
+    //   z: 0.5
+    // },{
+    //   duration: 1.0,
+    //   z: 1.0,
+    //   ease: "sine.inOut"
+    // });
 
   }
 
@@ -135,11 +159,11 @@ export default class ProjectQuadMediator extends DomquadMediator {
    
     this.children.map((quad) => {
       gsap.to(quad.program.uniforms._Alpha, {
-        duration: 0.8,
+        duration: 0.75,
         value: 0.0,
         stagger: 0.1,
         // ease: "sine.in"
-        ease: "sine.in",
+        ease: "sine.inOut",
       });
     });
 

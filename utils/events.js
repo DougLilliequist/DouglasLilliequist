@@ -13,6 +13,8 @@ const events = {
 
     ENTER_SCROLL_MODE: 'enter_scroll_mode',
     EXIT_SCROLL_MODE: 'exit_scroll_mode',
+    APPLY_SCROLL_MODE_ANIM: 'apply_scroll_mode_anim',
+    REMOVE_SCROLL_MODE_ANIM: 'remove_scroll_mode_anim',
 
     MOUSE_DOWN: 'mouse_down',
     MOUSE_MOVE: 'mouse_move',
