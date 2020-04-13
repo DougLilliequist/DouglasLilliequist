@@ -12,7 +12,7 @@ export default class About extends View {
   onEnter() {
     super.onEnter();
 
-    this.referenceElement = this.el.querySelector('.content__portrait');
+    this.referenceElement = this.el.querySelector('.portrait-container__portrait');
     
     emitter.emit(events.INIT_DOMGL, {view: "ABOUT", params: {referenceElement: this.referenceElement, media: mediaManager.images[0]}});
 
@@ -42,10 +42,10 @@ export default class About extends View {
 
   initReferences() {
 
-    this.header = document.querySelector('.content__about-copy__intro__header');
-    this.introText = document.querySelector('.content__about-copy__intro__body-text');
-    this.contactHeader = document.querySelector('.content__contact__header');
-    this.links = document.querySelectorAll('.content__contact__methods__wrapper');
+    this.header = document.querySelector('.about-copy__intro__header');
+    this.introText = document.querySelector('.about-copy__intro__body-text');
+    this.contactHeader = document.querySelector('.contact-container__header');
+    this.links = document.querySelectorAll('.contact-container__methods__wrapper');
 
   }
 
@@ -89,7 +89,14 @@ export default class About extends View {
     const startY = 100;
     const ease = "linear";
 
-    const enterAnim = gsap.timeline();
+    const enterAnim = gsap.timeline(
+      {
+      onComplete: () => {
+        this.links.forEach((link) => {
+          link.children[0].classList.add('link--enabled');
+        });
+      }
+    });
     enterAnim.fromTo(this.referenceElement, {
       y: startY
     }, {
@@ -147,7 +154,15 @@ export default class About extends View {
     const textY = -100;
     const ease = "sine.inOut";
 
-    const leaveAnim = gsap.timeline();
+    const leaveAnim = gsap.timeline({
+
+      onComplete: () => {
+        this.links.forEach((link) => {
+          link.children[0].remove('link--enabled');
+        });
+      }
+
+    });
     
     leaveAnim.to(this.header, {
       duration: dur,

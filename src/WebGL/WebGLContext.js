@@ -126,10 +126,6 @@ export default class WebGLContext {
 
   }
 
-  start() {
-    this.update();
-  }
-
   render() {
     this.renderer.render({
       scene: this.scene,

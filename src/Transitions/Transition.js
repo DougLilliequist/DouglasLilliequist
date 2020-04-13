@@ -23,7 +23,7 @@ export default class Transition extends Highway.Transition {
     }) {
 
         gsap.to(from, {
-            duration: 0.85,
+            duration: 1.0,
             onStart: () => {
                 emitter.emit(events.PREPARE_UNMOUNT);
             },

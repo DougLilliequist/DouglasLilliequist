@@ -25,6 +25,30 @@ export default class App {
         const cursor = new Cursor();
         const webGLCTX = new WebGLContext();
 
+        this.initEvents();
+
+    }
+
+    initEvents() {
+
+        viewMediator.on('NAVIGATE_IN', ({to, location}) => {
+
+            this.updateNavigation(location);
+
+        });
+
+    }
+
+    updateNavigation(location) {
+
+        window.navigation.links.forEach((link) => {
+
+            link.classList.remove('link--active');
+
+            if(link.href === location.href) link.classList.add('link--active');
+
+        })
+
     }
 
 }

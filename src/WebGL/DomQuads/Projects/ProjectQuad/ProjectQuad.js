@@ -229,7 +229,6 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
   
     }
   
-    //double make sure that video texture is not being updated
     updateVideoTexture() {
   
         this.video = this.videos[this.index];
@@ -240,7 +239,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
             this.texture.needsUpdate = true;
           }
         } else {
-          this.texture.needsUpdate = false;
+          // this.texture.needsUpdate = false;
         }
   
     }

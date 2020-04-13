@@ -7,6 +7,9 @@ class Navigation {
     constructor() {
 
         this.el = document.querySelector('.navigation__links');
+        
+        this.links = this.el.querySelectorAll('.link');
+
         this.initEvents();
 
     }

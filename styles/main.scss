@@ -19,6 +19,7 @@ body {
     position: fixed;
     z-index: -1;
     margin: 0;
+    pointer-events: none;
 
 }
 
@@ -32,6 +33,7 @@ body {
     z-index: 0;
     user-select: none;
     margin: 0;
+    pointer-events: none;
 
 }
 
@@ -50,7 +52,7 @@ body {
         display: flex;
         justify-content: space-around;
         
-        a {
+        .link {
             text-decoration: none;
             color:#000000;
             display: inline-block;
@@ -58,7 +60,19 @@ body {
             margin-bottom: 1em;
             position: relative;
             font-weight: $semi-bold;
-            font-size: 0.85em;
+            font-size: 1.0em;
+            opacity: 0.5;
+            transition: opacity 0.5s;
+            will-change: opacity;
+
+            &--active {
+
+                opacity: 1.0;
+                transition: opacity 0.5s;
+                will-change: opacity;
+    
+            }
+
             // cursor: none;
 
             &::before {
@@ -71,17 +85,22 @@ body {
                 content: '';
                 transform: scaleY(0);
                 transform-origin: bottom left;
-                transition: transform .2s;
+                transition: transform 0.2s;
     
             }
 
-        }
-        a:hover {
+            &:hover {
 
-            &::before {
-                transform: scaleY(1);
-                transform-origin: top left;
-                transition: transform .5s;
+                opacity: 1.0;
+                transition: opacity 0.5s;
+                will-change: opacity;
+
+                &::before {
+                    transform: scaleY(1);
+                    transform-origin: top left;
+                    transition: transform 0.2s;
+                }
+    
             }
 
         }

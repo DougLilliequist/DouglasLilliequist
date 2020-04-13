@@ -32,6 +32,8 @@ class MediaManager {
         for(let i = 0; i < this.vidSources.length; i++) {
 
             const video = document.createElement('video');
+            video.width = 1280;
+            video.height = 720;
             video.src = this.vidSources[i];
             video.crossOrigin = "*";
             video.muted = true;

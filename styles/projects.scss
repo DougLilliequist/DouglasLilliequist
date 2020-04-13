@@ -42,6 +42,8 @@
                 text-align: end;
                 user-select: none;
                 text-transform: uppercase;
+                will-change: transform, opacity;
+
             }
 
         }
@@ -81,6 +83,7 @@
                 display: inline-block;
                 overflow: hidden;
                 margin-bottom: .85em;
+                will-change: transform, opacity;
 
             }
 
@@ -97,6 +100,7 @@
 
                 display: inline-block;
                 overflow: hidden;
+                will-change: transform, opacity;
 
             }
 
@@ -163,4 +167,5 @@
     font-size: 0.85em;
     font-weight: $semi-bold;
     user-select: none;
+    will-change: transform, opacity;
 }

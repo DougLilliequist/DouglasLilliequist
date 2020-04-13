@@ -164,6 +164,9 @@ export default class ProjectQuadMediator extends DomquadMediator {
         stagger: 0.1,
         // ease: "sine.in"
         ease: "sine.inOut",
+        onComplete: () => {
+          emitter.emit(events.PAUSE_VIDEO);
+        }
       });
     });
 
@@ -180,6 +183,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
         if(this.inScrollMode) {
           this.updateInputForce({inputDelta, dt});
         }
+        
         this.children.map((quad, i) => {
           
           quad.update({index: i, force: this.inputForce.y, isInteracting: this.inScrollMode});

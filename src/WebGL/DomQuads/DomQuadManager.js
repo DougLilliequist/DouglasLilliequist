@@ -40,7 +40,7 @@ export default class DomQuadManager {
 
     }
 
-    loadMediator = ({view, params}) => {
+    loadMediator = ({view, params}) => { //rename
 
         this.activeMediator = this.mediators[view];
         this.activeMediator.initQuads(params);
@@ -56,7 +56,7 @@ export default class DomQuadManager {
 
     }
 
-    update({dt, inputPos, inputDelta, flowMap} = {}) {
+    update({dt, inputPos, inputDelta, flowMap}) {
 
         if(this.activeMediator === null) return;
 
@@ -75,11 +75,12 @@ export default class DomQuadManager {
 
         if(this.activeMediator === null) return;
 
-        this.activeMediator.children.map((quad, i) => {
+        this.activeMediator.children.map((quad) => {
           
             quad.updateDimensions({
             domElement: this.activeMediator.referenceElement,
             camera: this.camera
+
           });
         
         });
@@ -94,7 +95,7 @@ export default class DomQuadManager {
 
         this.updateDimensions = setTimeout(() => {
             this.updateQuadDimensions();
-          }, 60);
+          }, 100);
 
     }
 
