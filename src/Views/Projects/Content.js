@@ -24,7 +24,7 @@ export const content = [
         description: 'Beings flocking in a peaceful purgatory',
         tech: 'WebGL(THREE.js) / GLSL / GPGPU',
         year: 2019,
-        link: ''
+        link: 'https://douglilliequist.github.io/SpiritualBeings/'
     },
 
     {

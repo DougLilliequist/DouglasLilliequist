@@ -81,8 +81,6 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
   
       this.texture = new Texture(this.gl, {
         generateMipmaps: false,
-        width: 512,
-        height: 512
       });
   
       let imageAspect = this.texture.width / this.texture.height;
@@ -145,7 +143,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
       this.killScrollModeAnim();
       this.scrollModeTl = gsap.timeline({})
       this.scrollModeTl.to(this.program.uniforms._Alpha, {
-        value: 0.65,
+        value: 0.7,
         duration: 0.6,
         ease: "power2.inOut"
       }, "<");

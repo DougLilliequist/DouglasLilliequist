@@ -101,6 +101,7 @@ export default class Projects extends View {
     const projectContent = content[contentIndex];
     document.getElementById('project_title').innerHTML = projectContent.title;
     document.getElementById('project_type').innerHTML = projectContent.type;
+    document.getElementById('project_year').innerHTML = projectContent.year;
     document.getElementById('project_description').innerHTML = projectContent.description;
     document.getElementById('project_tech').innerHTML = projectContent.tech;
 
@@ -221,7 +222,7 @@ export default class Projects extends View {
       duration: dur,
       opacity: 0,
       y: targetY,
-      stagger: 0.08,
+      stagger: 0.02,
       ease: ease
     }, "<0.05");
 
@@ -231,7 +232,7 @@ export default class Projects extends View {
       opacity: 0.0,
       y: targetY,
       ease: ease
-    }, "<0.05");
+    }, "<0.1");
 
     transitionTl.to(this.clickAndDragCTA, {
       duration: dur,

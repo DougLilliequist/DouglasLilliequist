@@ -16,12 +16,12 @@ class MediaManager {
 
         this.vidSources = [
 
-            "https://s3.eu-west-3.amazonaws.com/douglaslilliequist/intrnshpproj.mp4",
+            "https://douglaslilliequist.s3.eu-west-3.amazonaws.com/yolowebgl.mp4",
             'https://s3.eu-west-3.amazonaws.com/douglaslilliequist/doli.mp4',
-            "https://s3.eu-west-3.amazonaws.com/douglaslilliequist/wormhole.mp4",
-            "https://s3.eu-west-3.amazonaws.com/douglaslilliequist/11secvid_yippheader.mp4",
-            "https://s3.eu-west-3.amazonaws.com/douglaslilliequist/sken.mp4",
-            "https://s3.eu-west-3.amazonaws.com/douglaslilliequist/needahand.mp4",
+            "https://douglaslilliequist.s3.eu-west-3.amazonaws.com/spiritualbeings.mp4",
+            "https://douglaslilliequist.s3.eu-west-3.amazonaws.com/letsgetphysical.mp4",
+            "https://douglaslilliequist.s3.eu-west-3.amazonaws.com/sken.mp4",
+            "https://douglaslilliequist.s3.eu-west-3.amazonaws.com/needahand.mp4",
             "https://s3.eu-west-3.amazonaws.com/douglaslilliequist/gdnghtswthrtweb.mp4",
 
 
@@ -38,7 +38,8 @@ class MediaManager {
             video.crossOrigin = "*";
             video.muted = true;
             video.loop = true;
-            video.currentTime = 0.0001;
+            // video.currentTime = 0.0001;
+            video.currentTime = Math.random() + 0.001;
             this.videos[i] = video;
 
         }
