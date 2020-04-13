@@ -12,9 +12,9 @@ export default class About extends View {
   onEnter() {
     super.onEnter();
 
-    this.referenceElement = this.el.querySelector('.portrait-container__portrait');
+    this.domGLReferenceElement = this.el.querySelector('.portrait-container__portrait');
     
-    emitter.emit(events.INIT_DOMGL, {view: "ABOUT", params: {referenceElement: this.referenceElement, media: mediaManager.images[0]}});
+    emitter.emit(events.INIT_DOMGL, {view: "ABOUT", params: {referenceElement: this.domGLReferenceElement, media: mediaManager.images[0]}});
 
     this.initReferences();
 
@@ -97,7 +97,7 @@ export default class About extends View {
         });
       }
     });
-    enterAnim.fromTo(this.referenceElement, {
+    enterAnim.fromTo(this.domGLReferenceElement, {
       y: startY
     }, {
       duration: dur,
@@ -171,7 +171,7 @@ export default class About extends View {
       ease: ease
     }, "<");
 
-    leaveAnim.to(this.referenceElement, {
+    leaveAnim.to(this.domGLReferenceElement, {
       duration: dur,
       y: textY,
       ease: ease

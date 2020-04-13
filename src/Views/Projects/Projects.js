@@ -15,7 +15,7 @@ export default class Projects extends View {
   
     super.onEnter();
     
-    this.referenceElement = this.el.querySelector(".main-container").querySelector('.project');
+    this.domGLReferenceElement = this.el.querySelector('.project-video');
 
     this.initReferences();
 
@@ -46,22 +46,20 @@ export default class Projects extends View {
   //assign variables to dom elements
   initReferences() {
 
-    this.projectTitle = document.querySelector('.project-container__title-container');
+    this.projectTitle = this.el.querySelector('.title-container');
     this.projectTitleClipReveal = this.projectTitle.children[0];
 
-    this.projectContent = document.querySelector(".project-container__content-container__content");
-    this.projectContentClipReveal = document.querySelectorAll('.project-container__content-container__content__clip-reveal');
+    // this.projectContent = this.el.querySelector(".content-container__content");
+    this.projectContentClipReveal = this.el.querySelectorAll('.content-container__content__clip-reveal');
     this.projectClipRevealElements = [];
     this.projectContentClipReveal.forEach((el, i) => {
       this.projectClipRevealElements[i] = el.children[0];
     });
 
-    this.projectLink = document.querySelector(".project-container__content-container__project-link");
+    this.projectLink = this.el.querySelector(".project-link");
     this.projectLinkClipReveal = this.projectLink.children[0];
 
-    this.domGLReferenceElement = document.querySelector('.project');
-
-    this.clickAndDragCTA = document.querySelector('.cta_click-drag');
+    this.clickAndDragCTA = this.el.querySelector('.cta_click-drag');
 
   }
 
@@ -150,7 +148,7 @@ export default class Projects extends View {
       // ease: ease
     }, "<");
 
-    transitionTl.fromTo(this.referenceElement, {
+    transitionTl.fromTo(this.domGLReferenceElement, {
       y: startY
     }, {
       duration: dur,
@@ -212,7 +210,7 @@ export default class Projects extends View {
       ease: ease
     }, "<0.0");
 
-    transitionTl.to(this.referenceElement, {
+    transitionTl.to(this.domGLReferenceElement, {
       duration: dur,
       y: targetY,
       ease: ease
