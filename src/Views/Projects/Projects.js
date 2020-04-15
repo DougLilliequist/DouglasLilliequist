@@ -251,26 +251,26 @@ export default class Projects extends View {
 
     const hideTl = gsap.timeline();
     hideTl.to(this.projectTitleClipReveal.children[0], {
-      duration: 0.75,
+      duration: scrolling ? 0.3 : 0.75,
       opacity: scrolling ? 0 : 1,
       x: scrolling ? -50 : 0
     }, "<");
-    hideTl.to(this.projectClipRevealElements, {
+    hideTl.to(this.projectContentClipReveal, {
       opacity: scrolling ? 0 : 1,
       duration: scrolling ? 0.3 : 1.0,
-      stagger: scrolling ? -0.1 : 0.1
+      stagger: scrolling ? 0.0 : 0.1,
     }, "<0.1")
     hideTl.to(this.projectLinkClipReveal.children[0], {
-      duration: 0.75,
+      duration: scrolling ? 0.3 : 0.75,
       y: scrolling ? 30 : 0
-    }, "<0.2");
+    }, "<0.1");
 
   }
 
   killProjectContentAnim() {
 
     gsap.killTweensOf(this.projectTitleClipReveal.children[0]);
-    gsap.killTweensOf(this.projectClipRevealElements);
+    gsap.killTweensOf(this.projectContentClipReveal);
     gsap.killTweensOf(this.projectLinkClipReveal.children[0]);
 
   }

@@ -143,20 +143,22 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
       this.killScrollModeAnim();
       this.scrollModeTl = gsap.timeline({})
       this.scrollModeTl.to(this.program.uniforms._Alpha, {
-        value: 0.7,
+        value: 0.35,
         duration: 0.6,
         ease: "power2.inOut"
       }, "<");
       this.scrollModeTl.to(this.program.uniforms._Scale, {
          value: 0.85,
          duration: 0.5,
-         ease: "power2.inOut"
+        //  ease: "power2.inOut"
+         ease: "sine.inOut"
       }, "<");
 
       this.scrollModeTl.to(this.program.uniforms._AlphaPhase, {
           value: 1.0,
           duration: 0.5,
-          ease: "power2.inOut"
+          // ease: "power2.inOut"
+          ease: "sine.inOut"
         }, "<");
 
         this.scrollModeTl.to(this.program.uniforms._FlowMapPhase, {
