@@ -145,13 +145,13 @@ export default class Projects extends View {
       // ease: ease
     }, "<");
 
-    transitionTl.fromTo(this.domGLReferenceElement, {
-      y: startY
-    }, {
-      duration: dur,
-      y: 0,
-      // ease: ease
-    }, "<0.1");
+    // transitionTl.fromTo(this.domGLReferenceElement, {
+    //   y: startY
+    // }, {
+    //   duration: dur,
+    //   y: 0,
+    //   // ease: ease
+    // }, "<0.1");
 
     transitionTl.fromTo(this.projectContentClipReveal, {
 
@@ -207,11 +207,11 @@ export default class Projects extends View {
       ease: ease
     }, "<0.0");
 
-    transitionTl.to(this.domGLReferenceElement, {
-      duration: dur,
-      y: targetY,
-      ease: ease
-    }, "<0.1");
+    // transitionTl.to(this.domGLReferenceElement, {
+    //   duration: dur,
+    //   y: targetY,
+    //   ease: ease
+    // }, "<0.1");
 
     transitionTl.to(this.projectContentClipReveal, {
 

@@ -30,7 +30,7 @@ void main() {
 
     vec3 outPutCol = vec3(r,g,b);
 
-    // gl_FragColor = vec4(img, _Alpha);
-    gl_FragColor = vec4(outPutCol, _Alpha);
+    // gl_FragColor = vec4(outPutCol, _Alpha);
+    gl_FragColor = vec4(outPutCol, step(uv.x, _Alpha));
 
 }

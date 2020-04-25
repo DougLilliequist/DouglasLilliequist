@@ -135,7 +135,19 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
   revealQuads = () => {
 
-      gsap.to(this.getQuadInView().program.uniforms._Alpha, {
+    const quadInView = this.getQuadInView();
+
+    gsap.set(quadInView.program.uniforms._RevealDirection, {
+      value: 0.0
+    });
+
+      gsap.to(quadInView.program.uniforms._Alpha, {
+        duration: 0.85,
+        value: 1.0,
+        ease: "sine.in"
+      });
+
+      gsap.to(quadInView.program.uniforms._RevealPhase, {
         duration: 0.85,
         value: 1.0,
         ease: "sine.in"
@@ -145,10 +157,21 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
   hideQuads = () => {
 
-    gsap.to(this.getQuadInView().program.uniforms._Alpha, {
+    const quadInView = this.getQuadInView();
+
+    gsap.set(quadInView.program.uniforms._RevealDirection, {
+      value: 1.0
+    });
+    gsap.to(quadInView.program.uniforms._Alpha, {
       duration: 0.75,
       value: 0.0,
       ease: "sine.in"
+    });
+
+    gsap.to(quadInView.program.uniforms._RevealPhase, {
+      duration: 0.55,
+      value: 0.0,
+      // ease: "sine.in"
     });
 
   }

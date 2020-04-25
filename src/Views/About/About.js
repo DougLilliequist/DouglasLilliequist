@@ -97,13 +97,21 @@ export default class About extends View {
         });
       }
     });
-    enterAnim.fromTo(this.domGLReferenceElement, {
-      y: startY
-    }, {
-      duration: dur,
-      y: 0,
-      // ease: ease
-    },"<");
+    // enterAnim.fromTo(this.domGLReferenceElement, {
+    //   y: startY
+    // }, {
+    //   duration: dur,
+    //   y: 0,
+    //   // ease: ease
+    // },"<");
+
+    // enterAnim.fromTo(this.domGLReferenceElement, {
+    //   scale: 0.0
+    // }, {
+    //   duration: dur,
+    //   scale: 1.0,
+    //   // ease: ease
+    // },"<");
     
     enterAnim.fromTo(this.header, {
       opacity: 0.0,
@@ -171,11 +179,11 @@ export default class About extends View {
       ease: ease
     }, "<");
 
-    leaveAnim.to(this.domGLReferenceElement, {
-      duration: dur,
-      y: textY,
-      ease: ease
-    }, "<0.1");
+    // leaveAnim.to(this.domGLReferenceElement, {
+    //   duration: dur,
+    //   y: textY,
+    //   ease: ease
+    // }, "<0.1");
 
     leaveAnim.to(this.introText, {
       duration: dur,

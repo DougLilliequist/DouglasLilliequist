@@ -110,6 +110,12 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
         _AlphaPhase: {
           value: 0.0
         },
+        _RevealPhase: {
+          value: 0.0
+        },
+        _RevealDirection: {
+          value: 0.0
+        },
         _InView: {
           value: false
         },
@@ -176,7 +182,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
       
       this.inScrollMode = false;
       this.killScrollModeAnim();
-      this.scrollModeTl = gsap.timeline({})
+      this.scrollModeTl = gsap.timeline({});
       this.scrollModeTl.to(this.program.uniforms._Alpha, {
         value: this.isInView ? 1.0 : 0.0,
         duration: 0.5,

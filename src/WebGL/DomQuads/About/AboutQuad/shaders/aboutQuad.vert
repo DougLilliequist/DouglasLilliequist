@@ -7,6 +7,8 @@ uniform vec2 _ViewplaneSize;
 uniform sampler2D _FlowMap;
 uniform sampler2D _Image;
 
+uniform float _Alpha;
+
 uniform float _Aspect;
 
 uniform mat4 projectionMatrix;
@@ -21,7 +23,7 @@ void main() {
 
     vec3 pos = position;
     pos.xy *= _ViewplaneSize;
-
+    
     mat4 modelViewProjection = projectionMatrix * modelViewMatrix;
 
     vec4 clipPos = modelViewProjection * vec4(pos, 1.0);
