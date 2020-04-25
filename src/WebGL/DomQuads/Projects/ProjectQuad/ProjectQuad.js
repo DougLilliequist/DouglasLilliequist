@@ -42,7 +42,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
   
       this.videos = media;
   
-      this.video = this.videos[this.index];
+      this.video = this.videos[this.index].vid;
   
       this.initPos = this.position.z = -posOffset;
   
@@ -102,6 +102,9 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
           value: 1.0
         },
         _InputForce: {
+          value: 0.0
+        },
+        _FlipFlowMapForce: {
           value: 0.0
         },
         _AlphaPhase: {
@@ -192,7 +195,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
         }, "<");
 
         this.scrollModeTl.to(this.program.uniforms._FlowMapPhase, {
-          value: 1.0,
+          value: this.isInView ? 1.0 : 0.0,
           duration: 0.5,
           ease: "power2.inOut"
         }, "<");
@@ -231,7 +234,9 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
   
     updateVideoTexture() {
   
-        this.video = this.videos[this.index];
+        this.video = this.videos[this.index].vid;
+        // console.log(this.video)
+        this.program.uniforms._FlipFlowMapForce.value = this.videos[this.index].isBright;
 
         if(this.inView) {
           if (this.video.readyState >= this.video.HAVE_ENOUGH_DATA) {

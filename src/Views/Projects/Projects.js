@@ -14,13 +14,9 @@ export default class Projects extends View {
   onEnter() {
   
     super.onEnter();
-    
     this.domGLReferenceElement = this.el.querySelector('.project-video');
-
     this.initReferences();
-
     this.initEvents();
-
     emitter.emit(events.INIT_DOMGL, {view: "PROJECTS", params: {referenceElement: this.domGLReferenceElement, media: mediaManager.videos, getFirstQuad: true}});
 
     // this.playEnterAnim();
@@ -182,7 +178,7 @@ export default class Projects extends View {
       opacity: 1.0,
       y: 0,
       // ease: ease
-    }, "<0.05");
+    }, "<0.1");
 
     transitionTl.fromTo(this.clickAndDragCTA, {
       opacity: 0,
@@ -251,18 +247,18 @@ export default class Projects extends View {
 
     const hideTl = gsap.timeline();
     hideTl.to(this.projectTitleClipReveal.children[0], {
-      duration: scrolling ? 0.3 : 0.75,
+      duration: scrolling ? 0.4 : 0.75,
       opacity: scrolling ? 0 : 1,
       x: scrolling ? -50 : 0
     }, "<");
     hideTl.to(this.projectContentClipReveal, {
       opacity: scrolling ? 0 : 1,
-      duration: scrolling ? 0.3 : 1.0,
+      duration: scrolling ? 0.4 : 1.0,
       stagger: scrolling ? 0.0 : 0.1,
     }, "<0.1")
     hideTl.to(this.projectLinkClipReveal.children[0], {
       duration: scrolling ? 0.3 : 0.75,
-      y: scrolling ? 30 : 0
+      y: scrolling ? 15 : 0
     }, "<0.1");
 
   }

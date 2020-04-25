@@ -5,3 +5,25 @@ $muli: 'Muli', sans-serif;
 $light: 300;
 $semi-bold: 600;
 $bold: 700;
+
+$minFontSize-body: 10px;
+$maxFontSize-body: 10px;
+
+$minFontSize-header: 15px;
+$maxFontSize-header: 15px;
+
+
+//project typograpgy rules
+$minFontSize__projects-title: 12px;
+$maxFontSize__projects-title: 20px;
+
+$minFontSize__projects-header: 8px;
+$maxFontSize__projects-header: 15px;
+
+$minFontSize__projects-body: 5px;
+$maxFontSize__projects-body: 13px;
+
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}

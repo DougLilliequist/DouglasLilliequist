@@ -28,9 +28,15 @@ export default class Transition extends Highway.Transition {
                 emitter.emit(events.PREPARE_UNMOUNT);
             },
             onComplete: () => {
-                done();
+                // gsap.delayedCall(0.1, () => {
+                    done();
+                // });
             }
         })
+        // emitter.emit(events.PREPARE_UNMOUNT);
+        // gsap.delayedCall(1.1, () => {
+        //     done();
+        // });
 
     }
 

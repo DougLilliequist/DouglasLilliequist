@@ -10,6 +10,7 @@ uniform mat4 modelMatrix;
 
 uniform sampler2D _FlowMap;
 uniform float _FlowMapPhase;
+uniform float _FlipFlowMapForce;
 
 uniform sampler2D _Image;
 uniform float _Scale;
@@ -17,17 +18,13 @@ uniform float _Time;
 uniform bool _InView;
 
 uniform vec2 _ViewplaneSize;
-// uniform vec2 _CameraViewportSize;
-// uniform vec2 _ViewportScale;
 varying vec3 vMvPos;
 varying vec3 mPos;
 
 varying vec2 vUv;
 varying vec2 vClipPos;
 
-#define DISTORTSTR 1.0
-
-//GET CLIP POSITIONS AND COMPARE WITH MOUSE TO DISPLACE VERTICES
+#define DISTORTSTR 0.8
 
 void main() {
 
@@ -45,8 +42,7 @@ void main() {
         vec3 distort = texture2D(_FlowMap, clipPos.xy).xyz * DISTORTSTR;
         vec3 col = texture2D(_Image, uv).xyz;
         float heightMapDistort = (col.x + col.y + col.z) / 3.0;
-        // heightMapDistort *= heightMapDistort;
-        // pos += distort * min(0.7, max(0.1, heightMapDistort)) * _FlowMapPhase;
+        heightMapDistort = mix(heightMapDistort, 1.0 - heightMapDistort, _FlipFlowMapForce);
         pos += distort * max(0.1, heightMapDistort) * _FlowMapPhase * distort.z;
         vClipPos = clipPos.xy;
 

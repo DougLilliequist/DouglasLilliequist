@@ -135,39 +135,20 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
   revealQuads = () => {
 
-    this.children.map((quad) => {
-      gsap.to(quad.program.uniforms._Alpha, {
+      gsap.to(this.getQuadInView().program.uniforms._Alpha, {
         duration: 0.85,
         value: 1.0,
-        stagger: -0.5,
-        // ease: "sine.in"
         ease: "sine.in"
       });
       
-    });
-    // gsap.fromTo(this.position, {
-    //   z: 0.5
-    // },{
-    //   duration: 1.0,
-    //   z: 1.0,
-    //   ease: "sine.inOut"
-    // });
-
   }
 
   hideQuads = () => {
-   
-    this.children.map((quad) => {
-      gsap.to(quad.program.uniforms._Alpha, {
-        duration: 0.75,
-        value: 0.0,
-        stagger: 0.1,
-        // ease: "sine.in"
-        ease: "sine.inOut",
-        onComplete: () => {
-          emitter.emit(events.PAUSE_VIDEO);
-        }
-      });
+
+    gsap.to(this.getQuadInView().program.uniforms._Alpha, {
+      duration: 0.75,
+      value: 0.0,
+      ease: "sine.in"
     });
 
   }
