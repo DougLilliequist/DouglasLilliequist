@@ -11,17 +11,15 @@ import {gsap} from 'gsap';
 export default class About extends View {
   onEnter() {
     super.onEnter();
-
     this.domGLReferenceElement = this.el.querySelector('.portrait-container__portrait');
-    
+    emitter.emit(events.INIT_DOMGL, {view: "ABOUT", params: {referenceElement: this.domGLReferenceElement, media: mediaManager.images[0]}});
     this.initReferences();
-
     this.initEvents();
 
   }
   onEnterCompleted() {
     super.onEnterCompleted();
-    emitter.emit(events.INIT_DOMGL, {view: "ABOUT", params: {referenceElement: this.domGLReferenceElement, media: mediaManager.images[0]}});
+    // emitter.emit(events.INIT_DOMGL, {view: "ABOUT", params: {referenceElement: this.domGLReferenceElement, media: mediaManager.images[0]}});
     this.playEnterAnim();
   }
 

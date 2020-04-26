@@ -19,6 +19,7 @@ export default class Projects extends View {
     this.domGLReferenceElement = this.el.querySelector('.project-video');
     this.initReferences();
     this.initEvents();
+    emitter.emit(events.INIT_DOMGL, {view: "PROJECTS", params: {referenceElement: this.domGLReferenceElement, media: mediaManager.videos, getFirstQuad: true}});
 
   }
 
@@ -30,7 +31,7 @@ export default class Projects extends View {
 
   onEnterCompleted() {
     super.onEnterCompleted();
-    emitter.emit(events.INIT_DOMGL, {view: "PROJECTS", params: {referenceElement: this.domGLReferenceElement, media: mediaManager.videos, getFirstQuad: true}});
+    // emitter.emit(events.INIT_DOMGL, {view: "PROJECTS", params: {referenceElement: this.domGLReferenceElement, media: mediaManager.videos, getFirstQuad: true}});
     this.playEnterAnim();
   }
 
