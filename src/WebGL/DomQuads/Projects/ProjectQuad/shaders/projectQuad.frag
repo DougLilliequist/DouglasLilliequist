@@ -19,9 +19,10 @@ void main() {
 
     vec3 img = texture2D(_Image, uv).xyz;
     float len = (vMvPos.z * vMvPos.z);
-    float alpha = smoothstep(0.25, 0.5, len) * mix(1.0, smoothstep(20.0, 0.0, len), _AlphaPhase);
+    float alpha = _Alpha * smoothstep(0.25, 0.5, len) * mix(1.0, smoothstep(20.0, 0.0, len), _AlphaPhase);
     // alpha *= step(abs((vUv.y * 0.99) * 2.0 - 1.0), _RevealPhase);
-    alpha *= mix(step(vUv.y * 0.99, _RevealPhase), step(1.0 - (vUv.y * 0.99), _RevealPhase), _RevealDirection);
+    // alpha *= step(vUv.x, _RevealPhase);
+    alpha *= mix(step(vUv.y, _RevealPhase), step(1.0 - (vUv.x * 0.99), _RevealPhase), _RevealDirection);
   
     gl_FragColor = vec4(img, alpha);
 

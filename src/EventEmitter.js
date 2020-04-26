@@ -18,7 +18,8 @@ class EventEmitter {
         window.addEventListener('mousemove', this.onMouseMove);
         window.addEventListener('mouseup', this.onMouseUp);
         window.addEventListener('resize', this.onResize);
-        gsap.ticker.add(this.tick)
+        // gsap.ticker.fps(60);
+        gsap.ticker.add(this.tick);
 
     }
 

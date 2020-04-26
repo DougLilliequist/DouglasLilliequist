@@ -42,10 +42,6 @@ export default class WebGLContext {
       dpr: 1.5
     });
     this.gl = this.renderer.gl;
-    // this.gl.clearColor(0.97, 0.97, 0.97, 1.0);
-    // this.gl.clearColor(0.95, 0.95, 0.95, 1.0);
-    // this.gl.clearColor(0.05, 0.05, 0.05, 1.0);
-    // this.gl.clearColor(0.88, 0.88, 0.88, 1.0);
     this.gl.clearColor(0.9, 0.9, 0.9, 1.0);
 
     document.body.appendChild(this.gl.canvas);

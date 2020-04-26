@@ -14,6 +14,8 @@ export default class Projects extends View {
   onEnter() {
   
     super.onEnter();
+    this.defaultCursor = "grab";
+    document.body.style.cursor = this.defaultCursor;
     this.domGLReferenceElement = this.el.querySelector('.project-video');
     this.initReferences();
     this.initEvents();
@@ -36,6 +38,7 @@ export default class Projects extends View {
 
   onLeaveCompleted() {
     super.onLeaveCompleted();
+    document.body.style.cursor = "auto";
     emitter.emit(events.REMOVE_DOMGL);
   }
 
@@ -111,6 +114,7 @@ export default class Projects extends View {
 
     if(window.hoveringLink) return;
 
+    document.body.style.cursor = "grabbing";
     this.inScrollMode = true;
     this.enableUserInteraction = false;
     emitter.emit(events.ENTER_SCROLL_MODE);
@@ -120,6 +124,7 @@ export default class Projects extends View {
 
   disableScrollMode = () => {
 
+    document.body.style.cursor = this.defaultCursor;
     this.inScrollMode = false;
     this.enableUserInteraction = true;
     emitter.emit(events.EXIT_SCROLL_MODE);
@@ -130,62 +135,54 @@ export default class Projects extends View {
   playEnterAnim() {
 
     this.killProjectContentAnim();
-    const ease = "linear";
-    const startY = 100;
+    const ease = "sine.inOut";
+    const startY = 20;
     const dur = 0.85
 
     const transitionTl = gsap.timeline();
     transitionTl.fromTo(this.projectTitle, {
-      opacity: 0,
+      opacity: 0.01,
       y: startY,
     }, {
       duration: dur,
-      opacity: 1,
+      opacity: 0.99,
       y: 0,
-      // ease: ease
+      ease: ease
     }, "<");
-
-    // transitionTl.fromTo(this.domGLReferenceElement, {
-    //   y: startY
-    // }, {
-    //   duration: dur,
-    //   y: 0,
-    //   // ease: ease
-    // }, "<0.1");
 
     transitionTl.fromTo(this.projectContentClipReveal, {
 
-      opacity: 0,
+      opacity: 0.01,
       y: startY
 
     }, {
 
       duration: dur,
-      opacity: 1,
+      opacity: 0.99,
       y: 0,
-      stagger: 0.1,
+      stagger: 0.05,
       // ease: ease
 
     // }, "<0.3");
-    }, "<0.1");
+    }, "<0.05");
 
     transitionTl.fromTo(this.projectLink, {
-      opacity: 0,
+      opacity: 0.01,
       y: startY
     },
     {
       duration: dur,
-      opacity: 1.0,
+      opacity: 0.99,
       y: 0,
-      // ease: ease
-    }, "<0.1");
+      ease: ease
+    }, "<0.01");
 
     transitionTl.fromTo(this.clickAndDragCTA, {
-      opacity: 0,
+      opacity: 0.01,
       y: startY * 0.5
     }, {
       duration: dur,
-      opacity: 1.0,
+      opacity: 0.99,
       y: 0
     }, "<0.01");
 
@@ -198,42 +195,36 @@ export default class Projects extends View {
     const transitionTl = gsap.timeline();
     const ease = "sine.inOut";
     const dur = 0.75;
-    const targetY = -100;
+    const targetY = -20;
 
     transitionTl.to(this.projectTitle, {
-      opacity: 0,
+      opacity: 0.01,
       y: targetY,
       duration: dur,
       ease: ease
-    }, "<0.0");
-
-    // transitionTl.to(this.domGLReferenceElement, {
-    //   duration: dur,
-    //   y: targetY,
-    //   ease: ease
-    // }, "<0.1");
+    });
 
     transitionTl.to(this.projectContentClipReveal, {
 
       duration: dur,
-      opacity: 0,
-      y: targetY,
-      stagger: 0.02,
+      opacity: 0.01,
+      y: -targetY,
+      stagger: -0.05,
       ease: ease
-    }, "<0.05");
+    }, "<0.01");
 
     transitionTl.to(this.projectLink,
     {
       duration: dur,
-      opacity: 0.0,
-      y: targetY,
+      opacity: 0.01,
+      y: -targetY,
       ease: ease
-    }, "<0.1");
+    }, "<0.01");
 
     transitionTl.to(this.clickAndDragCTA, {
       duration: dur,
-      opacity: 0.0,
-      y: targetY * 0.5,
+      opacity: 0.01,
+      y: -targetY * 0.5,
       ease: ease
     }, "<0.01");
 
@@ -248,11 +239,11 @@ export default class Projects extends View {
     const hideTl = gsap.timeline();
     hideTl.to(this.projectTitleClipReveal.children[0], {
       duration: scrolling ? 0.4 : 0.75,
-      opacity: scrolling ? 0 : 1,
-      x: scrolling ? -50 : 0
+      opacity: scrolling ? 0.01 : 0.99,
+      // x: scrolling ? -50 : 0
     }, "<");
     hideTl.to(this.projectContentClipReveal, {
-      opacity: scrolling ? 0 : 1,
+      opacity: scrolling ? 0.01 : 0.99,
       duration: scrolling ? 0.4 : 1.0,
       stagger: scrolling ? 0.0 : 0.1,
     }, "<0.1")

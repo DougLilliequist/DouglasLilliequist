@@ -12,7 +12,7 @@ import ViewMediator from "./Views/ViewMediator.js";
 
 export default class App {
     constructor() {
-
+        
         window.viewMediator = new ViewMediator({
             home: Home,
             projects: Projects,
@@ -22,7 +22,7 @@ export default class App {
 
         window.navigation = navigation;
 
-        const cursor = new Cursor();
+        // const cursor = new Cursor();
         const webGLCTX = new WebGLContext();
 
         this.initEvents();

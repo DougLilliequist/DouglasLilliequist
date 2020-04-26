@@ -68,6 +68,9 @@ export default class AboutQuad extends DomQuad {
             _Alpha: {
                 value: 0.0
             },
+            _RevealDirection: {
+              value: 0.0
+            },
             _Aspect: {
                 value: this.aspect
             }
@@ -86,8 +89,13 @@ export default class AboutQuad extends DomQuad {
       reveal() {
 
         gsap.to(this.program.uniforms._Alpha, {
-            duration: 1.0,
-            value: 1.0
+            duration: 0.75,
+            value: 1.0,
+            ease: "circ.inOut"
+        });
+
+        gsap.set(this.program.uniforms._RevealDirection, {
+          value: 0.0
         });
 
       }
@@ -97,7 +105,11 @@ export default class AboutQuad extends DomQuad {
         gsap.to(this.program.uniforms._Alpha, {
             duration: 0.75,
             value: 0.0,
-            ease: "sine.inOut"
+            ease: "circ.inOut"
+        });
+
+        gsap.set(this.program.uniforms._RevealDirection, {
+          value: 1.0
         });
 
       }

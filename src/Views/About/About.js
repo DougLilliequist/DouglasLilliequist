@@ -86,7 +86,7 @@ export default class About extends View {
   playEnterAnim() {
 
     const dur = 0.85;
-    const startY = 100;
+    const startY = 20;
     const ease = "linear";
 
     const enterAnim = gsap.timeline(
@@ -97,58 +97,43 @@ export default class About extends View {
         });
       }
     });
-    // enterAnim.fromTo(this.domGLReferenceElement, {
-    //   y: startY
-    // }, {
-    //   duration: dur,
-    //   y: 0,
-    //   // ease: ease
-    // },"<");
-
-    // enterAnim.fromTo(this.domGLReferenceElement, {
-    //   scale: 0.0
-    // }, {
-    //   duration: dur,
-    //   scale: 1.0,
-    //   // ease: ease
-    // },"<");
     
     enterAnim.fromTo(this.header, {
-      opacity: 0.0,
+      opacity: 0.01,
       y: startY
     }, {
       duration: dur,
-      opacity: 1.0,
+      opacity: 0.99,
       y: 0,
       // ease: ease
     }, "<0.1");
 
     enterAnim.fromTo(this.introText, {
-      opacity: 0.0,
+      opacity: 0.01,
       y: startY
     }, {
       duration: dur,
-      opacity: 1.0,
+      opacity: 0.99,
       y: 0,
       // ease: ease
     }, "<0.05");
 
     enterAnim.fromTo(this.contactHeader, {
-      opacity: 0.0,
+      opacity: 0.01,
       y: startY
     }, {
       duration: dur,
-      opacity: 1.0,
+      opacity: 0.99,
       y: 0,
       // ease: ease
     }, "<0.05");
 
     enterAnim.fromTo(this.links, {
-      opacity: 0.0,
+      opacity: 0.01,
       y: startY
     }, {
       duration: dur,
-      opacity: 1.0,
+      opacity: 0.99,
       y: 0,
       stagger: 0.1,
       // ease: ease
@@ -159,7 +144,7 @@ export default class About extends View {
   playLeaveAnim() {
 
     const dur = 0.75;
-    const textY = -100;
+    const textY = 20;
     const ease = "sine.inOut";
 
     const leaveAnim = gsap.timeline({
@@ -172,40 +157,63 @@ export default class About extends View {
 
     });
     
-    leaveAnim.to(this.header, {
-      duration: dur,
-      opacity: 0.0,
-      y: textY,
-      ease: ease
-    }, "<");
-
-    // leaveAnim.to(this.domGLReferenceElement, {
+    // leaveAnim.to(this.header, {
     //   duration: dur,
+    //   opacity: 0.01,
     //   y: textY,
     //   ease: ease
-    // }, "<0.1");
+    // }, "<");
 
-    leaveAnim.to(this.introText, {
-      duration: dur,
-      opacity: 0.0,
-      y: textY,
-      ease: ease
-    }, "<0.05");
+    // leaveAnim.to(this.introText, {
+    //   duration: dur,
+    //   opacity: 0.01,
+    //   y: textY,
+    //   ease: ease
+    // }, "<0.05");
 
-    leaveAnim.to(this.contactHeader, {
-      duration: dur,
-      opacity: 0.0,
-      y: textY,
-      ease: ease
-    }, "<0.05");
+    // leaveAnim.to(this.contactHeader, {
+    //   duration: dur,
+    //   opacity: 0.01,
+    //   y: textY,
+    //   ease: ease
+    // }, "<0.05");
+
+    // leaveAnim.to(this.links, {
+    //   duration: dur,
+    //   opacity: 0.01,
+    //   y: textY,
+    //   stagger: -0.05,
+    //   ease: ease
+    // }, "<0.05");
 
     leaveAnim.to(this.links, {
       duration: dur,
-      opacity: 0.0,
+      opacity: 0.01,
       y: textY,
-      stagger: 0.1,
+      stagger: -0.05,
       ease: ease
-    }, "<0.05");
+    }, "<");
+
+    leaveAnim.to(this.contactHeader, {
+      duration: dur,
+      opacity: 0.01,
+      y: textY,
+      ease: ease
+    }, "<0.1");
+
+    leaveAnim.to(this.introText, {
+      duration: dur,
+      opacity: 0.01,
+      y: textY,
+      ease: ease
+    }, "<0.1");
+
+    leaveAnim.to(this.header, {
+      duration: dur,
+      opacity: 0.01,
+      y: textY,
+      ease: ease
+    }, "<0.1");
 
   }
 

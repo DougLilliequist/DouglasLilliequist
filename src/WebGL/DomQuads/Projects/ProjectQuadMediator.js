@@ -142,7 +142,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
     });
 
       gsap.to(quadInView.program.uniforms._Alpha, {
-        duration: 0.85,
+        duration: 0.1,
         value: 1.0,
         ease: "sine.in"
       });
@@ -150,28 +150,39 @@ export default class ProjectQuadMediator extends DomquadMediator {
       gsap.to(quadInView.program.uniforms._RevealPhase, {
         duration: 0.85,
         value: 1.0,
-        ease: "sine.in"
+        ease: "circ.inOut",
+        onComplete: () => {
+          this.children.map((quad) => {
+
+            gsap.set(quad.program.uniforms._RevealPhase, {
+              value: 1.0
+            });
+
+          });
+        }
       });
       
   }
 
   hideQuads = () => {
 
-    const quadInView = this.getQuadInView();
+    this.children.map((quad) => {
 
-    gsap.set(quadInView.program.uniforms._RevealDirection, {
-      value: 1.0
-    });
-    gsap.to(quadInView.program.uniforms._Alpha, {
-      duration: 0.75,
-      value: 0.0,
-      ease: "sine.in"
-    });
+      gsap.set(quad.program.uniforms._RevealDirection, {
+        value: 1.0
+      });
+  
+      gsap.to(quad.program.uniforms._RevealPhase, {
+        duration: 0.9,
+        value: 0.0,
+        ease: "circ.inOut",
+        onComplete: () => {
+          gsap.set(quad.program.uniforms._Alpha, {
+            value: 0.0
+          });
+        }
+      });
 
-    gsap.to(quadInView.program.uniforms._RevealPhase, {
-      duration: 0.55,
-      value: 0.0,
-      // ease: "sine.in"
     });
 
   }

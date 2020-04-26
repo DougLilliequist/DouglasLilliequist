@@ -5,6 +5,8 @@ uniform sampler2D _FlowMap;
 uniform float _Alpha;
 uniform float _Aspect;
 
+uniform float _RevealDirection;
+
 varying vec2 vUv;
 varying vec2 vClipPos;
 
@@ -19,18 +21,12 @@ void main() {
     vec3 flow = texture2D(_FlowMap, vClipPos).xyz;
     vec2 offSet = flow.xy;
 
-    // float r = texture2D(_Image, uv - vec2(offSet.x, 0.0) * 0.01).x;
-    // float g = texture2D(_Image, uv + offSet * 0.005).y;
-    // float b = texture2D(_Image, uv + vec2(offSet.x, 0.0) * 0.01).z;
-
     float r = texture2D(_Image, uv + offSet * 0.008).x;
     float g = texture2D(_Image, uv + offSet * 0.001).y;
     float b = texture2D(_Image, uv - offSet * 0.008).z;
-    // vec3 img = texture2D(_Image, uv).xyz;
 
     vec3 outPutCol = vec3(r,g,b);
 
-    // gl_FragColor = vec4(outPutCol, _Alpha);
-    gl_FragColor = vec4(outPutCol, step(uv.x, _Alpha));
+    gl_FragColor = vec4(outPutCol, mix(step(vUv.y, _Alpha), step(vUv.x, _Alpha), _RevealDirection));
 
 }

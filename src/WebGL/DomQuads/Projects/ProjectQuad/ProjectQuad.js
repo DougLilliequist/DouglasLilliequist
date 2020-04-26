@@ -241,7 +241,6 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
     updateVideoTexture() {
   
         this.video = this.videos[this.index].vid;
-        // console.log(this.video)
         this.program.uniforms._FlipFlowMapForce.value = this.videos[this.index].isBright;
 
         if(this.inView) {

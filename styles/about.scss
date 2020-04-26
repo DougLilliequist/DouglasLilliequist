@@ -1,3 +1,7 @@
+@import 'constants';
+@import 'typography';
+@import 'mixins';
+
 .content {
 
     position: absolute;
@@ -6,6 +10,8 @@
     transform: translate(-50%, -50%);
     width: 80vw;
     height: 50vw;
+    max-width: $maxWidth;
+    max-height: $maxHeight;
     display: flex;
     justify-content: space-evenly;
     z-index: 2;
@@ -51,21 +57,24 @@
         position: relative;
         width: 100%;
         height: 50%;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
 
         &__intro {
 
-            position: absolute;
-            top: 15%;
+            margin-top: 2em;
             
             &__header {
-                font-size: 30px;
+                @include fluid-type($minWidth, $maxWidth, $minFontSize__about-header, $maxFontSize__about-header);
                 margin-top: 0em;
                 margin-bottom: 0.5em;
                 will-change: transform, opacity;
             }
     
             &__body-text {
-                margin: 0;
+                @include fluid-type($minWidth, $maxWidth, $minFontSize__about-body, $maxFontSize__about-body);
+                margin-top: 0;
                 will-change: transform, opacity;
             }
 
@@ -75,12 +84,13 @@
 
     .contact-container {
 
-        position: absolute;
-        bottom:10%;
+        margin-top: 2em;
 
         &__header {
 
+            margin-top: 0;
             color: #000000;
+            @include fluid-type($minWidth, $maxWidth, $minFontSize__about__links-header, $maxFontSize__about__links-header);
             
         }
         // top: 20%;
@@ -103,6 +113,7 @@
                 color:#000000;
                 margin: 0;
                 opacity: 0.8;
+                @include fluid-type($minWidth, $maxWidth, $minFontSize__about__links-body, $maxFontSize__about__links-body);
 
                 &--enabled {
     

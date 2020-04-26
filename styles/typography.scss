@@ -15,15 +15,29 @@ $maxFontSize-header: 15px;
 
 //project typograpgy rules
 $minFontSize__projects-title: 12px;
-$maxFontSize__projects-title: 20px;
+$maxFontSize__projects-title: 26px;
 
 $minFontSize__projects-header: 8px;
-$maxFontSize__projects-header: 15px;
+$maxFontSize__projects-header: 16px;
 
 $minFontSize__projects-body: 5px;
 $maxFontSize__projects-body: 13px;
 
-// * {
-//     -webkit-font-smoothing: antialiased;
-//     -moz-osx-font-smoothing: grayscale;
-// }
+//about page
+$minFontSize__about-header: 15px;
+$maxFontSize__about-header: 45px;
+
+$minFontSize__about-body: 5px;
+$maxFontSize__about-body: 15px;
+
+$minFontSize__about__links-header: 10px;
+$maxFontSize__about__links-header: 20px;
+
+$minFontSize__about__links-body: 5px;
+$maxFontSize__about__links-body: 15px;
+
+
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
