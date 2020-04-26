@@ -14,12 +14,21 @@ class EventEmitter {
 
     initEvents() {
 
-        window.addEventListener('mousedown', this.onMouseDown);
-        window.addEventListener('mousemove', this.onMouseMove);
-        window.addEventListener('mouseup', this.onMouseUp);
+        window.addEventListener('mousedown', this.onMouseDown, {
+            passive: true
+        });
+        window.addEventListener('mousemove', this.onMouseMove, {
+            passive: true
+        });
+        window.addEventListener('mouseup', this.onMouseUp, {
+            passive: true
+        });
+        window.addEventListener('wheel', this.onScroll, {
+            passive: true
+        });
         window.addEventListener('resize', this.onResize);
-        // gsap.ticker.fps(60);
         gsap.ticker.add(this.tick);
+        gsap.ticker.fps(-1);
 
     }
 
@@ -40,6 +49,11 @@ class EventEmitter {
         this.emitter.emit(events.MOUSE_UP, false);
 
     }
+
+    onScroll = (e) => {
+
+        this.emitter.emit(events.SCROLLING, e, false);
+    }   
 
     tick = () => {
 

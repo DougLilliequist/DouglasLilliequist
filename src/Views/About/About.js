@@ -14,8 +14,6 @@ export default class About extends View {
 
     this.domGLReferenceElement = this.el.querySelector('.portrait-container__portrait');
     
-    emitter.emit(events.INIT_DOMGL, {view: "ABOUT", params: {referenceElement: this.domGLReferenceElement, media: mediaManager.images[0]}});
-
     this.initReferences();
 
     this.initEvents();
@@ -23,6 +21,7 @@ export default class About extends View {
   }
   onEnterCompleted() {
     super.onEnterCompleted();
+    emitter.emit(events.INIT_DOMGL, {view: "ABOUT", params: {referenceElement: this.domGLReferenceElement, media: mediaManager.images[0]}});
     this.playEnterAnim();
   }
 
@@ -86,7 +85,7 @@ export default class About extends View {
   playEnterAnim() {
 
     const dur = 0.85;
-    const startY = 20;
+    const startY = 10;
     const ease = "linear";
 
     const enterAnim = gsap.timeline(
@@ -143,8 +142,8 @@ export default class About extends View {
 
   playLeaveAnim() {
 
-    const dur = 0.75;
-    const textY = 20;
+    const dur = 0.5;
+    const textY = 10;
     const ease = "sine.inOut";
 
     const leaveAnim = gsap.timeline({

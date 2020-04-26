@@ -20,6 +20,9 @@ const events = {
     MOUSE_MOVE: 'mouse_move',
     MOUSE_UP: 'mouse_up',
 
+    SCROLLING: 'scrolling',
+    TRAVERSE_PROJECTS: 'traverse_projects',
+
     TOUCH_START: 'touch_start',
     TOUCH_MOVE: 'touch_move',
     TOUCH_END: 'touch_end',

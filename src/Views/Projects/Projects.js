@@ -19,9 +19,6 @@ export default class Projects extends View {
     this.domGLReferenceElement = this.el.querySelector('.project-video');
     this.initReferences();
     this.initEvents();
-    emitter.emit(events.INIT_DOMGL, {view: "PROJECTS", params: {referenceElement: this.domGLReferenceElement, media: mediaManager.videos, getFirstQuad: true}});
-
-    // this.playEnterAnim();
 
   }
 
@@ -33,6 +30,7 @@ export default class Projects extends View {
 
   onEnterCompleted() {
     super.onEnterCompleted();
+    emitter.emit(events.INIT_DOMGL, {view: "PROJECTS", params: {referenceElement: this.domGLReferenceElement, media: mediaManager.videos, getFirstQuad: true}});
     this.playEnterAnim();
   }
 
@@ -67,9 +65,15 @@ export default class Projects extends View {
     this.enableUserInteraction = true;
     this.inScrollMode = false;
 
+
+    this.canEmitScrollEvent = true;
+    this.firstGesture = false;
+    this.scrollThreshold = 50.0;
+
     emitter.on(events.LOAD_PROJECT_CONTENT, this.loadProjectContent);
     emitter.on(events.MOUSE_DOWN, this.enableScrollMode);
     emitter.on(events.MOUSE_UP, this.disableScrollMode);
+    // emitter.on(events.SCROLLING, this.onScroll);
 
     this.projectLink.addEventListener('mouseenter', () => {
 
@@ -91,6 +95,18 @@ export default class Projects extends View {
     emitter.off(events.LOAD_PROJECT_CONTENT, this.loadProjectContent);
     emitter.off(events.MOUSE_DOWN, this.enableScrollMode);
     emitter.off(events.MOUSE_UP, this.disableScrollMode);
+    // emitter.off(events.SCROLLING, this.onScroll);
+
+    this.projectLink.removeEventListener('mouseenter', () => {
+
+      emitter.emit(events.HOVERING_LINK)
+      window.hoveringLink = true;
+    }, false);
+
+    this.projectLink.removeEventListener('mouseleave', () => {
+      emitter.emit(events.LEAVING_LINK)
+      window.hoveringLink = false;
+    }, false);
 
   }
 
@@ -129,6 +145,30 @@ export default class Projects extends View {
     this.enableUserInteraction = true;
     emitter.emit(events.EXIT_SCROLL_MODE);
     this.animateProjectContent();
+
+  }
+
+  onScroll = (e) => {
+
+    if(Math.abs(e.deltaY) > this.scrollThreshold && Math.abs(e.deltaY) < 200.0) {
+
+      if(this.firstGesture === false) {
+        this.firstGesture = true;
+
+        emitter.emit(events.TRAVERSE_PROJECTS, Math.sign(e.deltaY));
+        emitter.emit(events.ENTER_SCROLL_MODE);
+        this.inScrollMode = true;
+        this.animateProjectContent();
+
+        gsap.delayedCall(1.0, () => {
+          emitter.emit(events.EXIT_SCROLL_MODE);
+          this.inScrollMode = false;
+          this.animateProjectContent();
+          this.firstGesture = false;
+        });
+      } 
+
+    }
 
   }
 

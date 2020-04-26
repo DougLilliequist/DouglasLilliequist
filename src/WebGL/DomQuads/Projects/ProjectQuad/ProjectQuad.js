@@ -157,7 +157,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
         ease: "power2.inOut"
       }, "<");
       this.scrollModeTl.to(this.program.uniforms._Scale, {
-         value: 0.85,
+         value: 0.95,
          duration: 0.5,
         //  ease: "power2.inOut"
          ease: "sine.inOut"
