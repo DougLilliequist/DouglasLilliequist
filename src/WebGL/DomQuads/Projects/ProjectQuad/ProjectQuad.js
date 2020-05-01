@@ -30,29 +30,23 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
             heightSegments,
         } = {});
 
-        this.gl = gl;
-  
-      this.name = `PROJECT ${posOffset}`
-  
-      this.phase = phase; //rename later
-      
-      this.initIndex = this.index = posOffset;
-  
-      this.indexOffset = 0.0;
-  
+      this.gl = gl;
+          
+      this.initIndex = this.index = posOffset; //rename argument
+    
       this.videos = media;
   
       this.video = this.videos[this.index].vid;
   
-      this.initPos = this.position.z = -posOffset;
-  
-      // this.resetPosition = false;
-  
+      this.initPos = this.position.z = 0 - posOffset;
+    
       this.targetPos = this.position.z; //remove prev position
-  
+
       this.inScrollMode = false;
 
       this.isInView = false;
+
+      this.traveringPosition = false;
         
       this.initProgram();
   
@@ -64,14 +58,17 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
   
       emitter.on(events.PLAY_VIDEO, this.playVideo);
       emitter.on(events.PAUSE_VIDEO, this.pauseVideo);
+      
       emitter.on(events.APPLY_SCROLL_MODE_ANIM, this.applyScrollMode);
       emitter.on(events.REMOVE_SCROLL_MODE_ANIM, this.removeScrollMode);
-  
+      
+      emitter.on(events.APPLY_TRAVERSE_MODE_ANIM, this.applyTraverseMode);
+      emitter.on(events.REMOVE_TRAVERSE_MODE_ANIM, this.removeTraverseMode);
+
     }
   
     initProgram = () => {
-
-          
+    
     this.geometry = new Plane(this.gl, {
       width: 2,
       height: 2,
@@ -82,9 +79,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
       this.texture = new Texture(this.gl, {
         generateMipmaps: false,
       });
-  
-      let imageAspect = this.texture.width / this.texture.height;
-  
+    
       const u = {
         _ViewplaneSize: {
           value: this.viewPlaneSize
@@ -125,15 +120,6 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
         _Scale: {
           value: 1.0
         },
-        _RestorePhase: {
-          value: 0.0
-        },
-        _ImageAspect: {
-          value: 1.0 //hard coded based on proved image
-        },
-        _Aspect: {
-          value: this.aspect
-        }
       };
   
       this.program = new Program(this.gl, {
@@ -147,95 +133,96 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
     //consider making the animation faster
     applyScrollMode = () => {
   
-      // this.inScrollMode = true;
       this.inScrollMode = true;
-      this.killScrollModeAnim();
-      this.scrollModeTl = gsap.timeline({})
-      this.scrollModeTl.to(this.program.uniforms._Alpha, {
-        value: 0.35,
-        duration: 0.6,
-        ease: "power2.inOut"
-      }, "<");
-      this.scrollModeTl.to(this.program.uniforms._Scale, {
-         value: 0.95,
-         duration: 0.5,
-        //  ease: "power2.inOut"
-         ease: "sine.inOut"
-      }, "<");
-
-      this.scrollModeTl.to(this.program.uniforms._AlphaPhase, {
-          value: 1.0,
-          duration: 0.5,
-          // ease: "power2.inOut"
-          ease: "sine.inOut"
-        }, "<");
-
-        this.scrollModeTl.to(this.program.uniforms._FlowMapPhase, {
-          value: 0.0,
-          duration: 0.3,
-          ease: "power2.inOut"
-        }, "<");
+      this.animteUniforms({alpha: 0.35, alphaPhase: 1.0, flowMapPhase: 0.0});
   
     }
   
     removeScrollMode = () => {
       
       this.inScrollMode = false;
-      this.killScrollModeAnim();
-      this.scrollModeTl = gsap.timeline({});
+      this.targetPos = Math.round(this.position.z);
+      this.animteUniforms({alpha: this.inView ? 1.0 : 0.0, alphaPhase: 1.0, flowMapPhase: this.inView ? 1.0 : 0.0});
+  
+    }
+
+    applyTraverseMode = () => {
+
+      this.traveringPosition = true;
+      this.animteUniforms({alpha: 0.35, alphaPhase: 1.0, flowMapPhase: 0.0});
+
+    }
+
+    removeTraverseMode = () => {
+
+      this.traveringPosition = false;
+      this.animteUniforms({alpha: this.inView ? 1.0 : 0.0, alphaPhase: 1.0, flowMapPhase: this.inView ? 1.0 : 0.0});
+
+    }
+
+    traversePosition({direction, duration}) {
+
+      const pos = this.position.z;
+      if(this.traverseAnim) this.traverseAnim.kill();
+      this.traverseAnim = gsap.to(this.position, {
+        z: pos + Math.sign(direction),
+        duration: duration,
+        ease: "circ.inOut",
+        onStart: () => this.traveringPosition = true,
+        onComplete: () => {
+          this.updateIndex({traversing: true});
+          this.position.z = loopNegativeNumber({a: this.position.z, b: -5});
+          gsap.delayedCall(0.5, () => this.traveringPosition = false);
+        }
+      });
+
+    }
+  
+    update({force}) {
+
+      if(this.video !== null) {
+        this.updateVideoTexture();
+      }
+
+      console.log(this.traveringPosition)
+      
+      if(this.traveringPosition === false) {
+
+        // if(this.inScrollMode) {
+        //   this.position.z += force;
+        //   this.updateIndex({traversing: false});
+        //   this.position.z = loopNegativeNumber({a: this.position.z, b: -5.0});
+  
+        // } else {
+        //   this.position.z += (this.targetPos - this.position.z) * 0.1;
+        // }
+
+      }
+      
+    }
+
+    animteUniforms({alpha, alphaPhase, flowMapPhase}) {
+
+      this.killUniformAnim();
+      this.scrollModeTl = gsap.timeline({})
       this.scrollModeTl.to(this.program.uniforms._Alpha, {
-        value: this.isInView ? 1.0 : 0.0,
-        duration: 0.5,
+        value: alpha,
+        duration: 0.35,
         ease: "power2.inOut"
-      }, "<");
-      this.scrollModeTl.to(this.program.uniforms._Scale, {
-         value: 1.0,
-         duration: 0.5,
-         ease: "power2.inOut"
       }, "<");
 
       this.scrollModeTl.to(this.program.uniforms._AlphaPhase, {
-          value: 0.0,
-          duration: 0.5,
+          value: alphaPhase,
+          duration: 0.35,
           ease: "power2.inOut"
         }, "<");
 
         this.scrollModeTl.to(this.program.uniforms._FlowMapPhase, {
-          value: this.isInView ? 1.0 : 0.0,
-          duration: 0.5,
+          value: flowMapPhase,
+          duration: 0.3,
           ease: "power2.inOut"
         }, "<");
-  
-    }
-  
-    update({index, force, isInteracting}) {
-    
-      if(isInteracting) {
-        this.position.z += force;
-      } else {
-        this.position.z += (this.targetPos - this.position.z) * 0.05;
-      }
-  
-      this.updateIndex(index);
-      this.position.z = loopNegativeNumber({a: this.position.z, b: -5.0});
-      
-      if(this.video !== null) {
-        this.updateVideoTexture();
-      }
-  
-  
-    }
-  
-    inView({inViewPosZ}) {
-  
-      if(Math.round(this.position.z) === inViewPosZ) {
-        this.program.uniforms._InView.value = this.isInView = true;
-        return this.isInView;
-      } else {
-        this.program.uniforms._InView.value = this.isInView = false;
-        return this.isInView;
-      }
-  
+
     }
   
     updateVideoTexture() {
@@ -249,7 +236,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
             this.texture.needsUpdate = true;
           }
         } else {
-          // this.texture.needsUpdate = false;
+          this.texture.needsUpdate = false;
         }
   
     }
@@ -257,9 +244,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
     playVideo = () => {
 
       if(this.video === null) return;
-      if(this.parent) {
-        if(this.inView({inViewPosZ: 0 - this.parent.position.z})) this.video.play();
-      }
+      if(this.inView({inViewPosZ: 0 - this.parent.position.z})) this.video.play();
   
     }
   
@@ -269,29 +254,38 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
       this.video.pause();
   
     }
+  
+    //I have no idea how it makes sense, but after some pen & paper coding I noticed
+    //that applying the delta between the video count and the quad count gives me the desired index?
+    updateIndex({traversing}) {
 
-    killScrollModeAnim() {
+      let greaterThanBouds = this.position.z > 0.0;
+      let lessThanBounds = traversing ? this.position.z <= -5.0 : this.position.z < -5.0;
+  
+      if(lessThanBounds) {
+        this.index -= this.parent.children.length;
+      } else if(greaterThanBouds) { //magic number 5: max distanc based on quads current 1 unit spacing
+        this.index += this.parent.children.length;
+      }
+        
+      this.index = (((this.index % this.videos.length) + this.videos.length) % this.videos.length);
+    
+    }
+
+    inView({inViewPosZ}) {
+  
+      this.program.uniforms._InView.value = this.isInView = Math.round(this.position.z) === inViewPosZ ? true : false;
+      return this.isInView;
+
+  }
+
+    killUniformAnim() {
 
       gsap.killTweensOf(this.program.uniforms._Alpha);
       gsap.killTweensOf(this.program.uniforms._Scale);
       gsap.killTweensOf(this.program.uniforms._AlphaPhase);
       gsap.killTweensOf(this.program.uniforms._FlowMapPhase);
 
-    }
-  
-    //I have no idea how it makes sense, but after some pen & paper coding I noticed
-    //that applying the delta between the video count and the quad count gives me the desired index?
-    updateIndex() { //change name of function
-  
-      if(this.position.z > 0.0) {
-        this.index += this.parent.children.length;
-  
-      } else if(this.position.z < - 5.0) { //magic number 5: max distanc based on quads current 1 unit spacing
-        this.index -= this.parent.children.length;
-      }
-        
-      this.index = (((this.index % this.videos.length) + this.videos.length) % this.videos.length);
-    
     }
   
   }

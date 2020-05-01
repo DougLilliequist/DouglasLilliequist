@@ -34,7 +34,7 @@ export default class About extends View {
   }
 
   initOnComplete() {
-    // super.initOnComplete();
+    super.initOnComplete();
   }
 
   initReferences() {
@@ -83,7 +83,7 @@ export default class About extends View {
   playEnterAnim() {
 
     const dur = 0.85;
-    const startY = 10;
+    const startY = -10;
     const ease = "linear";
 
     const enterAnim = gsap.timeline(
@@ -94,7 +94,7 @@ export default class About extends View {
         });
       }
     });
-    
+
     enterAnim.fromTo(this.header, {
       opacity: 0.01,
       y: startY
@@ -113,7 +113,7 @@ export default class About extends View {
       opacity: 0.99,
       y: 0,
       // ease: ease
-    }, "<0.05");
+    }, "<0.1");
 
     enterAnim.fromTo(this.contactHeader, {
       opacity: 0.01,
@@ -123,7 +123,7 @@ export default class About extends View {
       opacity: 0.99,
       y: 0,
       // ease: ease
-    }, "<0.05");
+    }, "<0.1");
 
     enterAnim.fromTo(this.links, {
       opacity: 0.01,
@@ -131,10 +131,51 @@ export default class About extends View {
     }, {
       duration: dur,
       opacity: 0.99,
-      y: 0,
+      x: 0,
       stagger: 0.1,
       // ease: ease
-    }, "<0.05");
+    }, "<0.1");
+    
+    // enterAnim.fromTo(this.header, {
+    //   opacity: 0.01,
+    //   y: startY
+    // }, {
+    //   duration: dur,
+    //   opacity: 0.99,
+    //   y: 0,
+    //   // ease: ease
+    // }, "<0.1");
+
+    // enterAnim.fromTo(this.introText, {
+    //   opacity: 0.01,
+    //   y: startY
+    // }, {
+    //   duration: dur,
+    //   opacity: 0.99,
+    //   y: 0,
+    //   // ease: ease
+    // }, "<0.05");
+
+    // enterAnim.fromTo(this.contactHeader, {
+    //   opacity: 0.01,
+    //   y: startY
+    // }, {
+    //   duration: dur,
+    //   opacity: 0.99,
+    //   y: 0,
+    //   // ease: ease
+    // }, "<0.05");
+
+    // enterAnim.fromTo(this.links, {
+    //   opacity: 0.01,
+    //   y: startY
+    // }, {
+    //   duration: dur,
+    //   opacity: 0.99,
+    //   x: 0,
+    //   stagger: 0.1,
+    //   // ease: ease
+    // }, "<0.05");
 
   }
 
@@ -148,40 +189,11 @@ export default class About extends View {
 
       onComplete: () => {
         this.links.forEach((link) => {
-          link.children[0].remove('link--enabled');
+          link.children[0].classList.remove('link--enabled');
         });
       }
 
     });
-    
-    // leaveAnim.to(this.header, {
-    //   duration: dur,
-    //   opacity: 0.01,
-    //   y: textY,
-    //   ease: ease
-    // }, "<");
-
-    // leaveAnim.to(this.introText, {
-    //   duration: dur,
-    //   opacity: 0.01,
-    //   y: textY,
-    //   ease: ease
-    // }, "<0.05");
-
-    // leaveAnim.to(this.contactHeader, {
-    //   duration: dur,
-    //   opacity: 0.01,
-    //   y: textY,
-    //   ease: ease
-    // }, "<0.05");
-
-    // leaveAnim.to(this.links, {
-    //   duration: dur,
-    //   opacity: 0.01,
-    //   y: textY,
-    //   stagger: -0.05,
-    //   ease: ease
-    // }, "<0.05");
 
     leaveAnim.to(this.links, {
       duration: dur,
@@ -196,21 +208,21 @@ export default class About extends View {
       opacity: 0.01,
       y: textY,
       ease: ease
-    }, "<0.1");
+    }, "<0.05");
 
     leaveAnim.to(this.introText, {
       duration: dur,
       opacity: 0.01,
       y: textY,
       ease: ease
-    }, "<0.1");
+    }, "<0.05");
 
     leaveAnim.to(this.header, {
       duration: dur,
       opacity: 0.01,
       y: textY,
       ease: ease
-    }, "<0.1");
+    }, "<0.05");
 
   }
 

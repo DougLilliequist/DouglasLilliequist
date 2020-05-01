@@ -14,7 +14,6 @@ uniform float _FlipFlowMapForce;
 
 uniform sampler2D _Image;
 uniform float _Scale;
-uniform float _Time;
 uniform bool _InView;
 
 uniform vec2 _ViewplaneSize;
@@ -51,6 +50,5 @@ void main() {
     gl_Position = modelViewProjection * vec4(pos, 1.0);
     vUv = uv;
     vMvPos = (modelViewMatrix * vec4(pos, 1.0)).xyz;
-    mPos = (modelMatrix * vec4(pos, 1.0)).xyz;
 
 }

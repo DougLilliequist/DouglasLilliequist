@@ -7,17 +7,7 @@ import events from '../../../../utils/events.js';
 
 import {gsap} from 'gsap';
 import { Vec2 } from "../../../../vendors/ogl/src/math/Vec2";
-
-/**
- * Not sure what happened, but somewhere when
- * I replaced the looping with emitting an event for telling
- * quads to change to scroll mode or not...
- * 
- * The last quad visible in front of camera remains when going between different pages
- * which was not the case as the quads would always start on the first project.
- * 
- * I would say it should be the intended effect but at the same time, do you want to start from the begning always...?
- */
+import { loopNegativeNumber } from "../../../../utils/Math";
 
 export default class ProjectQuadMediator extends DomquadMediator {
   constructor(gl, scene, camera) {
@@ -35,6 +25,10 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     this.inScrollMode = false;
 
+    this.forceOffset = 0;
+
+    this.traversingQuads = false;
+
   }
 
   initEvents() {
@@ -42,6 +36,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
     emitter.on(events.ENTER_SCROLL_MODE, this.enterScrollMode);
     emitter.on(events.EXIT_SCROLL_MODE, this.exitScrollMode);
     emitter.on(events.PREPARE_UNMOUNT, this.hideQuads);
+    emitter.on(events.TRAVERSE_PROJECTS, this.advanceQuads);
 
   }
 
@@ -50,6 +45,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
     emitter.off(events.ENTER_SCROLL_MODE, this.enterScrollMode);
     emitter.off(events.EXIT_SCROLL_MODE, this.exitScrollMode);
     emitter.off(events.PREPARE_UNMOUNT, this.hideQuads);
+    emitter.off(events.TRAVERSE_PROJECTS, this.advanceQuads);
 
   }
 
@@ -126,7 +122,6 @@ export default class ProjectQuadMediator extends DomquadMediator {
   exitScrollMode = () => {
 
     this.inScrollMode = false;
-    this.captureLastPosition();
     this.getQuadInView();
     emitter.emit(events.PLAY_VIDEO);
     emitter.emit(events.REMOVE_SCROLL_MODE_ANIM);
@@ -187,21 +182,47 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
   }
 
+  //refactor
+  advanceQuads = ({direction, duration}) => {
+
+    if(this.traversingQuads === false) { //rename
+      
+      this.traversingQuads = true;
+      emitter.emit(events.PAUSE_VIDEO);
+      emitter.emit(events.APPLY_TRAVERSE_MODE_ANIM);
+
+      gsap.delayedCall(duration, () => {
+        this.traversingQuads = false
+        this.getQuadInView();
+        emitter.emit(events.PLAY_VIDEO);
+        emitter.emit(events.REMOVE_TRAVERSE_MODE_ANIM);
+      });
+      
+      this.children.map((quad) => {
+        
+        quad.traversePosition({direction, duration});
+  
+      });
+
+    }
+
+  }
+
   updateInputForce({inputDelta, dt = 14.0}) {
 
     this.inputForce.y += inputDelta.y * 0.01 / dt;
 
   }
 
-  update({dt, inputPos, inputDelta, flowMap}) {
+  update({dt, inputDelta, flowMap}) {
 
         if(this.inScrollMode) {
           this.updateInputForce({inputDelta, dt});
         }
         
-        this.children.map((quad, i) => {
+        this.children.map((quad) => {
           
-          quad.update({index: i, force: this.inputForce.y, isInteracting: this.inScrollMode});
+          quad.update({force: this.inputForce.y});
           quad.program.uniforms._InputForce.value = Math.min(1.0, Math.abs(this.inputForce.y * 1.0));
           quad.program.uniforms._Time.value += dt;
           quad.program.uniforms._FlowMap.value = flowMap;
@@ -209,6 +230,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
         });
 
         this.inputForce.y *= this.inputForceInertia;
+        if(Math.abs(this.inputForce.y) < 0.001) this.inputForce.y = 0.0;
   }
 
   //get the quad whose position equals to the camera's position along Z
@@ -227,12 +249,6 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
       return quadInView;
       
-  }
-
-  captureLastPosition() {
-      this.children.map((quad) => {
-          quad.targetPos = Math.round(quad.position.z);
-      })
   }
 
 }

@@ -15,13 +15,15 @@ const events = {
     EXIT_SCROLL_MODE: 'exit_scroll_mode',
     APPLY_SCROLL_MODE_ANIM: 'apply_scroll_mode_anim',
     REMOVE_SCROLL_MODE_ANIM: 'remove_scroll_mode_anim',
+    TRAVERSE_PROJECTS: 'traverse_projects',
+    APPLY_TRAVERSE_MODE_ANIM: 'apply_traverse_mode',
+    REMOVE_TRAVERSE_MODE_ANIM: 'remove_traverse_mode',
 
     MOUSE_DOWN: 'mouse_down',
     MOUSE_MOVE: 'mouse_move',
     MOUSE_UP: 'mouse_up',
 
     SCROLLING: 'scrolling',
-    TRAVERSE_PROJECTS: 'traverse_projects',
 
     TOUCH_START: 'touch_start',
     TOUCH_MOVE: 'touch_move',

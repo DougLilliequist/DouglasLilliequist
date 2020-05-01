@@ -24,7 +24,7 @@ class EventEmitter {
             passive: true
         });
         window.addEventListener('wheel', this.onScroll, {
-            passive: true
+            passive: false
         });
         window.addEventListener('resize', this.onResize);
         gsap.ticker.add(this.tick);
@@ -52,6 +52,7 @@ class EventEmitter {
     onScroll = (e) => {
 
         this.emitter.emit(events.SCROLLING, e, false);
+
     }   
 
     tick = () => {

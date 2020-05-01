@@ -27,6 +27,6 @@ void main() {
 
     vec3 outPutCol = vec3(r,g,b);
 
-    gl_FragColor = vec4(outPutCol, mix(step(vUv.y, _Alpha), step(vUv.x, _Alpha), _RevealDirection));
+    gl_FragColor = vec4(outPutCol, mix(step(vUv.y, _Alpha), 1.0 - step(_Alpha, vUv.x * 0.99), _RevealDirection));
 
 }

@@ -66,15 +66,10 @@ export default class Projects extends View {
     this.enableUserInteraction = true;
     this.inScrollMode = false;
 
-
-    this.canEmitScrollEvent = true;
-    this.firstGesture = false;
-    this.scrollThreshold = 50.0;
-
     emitter.on(events.LOAD_PROJECT_CONTENT, this.loadProjectContent);
     emitter.on(events.MOUSE_DOWN, this.enableScrollMode);
     emitter.on(events.MOUSE_UP, this.disableScrollMode);
-    // emitter.on(events.SCROLLING, this.onScroll);
+    emitter.on(events.SCROLLING, this.onScroll);
 
     this.projectLink.addEventListener('mouseenter', () => {
 
@@ -96,7 +91,7 @@ export default class Projects extends View {
     emitter.off(events.LOAD_PROJECT_CONTENT, this.loadProjectContent);
     emitter.off(events.MOUSE_DOWN, this.enableScrollMode);
     emitter.off(events.MOUSE_UP, this.disableScrollMode);
-    // emitter.off(events.SCROLLING, this.onScroll);
+    emitter.off(events.SCROLLING, this.onScroll);
 
     this.projectLink.removeEventListener('mouseenter', () => {
 
@@ -149,26 +144,22 @@ export default class Projects extends View {
 
   }
 
-  onScroll = (e) => {
+  onScroll = (event) => {
 
-    if(Math.abs(e.deltaY) > this.scrollThreshold && Math.abs(e.deltaY) < 200.0) {
 
-      if(this.firstGesture === false) {
-        this.firstGesture = true;
+    if(typeof event.cancelable !== 'boolean' || event.cancelable) {
 
-        emitter.emit(events.TRAVERSE_PROJECTS, Math.sign(e.deltaY));
-        emitter.emit(events.ENTER_SCROLL_MODE);
-        this.inScrollMode = true;
+      this.inScrollMode = true;
+      // emitter.emit(events.ENTER_SCROLL_MODE);
+      emitter.emit(events.TRAVERSE_PROJECTS, {direction: event.deltaY, duration:0.5});
+      this.animateProjectContent();
+
+      if(this.updateGestureState) this.updateGestureState.kill();
+      this.updateGestureState = gsap.delayedCall(0.5, () => {
+        this.inScrollMode = false;
+        // emitter.emit(events.EXIT_SCROLL_MODE);
         this.animateProjectContent();
-
-        gsap.delayedCall(1.0, () => {
-          emitter.emit(events.EXIT_SCROLL_MODE);
-          this.inScrollMode = false;
-          this.animateProjectContent();
-          this.firstGesture = false;
-        });
-      } 
-
+    });
     }
 
   }
@@ -177,13 +168,13 @@ export default class Projects extends View {
 
     this.killProjectContentAnim();
     const ease = "sine.inOut";
-    const startY = 20;
+    const startX = 20;
     const dur = 0.85
 
     const transitionTl = gsap.timeline();
     transitionTl.fromTo(this.projectTitle, {
       opacity: 0.01,
-      y: startY,
+      y: -startX,
     }, {
       duration: dur,
       opacity: 0.99,
@@ -194,13 +185,13 @@ export default class Projects extends View {
     transitionTl.fromTo(this.projectContentClipReveal, {
 
       opacity: 0.01,
-      y: startY
+      x: startX
 
     }, {
 
       duration: dur,
       opacity: 0.99,
-      y: 0,
+      x: 0,
       stagger: 0.05,
       // ease: ease
 
@@ -209,22 +200,22 @@ export default class Projects extends View {
 
     transitionTl.fromTo(this.projectLink, {
       opacity: 0.01,
-      y: startY
+      x: startX
     },
     {
       duration: dur,
       opacity: 0.99,
-      y: 0,
+      x: 0,
       ease: ease
     }, "<0.01");
 
     transitionTl.fromTo(this.clickAndDragCTA, {
       opacity: 0.01,
-      y: startY * 0.5
+      x: startX * 0.5
     }, {
       duration: dur,
       opacity: 0.99,
-      y: 0
+      x: 0
     }, "<0.01");
 
   }
@@ -236,11 +227,11 @@ export default class Projects extends View {
     const transitionTl = gsap.timeline();
     const ease = "sine.inOut";
     const dur = 0.75;
-    const targetY = -20;
+    const targetX = -20;
 
     transitionTl.to(this.projectTitle, {
       opacity: 0.01,
-      y: targetY,
+      y: -targetX,
       duration: dur,
       ease: ease
     });
@@ -249,7 +240,7 @@ export default class Projects extends View {
 
       duration: dur,
       opacity: 0.01,
-      y: -targetY,
+      x: -targetX,
       stagger: -0.05,
       ease: ease
     }, "<0.01");
@@ -258,14 +249,14 @@ export default class Projects extends View {
     {
       duration: dur,
       opacity: 0.01,
-      y: -targetY,
+      x: -targetX,
       ease: ease
     }, "<0.01");
 
     transitionTl.to(this.clickAndDragCTA, {
       duration: dur,
       opacity: 0.01,
-      y: -targetY * 0.5,
+      x: -targetX * 0.5,
       ease: ease
     }, "<0.01");
 
@@ -279,19 +270,20 @@ export default class Projects extends View {
 
     const hideTl = gsap.timeline();
     hideTl.to(this.projectTitleClipReveal.children[0], {
-      duration: scrolling ? 0.4 : 0.75,
+      duration: scrolling ? 0.1 : 0.75,
       opacity: scrolling ? 0.01 : 0.99,
       // x: scrolling ? -50 : 0
     }, "<");
     hideTl.to(this.projectContentClipReveal, {
       opacity: scrolling ? 0.01 : 0.99,
-      duration: scrolling ? 0.4 : 1.0,
+      duration: scrolling ? 0.1 : 1.0,
       stagger: scrolling ? 0.0 : 0.1,
-    }, "<0.1")
+    }, "<0.05")
     hideTl.to(this.projectLinkClipReveal.children[0], {
-      duration: scrolling ? 0.3 : 0.75,
-      y: scrolling ? 15 : 0
-    }, "<0.1");
+      duration: scrolling ? 0.1 : 0.5,
+      // y: scrolling ? 15 : 0,
+      opacity: scrolling ? 0.01 : 0.99
+    }, "<0.05");
 
   }
 

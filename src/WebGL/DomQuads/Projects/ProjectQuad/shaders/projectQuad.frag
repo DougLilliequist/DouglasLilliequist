@@ -8,14 +8,13 @@ uniform float _RevealDirection;
 
 varying vec2 vUv;
 varying vec3 vMvPos;
-varying vec3 mPos;
 
 void main() {
 
     vec2 uv = vUv;
-    uv -= 0.5;
-    uv *= mix(1.0, 0.75, _AlphaPhase);
-    uv += 0.5;
+    // uv -= 0.5;
+    // uv *= mix(1.0, 0.95, _AlphaPhase);
+    // uv += 0.5;
 
     vec3 img = texture2D(_Image, uv).xyz;
     float len = (vMvPos.z * vMvPos.z);
