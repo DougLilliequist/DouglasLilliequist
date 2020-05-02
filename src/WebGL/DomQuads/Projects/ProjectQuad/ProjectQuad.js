@@ -39,6 +39,8 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
       this.video = this.videos[this.index].vid;
   
       this.initPos = this.position.z = 0 - posOffset;
+
+      // console.log(this.initPos)
     
       this.targetPos = this.position.z; //remove prev position
 
@@ -143,6 +145,11 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
       this.inScrollMode = false;
       this.animteUniforms({alpha: this.isInView ? 1.0 : 0.0, alphaPhase: 0.0, flowMapPhase: this.isInView ? 1.0 : 0.0});
       this.targetPos = Math.round(this.position.z);
+      gsap.to(this.position, {
+        z: this.targetPos,
+        duration: 0.5,
+        ease: "power2.inOut"
+      });
   
     }
 
@@ -160,10 +167,9 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
 
     }
 
-    //Guess I'll try and assign a force that my quads can safely move towards?
     traversePosition({direction, duration}) {
 
-      const pos = this.position.z;
+      let pos = Math.round(this.position.z);
       this.traverseAnim = gsap.to(this.position, {
         z: pos + Math.sign(direction),
         duration: duration,
@@ -171,10 +177,13 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
         onStart: () => {
           this.traveringPosition = true;
         },
+        onUpdate: () => {
+
+        },
         onComplete: () => {
           this.updateIndex();
-          this.position.z = loopNegativeNumber({a: this.position.z, b: -5.0});
-          this.targetPos = Math.round(this.position.z);
+          this.loopPosition();
+          // this.targetPos = (this.position.z);
           this.traveringPosition = false
         }
       });
@@ -187,22 +196,21 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
         this.updateVideoTexture();
       }
       
-      if(this.traveringPosition === false) {
+      // if(this.traveringPosition === false) {
 
         if(this.inScrollMode) {
           this.position.z += force;
           this.updateIndex();
-          this.position.z = loopNegativeNumber({a: this.position.z, b: -5.0});
-  
-        } else {
-          const delta = (this.targetPos - this.position.z);
-          this.position.z += delta * 0.08;
-          this.position.z = Math.abs(delta) < 0.001 ? Math.round(this.position.z) : this.position.z;
-        }
-
+          this.loopPosition();
+          // this.updateIndex();
+          // this.position.z = loopNegativeNumber({a: this.position.z, b: -5.0});
+        // }
       }
 
-      if(this.initIndex === 0) console.log(this.index)
+      // this.loopPosition();
+      // this.updateIndex();
+
+      // if(this.initIndex === 4) console.log(this.position.z);
       
     }
 
@@ -250,6 +258,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
 
       if(this.video === null) return;
       if(this.inView({inViewPosZ: 0 - this.parent.position.z})) this.video.play();
+      // if(this.inView({inViewPosZ: 0.0})) this.video.play();
   
     }
   
@@ -264,8 +273,8 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
     //that applying the delta between the video count and the quad count gives me the desired index?
     updateIndex() {
 
-      let greaterThanBouds = this.position.z > 0.0;
-      let lessThanBounds = this.position.z <= -5.0;
+      let lessThanBounds = this.position.z < -5.0;
+      let greaterThanBouds = this.position.z > 1.0;
       const offSet = this.parent.children.length;
   
       if(lessThanBounds) {
@@ -282,6 +291,18 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
   
       this.program.uniforms._InView.value = this.isInView = Math.round(this.position.z) === inViewPosZ ? true : false;
       return this.isInView;
+
+  }
+
+  loopPosition() {
+
+    if(this.position.z < -5.0) {
+      this.position.z += 6.0;
+    } else if(this.position.z > 1.0) {
+      this.position.z -= 6.0;
+    }
+
+    // if(this.initIndex === 0) console.log(this.position.z);
 
   }
 
