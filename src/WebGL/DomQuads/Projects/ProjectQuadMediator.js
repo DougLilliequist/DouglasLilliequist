@@ -29,14 +29,16 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     this.traversingQuads = false;
 
+    this.quadInView;
+
   }
 
   initEvents() {
 
     emitter.on(events.ENTER_SCROLL_MODE, this.enterScrollMode);
     emitter.on(events.EXIT_SCROLL_MODE, this.exitScrollMode);
-    emitter.on(events.PREPARE_UNMOUNT, this.hideQuads);
     emitter.on(events.TRAVERSE_PROJECTS, this.advanceQuads);
+    emitter.on(events.PREPARE_UNMOUNT, this.hideQuads);
 
   }
 
@@ -44,8 +46,8 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     emitter.off(events.ENTER_SCROLL_MODE, this.enterScrollMode);
     emitter.off(events.EXIT_SCROLL_MODE, this.exitScrollMode);
-    emitter.off(events.PREPARE_UNMOUNT, this.hideQuads);
     emitter.off(events.TRAVERSE_PROJECTS, this.advanceQuads);
+    emitter.off(events.PREPARE_UNMOUNT, this.hideQuads);
 
   }
 
@@ -104,7 +106,8 @@ export default class ProjectQuadMediator extends DomquadMediator {
   })
 
   if(getFirstQuad) {
-    this.getQuadInView().playVideo();
+    this.quadInView = this.getQuadInView();
+    this.quadInView.playVideo();
   }
 
     this.revealQuads();
@@ -122,40 +125,56 @@ export default class ProjectQuadMediator extends DomquadMediator {
   exitScrollMode = () => {
 
     this.inScrollMode = false;
-    this.getQuadInView();
+    this.quadInView = this.getQuadInView();
     emitter.emit(events.PLAY_VIDEO);
     emitter.emit(events.REMOVE_SCROLL_MODE_ANIM);
     
   }
 
+    //refactor
+  advanceQuads = ({direction, duration}) => {
+
+      emitter.emit(events.PAUSE_VIDEO);
+      emitter.emit(events.APPLY_TRAVERSE_MODE_ANIM);
+  
+      gsap.delayedCall(duration, () => {
+        this.quadInView = this.getQuadInView();
+        console.log(this.quadInView);
+        emitter.emit(events.PLAY_VIDEO);
+        emitter.emit(events.REMOVE_TRAVERSE_MODE_ANIM);
+      });
+        
+      this.children.map((quad) => {
+        quad.traversePosition({direction, duration});
+      });
+    
+  }
+
   revealQuads = () => {
 
-    const quadInView = this.getQuadInView();
-
-    gsap.set(quadInView.program.uniforms._RevealDirection, {
+    gsap.set(this.quadInView.program.uniforms._RevealDirection, {
       value: 0.0
     });
 
-      gsap.to(quadInView.program.uniforms._Alpha, {
-        duration: 0.1,
-        value: 1.0,
-        ease: "sine.in"
-      });
+    gsap.to(this.quadInView.program.uniforms._Alpha, {
+      duration: 0.1,
+      value: 1.0,
+      ease: "sine.in"
+    });
 
-      gsap.to(quadInView.program.uniforms._RevealPhase, {
-        duration: 0.85,
-        value: 1.0,
-        ease: "circ.inOut",
-        onComplete: () => {
-          this.children.map((quad) => {
-
-            gsap.set(quad.program.uniforms._RevealPhase, {
-              value: 1.0
-            });
-
+    gsap.to(this.quadInView.program.uniforms._RevealPhase, {
+      duration: 0.85,
+      value: 1.0,
+      ease: "circ.inOut",
+      onComplete: () => {
+        this.children.map((quad) => {
+          gsap.set(quad.program.uniforms._RevealPhase, {
+            value: 1.0
           });
-        }
-      });
+
+        });
+      }
+    });
       
   }
 
@@ -179,32 +198,6 @@ export default class ProjectQuadMediator extends DomquadMediator {
       });
 
     });
-
-  }
-
-  //refactor
-  advanceQuads = ({direction, duration}) => {
-
-    if(this.traversingQuads === false) { //rename
-      
-      this.traversingQuads = true;
-      emitter.emit(events.PAUSE_VIDEO);
-      emitter.emit(events.APPLY_TRAVERSE_MODE_ANIM);
-
-      gsap.delayedCall(duration, () => {
-        this.traversingQuads = false
-        this.getQuadInView();
-        emitter.emit(events.PLAY_VIDEO);
-        emitter.emit(events.REMOVE_TRAVERSE_MODE_ANIM);
-      });
-      
-      this.children.map((quad) => {
-        
-        quad.traversePosition({direction, duration});
-  
-      });
-
-    }
 
   }
 
@@ -241,10 +234,13 @@ export default class ProjectQuadMediator extends DomquadMediator {
       let quadInView;
 
       this.children.map((quad) => {  
-        if(quad.inView({inViewPosZ: 0 - this.position.z})) {
+        
+        if(quad.inView({inViewPosZ: 0 - this.position.z})) {          
           quadInView = quad;
           emitter.emit(events.LOAD_PROJECT_CONTENT, quadInView.index);
+
         }
+      
       });
 
       return quadInView;

@@ -65,6 +65,7 @@ export default class Projects extends View {
 
     this.enableUserInteraction = true;
     this.inScrollMode = false;
+    this.inTraverseMode = false;
 
     emitter.on(events.LOAD_PROJECT_CONTENT, this.loadProjectContent);
     emitter.on(events.MOUSE_DOWN, this.enableScrollMode);
@@ -148,18 +149,23 @@ export default class Projects extends View {
 
 
     if(typeof event.cancelable !== 'boolean' || event.cancelable) {
-
-      this.inScrollMode = true;
-      // emitter.emit(events.ENTER_SCROLL_MODE);
-      emitter.emit(events.TRAVERSE_PROJECTS, {direction: event.deltaY, duration:0.5});
-      this.animateProjectContent();
-
-      if(this.updateGestureState) this.updateGestureState.kill();
-      this.updateGestureState = gsap.delayedCall(0.5, () => {
-        this.inScrollMode = false;
-        // emitter.emit(events.EXIT_SCROLL_MODE);
+      
+      if(this.inTraverseMode === false) {
+      
+        this.inTraverseMode = true;
+        this.inScrollMode = true;
+        emitter.emit(events.TRAVERSE_PROJECTS, {direction: event.deltaY, duration:0.5});
         this.animateProjectContent();
-    });
+
+        // if(this.updateGestureState) this.updateGestureState.kill();
+          this.updateGestureState = gsap.delayedCall(0.5, () => {
+          this.inScrollMode = false;
+          this.inTraverseMode = false;
+          // emitter.emit(events.EXIT_SCROLL_MODE);
+          this.animateProjectContent();
+        });
+      }
+
     }
 
   }
