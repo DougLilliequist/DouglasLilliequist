@@ -39,6 +39,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
     emitter.on(events.EXIT_SCROLL_MODE, this.exitScrollMode);
     emitter.on(events.TRAVERSE_PROJECTS, this.advanceQuads);
     emitter.on(events.PREPARE_UNMOUNT, this.hideQuads);
+    emitter.on(events.SCROLLING, this.onScroll);
 
   }
 
@@ -214,6 +215,10 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     });
 
+  }
+
+  onScroll = (event) => {
+    this.inputForce.y += event.deltaY * 0.0005;
   }
 
   updateInputForce({inputDelta, dt = 14.0}) {

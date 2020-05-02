@@ -115,7 +115,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
           value: false
         },
         _Alpha: {
-          value: 0.0
+          value: 0.5
         },
         _Scale: {
           value: 1.0
@@ -194,11 +194,11 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
         this.updateVideoTexture();
       }
       
-        if(this.inScrollMode) {
+        // if(this.inScrollMode) {
           this.position.z += force;
           this.updateIndex();
           this.loopPosition();
-      }
+      // }
       
     }
 

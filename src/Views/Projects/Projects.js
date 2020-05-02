@@ -70,7 +70,7 @@ export default class Projects extends View {
     emitter.on(events.LOAD_PROJECT_CONTENT, this.loadProjectContent);
     emitter.on(events.MOUSE_DOWN, this.enableScrollMode);
     emitter.on(events.MOUSE_UP, this.disableScrollMode);
-    emitter.on(events.SCROLLING, this.onScroll);
+    // emitter.on(events.SCROLLING, this.onScroll);
 
     this.projectLink.addEventListener('mouseenter', () => {
 
