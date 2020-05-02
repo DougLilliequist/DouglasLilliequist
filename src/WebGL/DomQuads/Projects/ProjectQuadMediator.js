@@ -138,30 +138,23 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
       emitter.emit(events.PAUSE_VIDEO);
       emitter.emit(events.APPLY_TRAVERSE_MODE_ANIM);
-  
-      // gsap.delayedCall(duration + 0.1, () => {
-      //   this.quadInView = this.getQuadInView();
-      //   emitter.emit(events.PLAY_VIDEO);
-      //   emitter.emit(events.REMOVE_TRAVERSE_MODE_ANIM);
-      // });
         
       this.children.map((quad) => {
         const pos = Math.round(quad.position.z);
         gsap.to(quad.position, {
           z: pos + Math.sign(direction),
           duration: duration,
+          ease: "power2.inOut",
           onUpdate: () => {
-            // quad.loopPosition();
+            if(quad.initIndex === 0) console.log(quad.position.z)
           },
           onComplete: () => {
             quad.updateIndex();
             quad.loopPosition();
-            // quad.targetPosition = Math.round(quad.position.z);
-            // quad.updateIndex();
-            // quad.loopPosition();
+            if(quad.initIndex === 0) console.log(quad.position.z)
+
             this.quadInView = this.getQuadInView();
             this.quadInView.playVideo();
-            // emitter.emit(events.PLAY_VIDEO);
             emitter.emit(events.REMOVE_TRAVERSE_MODE_ANIM);
           }
         });

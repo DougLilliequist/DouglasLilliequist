@@ -128,6 +128,7 @@ export default class Projects extends View {
     if(window.hoveringLink) return;
 
     document.body.style.cursor = "grabbing";
+    if(this.updateGestureState) this.updateGestureState.kill();
     this.inScrollMode = true;
     this.enableUserInteraction = false;
     emitter.emit(events.ENTER_SCROLL_MODE);
@@ -150,21 +151,21 @@ export default class Projects extends View {
 
     if(typeof event.cancelable !== 'boolean' || event.cancelable) {
       
-      if(this.inTraverseMode === false) {
+      // if(this.inTraverseMode === false) {
       
         this.inTraverseMode = true;
         this.inScrollMode = true;
-        emitter.emit(events.TRAVERSE_PROJECTS, {direction: event.deltaY, duration:0.5});
+        emitter.emit(events.TRAVERSE_PROJECTS, {direction: event.deltaY, duration:0.85});
         this.animateProjectContent();
 
         // if(this.updateGestureState) this.updateGestureState.kill();
-          this.updateGestureState = gsap.delayedCall(0.5, () => {
+          this.updateGestureState = gsap.delayedCall(0.85, () => {
           this.inScrollMode = false;
           this.inTraverseMode = false;
           // emitter.emit(events.EXIT_SCROLL_MODE);
           this.animateProjectContent();
         });
-      }
+      // }
 
     }
 

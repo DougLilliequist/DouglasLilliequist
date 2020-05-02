@@ -39,8 +39,6 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
       this.video = this.videos[this.index].vid;
   
       this.initPos = this.position.z = 0 - posOffset;
-
-      // console.log(this.initPos)
     
       this.targetPos = this.position.z; //remove prev position
 
@@ -196,21 +194,11 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
         this.updateVideoTexture();
       }
       
-      // if(this.traveringPosition === false) {
-
         if(this.inScrollMode) {
           this.position.z += force;
           this.updateIndex();
           this.loopPosition();
-          // this.updateIndex();
-          // this.position.z = loopNegativeNumber({a: this.position.z, b: -5.0});
-        // }
       }
-
-      // this.loopPosition();
-      // this.updateIndex();
-
-      // if(this.initIndex === 4) console.log(this.position.z);
       
     }
 
@@ -258,7 +246,6 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
 
       if(this.video === null) return;
       if(this.inView({inViewPosZ: 0 - this.parent.position.z})) this.video.play();
-      // if(this.inView({inViewPosZ: 0.0})) this.video.play();
   
     }
   
@@ -301,8 +288,6 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
     } else if(this.position.z > 1.0) {
       this.position.z -= 6.0;
     }
-
-    // if(this.initIndex === 0) console.log(this.position.z);
 
   }
 
