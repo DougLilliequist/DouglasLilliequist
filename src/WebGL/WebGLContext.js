@@ -144,7 +144,7 @@ export default class WebGLContext {
     this.mouseFlowmap.update(this.renderer, {dt: this.deltaTime, inputPos: this.inputPos, inputDelta: this.inputDelta});
 
     this.domQuadManager.update({
-      dt: this.deltaTime, 
+      dt: this.deltaTime,
       inputPos: this.inputPos, 
       inputDelta: this.inputDelta,
       flowMap: this.mouseFlowmap.Texture 

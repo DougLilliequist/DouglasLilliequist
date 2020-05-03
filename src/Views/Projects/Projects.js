@@ -70,7 +70,6 @@ export default class Projects extends View {
     emitter.on(events.LOAD_PROJECT_CONTENT, this.loadProjectContent);
     emitter.on(events.MOUSE_DOWN, this.enableScrollMode);
     emitter.on(events.MOUSE_UP, this.disableScrollMode);
-    // emitter.on(events.SCROLLING, this.onScroll);
 
     this.projectLink.addEventListener('mouseenter', () => {
 
@@ -92,7 +91,6 @@ export default class Projects extends View {
     emitter.off(events.LOAD_PROJECT_CONTENT, this.loadProjectContent);
     emitter.off(events.MOUSE_DOWN, this.enableScrollMode);
     emitter.off(events.MOUSE_UP, this.disableScrollMode);
-    emitter.off(events.SCROLLING, this.onScroll);
 
     this.projectLink.removeEventListener('mouseenter', () => {
 
@@ -143,31 +141,6 @@ export default class Projects extends View {
     this.enableUserInteraction = true;
     emitter.emit(events.EXIT_SCROLL_MODE);
     this.animateProjectContent();
-
-  }
-
-  onScroll = (event) => {
-
-
-    if(typeof event.cancelable !== 'boolean' || event.cancelable) {
-      
-      // if(this.inTraverseMode === false) {
-      
-        this.inTraverseMode = true;
-        this.inScrollMode = true;
-        emitter.emit(events.TRAVERSE_PROJECTS, {direction: event.deltaY, duration:0.85});
-        this.animateProjectContent();
-
-        // if(this.updateGestureState) this.updateGestureState.kill();
-          this.updateGestureState = gsap.delayedCall(0.85, () => {
-          this.inScrollMode = false;
-          this.inTraverseMode = false;
-          // emitter.emit(events.EXIT_SCROLL_MODE);
-          this.animateProjectContent();
-        });
-      // }
-
-    }
 
   }
 

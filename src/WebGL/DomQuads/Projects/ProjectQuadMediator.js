@@ -15,7 +15,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     this.gl = gl;
 
-    this.quadCount = 6;
+    this.quadCount = 5;
     
     this.position.z = 1.0;
 
@@ -31,15 +31,17 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     this.quadInView;
 
+    this.restorePositions = false;
+
+    this.enteringScroll = false;
+
   }
 
   initEvents() {
 
     emitter.on(events.ENTER_SCROLL_MODE, this.enterScrollMode);
     emitter.on(events.EXIT_SCROLL_MODE, this.exitScrollMode);
-    emitter.on(events.TRAVERSE_PROJECTS, this.advanceQuads);
     emitter.on(events.PREPARE_UNMOUNT, this.hideQuads);
-    emitter.on(events.SCROLLING, this.onScroll);
 
   }
 
@@ -47,7 +49,6 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     emitter.off(events.ENTER_SCROLL_MODE, this.enterScrollMode);
     emitter.off(events.EXIT_SCROLL_MODE, this.exitScrollMode);
-    emitter.off(events.TRAVERSE_PROJECTS, this.advanceQuads);
     emitter.off(events.PREPARE_UNMOUNT, this.hideQuads);
 
   }
@@ -132,40 +133,6 @@ export default class ProjectQuadMediator extends DomquadMediator {
     
   }
 
-    //refactor
-  advanceQuads = ({direction, duration}) => {
-
-    if(this.inScrollMode === false) {
-
-      emitter.emit(events.PAUSE_VIDEO);
-      emitter.emit(events.APPLY_TRAVERSE_MODE_ANIM);
-        
-      this.children.map((quad) => {
-        const pos = Math.round(quad.position.z);
-        gsap.to(quad.position, {
-          z: pos + Math.sign(direction),
-          duration: duration,
-          ease: "power2.inOut",
-          onUpdate: () => {
-            if(quad.initIndex === 0) console.log(quad.position.z)
-          },
-          onComplete: () => {
-            quad.updateIndex();
-            quad.loopPosition();
-            if(quad.initIndex === 0) console.log(quad.position.z)
-
-            this.quadInView = this.getQuadInView();
-            this.quadInView.playVideo();
-            emitter.emit(events.REMOVE_TRAVERSE_MODE_ANIM);
-          }
-        });
-        // quad.traversePosition({direction, duration});
-      });
-
-    }
-    
-  }
-
   revealQuads = () => {
 
     gsap.set(this.quadInView.program.uniforms._RevealDirection, {
@@ -217,33 +184,31 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
   }
 
-  onScroll = (event) => {
-    this.inputForce.y += event.deltaY * 0.0005;
-  }
-
   updateInputForce({inputDelta, dt = 14.0}) {
 
     this.inputForce.y += inputDelta.y * 0.01 / dt;
+    // this.inputForce.y += inputDelta.y * 0.005 / dt;
 
   }
 
   update({dt, inputDelta, flowMap}) {
 
-        if(this.inScrollMode) {
-          this.updateInputForce({inputDelta, dt});
-        }
+      if(this.inScrollMode) {
+        this.updateInputForce({inputDelta, dt});
+      }
         
-        this.children.map((quad) => {
+      this.children.map((quad) => {
           
-          quad.update({force: this.inputForce.y});
-          quad.program.uniforms._InputForce.value = Math.min(1.0, Math.abs(this.inputForce.y * 1.0));
-          quad.program.uniforms._Time.value += dt;
-          quad.program.uniforms._FlowMap.value = flowMap;
+        quad.update({force: this.inputForce.y});
+        quad.program.uniforms._InputForce.value = Math.min(1.0, Math.abs(this.inputForce.y * 1.0));
+        quad.program.uniforms._Time.value += dt;
+        quad.program.uniforms._FlowMap.value = flowMap;
           
-        });
+      });
 
-        this.inputForce.y *= this.inputForceInertia;
-        if(Math.abs(this.inputForce.y) < 0.001) this.inputForce.y = 0.0;
+      this.inputForce.y *= this.inputForceInertia;
+      if(Math.abs(this.inputForce.y) < 0.001) this.inputForce.y = 0.0;
+
   }
 
   //get the quad whose position equals to the camera's position along Z

@@ -45,8 +45,6 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
       this.inScrollMode = false;
 
       this.isInView = false;
-
-      this.traveringPosition = false;
         
       this.initProgram();
   
@@ -61,9 +59,6 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
       
       emitter.on(events.APPLY_SCROLL_MODE_ANIM, this.applyScrollMode);
       emitter.on(events.REMOVE_SCROLL_MODE_ANIM, this.removeScrollMode);
-      
-      emitter.on(events.APPLY_TRAVERSE_MODE_ANIM, this.applyTraverseMode);
-      emitter.on(events.REMOVE_TRAVERSE_MODE_ANIM, this.removeTraverseMode);
 
     }
   
@@ -115,7 +110,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
           value: false
         },
         _Alpha: {
-          value: 0.5
+          value: 0.0
         },
         _Scale: {
           value: 1.0
@@ -143,49 +138,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
       this.inScrollMode = false;
       this.animteUniforms({alpha: this.isInView ? 1.0 : 0.0, alphaPhase: 0.0, flowMapPhase: this.isInView ? 1.0 : 0.0});
       this.targetPos = Math.round(this.position.z);
-      gsap.to(this.position, {
-        z: this.targetPos,
-        duration: 0.5,
-        ease: "power2.inOut"
-      });
-  
-    }
 
-    applyTraverseMode = () => {
-
-      this.traveringPosition = true;
-      this.animteUniforms({alpha: 0.35, alphaPhase: 1.0, flowMapPhase: 0.0});
-
-    }
-
-    removeTraverseMode = () => {
-
-      this.traveringPosition = false;
-      this.animteUniforms({alpha: this.isInView ? 1.0 : 0.0, alphaPhase: 0.0, flowMapPhase: this.isInView ? 1.0 : 0.0});
-
-    }
-
-    traversePosition({direction, duration}) {
-
-      let pos = Math.round(this.position.z);
-      this.traverseAnim = gsap.to(this.position, {
-        z: pos + Math.sign(direction),
-        duration: duration,
-        ease: "circ.inOut",
-        onStart: () => {
-          this.traveringPosition = true;
-        },
-        onUpdate: () => {
-
-        },
-        onComplete: () => {
-          this.updateIndex();
-          this.loopPosition();
-          // this.targetPos = (this.position.z);
-          this.traveringPosition = false
-        }
-      });
-      
     }
   
     update({force}) {
@@ -194,11 +147,15 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
         this.updateVideoTexture();
       }
       
-        // if(this.inScrollMode) {
+        if(this.inScrollMode) {
           this.position.z += force;
-          this.updateIndex();
-          this.loopPosition();
-      // }
+      } else {
+        const delta = (this.targetPos - this.position.z);
+        this.position.z = Math.abs(delta) < 0.0001 ? Math.round(this.position.z) : this.position.z + ((this.targetPos - this.position.z) * 0.05);
+      }
+
+      this.updateIndex();
+      this.position.z = loopNegativeNumber({a: this.position.z, b: -5});
       
     }
 
@@ -261,7 +218,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
     updateIndex() {
 
       let lessThanBounds = this.position.z < -5.0;
-      let greaterThanBouds = this.position.z > 1.0;
+      let greaterThanBouds = this.position.z > 0.0;
       const offSet = this.parent.children.length;
   
       if(lessThanBounds) {
@@ -281,17 +238,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
 
   }
 
-  loopPosition() {
-
-    if(this.position.z < -5.0) {
-      this.position.z += 6.0;
-    } else if(this.position.z > 1.0) {
-      this.position.z -= 6.0;
-    }
-
-  }
-
-    killUniformAnim() {
+  killUniformAnim() {
 
       gsap.killTweensOf(this.program.uniforms._Alpha);
       gsap.killTweensOf(this.program.uniforms._Scale);

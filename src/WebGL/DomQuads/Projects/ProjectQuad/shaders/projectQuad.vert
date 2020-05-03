@@ -11,6 +11,7 @@ uniform mat4 modelMatrix;
 uniform sampler2D _FlowMap;
 uniform float _FlowMapPhase;
 uniform float _FlipFlowMapForce;
+uniform float _AlphaPhase;
 
 uniform sampler2D _Image;
 uniform float _Scale;
@@ -28,7 +29,6 @@ varying vec2 vClipPos;
 void main() {
 
     vec3 pos = vec3(position.x * _ViewplaneSize.x, position.y * _ViewplaneSize.y, 0.0);
-    pos *= _Scale;
 
     mat4 modelViewProjection = projectionMatrix * modelViewMatrix;
 
