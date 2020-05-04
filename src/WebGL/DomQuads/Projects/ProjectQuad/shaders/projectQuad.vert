@@ -12,6 +12,7 @@ uniform sampler2D _FlowMap;
 uniform float _FlowMapPhase;
 uniform float _FlipFlowMapForce;
 uniform float _AlphaPhase;
+uniform float _ScrollExtrude;
 
 uniform sampler2D _Image;
 uniform float _Scale;
@@ -30,6 +31,13 @@ void main() {
 
     vec3 pos = vec3(position.x * _ViewplaneSize.x, position.y * _ViewplaneSize.y, 0.0);
 
+    vec3 col = texture2D(_Image, uv).xyz;
+    float heightMapDistort = (col.x + col.y + col.z) / 3.0;
+    // float phase = length(position.xy);
+    float phase = dot(position.xy, position.xy) * .5;
+
+    pos.z += ((-1.0 * phase * .5) + heightMapDistort) * _ScrollExtrude * 1.0;
+
     mat4 modelViewProjection = projectionMatrix * modelViewMatrix;
 
     if(_InView) {
@@ -39,8 +47,8 @@ void main() {
         clipPos.xy = clipPos.xy * 0.5 + 0.5;
 
         vec3 distort = texture2D(_FlowMap, clipPos.xy).xyz * DISTORTSTR;
-        vec3 col = texture2D(_Image, uv).xyz;
-        float heightMapDistort = (col.x + col.y + col.z) / 3.0;
+        // vec3 col = texture2D(_Image, uv).xyz;
+        // float heightMapDistort = (col.x + col.y + col.z) / 3.0;
         heightMapDistort = mix(heightMapDistort, 1.0 - heightMapDistort, _FlipFlowMapForce);
         pos += distort * max(0.1, heightMapDistort) * _FlowMapPhase * distort.z;
         vClipPos = clipPos.xy;

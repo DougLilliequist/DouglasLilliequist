@@ -40,11 +40,19 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
   
       this.initPos = this.position.z = 0 - posOffset;
     
-      this.targetPos = this.position.z; //remove prev position
+      this.targetPos = this.position.z;
 
       this.inScrollMode = false;
 
+      this.extrudeForce = 0;
+
       this.isInView = false;
+      
+      this.restoreDelta = 1;
+      
+      this.restorePhase = 0;
+
+      this.restoreEase = 0;
         
       this.initProgram();
   
@@ -90,6 +98,9 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
         },
         _FlowMapPhase: {
           value: 1.0
+        },
+        _ScrollExtrude: {
+          value: 0
         },
         _InputForce: {
           value: 0.0
@@ -138,6 +149,8 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
       this.inScrollMode = false;
       this.animteUniforms({alpha: this.isInView ? 1.0 : 0.0, alphaPhase: 0.0, flowMapPhase: this.isInView ? 1.0 : 0.0});
       this.targetPos = Math.round(this.position.z);
+      const delta = this.targetPos - this.position.z;
+      this.restoreDelta = Math.abs(delta) > 0 ? delta : 1.0;
 
     }
   
@@ -147,15 +160,45 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
         this.updateVideoTexture();
       }
       
-        if(this.inScrollMode) {
+      if(this.inScrollMode) {
           this.position.z += force;
+          this.extrudeForce += force;
       } else {
-        const delta = (this.targetPos - this.position.z);
-        this.position.z = Math.abs(delta) < 0.0001 ? Math.round(this.position.z) : this.position.z + ((this.targetPos - this.position.z) * 0.05);
+        this.restorePosition();
       }
 
+      this.extrudeForce = Math.max(-0.25, Math.min(0.25, this.extrudeForce));
+      this.program.uniforms._ScrollExtrude.value = this.extrudeForce;
+      this.extrudeForce *= 0.93;
+      if(Math.abs(this.extrudeForce) < 0.0001) this.extrudeForce = 0;
       this.updateIndex();
-      this.position.z = loopNegativeNumber({a: this.position.z, b: -5});
+      this.loopPosition();
+
+    }
+
+    restorePosition() {
+
+      const delta = this.targetPos - this.position.z;
+      this.restoreEase = delta * 0.08;
+      this.position.z += this.restoreEase;
+      if(Math.abs(delta) < 0.0001) {
+        this.position.z = Math.round(this.position.z);
+        this.restoreEase = 0;
+      } else {
+        this.restorePhase = delta / this.restoreDelta;
+        const fallOff = 1.0 - ((1.0 - this.restorePhase) * (1.0 - this.restorePhase));
+        this.restoreEase *= fallOff;
+      }
+      
+    }
+
+    loopPosition() {
+      
+      if(this.position.z < -5) {
+        this.position.z += 5;
+      } else if(this.position.z > 0) {
+        this.position.z -= 5;
+      }
       
     }
 
@@ -236,7 +279,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
       this.program.uniforms._InView.value = this.isInView = Math.round(this.position.z) === inViewPosZ ? true : false;
       return this.isInView;
 
-  }
+    }
 
   killUniformAnim() {
 
