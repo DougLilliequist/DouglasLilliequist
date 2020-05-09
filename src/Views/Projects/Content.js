@@ -1,15 +1,6 @@
 export const content = [
 
     {
-        title: 'YOLO + WebGL',
-        type: 'Internship project @ B-Reel London',
-        description: 'Custom OpenFrameworks app using YOLO triggering WebGL animations in real-time. Animations not by me (made the lines)',
-        tech: 'OpenFrameworks / YOLO / Node.js / sockets.io',
-        year: 2017,
-        link: ''
-    },
-
-    {
         title: 'R A I N',
         type: 'Experiment',
         description: 'Evanescent AR voxels',

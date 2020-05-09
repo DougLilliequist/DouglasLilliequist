@@ -44,7 +44,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
 
       this.inScrollMode = false;
 
-      this.extrudeForce = 0;
+      this.scrollPhase = 0;
 
       this.isInView = false;
       
@@ -99,7 +99,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
         _FlowMapPhase: {
           value: 1.0
         },
-        _ScrollExtrude: {
+        _ScrollPhase: {
           value: 0
         },
         _InputForce: {
@@ -132,7 +132,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
         vertex: vert,
         fragment: frag,
         uniforms: u,
-        transparent: true
+        transparent: true,
       });
     }
   
@@ -140,14 +140,14 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
     applyScrollMode = () => {
   
       this.inScrollMode = true;
-      this.animteUniforms({alpha: 0.35, alphaPhase: 1.0, flowMapPhase: 0.0});
+      this.animteUniforms({scale: 0.85, alpha: 1.0, alphaPhase: 1.0, flowMapPhase: 0.0});
   
     }
   
     removeScrollMode = () => {
       
       this.inScrollMode = false;
-      this.animteUniforms({alpha: this.isInView ? 1.0 : 0.0, alphaPhase: 0.0, flowMapPhase: this.isInView ? 1.0 : 0.0});
+      this.animteUniforms({scale: 1.0, alpha: this.isInView ? 1.0 : 0.0, alphaPhase: 0.0, flowMapPhase: this.isInView ? 1.0 : 0.0});
       this.targetPos = Math.round(this.position.z);
       const delta = this.targetPos - this.position.z;
       this.restoreDelta = Math.abs(delta) > 0 ? delta : 1.0;
@@ -161,18 +161,26 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
       }
       
       if(this.inScrollMode) {
+          
           this.position.z += force;
-          this.extrudeForce += force;
+          this.scrollPhase += force;
+
       } else {
         this.restorePosition();
       }
 
-      this.extrudeForce = Math.max(-0.25, Math.min(0.25, this.extrudeForce));
-      this.program.uniforms._ScrollExtrude.value = this.extrudeForce;
-      this.extrudeForce *= 0.93;
-      if(Math.abs(this.extrudeForce) < 0.0001) this.extrudeForce = 0;
       this.updateIndex();
       this.loopPosition();
+      this.updateScrollPhase();
+
+    }
+
+    updateScrollPhase() {
+
+      this.scrollPhase = Math.max(-1.0, Math.min(1.0, this.scrollPhase));
+      this.program.uniforms._ScrollPhase.value = this.scrollPhase;
+      this.scrollPhase *= 0.93;
+      if(Math.abs(this.scrollPhase) < 0.0001) this.scrollPhase = 0;
 
     }
 
@@ -202,26 +210,32 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
       
     }
 
-    animteUniforms({alpha, alphaPhase, flowMapPhase}) {
+    animteUniforms({scale, alpha, alphaPhase, flowMapPhase}) {
 
-      this.killUniformAnim();
+      if(this.scrollModeTl) this.scrollModeTl.kill();
       this.scrollModeTl = gsap.timeline({})
       this.scrollModeTl.to(this.program.uniforms._Alpha, {
         value: alpha,
+        duration: 0.5,
+        ease: "power2.out"
+      }, "<");
+
+      this.scrollModeTl.to(this.program.uniforms._Scale, {
+        value: scale,
         duration: 0.35,
-        ease: "power2.inOut"
+        ease: "power2.out"
       }, "<");
 
       this.scrollModeTl.to(this.program.uniforms._AlphaPhase, {
           value: alphaPhase,
           duration: 0.35,
-          ease: "power2.inOut"
+          ease: "power2.out"
         }, "<");
 
         this.scrollModeTl.to(this.program.uniforms._FlowMapPhase, {
           value: flowMapPhase,
           duration: 0.3,
-          ease: "power2.inOut"
+          ease: "power2.out"
         }, "<");
 
     }
@@ -278,15 +292,6 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
   
       this.program.uniforms._InView.value = this.isInView = Math.round(this.position.z) === inViewPosZ ? true : false;
       return this.isInView;
-
-    }
-
-  killUniformAnim() {
-
-      gsap.killTweensOf(this.program.uniforms._Alpha);
-      gsap.killTweensOf(this.program.uniforms._Scale);
-      gsap.killTweensOf(this.program.uniforms._AlphaPhase);
-      gsap.killTweensOf(this.program.uniforms._FlowMapPhase);
 
     }
   

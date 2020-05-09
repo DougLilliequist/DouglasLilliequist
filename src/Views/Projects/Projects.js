@@ -14,8 +14,6 @@ export default class Projects extends View {
   onEnter() {
   
     super.onEnter();
-    this.defaultCursor = "grab";
-    document.body.style.cursor = this.defaultCursor;
     this.domGLReferenceElement = this.el.querySelector('.project-video');
     this.initReferences();
     this.initEvents();
@@ -23,16 +21,17 @@ export default class Projects extends View {
 
   }
 
-  onLeave() {
-    super.onLeave();
-    this.removeEvents();
-    this.playLeaveAnim();
-  }
-
   onEnterCompleted() {
     super.onEnterCompleted();
-    // emitter.emit(events.INIT_DOMGL, {view: "PROJECTS", params: {referenceElement: this.domGLReferenceElement, media: mediaManager.videos, getFirstQuad: true}});
+    emitter.emit(events.SHOW_CLICKDRAG_CTA);
     this.playEnterAnim();
+  }
+
+  onLeave() {
+    super.onLeave();
+    emitter.emit(events.HIDE_CLICKDRAG_CTA);
+    this.removeEvents();
+    this.playLeaveAnim();
   }
 
   onLeaveCompleted() {
@@ -57,7 +56,7 @@ export default class Projects extends View {
     this.projectLink = this.el.querySelector(".project-link");
     this.projectLinkClipReveal = this.projectLink.children[0];
 
-    this.clickAndDragCTA = this.el.querySelector('.cta_click-drag');
+    // this.clickAndDragCTA = this.el.querySelector('.cta_click-drag');
 
   }
 
@@ -125,8 +124,7 @@ export default class Projects extends View {
 
     if(window.hoveringLink) return;
 
-    document.body.style.cursor = "grabbing";
-    if(this.updateGestureState) this.updateGestureState.kill();
+    // document.body.style.cursor = "grabbing";
     this.inScrollMode = true;
     this.enableUserInteraction = false;
     emitter.emit(events.ENTER_SCROLL_MODE);
@@ -189,15 +187,6 @@ export default class Projects extends View {
       ease: ease
     }, "<0.01");
 
-    transitionTl.fromTo(this.clickAndDragCTA, {
-      opacity: 0.01,
-      x: startX * 0.5
-    }, {
-      duration: dur,
-      opacity: 0.99,
-      x: 0
-    }, "<0.01");
-
   }
 
   playLeaveAnim() {
@@ -230,13 +219,6 @@ export default class Projects extends View {
       duration: dur,
       opacity: 0.01,
       x: -targetX,
-      ease: ease
-    }, "<0.01");
-
-    transitionTl.to(this.clickAndDragCTA, {
-      duration: dur,
-      opacity: 0.01,
-      x: -targetX * 0.5,
       ease: ease
     }, "<0.01");
 

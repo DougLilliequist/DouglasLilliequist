@@ -23,6 +23,8 @@ export default class Cursor {
         this.initCursor();
 
         this.initCursorArrows();
+
+        this.initCta();
         
         this.initEvents();
 
@@ -60,9 +62,9 @@ export default class Cursor {
         
         this.inScrollMode = false;
 
-        this.defaultRadius = 15.0;
+        this.defaultRadius = 18.0;
 
-        this.scrollModeRadius = 20.0;
+        this.scrollModeRadius = 22.0;
 
         this.radius = this.defaultRadius;
 
@@ -72,7 +74,7 @@ export default class Cursor {
 
         this.endAngle = Math.PI * 2.0;
 
-        this.ease = 0.7;
+        this.ease = 0.3;
 
     }
 
@@ -94,23 +96,57 @@ export default class Cursor {
 
         this.cursorArrowAlpha = 0.0;
 
-        this.inputScale = 0.0;
+        this.inputPhase = 0.0;
+
+        this.inputDirection = 0.0;
+
+    }
+
+    initCta() {
+
+        this.holdMessage = this.createCanvasText({word: "Hold", fontSize: 15});
+        this.dragMessage = this.createCanvasText({word: "Drag", fontSize: 15});
+
+        this.ctaPosOffset = {
+            x: 0,
+            y: 0
+        };
+
+        this.ctaTextAlpha = 1.0;
+
+        this.removeCTA = false;
+
+        this.drawMessage = false;
+
+        this.inputTravel = 0;
+
+        this.inputTravelThreshold = 100;
+
+    }
+
+    createCanvasText({word, fontSize}) {
+
+        this.ctx.font = `${fontSize}px Muli`;
+        const messageBounds = this.ctx.measureText(word);
+        return {word, width: messageBounds.width, fontSize};
 
     }
 
     initEvents() {
 
+        emitter.on(events.SHOW_CLICKDRAG_CTA, this.showCTAText);
+        emitter.on(events.HIDE_CLICKDRAG_CTA, this.hideCTAText);
         emitter.on(events.MOUSE_MOVE, this.onMouseMove);
         emitter.on(events.ENTER_SCROLL_MODE, this.onMouseDown);
         emitter.on(events.EXIT_SCROLL_MODE, this.onMouseUp);
-        emitter.on(events.HOVERING_LINK, this.animteHoverMode)
-        emitter.on(events.LEAVING_LINK, this.restore)
+        emitter.on(events.HOVERING_LINK, this.animteHoverMode);
+        emitter.on(events.LEAVING_LINK, this.restore);
         emitter.on(events.UPDATE, this.update);
         emitter.on(events.RESIZE, this.onResize);
 
     }
 
-    onMouseDown = (e) => {
+    onMouseDown = () => {
 
         this.inScrollMode = true;
         this.prevPosition.x = this.target.x;
@@ -119,11 +155,19 @@ export default class Cursor {
 
     }
 
-    onMouseMove = (e) => {
+    onMouseMove = (event) => {
 
-        this.target.x = e.clientX;
-        this.target.y = e.clientY;
-        this.inputScale += 0.1;
+        this.target.x = event.clientX;
+        this.target.y = event.clientY;
+
+        if(this.inScrollMode) {
+
+            this.inputTravel = this.inputTravel < this.inputTravelThreshold ? this.inputTravel + 1 : this.inputTravelThreshold;
+            if(this.inputTravel >= this.inputTravelThreshold) {
+                this.removeCTAText();
+            }
+
+        }   
 
     }
 
@@ -134,20 +178,35 @@ export default class Cursor {
     }
 
     //include kill animation
+    //make this to TL animation
     animateScrollMode() {
 
         if(this.inScrollMode) {
 
-            gsap.to(this, {
+            if(this.scrollModeAnim) this.scrollModeAnim.kill();
+
+            this.scrollModeAnim = gsap.timeline({});
+
+            this.scrollModeAnim.to(this, {
                 duration: 0.2,
                 radius: this.scrollModeRadius,
-                cursorArrowAlpha: 1.0
-            });
+                cursorArrowAlpha: 0.5,
+                ease: "power1.out"
+            }, "<");
 
-            gsap.to(this.arrowOriginOffset, {
+            this.scrollModeAnim.to(this.arrowOriginOffset, {
                 duration: 0.2,
-                y: 10.0
-            })
+                y: 10.0,
+                ease: "power1.out"
+            }, "<");
+
+            this.scrollModeAnim.fromTo(this.ctaPosOffset, {
+                y: 24
+            }, {
+                y: 0,
+                duration: 0.5,
+                ease: "power1.out"
+            }, "<");
 
         }
 
@@ -155,52 +214,62 @@ export default class Cursor {
 
     restore = () => {
 
-        gsap.to(this, {
-            duration: 0.2,
-            radius: this.defaultRadius,
-            cursorArrowAlpha: 0.0
+        if(this.restoreAnim) this.restoreAnim.kill();
+
+        this.restoreAnim = gsap.timeline({
+            onComplete: () => this.inScrollMode = false
         });
 
-        gsap.to(this.arrowOriginOffset, {
+        this.restoreAnim.to(this, {
+            duration: 0.2,
+            radius: this.defaultRadius,
+            ctaTextAlpha: this.removeCTA ? 0.0 : 1.0,
+            cursorArrowAlpha: 0.0,
+            ease: "power1.out"
+        }, "<");
+
+        this.restoreAnim.to(this.arrowOriginOffset, {
             duration: 0.2,
             y: 4.0,
-            onComplete: () => {
-                this.inScrollMode = false;
-            }
-        })
+            ease: "power1.out"
+        }, "<");
 
     }
 
-    animteHoverMode = (r) => {
+    animteHoverMode = () => {
 
-        gsap.to(this, {
+        if(this.hoverModeAnim) this.hoverModeAnim.kill();
+        this.hoverModeAnim = gsap.to(this, {
             duration: 0.2,
             radius: 0,
+            ctaTextAlpha: 0.0,
         });
-
     }
 
     drawCursorArrows() {
 
         //top arrow
         this.ctx.beginPath();
-        this.ctx.fillStyle = `rgba(${0.0}, ${0.0}, ${0.0}, ${this.cursorArrowAlpha})`;
+        const topArrowAlpha = Math.min(1.0, this.cursorArrowAlpha + (this.inputDirection > 0 ? this.inputPhase : 0));
+        this.ctx.fillStyle = `rgba(${0.0}, ${0.0}, ${0.0}, ${topArrowAlpha})`;
         
-        this.ctx.moveTo(this.position.x - 4, this.position.y - (this.radius + this.arrowOriginOffset.y));
-        
-        this.ctx.lineTo(this.position.x + 4, this.position.y - (this.radius + this.arrowOriginOffset.y));
-        this.ctx.lineTo(this.position.x, this.position.y - (this.radius + this.arrowOriginOffset.y + 4.0));
+        const topArrowScale = Math.min(2.0, this.inputDirection > 0 ? this.inputPhase : 0);
+        this.ctx.moveTo(this.position.x - (4 + topArrowScale), this.position.y - (this.radius + this.arrowOriginOffset.y));  
+        this.ctx.lineTo(this.position.x + (4 + topArrowScale), this.position.y - (this.radius + this.arrowOriginOffset.y));
+        this.ctx.lineTo(this.position.x, this.position.y - (this.radius + this.arrowOriginOffset.y + 5.0 + topArrowScale));
         
         this.ctx.fill();
         this.ctx.closePath();
 
         // //bottom arrow
         this.ctx.beginPath();
-        this.ctx.fillStyle = `rgba(${0.0}, ${0.0}, ${0.0}, ${this.cursorArrowAlpha})`;
+        const bottomArrowAlpha = Math.min(1.0, this.cursorArrowAlpha + (this.inputDirection < 0 ? this.inputPhase : 0));
+        this.ctx.fillStyle = `rgba(${0.0}, ${0.0}, ${0.0}, ${bottomArrowAlpha})`;
         
-        this.ctx.moveTo(this.position.x - 4, this.position.y + (this.radius + this.arrowOriginOffset.y));
-        this.ctx.lineTo(this.position.x + 4, this.position.y + (this.radius + this.arrowOriginOffset.y));
-        this.ctx.lineTo(this.position.x, this.position.y + (this.radius + this.arrowOriginOffset.y + 4.0));
+        const bottomArrowScale = Math.min(2.0, this.inputDirection < 0 ? this.inputPhase : 0);
+        this.ctx.moveTo(this.position.x - (4 + bottomArrowScale), this.position.y + (this.radius + this.arrowOriginOffset.y));
+        this.ctx.lineTo(this.position.x + (4 + bottomArrowScale), this.position.y + (this.radius + this.arrowOriginOffset.y));
+        this.ctx.lineTo(this.position.x, this.position.y + (this.radius + this.arrowOriginOffset.y + 5.0 + bottomArrowScale));
         
         this.ctx.fill();
         this.ctx.closePath();
@@ -217,31 +286,86 @@ export default class Cursor {
 
     }
 
+    drawCTAText() {
+
+        const message = this.inScrollMode ? this.dragMessage : this.holdMessage;
+        this.ctx.fillStyle = `rgba(${0.0},${0.0},${0.0}, ${this.ctaTextAlpha})`;
+        this.ctx.font = `${15}px Muli`;
+        this.ctx.textBaseline = "middle";
+        this.ctx.fillText(message.word, this.position.x - 80, this.position.y + this.ctaPosOffset.y);
+
+    }
+
+    showCTAText = () => {
+
+        if(this.removeCTA === false) {
+            this.drawMessage = true;
+            gsap.to(this, {
+                duration: 0.5,
+                ctaTextAlpha: 1,
+                ease: "power1.out"
+            });
+        }
+    }
+
+    hideCTAText = () => {
+
+        if(this.removeCTA === false) {
+            this.drawMessage = false;
+            gsap.to(this, {
+                duration: 0.5,
+                ctaTextAlpha: 0,
+                ease: "power1.out"
+            });
+        }
+    }
+
+    removeCTAText() {
+
+        if(this.removeCTA == false) {
+            this.removeCTA = true;
+            gsap.to(this, {
+                duration: 0.5,
+                ctaTextAlpha: 0,
+                ease: "power1.out"
+            });
+
+        }
+
+    }
+
     draw() {
 
         this.ctx.clearRect(0, 0, this.width, this.height);
         this.drawCursorCircle();
-        this.drawCursorArrows();
+        if(this.drawMessage) this.drawCTAText();
+        if(this.inScrollMode) this.drawCursorArrows();
         
     }
 
     update = () => {
-        
+
         this.position.x += (this.target.x - this.position.x) * this.ease;
         this.position.y += (this.target.y - this.position.y) * this.ease;
-        // this.position.x = this.target.x;
-        // this.position.y = this.target.y;
 
         this.delta.x = this.position.x - this.prevPosition.x;
         this.delta.y = this.position.y - this.prevPosition.y;
+        this.inputDirection = Math.sign(this.delta.y) * -1.0; //coordinates are flipped in canvas
 
-        this.inputScale *= 0.93;
-        this.inputScale = Math.max(0.0001, this.inputScale);
-
+        this.updateInputphase();
+        
         this.draw();
 
         this.prevPosition.x = this.position.x;
         this.prevPosition.y = this.position.y;
+
+    }
+
+    updateInputphase() {
+
+        if(this.inScrollMode) this.inputPhase += Math.abs(this.delta.y) * 0.01;
+        this.inputPhase *= 0.90;
+        this.inputPhase = this.inputPhase < 0.0001 ? 0.0 : this.inputPhase;
 
     }
 

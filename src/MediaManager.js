@@ -17,7 +17,6 @@ class MediaManager {
 
         this.vidSources = [
 
-            this.videoSource({url: "https://douglaslilliequist.s3.eu-west-3.amazonaws.com/internshipproj10241024.mp4", brightVal: 0.0}),
             this.videoSource({url: "https://douglaslilliequist.s3.eu-west-3.amazonaws.com/sken10241024.mp4", brightVal: 0.0}),
             this.videoSource({url: "https://douglaslilliequist.s3.eu-west-3.amazonaws.com/spiritualBeings10241024.mp4", brightVal: 1.0}),
             this.videoSource({url: "https://douglaslilliequist.s3.eu-west-3.amazonaws.com/letsgetphysical10241024.mp4", brightVal: 0.0}),

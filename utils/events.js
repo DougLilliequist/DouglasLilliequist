@@ -15,9 +15,6 @@ const events = {
     EXIT_SCROLL_MODE: 'exit_scroll_mode',
     APPLY_SCROLL_MODE_ANIM: 'apply_scroll_mode_anim',
     REMOVE_SCROLL_MODE_ANIM: 'remove_scroll_mode_anim',
-    TRAVERSE_PROJECTS: 'traverse_projects',
-    APPLY_TRAVERSE_MODE_ANIM: 'apply_traverse_mode',
-    REMOVE_TRAVERSE_MODE_ANIM: 'remove_traverse_mode',
 
     MOUSE_DOWN: 'mouse_down',
     MOUSE_MOVE: 'mouse_move',
@@ -39,6 +36,9 @@ const events = {
 
     PLAY_VIDEO: 'play_video',
     PAUSE_VIDEO: 'pause_video',
+
+    SHOW_CLICKDRAG_CTA: 'show_click-drag_cta',
+    HIDE_CLICKDRAG_CTA: 'hide_click-drag_cta',
     
     RESIZE: 'resize'
 

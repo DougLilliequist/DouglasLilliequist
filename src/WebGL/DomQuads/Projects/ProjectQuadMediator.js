@@ -135,29 +135,31 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
   revealQuads = () => {
 
-    gsap.set(this.quadInView.program.uniforms._RevealDirection, {
-      value: 0.0
-    });
+    if(this.revealQuadAnim) this.revealQuadAnim.kill();
 
-    gsap.to(this.quadInView.program.uniforms._Alpha, {
+    this.revealQuadAnim = gsap.timeline({
+      onComplete: () => {
+        this.children.map((quad) => {
+          quad.program.uniforms._RevealPhase.value = 1.0
+        });
+      }
+    })
+
+    this.revealQuadAnim.set(this.quadInView.program.uniforms._RevealDirection, {
+      value: 0.0
+    }, "<");
+
+    this.revealQuadAnim.to(this.quadInView.program.uniforms._Alpha, {
       duration: 0.1,
       value: 1.0,
       ease: "sine.in"
-    });
+    }, "<");
 
-    gsap.to(this.quadInView.program.uniforms._RevealPhase, {
+    this.revealQuadAnim.to(this.quadInView.program.uniforms._RevealPhase, {
       duration: 0.85,
       value: 1.0,
       ease: "circ.inOut",
-      onComplete: () => {
-        this.children.map((quad) => {
-          gsap.set(quad.program.uniforms._RevealPhase, {
-            value: 1.0
-          });
-
-        });
-      }
-    });
+    }, "<");
       
   }
 
@@ -184,6 +186,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
   }
 
+  //add the quadratic inertia here as well
   updateInputForce({inputDelta, dt = 14.0}) {
 
     this.inputForce.y += inputDelta.y * 0.01 / dt;
@@ -199,7 +202,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
         
       this.children.map((quad) => {
           
-        quad.update({force: this.inputForce.y});
+        quad.update({force: this.inputForce.y, deltaTime: dt});
         quad.program.uniforms._InputForce.value = Math.min(1.0, Math.abs(this.inputForce.y * 1.0));
         quad.program.uniforms._Time.value += dt;
         quad.program.uniforms._FlowMap.value = flowMap;

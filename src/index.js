@@ -22,7 +22,7 @@ export default class App {
 
         window.navigation = navigation;
 
-        // const cursor = new Cursor();
+        const cursor = new Cursor();
         const webGLCTX = new WebGLContext();
 
         this.initEvents();

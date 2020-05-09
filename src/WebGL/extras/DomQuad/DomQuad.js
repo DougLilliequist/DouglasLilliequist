@@ -36,8 +36,12 @@ export default class DomQuad extends Mesh {
     this.cameraViewplaneSize = getCameraViewplaneSize(camera); //make this globally available
     this.viewportScalePhase = this.calcViewportScalePhase(domElement);
 
+    //rename viewplane size
     this.viewPlaneSize.x = this.cameraViewplaneSize.x * this.viewportScalePhase.x;
     this.viewPlaneSize.y = this.cameraViewplaneSize.y * this.viewportScalePhase.y;
+
+    // this.scale.x = this.viewPlaneSize.x;
+    // this.scale.y = this.viewPlaneSize.y;
 
   }
 
