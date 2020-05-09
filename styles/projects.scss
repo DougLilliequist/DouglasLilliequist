@@ -33,7 +33,7 @@
 
             position: absolute;
             display: inline-block;
-            right: 18%;
+            right: 10%;
             height: 100%;
             overflow: hidden;
 
@@ -46,7 +46,7 @@
                 font-weight: $bold;
                 writing-mode: vertical-rl;
                 transform: scale(-1);
-                letter-spacing: 0.1em;
+                letter-spacing: 0.12em;
                 text-align: end;
                 user-select: none;
                 text-transform: uppercase;
@@ -83,7 +83,7 @@
 
             position: absolute;
             top: 50%;
-            left:20%;
+            left:10%;
             display: flex;
             flex-direction: column;
 
@@ -103,7 +103,7 @@
 
         position: absolute;
         bottom: 5%;
-        left: 20%;
+        left: 10%;
         user-select: none;
 
             &__clip-reveal {

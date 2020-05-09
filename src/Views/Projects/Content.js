@@ -24,6 +24,7 @@ export const content = [
         description: 'Interactive + floor projected lines',
         tech: 'Unity3D / Custom GPGPU ribbons / In-house Blob Detection by Yipp Interactive',
         year: 2019,
+        role: 'Developer',
         link: 'https://yipp.nl/projects/61-lets_get_physical/'
     },
     {
@@ -48,6 +49,7 @@ export const content = [
         description: 'Art Puzzle Installation',
         tech: 'Arduino / Processing / Resolume',
         year: 2015,
+        role: 'Developer, Designer',
         link: ''
     },
 

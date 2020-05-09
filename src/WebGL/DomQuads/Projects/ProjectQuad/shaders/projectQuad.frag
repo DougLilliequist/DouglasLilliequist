@@ -15,8 +15,8 @@ varying vec3 vMvPos;
 varying vec2 vClipPos;
 varying float vDist;
 
-#define OFFSETAMOUNTX 0.015
-#define OFFSETAMOUNTY 0.0015
+#define OFFSETAMOUNTX 0.01
+#define OFFSETAMOUNTY 0.001
 
 #define MINVIEWDIST 0.2
 #define MAXVIEWDIST 0.5
