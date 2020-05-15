@@ -27,9 +27,15 @@ varying vec2 vClipPos;
 varying float vDist;
 
 #define DISTORTSTR 0.8
-#define SCROLLDISTORTSTR 0.25
-#define DISPLACEMENTSTR 0.5
-#define HEIGHTMAPSTR 1.35
+#define SCROLLDISTORTSTR 0.5
+#define DISPLACEMENTSTR 0.2
+#define HEIGHTMAPSTR 0.4
+
+// #define DISTORTSTR 0.8
+// #define SCROLLDISTORTSTR 0.5
+// #define DISPLACEMENTSTR 0.3
+// #define HEIGHTMAPSTR 1.4
+
 
 void main() {
 

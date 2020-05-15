@@ -179,7 +179,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
 
       this.scrollPhase = Math.max(-1.0, Math.min(1.0, this.scrollPhase));
       this.program.uniforms._ScrollPhase.value = this.scrollPhase;
-      this.scrollPhase *= 0.93;
+      this.scrollPhase *= 0.94;
       if(Math.abs(this.scrollPhase) < 0.0001) this.scrollPhase = 0;
 
     }
@@ -187,7 +187,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
     restorePosition() {
 
       const delta = this.targetPos - this.position.z;
-      this.restoreEase = delta * 0.08;
+      this.restoreEase = delta * 0.1;
       this.position.z += this.restoreEase;
       if(Math.abs(delta) < 0.0001) {
         this.position.z = Math.round(this.position.z);

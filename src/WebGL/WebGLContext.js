@@ -39,7 +39,7 @@ export default class WebGLContext {
       width: window.innerWidth,
       height: window.innerHeight,
       antialias: true,
-      dpr: 1.5
+      dpr: 1.0
     });
     this.gl = this.renderer.gl;
     this.gl.clearColor(0.9, 0.9, 0.9, 1.0);

@@ -17,6 +17,13 @@ class MediaManager {
 
         this.vidSources = [
 
+            // this.videoSource({url: "./assets/vid.mp4", brightVal: 0.0}),
+            // this.videoSource({url: "./assets/vid.mp4", brightVal: 1.0}),
+            // this.videoSource({url: "./assets/vid.mp4", brightVal: 0.0}),
+            // this.videoSource({url: "./assets/vid.mp4", brightVal: 0.0}),
+            // this.videoSource({url: "./assets/vid.mp4", brightVal: 1.0}),
+            // this.videoSource({url: "./assets/vid.mp4", brightVal: 0.0}),
+
             this.videoSource({url: "https://douglaslilliequist.s3.eu-west-3.amazonaws.com/sken10241024.mp4", brightVal: 0.0}),
             this.videoSource({url: "https://douglaslilliequist.s3.eu-west-3.amazonaws.com/spiritualBeings10241024.mp4", brightVal: 1.0}),
             this.videoSource({url: "https://douglaslilliequist.s3.eu-west-3.amazonaws.com/letsgetphysical10241024.mp4", brightVal: 0.0}),
@@ -34,6 +41,7 @@ class MediaManager {
                 video.width = 1024;
                 video.height = 1024;
                 video.crossOrigin = "*";
+                video.playsinline = true;
                 video.src = vidSource.src;
                 video.muted = true;
                 video.loop = true;

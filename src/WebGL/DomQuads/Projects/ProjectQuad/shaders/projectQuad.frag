@@ -15,13 +15,15 @@ varying vec3 vMvPos;
 varying vec2 vClipPos;
 varying float vDist;
 
-#define OFFSETAMOUNTX 0.015
-#define OFFSETAMOUNTY 0.0015
+#define OFFSETAMOUNTX 0.01
+#define OFFSETAMOUNTY 0.001
 
+// #define MINVIEWDIST 0.18
 #define MINVIEWDIST 0.2
+// #define MAXVIEWDIST 0.4
 #define MAXVIEWDIST 0.5
-#define ALPHAFALLOFFDIST 20.0
-
+// #define ALPHAFALLOFFDIST 20.0
+#define ALPHAFALLOFFDIST 30.0
 void main() {
 
     vec2 uv = vUv;
@@ -32,7 +34,7 @@ void main() {
     vec2 flow = texture2D(_FlowMap, vClipPos).xy * _FlowMapPhase;
 
     vec3 img = texture2D(_Image, uv).xyz;
-    float inputPhase = ((_ScrollPhase * 3.0));
+    float inputPhase = _ScrollPhase * 3.0;
     vec2 offsetX = (vec2(inputPhase, 0.0)) * OFFSETAMOUNTX;
     vec2 offsetY = (vec2(0.0, inputPhase)) * OFFSETAMOUNTY;
 
@@ -42,7 +44,7 @@ void main() {
 
     float len = (vMvPos.z * vMvPos.z);
     float idleAlpha = smoothstep(MINVIEWDIST, MAXVIEWDIST, len);
-    float scrollAlpha = idleAlpha * 0.25 * smoothstep(ALPHAFALLOFFDIST, 0.0, len);
+    float scrollAlpha = idleAlpha * 0.35 * smoothstep(ALPHAFALLOFFDIST, 0.0, len);
     float alpha = mix(idleAlpha, scrollAlpha, abs(_ScrollPhase));
     alpha *= _Alpha;
 

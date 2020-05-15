@@ -72,13 +72,17 @@ export default class Projects extends View {
 
     this.projectLink.addEventListener('mouseenter', () => {
 
-      emitter.emit(events.HOVERING_LINK)
-      window.hoveringLink = true;
+      if(this.inScrollMode === false) {
+        emitter.emit(events.HOVERING_LINK)
+        window.hoveringLink = true;
+      }
     }, false);
 
     this.projectLink.addEventListener('mouseleave', () => {
-      emitter.emit(events.LEAVING_LINK)
-      window.hoveringLink = false;
+      if(this.inScrollMode === false) {
+        emitter.emit(events.LEAVING_LINK)
+        window.hoveringLink = false;
+      }
     }, false);
 
   }
@@ -163,13 +167,13 @@ export default class Projects extends View {
     transitionTl.fromTo(this.projectContentClipReveal, {
 
       opacity: 0.01,
-      x: startX
+      y: startX
 
     }, {
 
       duration: dur,
       opacity: 0.99,
-      x: 0,
+      y: 0,
       stagger: 0.05,
       // ease: ease
 
@@ -178,12 +182,12 @@ export default class Projects extends View {
 
     transitionTl.fromTo(this.projectLink, {
       opacity: 0.01,
-      x: startX
+      y: startX
     },
     {
       duration: dur,
       opacity: 0.99,
-      x: 0,
+      y: 0,
       ease: ease
     }, "<0.01");
 
@@ -200,7 +204,6 @@ export default class Projects extends View {
 
     transitionTl.to(this.projectTitle, {
       opacity: 0.01,
-      y: -targetX,
       duration: dur,
       ease: ease
     });
@@ -209,7 +212,6 @@ export default class Projects extends View {
 
       duration: dur,
       opacity: 0.01,
-      x: -targetX,
       stagger: -0.05,
       ease: ease
     }, "<0.01");
@@ -218,7 +220,6 @@ export default class Projects extends View {
     {
       duration: dur,
       opacity: 0.01,
-      x: -targetX,
       ease: ease
     }, "<0.01");
 

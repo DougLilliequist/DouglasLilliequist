@@ -198,7 +198,7 @@ export default class About extends View {
     leaveAnim.to(this.links, {
       duration: dur,
       opacity: 0.01,
-      y: textY,
+      // y: textY,
       stagger: -0.05,
       ease: ease
     }, "<");
@@ -206,21 +206,21 @@ export default class About extends View {
     leaveAnim.to(this.contactHeader, {
       duration: dur,
       opacity: 0.01,
-      y: textY,
+      // y: textY,
       ease: ease
     }, "<0.05");
 
     leaveAnim.to(this.introText, {
       duration: dur,
       opacity: 0.01,
-      y: textY,
+      // y: textY,
       ease: ease
     }, "<0.05");
 
     leaveAnim.to(this.header, {
       duration: dur,
       opacity: 0.01,
-      y: textY,
+      // y: textY,
       ease: ease
     }, "<0.05");
 
