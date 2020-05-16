@@ -8,8 +8,8 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 85vw;
-    height: 25vw;
+    width: 80vw;
+    height: 24vw;
     max-width: $maxWidth;
     max-height: $maxHeight;
     margin: 0;
@@ -45,13 +45,13 @@
     left: 0%;
     height: 100%;
     width: 25%;
-    pointer-events: none;
 
         &__title {
 
             position: absolute;
             right: 10%;
             width: 90%;
+            pointer-events: none;
                 
             h1 {
                 margin: 0;

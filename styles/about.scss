@@ -64,18 +64,24 @@
         &__intro {
 
             margin-top: 2em;
+            pointer-events: none;
+
             
             &__header {
                 @include fluid-type($minWidth, $maxWidth, $minFontSize__about-header, $maxFontSize__about-header);
                 margin-top: 0em;
                 margin-bottom: 0.5em;
                 will-change: transform, opacity;
+                pointer-events: none;
+
             }
     
             &__body-text {
                 @include fluid-type($minWidth, $maxWidth, $minFontSize__about-body, $maxFontSize__about-body);
                 margin-top: 0;
                 will-change: transform, opacity;
+                pointer-events: none;
+
             }
 
         }
@@ -91,7 +97,8 @@
             margin-top: 0;
             color: #000000;
             @include fluid-type($minWidth, $maxWidth, $minFontSize__about__links-header, $maxFontSize__about__links-header);
-            
+            pointer-events: none;
+
         }
         // top: 20%;
         &__methods {

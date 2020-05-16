@@ -68,7 +68,7 @@ export default class Cursor {
 
         this.radius = this.defaultRadius;
 
-        this.strokeWidth = 1.0;
+        this.strokeWidth = 0.5;
 
         this.startAngle = 0;
 
