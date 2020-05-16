@@ -24,12 +24,12 @@ class MediaManager {
             // this.videoSource({url: "./assets/vid.mp4", brightVal: 1.0}),
             // this.videoSource({url: "./assets/vid.mp4", brightVal: 0.0}),
 
-            this.videoSource({url: "https://douglaslilliequist.s3.eu-west-3.amazonaws.com/sken10241024.mp4", brightVal: 0.0}),
-            this.videoSource({url: "https://douglaslilliequist.s3.eu-west-3.amazonaws.com/spiritualBeings10241024.mp4", brightVal: 1.0}),
-            this.videoSource({url: "https://douglaslilliequist.s3.eu-west-3.amazonaws.com/letsgetphysical10241024.mp4", brightVal: 0.0}),
-            this.videoSource({url: "https://douglaslilliequist.s3.eu-west-3.amazonaws.com/sken10241024.mp4", brightVal: 0.0}),
-            this.videoSource({url: "https://douglaslilliequist.s3.eu-west-3.amazonaws.com/needahand10241024.mp4", brightVal: 1.0}),
-            this.videoSource({url: "https://douglaslilliequist.s3.eu-west-3.amazonaws.com/gnsw10241024.mp4", brightVal: 0.0}),
+            this.videoSource({url: "https://douglaslilliequist.s3.eu-west-3.amazonaws.com/sken512512.mp4", brightVal: 0.0}),
+            this.videoSource({url: "https://douglaslilliequist.s3.eu-west-3.amazonaws.com/spiritualBeings512512.mp4", brightVal: 1.0}),
+            this.videoSource({url: "https://douglaslilliequist.s3.eu-west-3.amazonaws.com/letsgetphysical512512.mp4", brightVal: 0.0}),
+            this.videoSource({url: "https://douglaslilliequist.s3.eu-west-3.amazonaws.com/sken512512.mp4", brightVal: 0.0}),
+            this.videoSource({url: "https://douglaslilliequist.s3.eu-west-3.amazonaws.com/needahand512512.mp4", brightVal: 1.0}),
+            this.videoSource({url: "https://douglaslilliequist.s3.eu-west-3.amazonaws.com/gnsw512512.mp4", brightVal: 0.0}),
 
         ]
 
@@ -38,8 +38,8 @@ class MediaManager {
             this.vidSources.map((vidSource, i) => {
 
                 const video = document.createElement('video');
-                video.width = 1024;
-                video.height = 1024;
+                video.width = 512;
+                video.height = 512;
                 video.crossOrigin = "*";
                 video.isBright = vidSource.bright;
                 video.setAttribute('webkit-playsinline', true);
@@ -58,7 +58,7 @@ class MediaManager {
     loadImages() {
 
         this.imgSources = [
-            'https://douglaslilliequist.s3.eu-west-3.amazonaws.com/portrait.png'
+            'https://douglaslilliequist.s3.eu-west-3.amazonaws.com/selfportrait512512.png'
         ]
 
         this.images = [];

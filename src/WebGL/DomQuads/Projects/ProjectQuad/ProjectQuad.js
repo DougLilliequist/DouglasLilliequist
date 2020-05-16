@@ -195,7 +195,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
       } else {
         this.restorePhase = delta / this.restoreDelta;
         const fallOff = 1.0 - ((1.0 - this.restorePhase) * (1.0 - this.restorePhase));
-        this.restoreEase *= fallOff;
+        this.restoreEase *= 0.5 + (1.0 - 0.5) * fallOff;
       }
       
     }

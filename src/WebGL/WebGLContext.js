@@ -20,6 +20,8 @@ import eventEmitter from '../EventEmitter';
 const emitter = eventEmitter.emitter;
 import events from '../../utils/events';
 
+import {gsap} from 'gsap';
+
 const Stats = require('stats-js'); 
 
 import * as dat from 'dat.gui';
@@ -43,7 +45,13 @@ export default class WebGLContext {
     });
     this.gl = this.renderer.gl;
     this.gl.clearColor(0.9, 0.9, 0.9, 1.0);
-    this.gl.canvas.style.userSelect = "none";
+
+    this.gl.canvas.style.position = "absolute";
+    this.gl.canvas.style.width = "100%";
+    this.gl.canvas.style.height = "100%";
+    this.gl.canvas.style.top = "0%";
+    this.gl.canvas.style.left = "0%";
+    this.gl.canvas.style.zIndex = "-1";
 
     document.body.appendChild(this.gl.canvas);
 
@@ -163,16 +171,22 @@ export default class WebGLContext {
 
   onResize = () => {
 
-    const w = window.innerWidth;
-    const h = window.innerHeight;
+    if(this.resizeContext) this.resizeContext.kill();
 
-    this.renderer.setSize(w, h);
-    const aspectRatio = w / h;
-    this.camera.perspective({
-      aspect: aspectRatio
+    this.resizeContext = gsap.delayedCall(0.05, () => {
+
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+
+      this.renderer.setSize(w, h);
+      const aspectRatio = w / h;
+      this.camera.perspective({
+        aspect: aspectRatio
+      });
+  
+      this.mouseFlowmap.Aspect = w/h;
+
     });
-
-    this.mouseFlowmap.Aspect = w/h;
 
   }
 }

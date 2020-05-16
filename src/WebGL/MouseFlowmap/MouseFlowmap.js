@@ -44,7 +44,7 @@ export default class MouseFlowmap {
         const params = {
             width: s,
             height: s,
-            type: this.gl.HALF_FLOAT,
+            type: this.gl.HALF_FLOAT || this.gl.renderer.extensions['OES_texture_half_float'].HALF_FLOAT_OES,
             format: this.gl.RGBA,
             internalFormat: this.gl.RGBA16F,
             depth: false

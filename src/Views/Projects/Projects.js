@@ -36,7 +36,6 @@ export default class Projects extends View {
 
   onLeaveCompleted() {
     super.onLeaveCompleted();
-    document.body.style.cursor = "auto";
     emitter.emit(events.REMOVE_DOMGL);
   }
 

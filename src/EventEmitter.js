@@ -32,7 +32,7 @@ class EventEmitter {
     }
 
     onMouseDown = (e) => {
-
+        
         this.emitter.emit(events.MOUSE_DOWN, e, false);
 
     }
