@@ -43,6 +43,7 @@ export default class WebGLContext {
     });
     this.gl = this.renderer.gl;
     this.gl.clearColor(0.9, 0.9, 0.9, 1.0);
+    this.gl.canvas.style.userSelect = "none";
 
     document.body.appendChild(this.gl.canvas);
 
@@ -62,7 +63,7 @@ export default class WebGLContext {
     this.scene = new Transform();
 
     this.stats = new Stats();
-    document.body.appendChild(this.stats.dom);
+    // document.body.appendChild(this.stats.dom);
 
   }
 

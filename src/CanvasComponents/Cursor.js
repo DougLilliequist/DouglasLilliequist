@@ -292,6 +292,7 @@ export default class Cursor {
         this.ctx.fillStyle = `rgba(${0.0},${0.0},${0.0}, ${this.ctaTextAlpha})`;
         this.ctx.font = `${15}px Muli`;
         this.ctx.textBaseline = "middle";
+        // this.ctx.fillText(message.word, this.position.x + 40, this.position.y + this.ctaPosOffset.y);
         this.ctx.fillText(message.word, this.position.x - 80, this.position.y + this.ctaPosOffset.y);
 
     }

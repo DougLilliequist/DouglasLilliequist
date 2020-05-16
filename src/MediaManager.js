@@ -41,11 +41,12 @@ class MediaManager {
                 video.width = 1024;
                 video.height = 1024;
                 video.crossOrigin = "*";
+                video.isBright = vidSource.bright;
+                video.setAttribute('webkit-playsinline', true);
                 video.playsinline = true;
                 video.src = vidSource.src;
                 video.muted = true;
                 video.loop = true;
-                video.isBright = vidSource.bright;
                 // video.currentTime = 0.0001;
                 video.currentTime = Math.random() + 0.001;
                 this.videos[i] = {vid: video, isBright: vidSource.isBright};    

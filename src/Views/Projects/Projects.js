@@ -40,23 +40,11 @@ export default class Projects extends View {
     emitter.emit(events.REMOVE_DOMGL);
   }
 
-  //assign variables to dom elements
   initReferences() {
 
-    this.projectTitle = this.el.querySelector('.title-container');
-    this.projectTitleClipReveal = this.projectTitle.children[0];
-
-    // this.projectContent = this.el.querySelector(".content-container__content");
-    this.projectContentClipReveal = this.el.querySelectorAll('.content-container__content__clip-reveal');
-    this.projectClipRevealElements = [];
-    this.projectContentClipReveal.forEach((el, i) => {
-      this.projectClipRevealElements[i] = el.children[0];
-    });
-
+    this.projectTitle = this.el.querySelector('.title-container__title');
+    this.projectContentInfo = this.el.querySelectorAll('.project-info');
     this.projectLink = this.el.querySelector(".project-link");
-    this.projectLinkClipReveal = this.projectLink.children[0];
-
-    // this.clickAndDragCTA = this.el.querySelector('.cta_click-drag');
 
   }
 
@@ -71,20 +59,12 @@ export default class Projects extends View {
     emitter.on(events.MOUSE_UP, this.disableScrollMode);
 
     this.projectLink.addEventListener('mouseenter', () => {
-
-      if(this.inScrollMode === false) {
-        emitter.emit(events.HOVERING_LINK)
-        window.hoveringLink = true;
-      }
-    }, false);
-
+      this.updateLinkHoverState({hovering: true});
+    });
     this.projectLink.addEventListener('mouseleave', () => {
-      if(this.inScrollMode === false) {
-        emitter.emit(events.LEAVING_LINK)
-        window.hoveringLink = false;
-      }
-    }, false);
-
+      this.updateLinkHoverState({hovering: false});
+    });
+  
   }
 
   removeEvents() {
@@ -94,17 +74,13 @@ export default class Projects extends View {
     emitter.off(events.LOAD_PROJECT_CONTENT, this.loadProjectContent);
     emitter.off(events.MOUSE_DOWN, this.enableScrollMode);
     emitter.off(events.MOUSE_UP, this.disableScrollMode);
-
+    
     this.projectLink.removeEventListener('mouseenter', () => {
-
-      emitter.emit(events.HOVERING_LINK)
-      window.hoveringLink = true;
-    }, false);
-
+      this.updateLinkHoverState({hovering: true});
+    });
     this.projectLink.removeEventListener('mouseleave', () => {
-      emitter.emit(events.LEAVING_LINK)
-      window.hoveringLink = false;
-    }, false);
+      this.updateLinkHoverState({hovering: false});
+    });
 
   }
 
@@ -127,8 +103,7 @@ export default class Projects extends View {
   enableScrollMode = () => {
 
     if(window.hoveringLink) return;
-
-    // document.body.style.cursor = "grabbing";
+    document.querySelector('.project-container').classList.add('project-container--scrolling');
     this.inScrollMode = true;
     this.enableUserInteraction = false;
     emitter.emit(events.ENTER_SCROLL_MODE);
@@ -138,7 +113,8 @@ export default class Projects extends View {
 
   disableScrollMode = () => {
 
-    document.body.style.cursor = this.defaultCursor;
+    if(window.hoveringLink) return;
+    document.querySelector('.project-container').classList.remove('project-container--scrolling');
     this.inScrollMode = false;
     this.enableUserInteraction = true;
     emitter.emit(events.EXIT_SCROLL_MODE);
@@ -148,13 +124,13 @@ export default class Projects extends View {
 
   playEnterAnim() {
 
-    this.killProjectContentAnim();
+    if(this.enterAnim) this.enterAnim.kill();
+    this.enterAnim = gsap.timeline();
     const ease = "sine.inOut";
     const startX = 20;
     const dur = 0.85
 
-    const transitionTl = gsap.timeline();
-    transitionTl.fromTo(this.projectTitle, {
+    this.enterAnim.fromTo(this.projectTitle, {
       opacity: 0.01,
       y: -startX,
     }, {
@@ -164,7 +140,7 @@ export default class Projects extends View {
       ease: ease
     }, "<");
 
-    transitionTl.fromTo(this.projectContentClipReveal, {
+    this.enterAnim.fromTo(this.projectContentInfo, {
 
       opacity: 0.01,
       y: startX
@@ -180,7 +156,7 @@ export default class Projects extends View {
     // }, "<0.3");
     }, "<0.05");
 
-    transitionTl.fromTo(this.projectLink, {
+    this.enterAnim.fromTo(this.projectLink, {
       opacity: 0.01,
       y: startX
     },
@@ -195,20 +171,19 @@ export default class Projects extends View {
 
   playLeaveAnim() {
 
-    this.killProjectContentAnim();
-
-    const transitionTl = gsap.timeline();
+    if(this.leaveAnim) this.leaveAnim.kill();
+    this.leaveAnim = gsap.timeline();
     const ease = "sine.inOut";
     const dur = 0.75;
     const targetX = -20;
 
-    transitionTl.to(this.projectTitle, {
+    this.leaveAnim.to(this.projectTitle, {
       opacity: 0.01,
       duration: dur,
       ease: ease
     });
 
-    transitionTl.to(this.projectContentClipReveal, {
+    this.leaveAnim.to(this.projectContentInfo, {
 
       duration: dur,
       opacity: 0.01,
@@ -216,7 +191,7 @@ export default class Projects extends View {
       ease: ease
     }, "<0.01");
 
-    transitionTl.to(this.projectLink,
+    this.leaveAnim.to(this.projectLink,
     {
       duration: dur,
       opacity: 0.01,
@@ -225,36 +200,48 @@ export default class Projects extends View {
 
   }
 
-  animateProjectContent() { //rename later
+  animateProjectContent() {
 
     const scrolling = this.inScrollMode;
+    const pow =  "power1.out";
 
-    this.killProjectContentAnim();
-
-    const hideTl = gsap.timeline();
-    hideTl.to(this.projectTitleClipReveal.children[0], {
+    if(this.scrollAnim) this.scrollAnim.kill();
+    this.scrollAnim = gsap.timeline({});
+    this.scrollAnim.fromTo(this.projectTitle, {
+      y: scrolling ? 0 : -10
+    },
+    {
       duration: scrolling ? 0.1 : 0.75,
+      y: 0,
       opacity: scrolling ? 0.01 : 0.99,
-      // x: scrolling ? -50 : 0
+      ease: pow
     }, "<");
-    hideTl.to(this.projectContentClipReveal, {
+    this.scrollAnim.to(this.projectContentInfo, {
       opacity: scrolling ? 0.01 : 0.99,
       duration: scrolling ? 0.1 : 1.0,
       stagger: scrolling ? 0.0 : 0.1,
-    }, "<0.05")
-    hideTl.to(this.projectLinkClipReveal.children[0], {
+    }, scrolling ? "<" : "<0.05")
+    this.scrollAnim.to(this.projectLink,
+    {
       duration: scrolling ? 0.1 : 0.5,
-      // y: scrolling ? 15 : 0,
-      opacity: scrolling ? 0.01 : 0.99
-    }, "<0.05");
+      opacity: scrolling ? 0.01 : 0.99,
+      ease: pow
+    }, scrolling ? "<" : "<0.05");
 
   }
 
-  killProjectContentAnim() {
+  updateLinkHoverState({hovering}) {
 
-    gsap.killTweensOf(this.projectTitleClipReveal.children[0]);
-    gsap.killTweensOf(this.projectContentClipReveal);
-    gsap.killTweensOf(this.projectLinkClipReveal.children[0]);
+    if(this.inScrollMode === false) {
+      if(hovering) {
+        emitter.emit(events.HOVERING_LINK)
+        window.hoveringLink = hovering;
+      } else {
+        emitter.emit(events.LEAVING_LINK)
+        window.hoveringLink = false;
+      }
+
+    }
 
   }
 

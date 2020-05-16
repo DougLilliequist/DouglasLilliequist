@@ -18,6 +18,7 @@ varying vec2 vUv;
 varying vec2 vClipPos;
 
 #define DISTORTSTR 0.8
+#define lumaK 0.33333333333333333
 
 void main() {
 
@@ -36,7 +37,7 @@ void main() {
     // imgCoord.x *= _Aspect;
 
     vec3 col = texture2D(_Image, imgCoord).xyz;
-    float heightMap = (col.x + col.y + col.z) / 3.0;
+    float heightMap = (col.x + col.y + col.z) * lumaK;
     heightMap *= heightMap;
     pos += distort * max(0.2, heightMap) * distort.z;
 

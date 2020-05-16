@@ -19,42 +19,28 @@
         <article data-router-view="projects">
                 <div class = "project-container">
                     <div class = "title-container">
-                        <div class = "title-container__clip-reveal">
-                            <h1 class = "title-container__clip-reveal__title" id = "project_title"></h1>
+                        <div class = "title-container__title">
+                            <h1 id = "project_title"></h1>
+                        </div>
+                        <div class = "project-link">
+                            <div class = "project-link__link">
+                                <a target = "_blank" id = "project_link">view project</a>
+                            </div>
                         </div>
                     </div>
                     <div class = "project-video"></div>         
                     <div class = "content-container">
                         <div class = "content-container__content">
-                            <div class = "content-container__content__clip-reveal">
-                                <p class = "content-container__content__type" id = "project_type"></p>
-                            </div>
-                            <div class = "content-container__content__clip-reveal">
-                                <p class = "content-container__content__year" id = "project_year"></p>
-                            </div>
-                            <div class = "content-container__content__clip-reveal">
-                                <h3 class = "content-container__content__description" id = "project_description"></h3>
-                            </div>
-                            <div class = "content-container__content__clip-reveal">
-                                <p class = "content-container__content__tech" id = "project_tech"></p>
-                            </div>
-                        </div>
-                        <div class = "project-link">
-                            <div class = "project-link__clip-reveal">
-                            <div class = "project-link__link">
-                                <a target = "_blank" id = "project_link">view project</a>
-                            </div>
-                            </div>
+                                <p class = "project-info" id = "project_year"></p>
+                                <p class = "project-info" id = "project_type"></p>
+                                <h3 class = "project-info" id = "project_description"></h3>
+                                <p class = "project-info" id = "project_tech"></p>
                         </div>
                     </div>
                 </div>
-            <!-- <div class = "cta_click-drag">
-                <p>hold and drag</p>
-            </div>         -->
         </article>
     </main>
     <canvas class = "main-cursor"></canvas>
-    <!-- <div class = "canvas-container"></div> -->
     <script src = "../index.js"></script>
 </body>
 </html>

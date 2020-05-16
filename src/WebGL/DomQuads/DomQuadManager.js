@@ -5,6 +5,8 @@ import events from '../../../utils/events.js';
 import ProjectQuadMediator from './Projects/projectQuadMediator.js'
 import AboutQuadMediator from './About/AboutQudMediator.js';
 
+import {gsap} from 'gsap';
+
 export default class DomQuadManager {
 
     constructor(gl, scene, camera) {
@@ -89,13 +91,10 @@ export default class DomQuadManager {
 
     resize = () => {
 
-        if (this.updateDimensions) {
-            clearTimeout(this.updateDimensions);
-          }
-
-        this.updateDimensions = setTimeout(() => {
+        if(this.updateDimensions) this.updateDimensions.kill();
+        this.updateDimensions = gsap.delayedCall(0.1, () => {
             this.updateQuadDimensions();
-          }, 100);
+        });
 
     }
 

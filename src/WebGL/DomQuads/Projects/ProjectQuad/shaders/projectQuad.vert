@@ -30,6 +30,7 @@ varying float vDist;
 #define SCROLLDISTORTSTR 0.5
 #define DISPLACEMENTSTR 0.2
 #define HEIGHTMAPSTR 0.4
+#define lumaK 0.33333333333333333
 
 // #define DISTORTSTR 0.8
 // #define SCROLLDISTORTSTR 0.5
@@ -43,7 +44,7 @@ void main() {
     pos.xy *= _ViewplaneSize * _Scale;
     
     vec3 col = texture2D(_Image, uv).xyz;
-    float heightMapDistort = (col.x + col.y + col.z) / 3.0;
+    float heightMapDistort = (col.x + col.y + col.z) * lumaK;
     float phase = 1.0 - dot(position.xy, position.xy);
     
     pos.z += (phase * DISPLACEMENTSTR + (heightMapDistort * HEIGHTMAPSTR)) * _ScrollPhase * SCROLLDISTORTSTR;

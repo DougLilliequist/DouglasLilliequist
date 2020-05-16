@@ -131,59 +131,17 @@ export default class About extends View {
     }, {
       duration: dur,
       opacity: 0.99,
-      x: 0,
+      y: 0,
       stagger: 0.1,
       // ease: ease
     }, "<0.1");
-    
-    // enterAnim.fromTo(this.header, {
-    //   opacity: 0.01,
-    //   y: startY
-    // }, {
-    //   duration: dur,
-    //   opacity: 0.99,
-    //   y: 0,
-    //   // ease: ease
-    // }, "<0.1");
-
-    // enterAnim.fromTo(this.introText, {
-    //   opacity: 0.01,
-    //   y: startY
-    // }, {
-    //   duration: dur,
-    //   opacity: 0.99,
-    //   y: 0,
-    //   // ease: ease
-    // }, "<0.05");
-
-    // enterAnim.fromTo(this.contactHeader, {
-    //   opacity: 0.01,
-    //   y: startY
-    // }, {
-    //   duration: dur,
-    //   opacity: 0.99,
-    //   y: 0,
-    //   // ease: ease
-    // }, "<0.05");
-
-    // enterAnim.fromTo(this.links, {
-    //   opacity: 0.01,
-    //   y: startY
-    // }, {
-    //   duration: dur,
-    //   opacity: 0.99,
-    //   x: 0,
-    //   stagger: 0.1,
-    //   // ease: ease
-    // }, "<0.05");
 
   }
 
   playLeaveAnim() {
 
     const dur = 0.5;
-    const textY = 10;
-    const ease = "sine.inOut";
+    const ease = "sine.in";
 
     const leaveAnim = gsap.timeline({
 
@@ -198,7 +156,6 @@ export default class About extends View {
     leaveAnim.to(this.links, {
       duration: dur,
       opacity: 0.01,
-      // y: textY,
       stagger: -0.05,
       ease: ease
     }, "<");
@@ -206,21 +163,18 @@ export default class About extends View {
     leaveAnim.to(this.contactHeader, {
       duration: dur,
       opacity: 0.01,
-      // y: textY,
       ease: ease
     }, "<0.05");
 
     leaveAnim.to(this.introText, {
       duration: dur,
       opacity: 0.01,
-      // y: textY,
       ease: ease
     }, "<0.05");
 
     leaveAnim.to(this.header, {
       duration: dur,
       opacity: 0.01,
-      // y: textY,
       ease: ease
     }, "<0.05");
 
