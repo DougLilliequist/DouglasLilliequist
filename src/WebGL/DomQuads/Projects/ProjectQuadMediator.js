@@ -15,7 +15,13 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     this.gl = gl;
 
+    this.quads = [];
+
     this.quadCount = 5;
+
+    this.quadInView;
+
+    this.quadSwapped = false;
     
     this.position.z = 1.0;
 
@@ -25,15 +31,9 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     this.inScrollMode = false;
 
-    this.forceOffset = 0;
+    this.minBounds = -5.0;
 
-    this.traversingQuads = false;
-
-    this.quadInView;
-
-    this.restorePositions = false;
-
-    this.enteringScroll = false;
+    this.maxBounds = 0.0;
 
   }
 
@@ -41,6 +41,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     emitter.on(events.ENTER_SCROLL_MODE, this.enterScrollMode);
     emitter.on(events.EXIT_SCROLL_MODE, this.exitScrollMode);
+    emitter.on(events.SWAP_QUAD, this.swapQuad);
     emitter.on(events.PREPARE_UNMOUNT, this.hideQuads);
 
   }
@@ -49,6 +50,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     emitter.off(events.ENTER_SCROLL_MODE, this.enterScrollMode);
     emitter.off(events.EXIT_SCROLL_MODE, this.exitScrollMode);
+    emitter.off(events.SWAP_QUAD, this.swapQuad);
     emitter.off(events.PREPARE_UNMOUNT, this.hideQuads);
 
   }
@@ -62,48 +64,58 @@ export default class ProjectQuadMediator extends DomquadMediator {
       return;
     }
 
+    //videos
     this.media = media;
 
+    //dom element that quads position's and scales will have it's
+    //world position and scales be based on
     this.referenceElement = referenceElement;
 
     if(this.quadsLoaded === false) {
-
+    
+      //create quads for each project video
       let i = 0;
-      while (i < this.quadCount) {
-  
-        let phase = i / (this.quadCount - 1.0)
-  
+      while (i < this.media.length) {
+
         const quad = new ProjectQuad(
           this.gl,
-          this.media, {
+          this.media[i], {
             widthSegments: 16.0,
             heightSegments: 16.0,
             posOffset: i, //rename or make new prop for index?
-            phase: phase
+            // phase: phase
           }
         );
-
-        quad.setParent(this);
+        
+        this.quads[i] = quad;
         i++;
+        
+      }
+      
+      this.quadsLoaded = true;
 
-        this.quadsLoaded = true;
-
+      //only append the amount of quads based on quad count
+      i = 0;
+      while(i < this.quadCount) {
+        this.quads[i].setParent(this);
+        i++;
+      }
+  
     }
-    
-  }
 
   this.children.map((quad) => {
 
       quad.visible = true;
               
-      quad.updateDimensions({
-        domElement: this.referenceElement,
-        camera: this.camera
-      });
+      // quad.updateDimensions({
+      //   domElement: this.referenceElement,
+      //   camera: this.camera
+      // });
 
-      quad.calcDomToWebGLPos({
-        domElement: this.referenceElement,
-      });
+      // quad.calcDomToWebGLPos({
+      //   domElement: this.referenceElement,
+      // });
+      this.calculateDomTransforms({quad});
 
   })
 
@@ -128,7 +140,8 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     this.inScrollMode = false;
     this.quadInView = this.getQuadInView();
-    emitter.emit(events.PLAY_VIDEO);
+    // emitter.emit(events.PLAY_VIDEO);
+    this.quadInView.playVideo();
     emitter.emit(events.REMOVE_SCROLL_MODE_ANIM);
     
   }
@@ -212,6 +225,82 @@ export default class ProjectQuadMediator extends DomquadMediator {
       this.inputForce.y *= this.inputForceInertia;
       if(Math.abs(this.inputForce.y) < 0.001) this.inputForce.y = 0.0;
 
+      this.loopQuads();
+
+  }
+
+  loopQuads() {
+
+    this.children.map((quad) => {
+
+      if(quad.position.z < -5.0) {
+        this.swapQuad({quad, direction: -1});
+      } else if(quad.position.z > 0.0) {
+        this.swapQuad({quad, direction: 1});
+      }
+
+    });
+
+  }
+
+  swapQuad = ({quad, direction}) => {
+
+    //current quad's position
+    const pos = quad.position;
+    
+    //current quad's ID
+    const id = quad.id;
+
+    //current quad's index;
+    let index = quad.index;
+
+    //increase or decrease index based on active quad length which will be used
+    //to tell which quad to append
+    index = direction <= -1 ? index - this.quadCount : index + this.quadCount;
+
+    //loop index
+    //*NOTE* I have no idea how it makes sense, but after some pen & paper coding I noticed
+    //that applying the delta between the video count and the quad count gives me the desired index
+    index = (((index % this.quads.length) + this.quads.length) % this.quads.length);
+
+    //remove quad
+    for(let i = 0; i < this.quadCount; i++) {
+      if(this.children[i].id === id) {
+        this.removeChild(this.children[i]);        
+        break;
+      }
+    }
+    
+    //init new quad
+    const newQuad = this.quads[index];
+    newQuad.position = pos;
+    newQuad.program.uniforms._RevealPhase.value = 1.0;
+    
+    //calculte position and scale based on reference dom element
+    //and append to parent transform
+    this.calculateDomTransforms({quad: newQuad}); 
+    // newQuad.updateDimensions({
+    //   domElement: this.referenceElement,
+    //   camera: this.camera
+    // });
+
+    // newQuad.calcDomToWebGLPos({
+    //   domElement: this.referenceElement,
+    // });
+    
+    newQuad.setParent(this);
+
+    //loop positions
+    this.children.map((quad) => {
+
+      if(quad.position.z < -5.0) {
+        quad.position.z += 5.0;
+      } else if(quad.position.z > 0.0) {
+        quad.position.z -= 5.0;
+      }
+
+    });
+
   }
 
   //get the quad whose position equals to the camera's position along Z
@@ -234,6 +323,19 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
       return quadInView;
       
+  }
+
+  calculateDomTransforms({quad}) {
+
+    quad.updateDimensions({
+      domElement: this.referenceElement,
+      camera: this.camera
+    });
+
+    quad.calcDomToWebGLPos({
+      domElement: this.referenceElement,
+    });
+
   }
 
 }

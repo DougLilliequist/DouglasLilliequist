@@ -4,7 +4,7 @@ uniform sampler2D _Image;
 uniform sampler2D _FlowMap;
 uniform float _FlowMapPhase;
 
-uniform float _AlphaPhase; //rename to scroll mode phase
+uniform float _ScalePhase;
 uniform float _Alpha;
 uniform float _RevealPhase;
 uniform float _RevealDirection;
@@ -15,7 +15,7 @@ varying vec3 vMvPos;
 varying vec2 vClipPos;
 varying float vDist;
 
-#define OFFSETAMOUNTX 0.01
+#define OFFSETAMOUNTX 0.008
 #define OFFSETAMOUNTY 0.001
 
 // #define MINVIEWDIST 0.18
@@ -28,7 +28,7 @@ void main() {
 
     vec2 uv = vUv;
     uv -= 0.5;
-    uv *= mix(1.0, 0.85, _AlphaPhase); //rename uniform
+    uv *= mix(1.0, 0.85, _ScalePhase); //rename uniform
     uv += 0.5;
 
     vec2 flow = texture2D(_FlowMap, vClipPos).xy * _FlowMapPhase;
@@ -44,7 +44,7 @@ void main() {
 
     float len = (vMvPos.z * vMvPos.z);
     float idleAlpha = smoothstep(MINVIEWDIST, MAXVIEWDIST, len);
-    float scrollAlpha = idleAlpha * 0.35 * smoothstep(ALPHAFALLOFFDIST, 0.0, len);
+    float scrollAlpha = idleAlpha * mix(1.0, 0.5, abs(_ScrollPhase)) * (smoothstep(ALPHAFALLOFFDIST, 0.0, len));
     float alpha = mix(idleAlpha, scrollAlpha, abs(_ScrollPhase));
     alpha *= _Alpha;
 

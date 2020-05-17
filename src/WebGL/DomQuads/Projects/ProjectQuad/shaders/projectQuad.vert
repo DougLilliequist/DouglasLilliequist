@@ -11,7 +11,6 @@ uniform mat4 modelMatrix;
 uniform sampler2D _FlowMap;
 uniform float _FlowMapPhase;
 uniform float _FlipFlowMapForce;
-uniform float _AlphaPhase;
 uniform float _ScrollPhase;
 
 uniform sampler2D _Image;
@@ -26,7 +25,7 @@ varying vec2 vUv;
 varying vec2 vClipPos;
 varying float vDist;
 
-#define DISTORTSTR 0.8
+#define DISTORTSTR 0.6
 #define SCROLLDISTORTSTR 0.5
 #define DISPLACEMENTSTR 0.2
 #define HEIGHTMAPSTR 0.4

@@ -6,7 +6,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
   const vert = require("./shaders/projectQuad.vert");
   const frag = require("./shaders/projectQuad.frag");
   
-  import {loopNegativeNumber} from '../../../../../utils/Math.js';
+  import {loopNegativeNumber, makeid} from '../../../../../utils/Math.js';
   import eventEmitter from '../../../../EventEmitter.js'
   const emitter = eventEmitter.emitter;
   import events from '../../../../../utils/events.js';
@@ -20,7 +20,6 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
         widthSegments = 1.0,
         heightSegments = 1.0,
         posOffset = 0.0,
-        phase = 0.0
       } = {}
     ) {
 
@@ -31,14 +30,17 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
         } = {});
 
       this.gl = gl;
-          
-      this.initIndex = this.index = posOffset; //rename argument
+      
+      this.id = makeid({length: 9});
+
+      this.index = posOffset; //rename argument
     
-      this.videos = media;
+      // this.videos = media;
+      this.media = media;
   
-      this.video = this.videos[this.index].vid;
+      this.video = this.media.vid;
   
-      this.initPos = this.position.z = 0 - posOffset;
+      this.initPos = this.position.z = 0 - (posOffset % 5.0);
     
       this.targetPos = this.position.z;
 
@@ -81,6 +83,8 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
   
       this.texture = new Texture(this.gl, {
         generateMipmaps: false,
+        minFilter: this.gl.LINEAR,
+        magFilter: this.gl.LINEAR
       });
     
       const u = {
@@ -94,7 +98,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
           value: this.texture
         },
         _FlowMap: {
-          value: null
+          value: new Texture(this.gl)
         },
         _FlowMapPhase: {
           value: 1.0
@@ -108,7 +112,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
         _FlipFlowMapForce: {
           value: 0.0
         },
-        _AlphaPhase: {
+        _ScalePhase: {
           value: 0.0
         },
         _RevealPhase: {
@@ -169,8 +173,6 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
         this.restorePosition();
       }
 
-      this.updateIndex();
-      this.loopPosition();
       this.updateScrollPhase();
 
     }
@@ -200,16 +202,6 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
       
     }
 
-    loopPosition() {
-      
-      if(this.position.z < -5) {
-        this.position.z += 5;
-      } else if(this.position.z > 0) {
-        this.position.z -= 5;
-      }
-      
-    }
-
     animteUniforms({scale, alpha, alphaPhase, flowMapPhase}) {
 
       if(this.scrollModeTl) this.scrollModeTl.kill();
@@ -217,47 +209,45 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
       this.scrollModeTl.to(this.program.uniforms._Alpha, {
         value: alpha,
         duration: 0.5,
-        ease: "power2.out"
+        ease: "power1.out"
       }, "<");
 
       this.scrollModeTl.to(this.program.uniforms._Scale, {
         value: scale,
         duration: 0.35,
-        ease: "power2.out"
+        ease: "power1.out"
       }, "<");
 
-      this.scrollModeTl.to(this.program.uniforms._AlphaPhase, {
+      this.scrollModeTl.to(this.program.uniforms._ScalePhase, {
           value: alphaPhase,
           duration: 0.35,
-          ease: "power2.out"
+          ease: "power1.out"
         }, "<");
 
         this.scrollModeTl.to(this.program.uniforms._FlowMapPhase, {
           value: flowMapPhase,
           duration: 0.3,
-          ease: "power2.out"
+          ease: "power1.out"
         }, "<");
 
     }
   
     updateVideoTexture() {
   
-        this.video = this.videos[this.index].vid;
-        this.program.uniforms._FlipFlowMapForce.value = this.videos[this.index].isBright;
+        // this.video = this.videos[this.index].vid;
+        this.program.uniforms._FlipFlowMapForce.value = this.media.isBright;
 
         if(this.inView) {
           if (this.video.readyState >= this.video.HAVE_ENOUGH_DATA) {
             this.texture.image = this.video;
             this.texture.needsUpdate = true;
           }
-        } else {
-          this.texture.needsUpdate = false;
         }
   
     }
   
     playVideo = () => {
-
+      
       if(this.video === null) return;
       if(this.inView({inViewPosZ: 0 - this.parent.position.z})) this.video.play();
   
@@ -268,24 +258,6 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
       if(this.video === null) return;
       this.video.pause();
   
-    }
-  
-    //I have no idea how it makes sense, but after some pen & paper coding I noticed
-    //that applying the delta between the video count and the quad count gives me the desired index?
-    updateIndex() {
-
-      let lessThanBounds = this.position.z < -5.0;
-      let greaterThanBouds = this.position.z > 0.0;
-      const offSet = this.parent.children.length;
-  
-      if(lessThanBounds) {
-        this.index -= offSet;
-      } else if(greaterThanBouds) { //magic number 5: max distanc based on quads current 1 unit spacing
-        this.index += offSet;
-      }
-        
-      this.index = (((this.index % this.videos.length) + this.videos.length) % this.videos.length);
-    
     }
 
     inView({inViewPosZ}) {

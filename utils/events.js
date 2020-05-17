@@ -4,6 +4,7 @@ const events = {
     INIT_DOMGL_PROJECTS: 'init_DOMGL_projects',
     INIT_DOMGL_ABOUT: 'init_DOMGL_about',
     QUADS_LOADED: 'quads_loaded',
+    SWAP_QUAD: 'swap_quad',
 
     PREPARE_UNMOUNT: 'prepare_unmount',
     REMOVE_DOMGL: 'remove_DOMGL',
