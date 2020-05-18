@@ -86,6 +86,8 @@ export default class ProjectQuadMediator extends DomquadMediator {
             // phase: phase
           }
         );
+
+        this.calculateDomTransforms({quad});
         
         this.quads[i] = quad;
         i++;
@@ -115,7 +117,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
       // quad.calcDomToWebGLPos({
       //   domElement: this.referenceElement,
       // });
-      this.calculateDomTransforms({quad});
+      // this.calculateDomTransforms({quad});
 
   })
 
@@ -279,14 +281,6 @@ export default class ProjectQuadMediator extends DomquadMediator {
     //calculte position and scale based on reference dom element
     //and append to parent transform
     this.calculateDomTransforms({quad: newQuad}); 
-    // newQuad.updateDimensions({
-    //   domElement: this.referenceElement,
-    //   camera: this.camera
-    // });
-
-    // newQuad.calcDomToWebGLPos({
-    //   domElement: this.referenceElement,
-    // });
     
     newQuad.setParent(this);
 

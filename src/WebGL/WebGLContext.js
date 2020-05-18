@@ -143,7 +143,7 @@ export default class WebGLContext {
   }
 
   update = () => {
-    this.stats.begin();
+    // this.stats.begin();
     this.currentTime = performance.now();
     this.deltaTime = (this.currentTime - this.prevtime) / 1000.0;
 
@@ -165,7 +165,7 @@ export default class WebGLContext {
 
     this.prevtime = this.currentTime;
 
-    this.stats.end();
+    // this.stats.end();
 
   }
 
