@@ -86,6 +86,9 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
         minFilter: this.gl.LINEAR,
         magFilter: this.gl.LINEAR
       });
+
+      this.updateTexture = true;
+      this.texture.needsUpdate = this.updateTexture;
     
       const u = {
         _ViewplaneSize: {
@@ -240,7 +243,8 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
         if(this.inView) {
           if (this.video.readyState >= this.video.HAVE_ENOUGH_DATA) {
             this.texture.image = this.video;
-            this.texture.needsUpdate = true;
+            this.updateTexture = !this.updateTexture;
+            this.texture.needsUpdate = this.updateTexture;
           }
         }
   
