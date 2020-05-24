@@ -348,8 +348,8 @@ export default class Cursor {
 
     update = () => {
 
-        this.position.x += (this.target.x - this.position.x) * this.ease;
-        this.position.y += (this.target.y - this.position.y) * this.ease;
+        this.position.x += (this.target.x - this.position.x) / 8.0;
+        this.position.y += (this.target.y - this.position.y) / 8.0;
 
         this.delta.x = this.position.x - this.prevPosition.x;
         this.delta.y = this.position.y - this.prevPosition.y;

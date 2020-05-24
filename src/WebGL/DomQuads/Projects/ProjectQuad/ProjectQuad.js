@@ -174,6 +174,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
 
       } else {
         this.restorePosition();
+        console.log(this.position.z);
       }
 
       this.updateScrollPhase();
