@@ -38,7 +38,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
       // this.videos = media;
       this.media = media;
   
-      this.video = this.media.vid;
+      this.video = this.media.video;
   
       this.initPos = this.position.z = 0 - (posOffset % 5.0);
     
@@ -174,7 +174,6 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
 
       } else {
         this.restorePosition();
-        console.log(this.position.z);
       }
 
       this.updateScrollPhase();
@@ -239,7 +238,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
     updateVideoTexture() {
   
         // this.video = this.videos[this.index].vid;
-        this.program.uniforms._FlipFlowMapForce.value = this.media.isBright;
+        this.program.uniforms._FlipFlowMapForce.value = this.media.brightVal;
 
         if(this.inView) {
           if (this.video.readyState >= this.video.HAVE_ENOUGH_DATA) {

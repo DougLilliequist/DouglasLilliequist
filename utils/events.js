@@ -40,6 +40,8 @@ const events = {
 
     SHOW_CLICKDRAG_CTA: 'show_click-drag_cta',
     HIDE_CLICKDRAG_CTA: 'hide_click-drag_cta',
+
+    CONTENT_LOADED: 'content_loaded',
     
     RESIZE: 'resize'
 

@@ -1,6 +1,5 @@
 import View from "../View.js";
-import mediaManager from '../../MediaManager';
-import {content} from './Content';
+import contentManager from '../../ContentManager';
 
 import eventEmitter from '../../EventEmitter';
 const emitter = eventEmitter.emitter;
@@ -14,10 +13,9 @@ export default class Projects extends View {
   onEnter() {
   
     super.onEnter();
-    this.domGLReferenceElement = this.el.querySelector('.project-video');
     this.initReferences();
     this.initEvents();
-    emitter.emit(events.INIT_DOMGL, {view: "PROJECTS", params: {referenceElement: this.domGLReferenceElement, media: mediaManager.videos, getFirstQuad: true}});
+    emitter.emit(events.INIT_DOMGL, {view: "PROJECTS", params: {referenceElement: this.domGLReferenceElement, media: contentManager.ProjectMedia, getFirstQuad: true}});
 
   }
 
@@ -41,6 +39,7 @@ export default class Projects extends View {
 
   initReferences() {
 
+    this.domGLReferenceElement = this.el.querySelector('.project-video');
     this.projectTitle = this.el.querySelector('.title-container__title');
     this.projectContentInfo = this.el.querySelectorAll('.project-info');
     this.projectLink = this.el.querySelector(".project-link");
@@ -56,7 +55,6 @@ export default class Projects extends View {
     emitter.on(events.LOAD_PROJECT_CONTENT, this.loadProjectContent);
     emitter.on(events.MOUSE_DOWN, this.enableScrollMode);
     emitter.on(events.MOUSE_UP, this.disableScrollMode);
-
     this.projectLink.addEventListener('mouseenter', () => {
       this.updateLinkHoverState({hovering: true});
     });
@@ -86,7 +84,7 @@ export default class Projects extends View {
   //inject project content to relevant html elements
   loadProjectContent = (contentIndex) => {
 
-    const projectContent = content[contentIndex];
+    const projectContent = contentManager.Projects[contentIndex];
     document.getElementById('project_title').innerHTML = projectContent.title;
     document.getElementById('project_type').innerHTML = projectContent.type;
     document.getElementById('project_year').innerHTML = projectContent.year;

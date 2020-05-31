@@ -1,6 +1,6 @@
 import View from "../View.js";
 
-import mediaManager from '../../MediaManager.js';
+import contentManager from '../../ContentManager.js';
 
 import eventEmitter from '../../EventEmitter.js';
 const emitter = eventEmitter.emitter;
@@ -12,9 +12,10 @@ export default class About extends View {
   onEnter() {
     super.onEnter();
     this.domGLReferenceElement = this.el.querySelector('.portrait-container__portrait');
-    emitter.emit(events.INIT_DOMGL, {view: "ABOUT", params: {referenceElement: this.domGLReferenceElement, media: mediaManager.images[0]}});
+    emitter.emit(events.INIT_DOMGL, {view: "ABOUT", params: {referenceElement: this.domGLReferenceElement, media: contentManager.AboutMedia[0]}});
     this.initReferences();
     this.initEvents();
+    this.populateContent();
 
   }
   onEnterCompleted() {
@@ -43,6 +44,21 @@ export default class About extends View {
     this.introText = document.querySelector('.about-copy__intro__body-text');
     this.contactHeader = document.querySelector('.contact-container__header');
     this.links = document.querySelectorAll('.contact-container__methods__wrapper');
+  }
+
+  populateContent() {
+
+    const aboutContent = contentManager.About[0];
+    this.header.innerHTML = aboutContent.title;
+    this.introText.innerHTML = aboutContent.introText;
+    this.contactHeader.innerHTML = aboutContent.contactHeader;
+    this.links.forEach((link, i) => {
+
+      const anchor = link.getElementsByTagName('a')[0];
+      anchor.innerHTML = aboutContent.contactMethods[i].type;
+      anchor.href = aboutContent.contactMethods[i].url;
+
+    });
 
   }
 

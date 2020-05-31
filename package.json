@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "parcel src/Views/index.html --host 192.168.1.109 --open",
+    "dev": "parcel src/Views/Projects.html --host 192.168.1.109 --open",
     "build": "parcel build src/Views/index.html"
   },
   "repository": {

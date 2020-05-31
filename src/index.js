@@ -10,11 +10,14 @@ import Cursor from '../src/CanvasComponents/Cursor.js';
 import Transition from "./Transitions/Transition.js";
 import ViewMediator from "./Views/ViewMediator.js";
 
+import eventEmitter from './EventEmitter';
+const emitter = eventEmitter.emitter;
+
 export default class App {
     constructor() {
         
         window.viewMediator = new ViewMediator({
-            home: Home,
+            // home: Home,
             projects: Projects,
             about: About,
             transition: Transition
@@ -36,6 +39,10 @@ export default class App {
             this.updateNavigation(location);
 
         });
+
+        emitter.on("show", () =>{
+            console.log('drrrr');
+        })
 
     }
 

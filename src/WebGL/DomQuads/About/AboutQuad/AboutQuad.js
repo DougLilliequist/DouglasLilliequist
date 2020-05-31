@@ -27,7 +27,7 @@ export default class AboutQuad extends DomQuad {
 
         this.gl = gl;
 
-        this.image = media;
+        this.image = media.image;
 
         this.initProgram();
 

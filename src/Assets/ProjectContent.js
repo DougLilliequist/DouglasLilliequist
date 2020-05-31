@@ -1,0 +1,89 @@
+import projectVideos from '../Assets/video/*.mp4'
+
+export const ProjectContent = [
+
+    {
+        title: 'Spiritual Beings',
+        type: 'Experiment',
+        description: 'Beings flocking in a peaceful purgatory',
+        tech: 'WebGL(THREE.js) / GLSL / GPGPU',
+        year: 2019,
+        link: 'https://douglilliequist.github.io/SpiritualBeings/',
+        media: {
+            videoSrc: projectVideos.spiritualBeings10241024,
+            imageSrc: null,
+            brightVal: 1.0
+        }
+    },
+
+    {
+        title: 'Memory Phase',
+        type: 'Experiment',
+        description: 'Evanescent AR voxels',
+        tech: 'Unity3D / ARFoundation + ARKit / GPGPU',
+        year: 2019,
+        link: '',
+        media: {
+            videoSrc: projectVideos.sken10241024,
+            imageSrc: null,
+            brightVal: 0.0
+        }
+
+    },
+
+    {
+        title: 'Let\'s Get Physical',
+        type: 'Client Project',
+        description: 'Interactive + floor projected lines',
+        tech: 'Unity3D / Custom GPGPU ribbons / In-house Blob Detection by Yipp Interactive',
+        year: 2019,
+        role: 'Developer',
+        link: 'https://yipp.nl/projects/61-lets_get_physical/',
+        media: {
+            videoSrc: projectVideos.letsgetphysical10241024,
+            imageSrc: null,
+            brightVal: 0.0
+        }
+    },
+    {
+        title: 'SKEN',
+        type: 'Experiment',
+        description: 'Flocking Ribbons',
+        tech: 'WebGL(THREE.js) / GLSL / GPGPU',
+        year: 2018,
+        link: 'https://douglilliequist.github.io/SKEN/',
+        media: {
+            videoSrc: projectVideos.sken10241024,
+            imageSrc: null, 
+            brightVal: 0.0
+        }
+    },
+    {
+        title: 'Need a hand?',
+        type: 'Experiment',
+        description: 'Interactive, displacing mesh',
+        tech: 'WebGL(THREE.js) / GLSL /Computed triangles from mesh data',
+        year: 2018,
+        link: 'https://douglilliequist.github.io/needAHand/',
+        media: {
+            videoSrc: projectVideos.needahand10241024,
+            imageSrc: null,
+            brightVal: 1.0
+        }
+    },
+    {
+        title: 'Good Night Sweet Heart',
+        type: 'Hyper Island Project',
+        description: 'Art Puzzle Installation',
+        tech: 'Arduino / Processing / Resolume',
+        year: 2015,
+        role: 'Developer, Designer',
+        link: '',
+        media: {
+            videoSrc:  projectVideos.gnsw10241024,
+            imageSrc: null,
+            brightVal: 0.0
+        }
+    },
+
+]

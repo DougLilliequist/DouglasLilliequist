@@ -12,11 +12,16 @@ export default class Cursor {
 
     constructor() {
 
+        this.dpr = window.devicePixelRatio;
+
         this.canvas = document.querySelector('.main-cursor');
 
         this.width = this.canvas.width = window.innerWidth;
         
         this.height = this.canvas.height = window.innerHeight;
+
+        this.canvas.width *= this.dpr;
+        this.canvas.height *= this.dpr;
 
         this.ctx = this.canvas.getContext('2d');
 
@@ -375,8 +380,8 @@ export default class Cursor {
     onResize = () => {
 
         //consider setting this on a timeout event?
-        this.width = this.canvas.width = window.innerWidth;
-        this.height = this.canvas.height = window.innerHeight;
+        this.width = this.canvas.width = window.innerWidth * this.dpr;
+        this.height = this.canvas.height = window.innerHeight * this.dpr;
 
     }
 
