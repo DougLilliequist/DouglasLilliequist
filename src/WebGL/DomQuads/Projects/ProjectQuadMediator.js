@@ -7,7 +7,6 @@ import events from '../../../../utils/events.js';
 
 import {gsap} from 'gsap';
 import { Vec2 } from "../../../../vendors/ogl/src/math/Vec2";
-import { loopNegativeNumber } from "../../../../utils/Math";
 
 export default class ProjectQuadMediator extends DomquadMediator {
   constructor(gl, scene, camera) {
@@ -41,6 +40,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     emitter.on(events.ENTER_SCROLL_MODE, this.enterScrollMode);
     emitter.on(events.EXIT_SCROLL_MODE, this.exitScrollMode);
+    emitter.on(events.REVEAL_QUADS, this.revealQuads);
     emitter.on(events.SWAP_QUAD, this.swapQuad);
     emitter.on(events.PREPARE_UNMOUNT, this.hideQuads);
 
@@ -50,6 +50,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     emitter.off(events.ENTER_SCROLL_MODE, this.enterScrollMode);
     emitter.off(events.EXIT_SCROLL_MODE, this.exitScrollMode);
+    emitter.off(events.REVEAL_QUADS, this.revealQuads);
     emitter.off(events.SWAP_QUAD, this.swapQuad);
     emitter.off(events.PREPARE_UNMOUNT, this.hideQuads);
 
@@ -108,16 +109,6 @@ export default class ProjectQuadMediator extends DomquadMediator {
   this.children.map((quad) => {
 
       quad.visible = true;
-              
-      // quad.updateDimensions({
-      //   domElement: this.referenceElement,
-      //   camera: this.camera
-      // });
-
-      // quad.calcDomToWebGLPos({
-      //   domElement: this.referenceElement,
-      // });
-      // this.calculateDomTransforms({quad});
 
   })
 
@@ -126,7 +117,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
     this.quadInView.playVideo();
   }
 
-    this.revealQuads();
+    // this.revealQuads();
 
   }
 
@@ -142,7 +133,6 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     this.inScrollMode = false;
     this.quadInView = this.getQuadInView();
-    // emitter.emit(events.PLAY_VIDEO);
     this.quadInView.playVideo();
     emitter.emit(events.REMOVE_SCROLL_MODE_ANIM);
     

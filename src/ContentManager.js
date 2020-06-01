@@ -1,9 +1,9 @@
 import {ProjectContent} from './Assets/ProjectContent.js';
 import {AboutContent} from './Assets/AboutContent.js';
 
-import eventEmitter from './EventEmitter.js'
+import eventEmitter from './EventEmitter.js';
 const emitter = eventEmitter.emitter;
-import events from '../utils/events';
+import events from '../utils/events.js';
 
 class ContentManager {
 
@@ -17,7 +17,6 @@ class ContentManager {
 
         this.progress = 0;
 
-        this.initContent();
 
     }
 
@@ -28,10 +27,6 @@ class ContentManager {
 
     }
 
-    //TODO:
-    //RUN FETCH FOR EACH URL
-    //WHEN RESOLVED, RUN LOADVIDEO / IMAGE
-
     loadViewContent({content}) {
 
         return content.map((c) => {
@@ -39,16 +34,25 @@ class ContentManager {
             if(c.media.videoSrc) {
 
                 fetch(c.media.videoSrc).then((res) => {
-                    c.media.video = this.loadVideo({src: res.url});
-                    this.updateProgress();
+                    if(res.status === 200) {
+                        this.loadVideo({src: res.url}).then((video) => {
+                            c.media.video = video;
+                            this.updateProgress();
+                        });
+                    }
                 });
             }
 
             if(c.media.imageSrc) {
 
                 fetch(c.media.imageSrc).then((res) => {
-                    c.media.image = this.loadImage({src: res.url});
-                    this.updateProgress();
+
+                    if(res.status === 200) {
+                        this.loadImage({src: res.url}).then((image) => {
+                            c.media.image = image;
+                            this.updateProgress();
+                        });
+                    }
                 });
             }
 
@@ -60,53 +64,60 @@ class ContentManager {
 
     loadVideo({src}) {
 
-        // const url = await fetch(src);
+        return new Promise((resolve, reject) => {
 
-        const video = document.createElement('video');
+            const video = document.createElement('video');
         
-        video.width = 1024;
-        
-        video.height = 1024;
-        
-        video.crossOrigin = "*";
-        
-        video.setAttribute('webkit-playsinline', true);
-        
-        video.playsinline = true;
-        
-        video.src = src;
-        
-        video.muted = true;
-        
-        video.loop = true;
-        
-        video.currentTime = Math.random() + 0.001;
-        
-        return video;
+            video.width = 1024;
+            
+            video.height = 1024;
+            
+            video.crossOrigin = "*";
+            
+            video.setAttribute('webkit-playsinline', true);
+            
+            video.playsinline = true;
+            
+            video.src = src;
+            
+            video.muted = true;
+            
+            video.loop = true;
+            
+            video.currentTime = Math.random() + 0.001;
+            
+            resolve(video);
+
+        });
     
     }
 
     loadImage({src}) {
 
-        // const url = await fetch(src);
+        // const img = document.createElement('img');
+        return new Promise((resolve, reject) => {
+            
+            const img = new Image();
+        
+            img.crossOrigin = "*";
+            
+            img.src = src;
+            
+            img.onload = () => {
+                resolve(img);
+            }
 
-        const img = document.createElement('img');
-        
-        img.crossOrigin = "anonymous";
-        
-        img.src = src;
-        
-        return img;
+        });
 
     }
 
     updateProgress() {
-
+        
         this.progressCounter++;
         this.progress = this.progressCounter / this.contentCount;
-        console.log(this.progress)
         if(this.progress === 1.0) {
-            emitter.emit('show');
+            window.contentLoaded = true;
+            emitter.emit(events.CONTENT_LOADED);
         }
 
     }

@@ -25,7 +25,7 @@ varying vec2 vUv;
 varying vec2 vClipPos;
 varying float vDist;
 
-#define DISTORTSTR 0.6
+#define DISTORTSTR 1.2
 #define SCROLLDISTORTSTR 0.5
 #define DISPLACEMENTSTR 0.2
 #define HEIGHTMAPSTR 0.4
@@ -58,7 +58,8 @@ void main() {
 
         vec3 distort = texture2D(_FlowMap, clipPos.xy).xyz * DISTORTSTR;
         heightMapDistort = mix(heightMapDistort, 1.0 - heightMapDistort, _FlipFlowMapForce);
-        pos += distort * max(0.1, heightMapDistort) * _FlowMapPhase * distort.z;
+        pos += distort * max(0.2, heightMapDistort) * _FlowMapPhase * distort.z;
+        // pos += distort * _FlowMapPhase * heightMapDistort * distort.z;
         vClipPos = clipPos.xy;
 
     }

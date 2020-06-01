@@ -16,12 +16,12 @@ export default class Cursor {
 
         this.canvas = document.querySelector('.main-cursor');
 
-        this.width = this.canvas.width = window.innerWidth;
+        this.width = this.canvas.width = window.innerWidth * this.dpr;
         
-        this.height = this.canvas.height = window.innerHeight;
+        this.height = this.canvas.height = window.innerHeight * this.dpr;
 
-        this.canvas.width *= this.dpr;
-        this.canvas.height *= this.dpr;
+        // this.canvas.width *= this.dpr;
+        // this.canvas.height *= this.dpr;
 
         this.ctx = this.canvas.getContext('2d');
 

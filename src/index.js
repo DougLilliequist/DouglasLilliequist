@@ -1,21 +1,25 @@
-import WebGLContext from "./Webgl/WebGLContext.js";
-
 import Home from "./Views/Home/Home.js";
 import Projects from "./Views/Projects/Projects.js";
 import About from "./Views/About/About.js";
 
+import WebGLContext from "./Webgl/WebGLContext.js";
+
+import LoadingScreen from './LoadingScreen.js'; 
 import navigation from './Navigation.js';
 import Cursor from '../src/CanvasComponents/Cursor.js';
 
 import Transition from "./Transitions/Transition.js";
 import ViewMediator from "./Views/ViewMediator.js";
 
-import eventEmitter from './EventEmitter';
+import contentManager from './ContentManager.js'
+
+import eventEmitter from './EventEmitter.js';
 const emitter = eventEmitter.emitter;
+import events from '../utils/events.js';
 
 export default class App {
     constructor() {
-        
+
         window.viewMediator = new ViewMediator({
             // home: Home,
             projects: Projects,
@@ -23,12 +27,19 @@ export default class App {
             transition: Transition
         });
 
+        this.loadingScreen = new LoadingScreen();
+
         window.navigation = navigation;
+        
+        window.contentLoaded = false;
 
-        const cursor = new Cursor();
-        const webGLCTX = new WebGLContext();
+        this.cursor = new Cursor();
 
+        this.webGLCTX = new WebGLContext();
+        
         this.initEvents();
+
+        contentManager.initContent();
 
     }
 
@@ -40,9 +51,9 @@ export default class App {
 
         });
 
-        emitter.on("show", () =>{
-            console.log('drrrr');
-        })
+        emitter.on(events.CONTENT_LOADED, () => {
+        
+        });
 
     }
 

@@ -39,7 +39,8 @@ void main() {
     vec3 col = texture2D(_Image, imgCoord).xyz;
     float heightMap = (col.x + col.y + col.z) * lumaK;
     heightMap *= heightMap;
-    pos += distort * max(0.2, heightMap) * distort.z;
+    // pos += distort * max(0.2, heightMap) * distort.z;
+    pos += distort * distort.z;
 
     gl_Position = modelViewProjection * vec4(pos, 1.0);
     vUv = uv;

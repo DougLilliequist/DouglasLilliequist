@@ -1,5 +1,9 @@
 import Highway from "@dogstudio/highway";
 
+import eventEmitter from '../EventEmitter';
+const emitter = eventEmitter.emitter;
+import events from '../../utils/events';
+
 export default class View extends Highway.Renderer {
     
     onEnter() {
@@ -21,4 +25,10 @@ export default class View extends Highway.Renderer {
     }
 
     onLeaveCompleted() {}
+
+    initDomGL({view, params}) {
+        
+        emitter.emit(events.INIT_DOMGL, {view, params});
+
+    }
 }

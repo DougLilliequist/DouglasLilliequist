@@ -37,15 +37,9 @@ export default class AboutQuad extends DomQuad {
 
         this.texture = new Texture(this.gl, {
             generateMipmaps: false,
-            width: 1024,
-            height: 1024
         });
 
-        // const img = new Image();
-        // img.src = 'assets/img/portrait.png';
-        // img.onLoad = () => this.texture.image = img;
         this.texture.image = this.image;
-        // this.image.onLoad = () => this.texture.image = this.image;
 
         this.geometry = new Plane(this.gl, {
             width: 2,

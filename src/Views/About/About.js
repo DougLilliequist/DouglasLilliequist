@@ -11,17 +11,20 @@ import {gsap} from 'gsap';
 export default class About extends View {
   onEnter() {
     super.onEnter();
-    this.domGLReferenceElement = this.el.querySelector('.portrait-container__portrait');
-    emitter.emit(events.INIT_DOMGL, {view: "ABOUT", params: {referenceElement: this.domGLReferenceElement, media: contentManager.AboutMedia[0]}});
     this.initReferences();
     this.initEvents();
-    this.populateContent();
+    if(window.contentLoaded) {
+      this.populateContent();
+      this.initDomGL();
+    }
 
   }
   onEnterCompleted() {
     super.onEnterCompleted();
-    // emitter.emit(events.INIT_DOMGL, {view: "ABOUT", params: {referenceElement: this.domGLReferenceElement, media: mediaManager.images[0]}});
-    this.playEnterAnim();
+
+    if(window.contentLoaded) {
+      this.playEnterAnim();
+    }
   }
 
   onLeave() {
@@ -40,29 +43,20 @@ export default class About extends View {
 
   initReferences() {
 
+    this.domGLReferenceElement = this.el.querySelector('.portrait-container__portrait');
     this.header = document.querySelector('.about-copy__intro__header');
     this.introText = document.querySelector('.about-copy__intro__body-text');
     this.contactHeader = document.querySelector('.contact-container__header');
     this.links = document.querySelectorAll('.contact-container__methods__wrapper');
   }
 
-  populateContent() {
-
-    const aboutContent = contentManager.About[0];
-    this.header.innerHTML = aboutContent.title;
-    this.introText.innerHTML = aboutContent.introText;
-    this.contactHeader.innerHTML = aboutContent.contactHeader;
-    this.links.forEach((link, i) => {
-
-      const anchor = link.getElementsByTagName('a')[0];
-      anchor.innerHTML = aboutContent.contactMethods[i].type;
-      anchor.href = aboutContent.contactMethods[i].url;
-
-    });
-
-  }
-
   initEvents() {
+
+    emitter.on(events.LOADING_SCREEN_HIDDEN, () => {
+      this.populateContent();
+      this.initDomGL();
+      this.playEnterAnim();
+    });
 
     this.links.forEach((link) => {
 
@@ -79,6 +73,33 @@ export default class About extends View {
 
       link.removeEventListener('mouseenter', this.onLinkHover);
       link.removeEventListener('mouseleave', this.onLinkLeave);
+
+    });
+
+  }
+
+  initDomGL = () => {
+
+    const params = {
+      referenceElement: this.domGLReferenceElement, 
+      media: contentManager.AboutMedia[0]
+    }
+
+    super.initDomGL({view: "ABOUT", params});
+
+  }
+
+  populateContent() {
+
+    const aboutContent = contentManager.About[0];
+    this.header.innerHTML = aboutContent.title;
+    this.introText.innerHTML = aboutContent.introText;
+    this.contactHeader.innerHTML = aboutContent.contactHeader;
+    this.links.forEach((link, i) => {
+
+      const anchor = link.getElementsByTagName('a')[0];
+      anchor.innerHTML = aboutContent.contactMethods[i].type;
+      anchor.href = aboutContent.contactMethods[i].url;
 
     });
 
@@ -104,6 +125,9 @@ export default class About extends View {
 
     const enterAnim = gsap.timeline(
       {
+      onStart: () => {
+        emitter.emit(events.REVEAL_QUADS);
+      },
       onComplete: () => {
         this.links.forEach((link) => {
           link.children[0].classList.add('link--enabled');

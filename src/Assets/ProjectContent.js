@@ -10,7 +10,7 @@ export const ProjectContent = [
         year: 2019,
         link: 'https://douglilliequist.github.io/SpiritualBeings/',
         media: {
-            videoSrc: projectVideos.spiritualBeings10241024,
+            videoSrc: projectVideos.spiritualBeings512512,
             imageSrc: null,
             brightVal: 1.0
         }
@@ -24,7 +24,7 @@ export const ProjectContent = [
         year: 2019,
         link: '',
         media: {
-            videoSrc: projectVideos.sken10241024,
+            videoSrc: projectVideos.sken512512,
             imageSrc: null,
             brightVal: 0.0
         }
@@ -40,7 +40,7 @@ export const ProjectContent = [
         role: 'Developer',
         link: 'https://yipp.nl/projects/61-lets_get_physical/',
         media: {
-            videoSrc: projectVideos.letsgetphysical10241024,
+            videoSrc: projectVideos.letsgetphysical512512,
             imageSrc: null,
             brightVal: 0.0
         }
@@ -53,7 +53,7 @@ export const ProjectContent = [
         year: 2018,
         link: 'https://douglilliequist.github.io/SKEN/',
         media: {
-            videoSrc: projectVideos.sken10241024,
+            videoSrc: projectVideos.sken512512,
             imageSrc: null, 
             brightVal: 0.0
         }
@@ -66,7 +66,7 @@ export const ProjectContent = [
         year: 2018,
         link: 'https://douglilliequist.github.io/needAHand/',
         media: {
-            videoSrc: projectVideos.needahand10241024,
+            videoSrc: projectVideos.needahand512512,
             imageSrc: null,
             brightVal: 1.0
         }
@@ -80,7 +80,7 @@ export const ProjectContent = [
         role: 'Developer, Designer',
         link: '',
         media: {
-            videoSrc:  projectVideos.gnsw10241024,
+            videoSrc:  projectVideos.gnsw512512,
             imageSrc: null,
             brightVal: 0.0
         }

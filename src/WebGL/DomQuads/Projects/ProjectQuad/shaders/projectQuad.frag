@@ -38,9 +38,9 @@ void main() {
     vec2 offsetX = (vec2(inputPhase, 0.0)) * OFFSETAMOUNTX;
     vec2 offsetY = (vec2(0.0, inputPhase)) * OFFSETAMOUNTY;
 
-    float r = texture2D(_Image, uv - offsetX - (flow * 0.01)).x;
-    float g = texture2D(_Image, uv + offsetY + (flow * 0.001)).y;
-    float b = texture2D(_Image, uv + offsetX + (flow * 0.01)).z;
+    float r = texture2D(_Image, uv - offsetX - (flow * 0.02)).x;
+    float g = texture2D(_Image, uv + offsetY + (flow * 0.002)).y;
+    float b = texture2D(_Image, uv + offsetX + (flow * 0.02)).z;
 
     float len = (vMvPos.z * vMvPos.z);
     float idleAlpha = smoothstep(MINVIEWDIST, MAXVIEWDIST, len);

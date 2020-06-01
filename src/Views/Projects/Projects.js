@@ -1,9 +1,9 @@
 import View from "../View.js";
 import contentManager from '../../ContentManager';
 
-import eventEmitter from '../../EventEmitter';
+import eventEmitter from '../../EventEmitter.js';
 const emitter = eventEmitter.emitter;
-import events from '../../../utils/events';
+import events from '../../../utils/events.js';
 
 import {gsap} from 'gsap';
 
@@ -15,14 +15,21 @@ export default class Projects extends View {
     super.onEnter();
     this.initReferences();
     this.initEvents();
-    emitter.emit(events.INIT_DOMGL, {view: "PROJECTS", params: {referenceElement: this.domGLReferenceElement, media: contentManager.ProjectMedia, getFirstQuad: true}});
+
+    if(window.contentLoaded) {
+      this.initDomGL();
+    }
 
   }
 
   onEnterCompleted() {
     super.onEnterCompleted();
-    emitter.emit(events.SHOW_CLICKDRAG_CTA);
-    this.playEnterAnim();
+
+    if(window.contentLoaded) {
+      emitter.emit(events.SHOW_CLICKDRAG_CTA);
+      this.playEnterAnim();
+    }
+
   }
 
   onLeave() {
@@ -51,10 +58,17 @@ export default class Projects extends View {
     this.enableUserInteraction = true;
     this.inScrollMode = false;
     this.inTraverseMode = false;
-
-    emitter.on(events.LOAD_PROJECT_CONTENT, this.loadProjectContent);
+    
+    // emitter.on(events.CONTENT_LOADED,this.initDomGL);
+    emitter.on(events.LOADING_SCREEN_HIDDEN, () => { //RENAME FUNCTION
+      this.initDomGL();
+      this.playEnterAnim();
+    });
+    
+    emitter.on(events.LOAD_PROJECT_CONTENT, this.populateContent);
     emitter.on(events.MOUSE_DOWN, this.enableScrollMode);
     emitter.on(events.MOUSE_UP, this.disableScrollMode);
+
     this.projectLink.addEventListener('mouseenter', () => {
       this.updateLinkHoverState({hovering: true});
     });
@@ -68,7 +82,9 @@ export default class Projects extends View {
 
     this.enableUserInteraction = false;
 
-    emitter.off(events.LOAD_PROJECT_CONTENT, this.loadProjectContent);
+    emitter.off(events.CONTENT_LOADED, this.initDomGL);
+    emitter.off(events.LOADING_SCREEN_HIDDEN, this.playEnterAnim);
+    emitter.off(events.LOAD_PROJECT_CONTENT, this.populateContent);
     emitter.off(events.MOUSE_DOWN, this.enableScrollMode);
     emitter.off(events.MOUSE_UP, this.disableScrollMode);
     
@@ -81,8 +97,19 @@ export default class Projects extends View {
 
   }
 
-  //inject project content to relevant html elements
-  loadProjectContent = (contentIndex) => {
+  initDomGL = () => {
+
+    const params = {
+      referenceElement: this.domGLReferenceElement,
+      media: contentManager.ProjectMedia, 
+      getFirstQuad: true
+    }
+
+    super.initDomGL({view: "PROJECTS", params});
+
+  }
+
+  populateContent = (contentIndex) => {
 
     const projectContent = contentManager.Projects[contentIndex];
     document.getElementById('project_title').innerHTML = projectContent.title;
@@ -119,10 +146,15 @@ export default class Projects extends View {
 
   }
 
-  playEnterAnim() {
+  playEnterAnim = () => {
 
     if(this.enterAnim) this.enterAnim.kill();
-    this.enterAnim = gsap.timeline();
+    this.enterAnim = gsap.timeline({
+      onStart: () => {
+        emitter.emit(events.REVEAL_QUADS);
+      }
+    });
+
     const ease = "sine.inOut";
     const startX = 20;
     const dur = 0.85
@@ -166,7 +198,7 @@ export default class Projects extends View {
 
   }
 
-  playLeaveAnim() {
+  playLeaveAnim = () => {
 
     if(this.leaveAnim) this.leaveAnim.kill();
     this.leaveAnim = gsap.timeline();
