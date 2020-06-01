@@ -85,9 +85,13 @@ class ContentManager {
             video.loop = true;
             
             video.currentTime = Math.random() + 0.001;
-            
-            resolve(video);
 
+            video.addEventListener('loadeddata', () => {
+                if(video.readyState >= video.HAVE_CURRENT_DATA) {
+                    resolve(video);
+                }
+            })
+            
         });
     
     }
