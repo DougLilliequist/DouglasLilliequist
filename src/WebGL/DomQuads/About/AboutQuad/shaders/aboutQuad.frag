@@ -19,11 +19,14 @@ void main() {
     uv += 0.5;
 
     vec3 flow = texture2D(_FlowMap, vClipPos).xyz;
+
+    uv -= flow.xy * 0.8;
+
     vec2 offSet = flow.xy;
 
-    float r = texture2D(_Image, uv + offSet * 0.008).x;
+    float r = texture2D(_Image, uv + offSet * 0.01).x;
     float g = texture2D(_Image, uv + offSet * 0.001).y;
-    float b = texture2D(_Image, uv - offSet * 0.008).z;
+    float b = texture2D(_Image, uv - offSet * 0.01).z;
 
     vec3 outPutCol = vec3(r,g,b);
 

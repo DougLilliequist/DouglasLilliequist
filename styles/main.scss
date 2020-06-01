@@ -35,9 +35,61 @@ body {
 
 }
 
+.loader {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    pointer-events: none;
+    background-color: rgba($color: #e6e6e6, $alpha: 1.0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &__clip-section {
+        overflow: hidden;
+    }
+
+    &__copy-container {
+        
+        display: flex;
+        align-items: baseline;
+        // padding: 0;
+        // text-align: justify;
+
+    }
+
+    &__title {
+        margin-right: 0.5em;
+        display: inline-block;
+
+        h1 {
+            @include fluid-type($minWidth, $maxWidth, $minFontSize__loading-title, $maxFontSize__loading-title);
+            margin: 0;
+        }
+
+    }
+
+    &__sub-title {
+        margin-left: 0.5em;
+        display: inline-block;
+
+        h3 {
+            @include fluid-type($minWidth, $maxWidth, $minFontSize__loading-sub-title, $maxFontSize__loading-sub-title);
+            margin: 0;
+        }
+
+    }
+
+}
+
 .navigation {
 
     position: absolute;
+    z-index: 2;
     right: 1%;
     top: 2%;
     writing-mode: vertical-lr;

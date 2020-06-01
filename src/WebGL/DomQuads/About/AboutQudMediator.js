@@ -18,10 +18,12 @@ export default class AboutQuadMediator extends DomquadMediator {
     }
 
     initEvents = () => {
+        emitter.on(events.REVEAL_QUADS, this.revealQuad);
         emitter.on(events.PREPARE_UNMOUNT, this.animateOutQuads);
     }
 
     removeEvents = () => {
+        emitter.off(events.REVEAL_QUADS, this.revealQuad);
         emitter.off(events.PREPARE_UNMOUNT, this.animateOutQuads);
     }
 
@@ -46,14 +48,10 @@ export default class AboutQuadMediator extends DomquadMediator {
 
         this.quad.visible = true;
 
-        this.quad.updateDimensions({
-            domElement: this.referenceElement,
-            camera: this.camera
-        });
+        this.calculateDomTransforms();
+    }
 
-        this.quad.calcDomToWebGLPos({
-            domElement: this.referenceElement,
-        });
+    revealQuad = () => {
 
         this.quad.reveal();
 
@@ -68,6 +66,19 @@ export default class AboutQuadMediator extends DomquadMediator {
     update({flowMap}) {
         
         this.quad.update(flowMap);
+
+    }
+
+    calculateDomTransforms() {
+
+        this.quad.updateDimensions({
+            domElement: this.referenceElement,
+            camera: this.camera
+        });
+
+        this.quad.calcDomToWebGLPos({
+            domElement: this.referenceElement,
+        });
 
     }
 

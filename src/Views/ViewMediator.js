@@ -14,5 +14,6 @@ export default class ViewMediator extends Highway.Core {
     };
 
     super(highwayArgs);
+    
   }
 }

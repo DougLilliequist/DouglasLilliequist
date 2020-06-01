@@ -5,6 +5,7 @@ const events = {
     INIT_DOMGL_ABOUT: 'init_DOMGL_about',
     QUADS_LOADED: 'quads_loaded',
     SWAP_QUAD: 'swap_quad',
+    REVEAL_QUADS: 'reveal_quads',
 
     PREPARE_UNMOUNT: 'prepare_unmount',
     REMOVE_DOMGL: 'remove_DOMGL',
@@ -40,6 +41,9 @@ const events = {
 
     SHOW_CLICKDRAG_CTA: 'show_click-drag_cta',
     HIDE_CLICKDRAG_CTA: 'hide_click-drag_cta',
+
+    CONTENT_LOADED: 'content_loaded',
+    LOADING_SCREEN_HIDDEN: 'loading_screen_hidden',
     
     RESIZE: 'resize'
 
