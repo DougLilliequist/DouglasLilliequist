@@ -8,7 +8,7 @@ import events from '../../../utils/events.js';
 import {gsap} from 'gsap';
 
 
-export default class Projects extends View {
+export default class Work extends View {
 
   onEnter() {
   
@@ -60,7 +60,7 @@ export default class Projects extends View {
     this.inTraverseMode = false;
     
     // emitter.on(events.CONTENT_LOADED,this.initDomGL);
-    emitter.on(events.LOADING_SCREEN_HIDDEN, () => { //RENAME FUNCTION
+    emitter.on(events.LOADING_ANIM_COMPLETED, () => { //RENAME FUNCTION
       this.initDomGL();
       this.playEnterAnim();
     });
@@ -83,7 +83,7 @@ export default class Projects extends View {
     this.enableUserInteraction = false;
 
     emitter.off(events.CONTENT_LOADED, this.initDomGL);
-    emitter.off(events.LOADING_SCREEN_HIDDEN, this.playEnterAnim);
+    emitter.off(events.LOADING_ANIM_COMPLETED, this.playEnterAnim);
     emitter.off(events.LOAD_PROJECT_CONTENT, this.populateContent);
     emitter.off(events.MOUSE_DOWN, this.enableScrollMode);
     emitter.off(events.MOUSE_UP, this.disableScrollMode);

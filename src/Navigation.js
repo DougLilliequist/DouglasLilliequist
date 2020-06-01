@@ -2,7 +2,7 @@ import eventEmitter from './EventEmitter.js';
 const emitter = eventEmitter.emitter;
 import events from '../utils/events';
 
-class Navigation {
+export default class Navigation {
 
     constructor() {
 
@@ -11,6 +11,8 @@ class Navigation {
         this.links = this.el.querySelectorAll('.link');
 
         this.initEvents();
+
+        this.updateSelectionState();
 
     }
 
@@ -23,8 +25,28 @@ class Navigation {
             link.addEventListener('mouseenter', this.onLinkHover);
             link.addEventListener('mouseleave', this.onLinkLeave);
 
-        })
+        });
+
+        window.viewMediator.on('NAVIGATE_IN', ({to, location}) => {
+
+            this.updateSelectionState(location);
+
+        });
         
+    }
+
+    updateSelectionState(location = null) {
+
+        this.links.forEach((link) => {
+
+            link.classList.remove('link--active');
+
+            const currentLocation = location ? location.href : window.location.href;
+
+            if(link.href === currentLocation) link.classList.add('link--active');
+
+        })
+
     }
 
     onLinkHover = () => {
@@ -42,6 +64,3 @@ class Navigation {
     }
 
 }
-
-const navigation = new Navigation();
-export default navigation;

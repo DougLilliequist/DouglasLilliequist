@@ -50,7 +50,7 @@ export default class LoadingScreen {
             delay: 2.0,
             onComplete: () => {
                 this.el.style.display = "none";
-                emitter.emit(events.LOADING_SCREEN_HIDDEN);
+                emitter.emit(events.LOADING_ANIM_COMPLETED);
             }
         });
 

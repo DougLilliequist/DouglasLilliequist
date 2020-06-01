@@ -52,7 +52,7 @@ export default class About extends View {
 
   initEvents() {
 
-    emitter.on(events.LOADING_SCREEN_HIDDEN, () => {
+    emitter.on(events.LOADING_ANIM_COMPLETED, () => {
       this.populateContent();
       this.initDomGL();
       this.playEnterAnim();
@@ -74,6 +74,12 @@ export default class About extends View {
       link.removeEventListener('mouseenter', this.onLinkHover);
       link.removeEventListener('mouseleave', this.onLinkLeave);
 
+    });
+
+    emitter.off(events.LOADING_ANIM_COMPLETED, () => {
+      this.populateContent();
+      this.initDomGL();
+      this.playEnterAnim();
     });
 
   }

@@ -10,8 +10,8 @@
 <body>
     <div class = "navigation">
         <ul class = "navigation__links">
-            <!-- <li><a class = "navigation__links link" href = "./index.html">home</a></li> -->
-            <li><a class = "navigation__links link" href = "./Projects.html">projects</a></li>
+            <li><a class = "navigation__links link" href = "./
+                ">work</a></li>
             <li><a class = "navigation__links link" href = "./About.html">about</a></li>
         </ul>
     </div>
@@ -28,12 +28,29 @@
     </div>
     </div>
     <main data-router-wrapper>
-        <article data-router-view="home">
-            <div class = "main-container"></div>                
+        <article data-router-view="work">
+                <div class = "project-container">
+                    <div class = "title-container">
+                        <div class = "title-container__title">
+                            <h1 id = "project_title"></h1>
+                        </div>
+                        <div class = "project-link">
+                            <a target = "_blank" id = "project_link"></a>
+                        </div>
+                    </div>
+                    <div class = "project-video"></div>         
+                    <div class = "content-container">
+                        <div class = "content-container__content">
+                                <p class = "project-info" id = "project_year"></p>
+                                <p class = "project-info" id = "project_type"></p>
+                                <h3 class = "project-info" id = "project_description"></h3>
+                                <p class = "project-info" id = "project_tech"></p>
+                        </div>
+                    </div>
+                </div>
         </article>
     </main>
     <canvas class = "main-cursor"></canvas>
-    <!-- <div class = "canvas-container"></div> -->
     <script src = "../index.js"></script>
 </body>
 </html>

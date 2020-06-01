@@ -20,9 +20,6 @@ export default class Cursor {
         
         this.height = this.canvas.height = window.innerHeight * this.dpr;
 
-        // this.canvas.width *= this.dpr;
-        // this.canvas.height *= this.dpr;
-
         this.ctx = this.canvas.getContext('2d');
 
         this.initCursor();
