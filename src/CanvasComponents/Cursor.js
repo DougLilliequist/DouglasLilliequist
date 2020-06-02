@@ -12,7 +12,7 @@ export default class Cursor {
 
     constructor() {
 
-        this.dpr = window.devicePixelRatio;
+        this.dpr = Math.min(1.5, window.devicePixelRatio);
 
         this.canvas = document.querySelector('.main-cursor');
 

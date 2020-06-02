@@ -98,18 +98,22 @@
             color: #000000;
             @include fluid-type($minWidth, $maxWidth, $minFontSize__about__links-header, $maxFontSize__about__links-header);
             pointer-events: none;
+            margin: 0;
 
         }
         // top: 20%;
         &__methods {
             display: flex;
-            flex-direction: column;
+            // flex-direction: column;
+            // justify-content: space-evenly;
+            margin-top: 1em;
 
             &__wrapper {
 
                 display: inline-block;
                 margin-bottom: 0.2em;
                 will-change: transform, opacity;
+                margin-right: 1.5em;
 
             }
 

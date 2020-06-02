@@ -119,6 +119,7 @@ class ContentManager {
         
         this.progressCounter++;
         this.progress = this.progressCounter / this.contentCount;
+        emitter.emit(events.UPDATE_PROGRESS, this.progress);
         if(this.progress === 1.0) {
             window.contentLoaded = true;
             emitter.emit(events.CONTENT_LOADED);

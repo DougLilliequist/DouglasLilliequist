@@ -43,6 +43,7 @@ const events = {
     HIDE_CLICKDRAG_CTA: 'hide_click-drag_cta',
 
     CONTENT_LOADED: 'content_loaded',
+    UPDATE_PROGRESS: 'update_progress',
     LOADING_ANIM_COMPLETED: 'loading_anim_completed',
     
     RESIZE: 'resize'

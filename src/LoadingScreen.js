@@ -14,6 +14,12 @@ export default class LoadingScreen {
         this.title = document.body.querySelector('.loader__title');
         this.subTitle = document.body.querySelector('.loader__sub-title');
 
+        this.alpha = 0;
+        this.targetAlpha = 0;
+
+        this.title.style.opacity = 0;
+        this.subTitle.style.opacity = 0;
+
         this.title.firstElementChild.innerHTML = "Douglas Lilliequist"
         this.subTitle.firstElementChild.innerHTML = "Creative Technologist"
         
@@ -25,6 +31,7 @@ export default class LoadingScreen {
 
     initEvents() {
 
+        emitter.on(events.UPDATE_PROGRESS, this.updateProgressAnim);
         emitter.on(events.CONTENT_LOADED, this.hide);
 
     }
@@ -64,12 +71,29 @@ export default class LoadingScreen {
         hideTl.to(this.el, {
 
             duration: 0.5,
-            // opacity: 0.0001,
             ease: "power2.inOut"
 
         });
 
     }
 
+    updateProgressAnim = (phase) => {
+
+        emitter.on(events.UPDATE, this.update);
+        this.targetAlpha = phase;
+        gsap.delayedCall(0.3, () => {
+            emitter.off(events.UPDATE, this.update);
+        })
+
+    }
+
+    update = () => {
+
+        this.alpha += (this.targetAlpha - this.alpha) * 0.5;
+
+        this.title.style.opacity = this.alpha;
+        this.subTitle.style.opacity = this.alpha;
+
+    }
 
 }

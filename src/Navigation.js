@@ -10,9 +10,13 @@ export default class Navigation {
         
         this.links = this.el.querySelectorAll('.link');
 
+        this.active = false;
+
         this.initEvents();
 
         this.updateSelectionState();
+
+        this.updateActiveState();
 
     }
 
@@ -32,6 +36,8 @@ export default class Navigation {
             this.updateSelectionState(location);
 
         });
+
+        emitter.on(events.LOADING_ANIM_COMPLETED, this.enableLinks);
         
     }
 
@@ -46,6 +52,27 @@ export default class Navigation {
             if(link.href === currentLocation) link.classList.add('link--active');
 
         })
+
+    }
+
+    enableLinks = () => {
+
+        this.active = true;
+        this.updateActiveState();
+
+    }
+
+    updateActiveState = () => {
+
+        this.links.forEach((link) => {
+
+            if(this.active) {
+                link.classList.remove('link--disabled');
+            } else {
+                link.classList.add('link--disabled');
+            }
+
+        });
 
     }
 
