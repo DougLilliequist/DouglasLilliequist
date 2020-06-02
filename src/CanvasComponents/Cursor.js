@@ -379,9 +379,11 @@ export default class Cursor {
 
     onResize = () => {
 
+        console.log('resizing')
         //consider setting this on a timeout event?
         this.width = this.canvas.width = window.innerWidth * this.dpr;
         this.height = this.canvas.height = window.innerHeight * this.dpr;
+        this.ctx.scale(this.dpr, this.dpr);
 
     }
 
