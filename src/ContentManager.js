@@ -33,27 +33,20 @@ class ContentManager {
 
             if(c.media.videoSrc) {
 
-                fetch(c.media.videoSrc).then((res) => {
-                    if(res.status === 200) {
-                        this.loadVideo({src: res.url}).then((video) => {
-                            c.media.video = video;
-                            this.updateProgress();
-                        });
-                    }
-                });
+                    this.loadVideo({src: c.media.videoSrc}).then((video) => {
+                        c.media.video = video;
+                        this.updateProgress();
+                    });
             }
 
             if(c.media.imageSrc) {
 
-                fetch(c.media.imageSrc).then((res) => {
 
-                    if(res.status === 200) {
-                        this.loadImage({src: res.url}).then((image) => {
-                            c.media.image = image;
-                            this.updateProgress();
-                        });
-                    }
+                this.loadImage({src: c.media.imageSrc}).then((image) => {
+                    c.media.image = image;
+                    this.updateProgress();
                 });
+
             }
 
             return c;
@@ -68,9 +61,9 @@ class ContentManager {
 
             const video = document.createElement('video');
         
-            video.width = 1024;
+            video.width = 512;
             
-            video.height = 1024;
+            video.height = 512;
             
             video.crossOrigin = "*";
             
@@ -78,19 +71,18 @@ class ContentManager {
             
             video.playsinline = true;
             
-            video.src = src;
-            
             video.muted = true;
             
             video.loop = true;
             
-            video.currentTime = Math.random() + 0.001;
-
             video.addEventListener('loadeddata', () => {
                 if(video.readyState >= video.HAVE_CURRENT_DATA) {
+                    video.currentTime = Math.random() + 0.001;
                     resolve(video);
                 }
-            })
+            });
+                
+            video.src = src;
             
         });
     
@@ -98,18 +90,17 @@ class ContentManager {
 
     loadImage({src}) {
 
-        // const img = document.createElement('img');
         return new Promise((resolve, reject) => {
             
             const img = new Image();
         
             img.crossOrigin = "*";
             
-            img.src = src;
-            
             img.onload = () => {
-                resolve(img);
+                resolve(img)
             }
+
+            img.src = src;
 
         });
 
