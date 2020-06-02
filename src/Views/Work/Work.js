@@ -59,9 +59,8 @@ export default class Work extends View {
     this.inScrollMode = false;
     this.inTraverseMode = false;
     
-    // emitter.on(events.CONTENT_LOADED,this.initDomGL);
+    emitter.on(events.CONTENT_LOADED,this.initDomGL);
     emitter.on(events.LOADING_ANIM_COMPLETED, () => { //RENAME FUNCTION
-      this.initDomGL();
       this.playEnterAnim();
       emitter.emit(events.SHOW_CLICKDRAG_CTA);
     });

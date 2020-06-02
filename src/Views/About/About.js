@@ -52,9 +52,10 @@ export default class About extends View {
 
   initEvents() {
 
+    emitter.on(events.CONTENT_LOADED, this.initDomGL);
+
     emitter.on(events.LOADING_ANIM_COMPLETED, () => {
       this.populateContent();
-      this.initDomGL();
       this.playEnterAnim();
     });
 

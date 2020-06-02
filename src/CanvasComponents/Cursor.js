@@ -345,8 +345,7 @@ export default class Cursor {
 
         this.ctx.clearRect(0, 0, this.width, this.height);
         this.drawCursorCircle();
-        // if(this.drawMessage) this.drawCTAText();
-        this.drawCTAText();
+        if(this.drawMessage) this.drawCTAText();
         if(this.inScrollMode) this.drawCursorArrows();
         
     }
@@ -379,8 +378,6 @@ export default class Cursor {
 
     onResize = () => {
 
-        console.log('resizing')
-        //consider setting this on a timeout event?
         this.width = this.canvas.width = window.innerWidth * this.dpr;
         this.height = this.canvas.height = window.innerHeight * this.dpr;
         this.ctx.scale(this.dpr, this.dpr);
