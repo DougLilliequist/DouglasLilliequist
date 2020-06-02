@@ -6429,20 +6429,20 @@ module.exports = "/internshipproj512512.9d95e830.mp4";
 module.exports = "/letsgetphysical512512.bc8541ae.mp4";
 },{}],"../Assets/video/needahand512512.mp4":[function(require,module,exports) {
 module.exports = "/needahand512512.ad60bfcb.mp4";
-},{}],"../Assets/video/spiritualBeings512512.mp4":[function(require,module,exports) {
-module.exports = "/spiritualBeings512512.321b670f.mp4";
 },{}],"../Assets/video/sken512512.mp4":[function(require,module,exports) {
 module.exports = "/sken512512.2037e4ee.mp4";
+},{}],"../Assets/video/spiritualBeings512512.mp4":[function(require,module,exports) {
+module.exports = "/spiritualBeings512512.321b670f.mp4";
 },{}],"../Assets/video/*.mp4":[function(require,module,exports) {
 module.exports = {
   "gnsw512512": require("./gnsw512512.mp4"),
   "internshipproj512512": require("./internshipproj512512.mp4"),
   "letsgetphysical512512": require("./letsgetphysical512512.mp4"),
   "needahand512512": require("./needahand512512.mp4"),
-  "spiritualBeings512512": require("./spiritualBeings512512.mp4"),
-  "sken512512": require("./sken512512.mp4")
+  "sken512512": require("./sken512512.mp4"),
+  "spiritualBeings512512": require("./spiritualBeings512512.mp4")
 };
-},{"./gnsw512512.mp4":"../Assets/video/gnsw512512.mp4","./internshipproj512512.mp4":"../Assets/video/internshipproj512512.mp4","./letsgetphysical512512.mp4":"../Assets/video/letsgetphysical512512.mp4","./needahand512512.mp4":"../Assets/video/needahand512512.mp4","./spiritualBeings512512.mp4":"../Assets/video/spiritualBeings512512.mp4","./sken512512.mp4":"../Assets/video/sken512512.mp4"}],"../Assets/ProjectContent.js":[function(require,module,exports) {
+},{"./gnsw512512.mp4":"../Assets/video/gnsw512512.mp4","./internshipproj512512.mp4":"../Assets/video/internshipproj512512.mp4","./letsgetphysical512512.mp4":"../Assets/video/letsgetphysical512512.mp4","./needahand512512.mp4":"../Assets/video/needahand512512.mp4","./sken512512.mp4":"../Assets/video/sken512512.mp4","./spiritualBeings512512.mp4":"../Assets/video/spiritualBeings512512.mp4"}],"../Assets/ProjectContent.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6636,30 +6636,22 @@ var ContentManager = /*#__PURE__*/function () {
       var content = _ref.content;
       return content.map(function (c) {
         if (c.media.videoSrc) {
-          fetch(c.media.videoSrc).then(function (res) {
-            if (res.status === 200) {
-              _this.loadVideo({
-                src: res.url
-              }).then(function (video) {
-                c.media.video = video;
+          _this.loadVideo({
+            src: c.media.videoSrc
+          }).then(function (video) {
+            c.media.video = video;
 
-                _this.updateProgress();
-              });
-            }
+            _this.updateProgress();
           });
         }
 
         if (c.media.imageSrc) {
-          fetch(c.media.imageSrc).then(function (res) {
-            if (res.status === 200) {
-              _this.loadImage({
-                src: res.url
-              }).then(function (image) {
-                c.media.image = image;
+          _this.loadImage({
+            src: c.media.imageSrc
+          }).then(function (image) {
+            c.media.image = image;
 
-                _this.updateProgress();
-              });
-            }
+            _this.updateProgress();
           });
         }
 
@@ -6677,30 +6669,30 @@ var ContentManager = /*#__PURE__*/function () {
         video.crossOrigin = "*";
         video.setAttribute('webkit-playsinline', true);
         video.playsinline = true;
-        video.src = src;
         video.muted = true;
         video.loop = true;
-        video.currentTime = Math.random() + 0.001;
         video.addEventListener('loadeddata', function () {
           if (video.readyState >= video.HAVE_CURRENT_DATA) {
+            video.currentTime = Math.random() + 0.001;
             resolve(video);
           }
         });
+        video.src = src;
       });
     }
   }, {
     key: "loadImage",
     value: function loadImage(_ref3) {
       var src = _ref3.src;
-      // const img = document.createElement('img');
       return new Promise(function (resolve, reject) {
         var img = new Image();
         img.crossOrigin = "*";
-        img.src = src;
 
         img.onload = function () {
           resolve(img);
         };
+
+        img.src = src;
       });
     }
   }, {
@@ -28160,7 +28152,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "192.168.1.109" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60539" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61674" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
