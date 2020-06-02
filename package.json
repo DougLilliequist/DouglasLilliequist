@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "parcel src/Views/index.html --host 192.168.1.109 --open",
-    "build": "parcel build src/Views/index.html --public-url ./DouglasLilliequist/",
+    "build": "parcel build src/Views/index.html --public-url ./",
     "deploy": "gh-pages -d dist"
   },
   "repository": {

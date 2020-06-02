@@ -22,6 +22,8 @@ export default class Cursor {
 
         this.ctx = this.canvas.getContext('2d');
 
+        this.ctx.scale(this.dpr, this.dpr);
+
         this.initCursor();
 
         this.initCursorArrows();
@@ -127,7 +129,7 @@ export default class Cursor {
     }
 
     createCanvasText({word, fontSize}) {
-
+        
         this.ctx.font = `${fontSize}px Muli`;
         const messageBounds = this.ctx.measureText(word);
         return {word, width: messageBounds.width, fontSize};
@@ -343,7 +345,8 @@ export default class Cursor {
 
         this.ctx.clearRect(0, 0, this.width, this.height);
         this.drawCursorCircle();
-        if(this.drawMessage) this.drawCTAText();
+        // if(this.drawMessage) this.drawCTAText();
+        this.drawCTAText();
         if(this.inScrollMode) this.drawCursorArrows();
         
     }

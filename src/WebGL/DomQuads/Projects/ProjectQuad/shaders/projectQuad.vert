@@ -25,7 +25,7 @@ varying vec2 vUv;
 varying vec2 vClipPos;
 varying float vDist;
 
-#define DISTORTSTR 1.2
+#define DISTORTSTR 0.7
 #define SCROLLDISTORTSTR 0.5
 #define DISPLACEMENTSTR 0.2
 #define HEIGHTMAPSTR 0.4

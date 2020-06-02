@@ -63,6 +63,7 @@ export default class Work extends View {
     emitter.on(events.LOADING_ANIM_COMPLETED, () => { //RENAME FUNCTION
       this.initDomGL();
       this.playEnterAnim();
+      emitter.emit(events.SHOW_CLICKDRAG_CTA);
     });
     
     emitter.on(events.LOAD_PROJECT_CONTENT, this.populateContent);

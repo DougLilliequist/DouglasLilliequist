@@ -112,7 +112,7 @@ body {
             margin-bottom: 2em;
             position: relative;
             font-weight: $semi-bold;
-            font-size: 1.0em;
+            @include fluid-type($minWidth, $maxWidth, $minFontSize__navigation, $maxFontSize__navigation);
             opacity: 0.5;
             transition: opacity 0.5s;
             will-change: opacity;
