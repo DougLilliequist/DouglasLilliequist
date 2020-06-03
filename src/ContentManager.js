@@ -96,9 +96,9 @@ class ContentManager {
         
             img.crossOrigin = "*";
             
-            img.onload = () => {
+            img.addEventListener('load' , () => {
                 resolve(img)
-            }
+            });
 
             img.src = src;
 
