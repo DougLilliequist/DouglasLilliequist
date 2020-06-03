@@ -1,5 +1,7 @@
 import projectVideos from '../Assets/video/*.mp4'
 
+console.log(projectVideos)
+
 export const ProjectContent = [
 
     {
@@ -39,7 +41,7 @@ export const ProjectContent = [
         year: 2020,
         link: 'https://douglilliequist.github.io/CrashingDawn/',
         media: {
-            videoSrc: projectVideos.sken512512,
+            videoSrc: projectVideos.crashingdawn512512,
             imageSrc: null,
             brightVal: 1.0
         }

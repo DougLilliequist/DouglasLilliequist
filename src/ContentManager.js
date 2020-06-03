@@ -66,6 +66,13 @@ class ContentManager {
             video.height = 512;
             
             video.crossOrigin = "*";
+
+            video.addEventListener('loadeddata', () => {
+                if(video.readyState >= video.HAVE_CURRENT_DATA) {
+                    video.currentTime = Math.random() + 0.001;
+                    resolve(video);
+                }
+            });
             
             video.setAttribute('webkit-playsinline', true);
             
@@ -74,13 +81,6 @@ class ContentManager {
             video.muted = true;
             
             video.loop = true;
-            
-            video.addEventListener('loadeddata', () => {
-                if(video.readyState >= video.HAVE_CURRENT_DATA) {
-                    video.currentTime = Math.random() + 0.001;
-                    resolve(video);
-                }
-            });
                 
             video.src = src;
             

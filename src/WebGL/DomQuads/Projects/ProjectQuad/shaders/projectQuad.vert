@@ -50,19 +50,14 @@ void main() {
 
     mat4 modelViewProjection = projectionMatrix * modelViewMatrix;
 
-    if(_InView) {
+    vec4 clipPos = modelViewProjection * vec4(pos, 1.0);
+    clipPos.xyz /= clipPos.w;
+    clipPos.xy = clipPos.xy * 0.5 + 0.5;
 
-        vec4 clipPos = modelViewProjection * vec4(pos, 1.0);
-        clipPos.xyz /= clipPos.w;
-        clipPos.xy = clipPos.xy * 0.5 + 0.5;
-
-        vec3 distort = texture2D(_FlowMap, clipPos.xy).xyz * DISTORTSTR;
-        heightMapDistort = mix(heightMapDistort, 1.0 - heightMapDistort, _FlipFlowMapForce);
-        pos += distort * max(0.2, heightMapDistort) * _FlowMapPhase * distort.z;
-        // pos += distort * _FlowMapPhase * heightMapDistort * distort.z;
-        vClipPos = clipPos.xy;
-
-    }
+    vec3 distort = texture2D(_FlowMap, clipPos.xy).xyz * DISTORTSTR;
+    heightMapDistort = mix(heightMapDistort, 1.0 - heightMapDistort, _FlipFlowMapForce);
+    pos += distort * max(0.2, heightMapDistort) * _FlowMapPhase * distort.z * mix(0.0, 1.0, _InView ? 1.0 : 0.0);
+    vClipPos = clipPos.xy;
 
     gl_Position = modelViewProjection * vec4(pos, 1.0);
     vUv = uv;

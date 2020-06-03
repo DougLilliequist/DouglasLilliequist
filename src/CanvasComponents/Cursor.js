@@ -138,6 +138,7 @@ export default class Cursor {
 
     initEvents() {
 
+        emitter.on(events.LOADING_ANIM_COMPLETED, this.reveal)
         emitter.on(events.SHOW_CLICKDRAG_CTA, this.showCTAText);
         emitter.on(events.HIDE_CLICKDRAG_CTA, this.hideCTAText);
         emitter.on(events.MOUSE_MOVE, this.onMouseMove);
@@ -153,7 +154,8 @@ export default class Cursor {
     onMouseDown = () => {
 
         this.inScrollMode = true;
-        this.canvas.style.zIndex = "100"; //prevent click + drag issues in safari
+        this.canvas.style.zIndex = 10; //prevent click + drag issues in safari
+        console.log(this.canvas.style.zIndex)
         this.prevPosition.x = this.target.x;
         this.prevPosition.y = this.target.y;
         this.animateScrollMode();
@@ -178,7 +180,7 @@ export default class Cursor {
 
     onMouseUp = () => {
 
-        this.canvas.style.zIndex = "0"; //restore normal browser behaviour
+        this.canvas.style.zIndex = 0; //restore normal browser behaviour
         this.restore();
 
     }
@@ -239,6 +241,21 @@ export default class Cursor {
             y: 4.0,
             ease: "power1.out"
         }, "<");
+
+    }
+
+    reveal = () => {
+
+        const revealAnim = gsap.timeline({});
+        revealAnim.fromTo(this, {
+            radius: 0,
+            ctaTextAlpha: 0
+        }, {
+            duration: 0.2,
+            radius: this.defaultRadius,
+            ctaTextAlpha: 1.0,
+            ease: "circ.out"
+        });
 
     }
 

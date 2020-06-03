@@ -148,7 +148,8 @@ export default class Work extends View {
 
   playEnterAnim = () => {
 
-    if(this.enterAnim) this.enterAnim.kill();
+    this.killActiveAnimations();
+
     this.enterAnim = gsap.timeline({
       onStart: () => {
         emitter.emit(events.REVEAL_QUADS);
@@ -200,8 +201,13 @@ export default class Work extends View {
 
   playLeaveAnim = () => {
 
-    if(this.leaveAnim) this.leaveAnim.kill();
+
+    this.killActiveAnimations();
+
+    //not including this to kill animation function
+    //As we don't want this animation to be killable
     this.leaveAnim = gsap.timeline();
+
     const ease = "sine.inOut";
     const dur = 0.75;
     const targetX = -20;
@@ -231,11 +237,13 @@ export default class Work extends View {
 
   animateProjectContent() {
 
+
+    this.killActiveAnimations();
+    this.scrollAnim = gsap.timeline({});
+
     const scrolling = this.inScrollMode;
     const pow =  "power1.out";
 
-    if(this.scrollAnim) this.scrollAnim.kill();
-    this.scrollAnim = gsap.timeline({});
     this.scrollAnim.fromTo(this.projectTitle, {
       y: scrolling ? 0 : -10
     },
@@ -271,6 +279,13 @@ export default class Work extends View {
       }
 
     }
+
+  }
+
+  killActiveAnimations() {
+
+    if(this.enterAnim) this.enterAnim.kill();
+    if(this.scrollAnim) this.scrollAnim.kill();
 
   }
 
