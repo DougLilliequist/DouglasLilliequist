@@ -6421,7 +6421,9 @@ var View = /*#__PURE__*/function (_Highway$Renderer) {
 }(_highway.default.Renderer);
 
 exports.default = View;
-},{"@babel/runtime/helpers/classCallCheck":"../../node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"../../node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"../../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"../../node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"../../node_modules/@babel/runtime/helpers/inherits.js","@dogstudio/highway":"../../node_modules/@dogstudio/highway/build/highway.module.js","../EventEmitter":"../EventEmitter.js","../../utils/events":"../../utils/events.js"}],"../Assets/video/gnsw512512.mp4":[function(require,module,exports) {
+},{"@babel/runtime/helpers/classCallCheck":"../../node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"../../node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"../../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"../../node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"../../node_modules/@babel/runtime/helpers/inherits.js","@dogstudio/highway":"../../node_modules/@dogstudio/highway/build/highway.module.js","../EventEmitter":"../EventEmitter.js","../../utils/events":"../../utils/events.js"}],"../Assets/video/crashingdawn512512.mp4":[function(require,module,exports) {
+module.exports = "/crashingdawn512512.304cba72.mp4";
+},{}],"../Assets/video/gnsw512512.mp4":[function(require,module,exports) {
 module.exports = "/gnsw512512.1cc15f39.mp4";
 },{}],"../Assets/video/internshipproj512512.mp4":[function(require,module,exports) {
 module.exports = "/internshipproj512512.9d95e830.mp4";
@@ -6435,6 +6437,7 @@ module.exports = "/sken512512.2037e4ee.mp4";
 module.exports = "/spiritualBeings512512.321b670f.mp4";
 },{}],"../Assets/video/*.mp4":[function(require,module,exports) {
 module.exports = {
+  "crashingdawn512512": require("./crashingdawn512512.mp4"),
   "gnsw512512": require("./gnsw512512.mp4"),
   "internshipproj512512": require("./internshipproj512512.mp4"),
   "letsgetphysical512512": require("./letsgetphysical512512.mp4"),
@@ -6442,7 +6445,7 @@ module.exports = {
   "sken512512": require("./sken512512.mp4"),
   "spiritualBeings512512": require("./spiritualBeings512512.mp4")
 };
-},{"./gnsw512512.mp4":"../Assets/video/gnsw512512.mp4","./internshipproj512512.mp4":"../Assets/video/internshipproj512512.mp4","./letsgetphysical512512.mp4":"../Assets/video/letsgetphysical512512.mp4","./needahand512512.mp4":"../Assets/video/needahand512512.mp4","./sken512512.mp4":"../Assets/video/sken512512.mp4","./spiritualBeings512512.mp4":"../Assets/video/spiritualBeings512512.mp4"}],"../Assets/ProjectContent.js":[function(require,module,exports) {
+},{"./crashingdawn512512.mp4":"../Assets/video/crashingdawn512512.mp4","./gnsw512512.mp4":"../Assets/video/gnsw512512.mp4","./internshipproj512512.mp4":"../Assets/video/internshipproj512512.mp4","./letsgetphysical512512.mp4":"../Assets/video/letsgetphysical512512.mp4","./needahand512512.mp4":"../Assets/video/needahand512512.mp4","./sken512512.mp4":"../Assets/video/sken512512.mp4","./spiritualBeings512512.mp4":"../Assets/video/spiritualBeings512512.mp4"}],"../Assets/ProjectContent.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6454,6 +6457,7 @@ var _ = _interopRequireDefault(require("../Assets/video/*.mp4"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+console.log(_.default);
 var ProjectContent = [{
   title: 'Spiritual Beings',
   type: 'Experiment',
@@ -6486,7 +6490,7 @@ var ProjectContent = [{
   year: 2020,
   link: 'https://douglilliequist.github.io/CrashingDawn/',
   media: {
-    videoSrc: _.default.sken512512,
+    videoSrc: _.default.crashingdawn512512,
     imageSrc: null,
     brightVal: 1.0
   }
@@ -6664,19 +6668,19 @@ var ContentManager = /*#__PURE__*/function () {
       var src = _ref2.src;
       return new Promise(function (resolve, reject) {
         var video = document.createElement('video');
-        video.width = 1024;
-        video.height = 1024;
+        video.width = 512;
+        video.height = 512;
         video.crossOrigin = "*";
-        video.setAttribute('webkit-playsinline', true);
-        video.playsinline = true;
-        video.muted = true;
-        video.loop = true;
         video.addEventListener('loadeddata', function () {
           if (video.readyState >= video.HAVE_CURRENT_DATA) {
             video.currentTime = Math.random() + 0.001;
             resolve(video);
           }
         });
+        video.setAttribute('webkit-playsinline', true);
+        video.playsinline = true;
+        video.muted = true;
+        video.loop = true;
         video.src = src;
       });
     }
@@ -6854,7 +6858,8 @@ var Work = /*#__PURE__*/function (_View) {
       _this.animateProjectContent();
     });
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "playEnterAnim", function () {
-      if (_this.enterAnim) _this.enterAnim.kill();
+      _this.killActiveAnimations();
+
       _this.enterAnim = _gsap.gsap.timeline({
         onStart: function onStart() {
           emitter.emit(_events.default.REVEAL_QUADS);
@@ -6897,7 +6902,10 @@ var Work = /*#__PURE__*/function (_View) {
       }, "<0.01");
     });
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "playLeaveAnim", function () {
-      if (_this.leaveAnim) _this.leaveAnim.kill();
+      _this.killActiveAnimations(); //not including this to kill animation function
+      //As we don't want this animation to be killable
+
+
       _this.leaveAnim = _gsap.gsap.timeline();
       var ease = "sine.inOut";
       var dur = 0.75;
@@ -7022,10 +7030,10 @@ var Work = /*#__PURE__*/function (_View) {
   }, {
     key: "animateProjectContent",
     value: function animateProjectContent() {
+      this.killActiveAnimations();
+      this.scrollAnim = _gsap.gsap.timeline({});
       var scrolling = this.inScrollMode;
       var pow = "power1.out";
-      if (this.scrollAnim) this.scrollAnim.kill();
-      this.scrollAnim = _gsap.gsap.timeline({});
       this.scrollAnim.fromTo(this.projectTitle, {
         y: scrolling ? 0 : -10
       }, {
@@ -7059,6 +7067,12 @@ var Work = /*#__PURE__*/function (_View) {
           window.hoveringLink = false;
         }
       }
+    }
+  }, {
+    key: "killActiveAnimations",
+    value: function killActiveAnimations() {
+      if (this.enterAnim) this.enterAnim.kill();
+      if (this.scrollAnim) this.scrollAnim.kill();
     }
   }]);
   return Work;
@@ -22050,7 +22064,7 @@ var Plane = /*#__PURE__*/function (_Geometry) {
 
 exports.Plane = Plane;
 },{"@babel/runtime/helpers/classCallCheck":"../../node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"../../node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"../../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"../../node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"../../node_modules/@babel/runtime/helpers/inherits.js","../core/Geometry.js":"../../vendors/ogl/src/core/Geometry.js"}],"../Webgl/DomQuads/Projects/ProjectQuad/shaders/projectQuad.vert":[function(require,module,exports) {
-module.exports = "precision highp float;\n#define GLSLIFY 1\n\nattribute vec3 position;\nattribute vec2 uv;\nattribute vec3 normal;\n\nuniform mat4 projectionMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 modelMatrix;\n\nuniform sampler2D _FlowMap;\nuniform float _FlowMapPhase;\nuniform float _FlipFlowMapForce;\nuniform float _ScrollPhase;\n\nuniform sampler2D _Image;\nuniform float _Scale;\nuniform bool _InView;\n\nuniform vec2 _ViewplaneSize;\nvarying vec3 vMvPos;\nvarying vec3 mPos;\n\nvarying vec2 vUv;\nvarying vec2 vClipPos;\nvarying float vDist;\n\n#define DISTORTSTR 0.7\n#define SCROLLDISTORTSTR 0.5\n#define DISPLACEMENTSTR 0.2\n#define HEIGHTMAPSTR 0.4\n#define lumaK 0.33333333333333333\n\n// #define DISTORTSTR 0.8\n// #define SCROLLDISTORTSTR 0.5\n// #define DISPLACEMENTSTR 0.3\n// #define HEIGHTMAPSTR 1.4\n\nvoid main() {\n\n    vec3 pos = position;\n    pos.xy *= _ViewplaneSize * _Scale;\n    \n    vec3 col = texture2D(_Image, uv).xyz;\n    float heightMapDistort = (col.x + col.y + col.z) * lumaK;\n    float phase = 1.0 - dot(position.xy, position.xy);\n    \n    pos.z += (phase * DISPLACEMENTSTR + (heightMapDistort * HEIGHTMAPSTR)) * _ScrollPhase * SCROLLDISTORTSTR;\n\n    mat4 modelViewProjection = projectionMatrix * modelViewMatrix;\n\n    if(_InView) {\n\n        vec4 clipPos = modelViewProjection * vec4(pos, 1.0);\n        clipPos.xyz /= clipPos.w;\n        clipPos.xy = clipPos.xy * 0.5 + 0.5;\n\n        vec3 distort = texture2D(_FlowMap, clipPos.xy).xyz * DISTORTSTR;\n        heightMapDistort = mix(heightMapDistort, 1.0 - heightMapDistort, _FlipFlowMapForce);\n        pos += distort * max(0.2, heightMapDistort) * _FlowMapPhase * distort.z;\n        // pos += distort * _FlowMapPhase * heightMapDistort * distort.z;\n        vClipPos = clipPos.xy;\n\n    }\n\n    gl_Position = modelViewProjection * vec4(pos, 1.0);\n    vUv = uv;\n    vMvPos = (modelViewMatrix * vec4(position, 1.0)).xyz;\n\n}";
+module.exports = "precision highp float;\n#define GLSLIFY 1\n\nattribute vec3 position;\nattribute vec2 uv;\nattribute vec3 normal;\n\nuniform mat4 projectionMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 modelMatrix;\n\nuniform sampler2D _FlowMap;\nuniform float _FlowMapPhase;\nuniform float _FlipFlowMapForce;\nuniform float _ScrollPhase;\n\nuniform sampler2D _Image;\nuniform float _Scale;\nuniform bool _InView;\n\nuniform vec2 _ViewplaneSize;\nvarying vec3 vMvPos;\nvarying vec3 mPos;\n\nvarying vec2 vUv;\nvarying vec2 vClipPos;\nvarying float vDist;\n\n#define DISTORTSTR 0.7\n#define SCROLLDISTORTSTR 0.5\n#define DISPLACEMENTSTR 0.2\n#define HEIGHTMAPSTR 0.4\n#define lumaK 0.33333333333333333\n\n// #define DISTORTSTR 0.8\n// #define SCROLLDISTORTSTR 0.5\n// #define DISPLACEMENTSTR 0.3\n// #define HEIGHTMAPSTR 1.4\n\nvoid main() {\n\n    vec3 pos = position;\n    pos.xy *= _ViewplaneSize * _Scale;\n    \n    vec3 col = texture2D(_Image, uv).xyz;\n    float heightMapDistort = (col.x + col.y + col.z) * lumaK;\n    float phase = 1.0 - dot(position.xy, position.xy);\n    \n    pos.z += (phase * DISPLACEMENTSTR + (heightMapDistort * HEIGHTMAPSTR)) * _ScrollPhase * SCROLLDISTORTSTR;\n\n    mat4 modelViewProjection = projectionMatrix * modelViewMatrix;\n\n    vec4 clipPos = modelViewProjection * vec4(pos, 1.0);\n    clipPos.xyz /= clipPos.w;\n    clipPos.xy = clipPos.xy * 0.5 + 0.5;\n\n    vec3 distort = texture2D(_FlowMap, clipPos.xy).xyz * DISTORTSTR;\n    heightMapDistort = mix(heightMapDistort, 1.0 - heightMapDistort, _FlipFlowMapForce);\n    pos += distort * max(0.2, heightMapDistort) * _FlowMapPhase * distort.z * mix(0.0, 1.0, _InView ? 1.0 : 0.0);\n    vClipPos = clipPos.xy;\n\n    gl_Position = modelViewProjection * vec4(pos, 1.0);\n    vUv = uv;\n    vMvPos = (modelViewMatrix * vec4(position, 1.0)).xyz;\n\n}";
 },{}],"../Webgl/DomQuads/Projects/ProjectQuad/shaders/projectQuad.frag":[function(require,module,exports) {
 module.exports = "precision highp float;\n#define GLSLIFY 1\n\nuniform sampler2D _Image;\nuniform sampler2D _FlowMap;\nuniform float _FlowMapPhase;\n\nuniform float _ScalePhase;\nuniform float _Alpha;\nuniform float _RevealPhase;\nuniform float _RevealDirection;\nuniform float _ScrollPhase;\n\nvarying vec2 vUv;\nvarying vec3 vMvPos;\nvarying vec2 vClipPos;\nvarying float vDist;\n\n#define OFFSETAMOUNTX 0.008\n#define OFFSETAMOUNTY 0.001\n\n// #define MINVIEWDIST 0.18\n#define MINVIEWDIST 0.2\n// #define MAXVIEWDIST 0.4\n#define MAXVIEWDIST 0.5\n// #define ALPHAFALLOFFDIST 20.0\n#define ALPHAFALLOFFDIST 30.0\nvoid main() {\n\n    vec2 uv = vUv;\n    uv -= 0.5;\n    uv *= mix(1.0, 0.85, _ScalePhase); //rename uniform\n    uv += 0.5;\n\n    vec2 flow = texture2D(_FlowMap, vClipPos).xy * _FlowMapPhase;\n\n    vec3 img = texture2D(_Image, uv).xyz;\n    float inputPhase = _ScrollPhase * 3.0;\n    vec2 offsetX = (vec2(inputPhase, 0.0)) * OFFSETAMOUNTX;\n    vec2 offsetY = (vec2(0.0, inputPhase)) * OFFSETAMOUNTY;\n\n    float r = texture2D(_Image, uv - offsetX - (flow * 0.02)).x;\n    float g = texture2D(_Image, uv + offsetY + (flow * 0.002)).y;\n    float b = texture2D(_Image, uv + offsetX + (flow * 0.02)).z;\n\n    float len = (vMvPos.z * vMvPos.z);\n    float idleAlpha = smoothstep(MINVIEWDIST, MAXVIEWDIST, len);\n    float scrollAlpha = idleAlpha * mix(1.0, 0.5, abs(_ScrollPhase)) * (smoothstep(ALPHAFALLOFFDIST, 0.0, len));\n    float alpha = mix(idleAlpha, scrollAlpha, abs(_ScrollPhase));\n    alpha *= _Alpha;\n\n    //reveal phase\n    // alpha *= step(abs((vUv.y * 0.99) * 2.0 - 1.0), _RevealPhase);\n    // alpha *= step(vUv.x, _RevealPhase);\n    alpha *= mix(step(vUv.y, _RevealPhase), step(1.0 - (vUv.x * 0.99), _RevealPhase), _RevealDirection);\n  \n    gl_FragColor = vec4(vec3(r,g,b), alpha);\n\n}";
 },{}],"../../utils/Math.js":[function(require,module,exports) {
@@ -27643,8 +27657,9 @@ var Cursor = /*#__PURE__*/function () {
     (0, _classCallCheck2.default)(this, Cursor);
     (0, _defineProperty2.default)(this, "onMouseDown", function () {
       _this.inScrollMode = true;
-      _this.canvas.style.zIndex = "100"; //prevent click + drag issues in safari
+      _this.canvas.style.zIndex = 10; //prevent click + drag issues in safari
 
+      console.log(_this.canvas.style.zIndex);
       _this.prevPosition.x = _this.target.x;
       _this.prevPosition.y = _this.target.y;
 
@@ -27663,7 +27678,7 @@ var Cursor = /*#__PURE__*/function () {
       }
     });
     (0, _defineProperty2.default)(this, "onMouseUp", function () {
-      _this.canvas.style.zIndex = "0"; //restore normal browser behaviour
+      _this.canvas.style.zIndex = 0; //restore normal browser behaviour
 
       _this.restore();
     });
@@ -27688,6 +27703,19 @@ var Cursor = /*#__PURE__*/function () {
         y: 4.0,
         ease: "power1.out"
       }, "<");
+    });
+    (0, _defineProperty2.default)(this, "reveal", function () {
+      var revealAnim = _gsap.gsap.timeline({});
+
+      revealAnim.fromTo(_this, {
+        radius: 0,
+        ctaTextAlpha: 0
+      }, {
+        duration: 0.2,
+        radius: _this.defaultRadius,
+        ctaTextAlpha: 1.0,
+        ease: "circ.out"
+      });
     });
     (0, _defineProperty2.default)(this, "animteHoverMode", function () {
       if (_this.hoverModeAnim) _this.hoverModeAnim.kill();
@@ -27831,6 +27859,7 @@ var Cursor = /*#__PURE__*/function () {
   }, {
     key: "initEvents",
     value: function initEvents() {
+      emitter.on(_events.default.LOADING_ANIM_COMPLETED, this.reveal);
       emitter.on(_events.default.SHOW_CLICKDRAG_CTA, this.showCTAText);
       emitter.on(_events.default.HIDE_CLICKDRAG_CTA, this.hideCTAText);
       emitter.on(_events.default.MOUSE_MOVE, this.onMouseMove);
@@ -28152,7 +28181,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "192.168.1.109" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61674" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52650" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
