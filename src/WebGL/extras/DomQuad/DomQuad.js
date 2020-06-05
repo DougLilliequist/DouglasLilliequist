@@ -71,6 +71,11 @@ export default class DomQuad extends Mesh {
     const posPhaseY =
       2.0 * ((rect.top + (rect.height * 0.5)) / window.innerHeight) - 1.0;
 
+    //a bit isoteric (maybe), but a normalized coordinate plane goes between -1 and 1
+    //in my case, I have a normalized position in the domain -1 and 1, which I multiply
+    //with the widht and height equal to "half" the near plane's width and height,
+    //which gives me a coordinate plane where the domain is [-viewplane size, viewplane size]
+    //which will result in the "correct" position on the coordinate plane based on the calculated near plane
     const posX = posPhaseX * this.cameraViewplaneSize.x;
     const posY = posPhaseY * this.cameraViewplaneSize.y * -1.0;
 

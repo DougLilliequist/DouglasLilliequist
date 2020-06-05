@@ -194,7 +194,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
   //add the quadratic inertia here as well
   updateInputForce({inputDelta, dt = 14.0}) {
 
-    this.inputForce.y += inputDelta.y * 0.01 / dt;
+    this.inputForce.y += inputDelta.y * 0.007 / dt;
     // this.inputForce.y += inputDelta.y * 0.005 / dt;
 
   }

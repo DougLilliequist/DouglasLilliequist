@@ -155,7 +155,6 @@ export default class Cursor {
 
         this.inScrollMode = true;
         this.canvas.style.zIndex = 10; //prevent click + drag issues in safari
-        console.log(this.canvas.style.zIndex)
         this.prevPosition.x = this.target.x;
         this.prevPosition.y = this.target.y;
         this.animateScrollMode();

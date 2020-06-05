@@ -1,7 +1,5 @@
 import projectVideos from '../Assets/video/*.mp4'
 
-console.log(projectVideos)
-
 export const ProjectContent = [
 
     {
@@ -37,7 +35,7 @@ export const ProjectContent = [
         title: 'Crashing Dawn',
         type: 'Experiment',
         description: 'Shaded particles with noise sampled curl noise',
-        tech: 'WebGL(OGL) / GPGPU',
+        tech: 'WebGL(THREE.js) / GPGPU',
         year: 2020,
         link: 'https://douglilliequist.github.io/CrashingDawn/',
         media: {

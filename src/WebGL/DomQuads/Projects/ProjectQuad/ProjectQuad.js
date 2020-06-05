@@ -258,7 +258,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
     }
   
     pauseVideo = () => {
-  
+
       if(this.video === null) return;
       this.video.pause();
   

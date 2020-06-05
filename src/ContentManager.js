@@ -57,32 +57,38 @@ class ContentManager {
 
     loadVideo({src}) {
 
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve) => {
 
-            const video = document.createElement('video');
+            fetch(src).then((res) => {
+
+                const video = document.createElement('video');
+
+                video.addEventListener('loadeddata', () => {
+                    if(video.readyState >= video.HAVE_CURRENT_DATA) {
+                        video.pause();
+                        resolve(video);
+                    }
+                });
         
-            video.width = 512;
-            
-            video.height = 512;
-            
-            video.crossOrigin = "*";
-
-            video.addEventListener('loadeddata', () => {
-                if(video.readyState >= video.HAVE_CURRENT_DATA) {
-                    video.currentTime = Math.random() + 0.001;
-                    resolve(video);
-                }
-            });
-            
-            video.setAttribute('webkit-playsinline', true);
-            
-            video.playsinline = true;
-            
-            video.muted = true;
-            
-            video.loop = true;
+                video.width = 512;
                 
-            video.src = src;
+                video.height = 512;
+                
+                video.crossOrigin = "*";
+
+                video.setAttribute('webkit-playsinline', true);
+                
+                video.playsinline = true;
+                
+                video.muted = true;
+                
+                video.loop = true;
+                    
+                video.src = res.url;
+
+                video.play();
+
+            });
             
         });
     
@@ -90,17 +96,21 @@ class ContentManager {
 
     loadImage({src}) {
 
-        return new Promise((resolve, reject) => {
-            
-            const img = new Image();
-        
-            img.crossOrigin = "*";
-            
-            img.addEventListener('load' , () => {
-                resolve(img)
-            });
+        return new Promise((resolve) => {
 
-            img.src = src;
+            fetch(src).then((res) => {
+
+                const img = new Image();
+        
+                img.crossOrigin = "*";
+                
+                img.addEventListener('load' , () => {
+                    resolve(img)
+                });
+    
+                img.src = res.url;
+
+            });
 
         });
 
