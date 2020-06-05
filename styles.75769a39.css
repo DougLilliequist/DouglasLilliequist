@@ -123,6 +123,7 @@ body {
   opacity: 0.5;
   transition: opacity 0.5s;
   will-change: opacity;
+  text-align: center;
 }
 .navigation__links .link {
   font-size: 10px;
@@ -179,10 +180,10 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 75vw;
-  height: 22vw;
+  width: 100vw;
+  height: 30vw;
   max-width: 1680px;
-  max-height: 1080px;
+  max-height: 512px;
   margin: 0;
   padding: 0;
   display: inline-flex;
@@ -190,10 +191,10 @@ body {
   align-items: center;
   z-index: 1;
 }
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1024px) {
   .project-container {
-    width: 100vw;
-    height: 35vh;
+    width: 90vw;
+    height: 28vw;
   }
 }
 .project-container--scrolling {
@@ -323,7 +324,7 @@ body {
 }
 
 .project-video {
-  width: 45%;
+  width: 50%;
   height: 100%;
   margin: 0;
   position: relative;
@@ -348,7 +349,7 @@ body {
   width: 80vw;
   height: 40vw;
   max-width: 1680px;
-  max-height: 1080px;
+  max-height: 512px;
   display: flex;
   justify-content: space-evenly;
   z-index: 2;

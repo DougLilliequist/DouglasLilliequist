@@ -6668,6 +6668,7 @@ var ContentManager = /*#__PURE__*/function () {
       return new Promise(function (resolve) {
         // fetch(src).then((res) => {
         var video = document.createElement('video');
+        video.preload = "auto";
         video.addEventListener('loadeddata', function () {
           if (video.readyState >= video.HAVE_CURRENT_DATA) {
             video.pause();
@@ -28185,7 +28186,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "192.168.1.109" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52046" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52573" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
