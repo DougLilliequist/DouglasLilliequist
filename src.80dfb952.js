@@ -6666,24 +6666,23 @@ var ContentManager = /*#__PURE__*/function () {
     value: function loadVideo(_ref2) {
       var src = _ref2.src;
       return new Promise(function (resolve) {
-        fetch(src).then(function (res) {
-          var video = document.createElement('video');
-          video.addEventListener('loadeddata', function () {
-            if (video.readyState >= video.HAVE_CURRENT_DATA) {
-              video.pause();
-              resolve(video);
-            }
-          });
-          video.width = 512;
-          video.height = 512;
-          video.crossOrigin = "*";
-          video.setAttribute('webkit-playsinline', true);
-          video.playsinline = true;
-          video.muted = true;
-          video.loop = true;
-          video.src = res.url;
-          video.play();
+        // fetch(src).then((res) => {
+        var video = document.createElement('video');
+        video.addEventListener('loadeddata', function () {
+          if (video.readyState >= video.HAVE_CURRENT_DATA) {
+            video.pause();
+            resolve(video);
+          }
         });
+        video.width = 512;
+        video.height = 512;
+        video.crossOrigin = "*";
+        video.setAttribute('webkit-playsinline', true);
+        video.playsinline = true;
+        video.muted = true;
+        video.loop = true;
+        video.src = src;
+        video.play(); // });
       });
     }
   }, {
@@ -6691,14 +6690,13 @@ var ContentManager = /*#__PURE__*/function () {
     value: function loadImage(_ref3) {
       var src = _ref3.src;
       return new Promise(function (resolve) {
-        fetch(src).then(function (res) {
-          var img = new Image();
-          img.crossOrigin = "*";
-          img.addEventListener('load', function () {
-            resolve(img);
-          });
-          img.src = res.url;
+        // fetch(src).then((res) => {
+        var img = new Image();
+        img.crossOrigin = "*";
+        img.addEventListener('load', function () {
+          resolve(img);
         });
+        img.src = src; // });
       });
     }
   }, {
@@ -28187,7 +28185,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "192.168.1.109" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49911" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52046" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
