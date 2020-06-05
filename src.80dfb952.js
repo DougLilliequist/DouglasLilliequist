@@ -6670,10 +6670,9 @@ var ContentManager = /*#__PURE__*/function () {
         var video = document.createElement('video');
         video.preload = "auto";
         video.addEventListener('loadeddata', function () {
-          if (video.readyState >= video.HAVE_CURRENT_DATA) {
-            video.pause();
-            resolve(video);
-          }
+          // if(video.readyState >= video.HAVE_CURRENT_DATA) {
+          // video.pause();
+          resolve(video); // }
         });
         video.width = 512;
         video.height = 512;
@@ -6682,8 +6681,8 @@ var ContentManager = /*#__PURE__*/function () {
         video.playsinline = true;
         video.muted = true;
         video.loop = true;
-        video.src = src;
-        video.play(); // });
+        video.src = src; // video.play();
+        // });
       });
     }
   }, {
@@ -28186,7 +28185,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "192.168.1.109" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52573" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54686" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
