@@ -65,12 +65,12 @@ class ContentManager {
 
                 video.preload = "auto";
 
-                // video.addEventListener('loadeddata', () => {
-                //     // if(video.readyState >= video.HAVE_CURRENT_DATA) {
-                //         // video.pause();
-                //         resolve(video);
-                //     // }
-                // });
+                video.addEventListener('loadeddata', () => {
+                    if(video.readyState >= video.HAVE_CURRENT_DATA) {
+                        // video.pause();
+                        resolve(video);
+                    }
+                });
         
                 video.width = 512;
                 
@@ -87,7 +87,8 @@ class ContentManager {
                 video.loop = true;
 
                 video.src = src;
-                resolve(video);
+
+                video.load();
 
                 // video.play();
             // });
