@@ -246,6 +246,8 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
             this.updateTexture = !this.updateTexture;
             this.texture.needsUpdate = this.updateTexture;
           }
+        } else {
+          this.texture.needsUpdate = false;
         }
   
     }
