@@ -6457,7 +6457,6 @@ var _ = _interopRequireDefault(require("../Assets/video/*.mp4"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-console.log(_.default);
 var ProjectContent = [{
   title: 'Spiritual Beings',
   type: 'Experiment',
@@ -6486,7 +6485,7 @@ var ProjectContent = [{
   title: 'Crashing Dawn',
   type: 'Experiment',
   description: 'Shaded particles with noise sampled curl noise',
-  tech: 'WebGL(OGL) / GPGPU',
+  tech: 'WebGL(THREE.js) / GPGPU',
   year: 2020,
   link: 'https://douglilliequist.github.io/CrashingDawn/',
   media: {
@@ -6666,37 +6665,40 @@ var ContentManager = /*#__PURE__*/function () {
     key: "loadVideo",
     value: function loadVideo(_ref2) {
       var src = _ref2.src;
-      return new Promise(function (resolve, reject) {
-        var video = document.createElement('video');
-        video.width = 512;
-        video.height = 512;
-        video.crossOrigin = "*";
-        video.addEventListener('loadeddata', function () {
-          if (video.readyState >= video.HAVE_CURRENT_DATA) {
-            video.currentTime = Math.random() + 0.001;
-            resolve(video);
-          }
+      return new Promise(function (resolve) {
+        fetch(src).then(function (res) {
+          var video = document.createElement('video');
+          video.addEventListener('loadeddata', function () {
+            if (video.readyState >= video.HAVE_CURRENT_DATA) {
+              video.pause();
+              resolve(video);
+            }
+          });
+          video.width = 512;
+          video.height = 512;
+          video.crossOrigin = "*";
+          video.setAttribute('webkit-playsinline', true);
+          video.playsinline = true;
+          video.muted = true;
+          video.loop = true;
+          video.src = res.url;
+          video.play();
         });
-        video.setAttribute('webkit-playsinline', true);
-        video.playsinline = true;
-        video.muted = true;
-        video.loop = true;
-        video.src = src;
       });
     }
   }, {
     key: "loadImage",
     value: function loadImage(_ref3) {
       var src = _ref3.src;
-      return new Promise(function (resolve, reject) {
-        var img = new Image();
-        img.crossOrigin = "*";
-
-        img.onload = function () {
-          resolve(img);
-        };
-
-        img.src = src;
+      return new Promise(function (resolve) {
+        fetch(src).then(function (res) {
+          var img = new Image();
+          img.crossOrigin = "*";
+          img.addEventListener('load', function () {
+            resolve(img);
+          });
+          img.src = res.url;
+        });
       });
     }
   }, {
@@ -21359,7 +21361,12 @@ var DomQuad = /*#__PURE__*/function (_Mesh) {
       var domElement = _ref3.domElement;
       var rect = domElement.getBoundingClientRect();
       var posPhaseX = 2.0 * ((rect.left + rect.width * 0.5) / window.innerWidth) - 1.0;
-      var posPhaseY = 2.0 * ((rect.top + rect.height * 0.5) / window.innerHeight) - 1.0;
+      var posPhaseY = 2.0 * ((rect.top + rect.height * 0.5) / window.innerHeight) - 1.0; //a bit isoteric (maybe), but a normalized coordinate plane goes between -1 and 1
+      //in my case, I have a normalized position in the domain -1 and 1, which I multiply
+      //with the widht and height equal to "half" the near plane's width and height,
+      //which gives me a coordinate plane where the domain is [-viewplane size, viewplane size]
+      //which will result in the "correct" position on the coordinate plane based on the calculated near plane
+
       var posX = posPhaseX * this.cameraViewplaneSize.x;
       var posY = posPhaseY * this.cameraViewplaneSize.y * -1.0; //set position of quad
 
@@ -22715,7 +22722,7 @@ var ProjectQuadMediator = /*#__PURE__*/function (_DomquadMediator) {
       var inputDelta = _ref3.inputDelta,
           _ref3$dt = _ref3.dt,
           dt = _ref3$dt === void 0 ? 14.0 : _ref3$dt;
-      this.inputForce.y += inputDelta.y * 0.01 / dt; // this.inputForce.y += inputDelta.y * 0.005 / dt;
+      this.inputForce.y += inputDelta.y * 0.007 / dt; // this.inputForce.y += inputDelta.y * 0.005 / dt;
     }
   }, {
     key: "update",
@@ -27659,7 +27666,6 @@ var Cursor = /*#__PURE__*/function () {
       _this.inScrollMode = true;
       _this.canvas.style.zIndex = 10; //prevent click + drag issues in safari
 
-      console.log(_this.canvas.style.zIndex);
       _this.prevPosition.x = _this.target.x;
       _this.prevPosition.y = _this.target.y;
 
@@ -28181,7 +28187,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "192.168.1.109" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52650" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49911" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
