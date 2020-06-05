@@ -6423,10 +6423,10 @@ var View = /*#__PURE__*/function (_Highway$Renderer) {
 exports.default = View;
 },{"@babel/runtime/helpers/classCallCheck":"../../node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"../../node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"../../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"../../node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"../../node_modules/@babel/runtime/helpers/inherits.js","@dogstudio/highway":"../../node_modules/@dogstudio/highway/build/highway.module.js","../EventEmitter":"../EventEmitter.js","../../utils/events":"../../utils/events.js"}],"../Assets/video/crashingdawn512512.mp4":[function(require,module,exports) {
 module.exports = "/crashingdawn512512.304cba72.mp4";
-},{}],"../Assets/video/internshipproj512512.mp4":[function(require,module,exports) {
-module.exports = "/internshipproj512512.9d95e830.mp4";
 },{}],"../Assets/video/gnsw512512.mp4":[function(require,module,exports) {
 module.exports = "/gnsw512512.1cc15f39.mp4";
+},{}],"../Assets/video/internshipproj512512.mp4":[function(require,module,exports) {
+module.exports = "/internshipproj512512.9d95e830.mp4";
 },{}],"../Assets/video/letsgetphysical512512.mp4":[function(require,module,exports) {
 module.exports = "/letsgetphysical512512.bc8541ae.mp4";
 },{}],"../Assets/video/needahand512512.mp4":[function(require,module,exports) {
@@ -6438,14 +6438,14 @@ module.exports = "/spiritualBeings512512.321b670f.mp4";
 },{}],"../Assets/video/*.mp4":[function(require,module,exports) {
 module.exports = {
   "crashingdawn512512": require("./crashingdawn512512.mp4"),
-  "internshipproj512512": require("./internshipproj512512.mp4"),
   "gnsw512512": require("./gnsw512512.mp4"),
+  "internshipproj512512": require("./internshipproj512512.mp4"),
   "letsgetphysical512512": require("./letsgetphysical512512.mp4"),
   "needahand512512": require("./needahand512512.mp4"),
   "sken512512": require("./sken512512.mp4"),
   "spiritualBeings512512": require("./spiritualBeings512512.mp4")
 };
-},{"./crashingdawn512512.mp4":"../Assets/video/crashingdawn512512.mp4","./internshipproj512512.mp4":"../Assets/video/internshipproj512512.mp4","./gnsw512512.mp4":"../Assets/video/gnsw512512.mp4","./letsgetphysical512512.mp4":"../Assets/video/letsgetphysical512512.mp4","./needahand512512.mp4":"../Assets/video/needahand512512.mp4","./sken512512.mp4":"../Assets/video/sken512512.mp4","./spiritualBeings512512.mp4":"../Assets/video/spiritualBeings512512.mp4"}],"../Assets/ProjectContent.js":[function(require,module,exports) {
+},{"./crashingdawn512512.mp4":"../Assets/video/crashingdawn512512.mp4","./gnsw512512.mp4":"../Assets/video/gnsw512512.mp4","./internshipproj512512.mp4":"../Assets/video/internshipproj512512.mp4","./letsgetphysical512512.mp4":"../Assets/video/letsgetphysical512512.mp4","./needahand512512.mp4":"../Assets/video/needahand512512.mp4","./sken512512.mp4":"../Assets/video/sken512512.mp4","./spiritualBeings512512.mp4":"../Assets/video/spiritualBeings512512.mp4"}],"../Assets/ProjectContent.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6668,13 +6668,13 @@ var ContentManager = /*#__PURE__*/function () {
       return new Promise(function (resolve) {
         // fetch(src).then((res) => {
         var video = document.createElement('video');
-        video.preload = "auto"; // video.addEventListener('loadeddata', () => {
-        //     // if(video.readyState >= video.HAVE_CURRENT_DATA) {
-        //         // video.pause();
-        //         resolve(video);
-        //     // }
-        // });
-
+        video.preload = "auto";
+        video.addEventListener('loadeddata', function () {
+          if (video.readyState >= video.HAVE_CURRENT_DATA) {
+            // video.pause();
+            resolve(video);
+          }
+        });
         video.width = 512;
         video.height = 512;
         video.crossOrigin = "*";
@@ -6683,7 +6683,7 @@ var ContentManager = /*#__PURE__*/function () {
         video.muted = true;
         video.loop = true;
         video.src = src;
-        resolve(video); // video.play();
+        video.load(); // video.play();
         // });
       });
     }
@@ -28187,7 +28187,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "192.168.1.109" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54927" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57319" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
