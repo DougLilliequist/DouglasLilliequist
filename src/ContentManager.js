@@ -59,7 +59,7 @@ class ContentManager {
 
         return new Promise((resolve) => {
 
-            fetch(src).then((res) => {
+            // fetch(src).then((res) => {
 
                 const video = document.createElement('video');
 
@@ -83,12 +83,11 @@ class ContentManager {
                 video.muted = true;
                 
                 video.loop = true;
-                    
-                video.src = res.url;
 
+                video.src = src;
+                
                 video.play();
-
-            });
+            // });
             
         });
     
@@ -98,7 +97,7 @@ class ContentManager {
 
         return new Promise((resolve) => {
 
-            fetch(src).then((res) => {
+            // fetch(src).then((res) => {
 
                 const img = new Image();
         
@@ -108,9 +107,9 @@ class ContentManager {
                     resolve(img)
                 });
     
-                img.src = res.url;
+                img.src = src;
 
-            });
+            // });
 
         });
 
