@@ -63,6 +63,8 @@ class ContentManager {
 
                 const video = document.createElement('video');
 
+                video.preload = "auto";
+
                 video.addEventListener('loadeddata', () => {
                     if(video.readyState >= video.HAVE_CURRENT_DATA) {
                         video.pause();
