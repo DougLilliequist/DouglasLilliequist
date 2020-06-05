@@ -63,13 +63,13 @@ class ContentManager {
 
                 const video = document.createElement('video');
 
-                video.preload = "metadata";
+                // video.preload = "metadata";
 
                 video.addEventListener('loadeddata', () => {
-                    if(video.readyState >= video.HAVE_CURRENT_DATA) {
+                    // if(video.readyState >= video.HAVE_CURRENT_DATA) {
                         // video.pause();
                         resolve(video);
-                    }
+                    // }
                 });
         
                 video.width = 512;
