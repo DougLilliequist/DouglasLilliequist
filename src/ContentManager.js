@@ -59,11 +59,11 @@ class ContentManager {
 
         return new Promise((resolve) => {
 
-            // fetch(src).then((res) => {
+            fetch(src).then((res) => {
 
                 const video = document.createElement('video');
 
-                video.preload = "auto";
+                video.preload = "metadata";
 
                 video.addEventListener('loadeddata', () => {
                     if(video.readyState >= video.HAVE_CURRENT_DATA) {
@@ -86,12 +86,12 @@ class ContentManager {
                 
                 video.loop = true;
 
-                video.src = src;
+                video.src = res.url;
 
                 video.load();
 
                 // video.play();
-            // });
+            });
             
         });
     
