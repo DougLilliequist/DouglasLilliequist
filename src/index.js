@@ -11,7 +11,7 @@ import Cursor from '../src/CanvasComponents/Cursor.js';
 import Transition from "./Transitions/Transition.js";
 import ViewMediator from "./Views/ViewMediator.js";
 
-import contentManager from './ContentManager2.js'
+import contentManager from './ContentManager.js'
 
 export default class App {
     constructor() {

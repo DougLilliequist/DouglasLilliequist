@@ -1,5 +1,5 @@
 import View from "../View.js";
-import contentManager from '../../ContentManager2';
+import contentManager from '../../ContentManager';
 
 import eventEmitter from '../../EventEmitter.js';
 const emitter = eventEmitter.emitter;
