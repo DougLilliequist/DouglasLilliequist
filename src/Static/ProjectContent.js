@@ -31,20 +31,20 @@ export const ProjectContent = [
 
     },
 
-    // {
-    //     title: 'Crashing Dawn',
-    //     type: 'Experiment',
-    //     description: 'Shaded particles with noise sampled curl noise',
-    //     tech: 'WebGL(THREE.js) / GPGPU',
-    //     year: 2020,
-    //     link: 'https://douglilliequist.github.io/CrashingDawn/',
-    //     media: {
-    //         videoSrc: projectVideos.crashingdawn512512,
-    //         imageSrc: null,
-    //         brightVal: 1.0
-    //     }
+    {
+        title: 'Crashing Dawn',
+        type: 'Experiment',
+        description: 'Shaded particles with noise sampled curl noise',
+        tech: 'WebGL(THREE.js) / GPGPU',
+        year: 2020,
+        link: 'https://douglilliequist.github.io/CrashingDawn/',
+        media: {
+            videoSrc: projectVideos.crashingdawn512512_2,
+            imageSrc: null,
+            brightVal: 1.0
+        }
 
-    // },
+    },
 
     {
         title: 'Let\'s Get Physical',
