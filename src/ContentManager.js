@@ -62,10 +62,11 @@ class ContentManager {
 
                 const video = document.createElement('video');
 
-                video.autoplay = true;
+                // video.autoplay = true;
 
                 video.addEventListener('loadeddata', () => {
                     if(video.readyState >= video.HAVE_CURRENT_DATA) {
+                        video.currentTime = Math.random() + .1;
                         resolve(video);
                     }
                 });
@@ -86,9 +87,9 @@ class ContentManager {
 
                 video.src = src;
 
-                video.load();
+                // video.load();
 
-                resolve(video);
+                // resolve(video);
 
             // });
             
