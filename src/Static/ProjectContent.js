@@ -39,7 +39,7 @@ export const ProjectContent = [
         year: 2020,
         link: 'https://douglilliequist.github.io/CrashingDawn/',
         media: {
-            videoSrc: projectVideos.crashingdawn512512_2,
+            videoSrc: projectVideos.crashingdawn512512,
             imageSrc: null,
             brightVal: 1.0
         }

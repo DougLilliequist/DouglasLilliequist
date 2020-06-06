@@ -243,8 +243,8 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
         if(this.inView) {
           if (this.video.readyState >= this.video.HAVE_ENOUGH_DATA) {
             this.texture.image = this.video;
-            this.updateTexture = !this.updateTexture;
-            this.texture.needsUpdate = this.updateTexture;
+            // this.updateTexture = !this.updateTexture;
+            this.texture.needsUpdate = true;
           }
         } else {
           this.texture.needsUpdate = false;
