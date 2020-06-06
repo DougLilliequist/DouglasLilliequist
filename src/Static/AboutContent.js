@@ -1,4 +1,4 @@
-import img from '../Assets/img/*.png';
+import img from './img/*.png';
 
 export const AboutContent = [
 

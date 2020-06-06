@@ -1,5 +1,5 @@
-import {ProjectContent} from './Assets/ProjectContent.js';
-import {AboutContent} from './Assets/AboutContent.js';
+import {ProjectContent} from './Static/ProjectContent.js';
+import {AboutContent} from './Static/AboutContent.js';
 
 import eventEmitter from './EventEmitter.js';
 const emitter = eventEmitter.emitter;
