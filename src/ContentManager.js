@@ -66,7 +66,6 @@ class ContentManager {
 
                 video.addEventListener('loadeddata', () => {
                     if(video.readyState >= video.HAVE_CURRENT_DATA) {
-                        // video.pause();
                         resolve(video);
                     }
                 });

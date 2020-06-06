@@ -96,6 +96,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
       }
       
       this.quadsLoaded = true;
+      emitter.emit(events.PAUSE_VIDEO); //explicit pause
 
       //only append the amount of quads based on quad count
       i = 0;
