@@ -58,7 +58,7 @@ class ContentManager {
 
         return new Promise((resolve) => {
 
-            fetch(src).then((res) => {
+            // fetch(src).then((res) => {
 
                 const video = document.createElement('video');
 
@@ -85,11 +85,11 @@ class ContentManager {
                 
                 video.loop = true;
 
-                video.src = res.url;
+                video.src = src;
 
                 video.load();
 
-            });
+            // });
             
         });
     
