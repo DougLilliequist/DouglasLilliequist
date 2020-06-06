@@ -17,7 +17,6 @@ class ContentManager {
 
         this.progress = 0;
 
-
     }
 
     initContent() {
@@ -63,13 +62,13 @@ class ContentManager {
 
                 const video = document.createElement('video');
 
-                // video.preload = "metadata";
+                video.autoplay = true;
 
                 video.addEventListener('loadeddata', () => {
-                    // if(video.readyState >= video.HAVE_CURRENT_DATA) {
-                        // video.pause();
+                    if(video.readyState >= video.HAVE_CURRENT_DATA) {
+                        video.pause();
                         resolve(video);
-                    // }
+                    }
                 });
         
                 video.width = 512;
@@ -90,7 +89,6 @@ class ContentManager {
 
                 video.load();
 
-                // video.play();
             });
             
         });
@@ -101,19 +99,15 @@ class ContentManager {
 
         return new Promise((resolve) => {
 
-            // fetch(src).then((res) => {
-
                 const img = new Image();
         
                 img.crossOrigin = "*";
                 
                 img.addEventListener('load' , () => {
-                    resolve(img)
+                    resolve(img);
                 });
     
                 img.src = src;
-
-            // });
 
         });
 
