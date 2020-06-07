@@ -67,7 +67,6 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     //videos
     this.media = media;
-
     //dom element that quads position's and scales will have it's
     //world position and scales be based on
     this.referenceElement = referenceElement;
@@ -78,9 +77,11 @@ export default class ProjectQuadMediator extends DomquadMediator {
       let i = 0;
       while (i < this.media.length) {
 
+        const video = this.media[i].media;
+
         const quad = new ProjectQuad(
           this.gl,
-          this.media[i], {
+          video, {
             widthSegments: 16.0,
             heightSegments: 16.0,
             posOffset: i, //rename or make new prop for index?

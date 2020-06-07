@@ -248,8 +248,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
           }
         } else {
           this.texture.needsUpdate = false;
-        }
-  
+        }  
     }
   
     playVideo = () => {

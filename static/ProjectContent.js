@@ -1,4 +1,4 @@
-import projectVideos from '../Static/video/*.mp4'
+import projectVideos from './video/*.mp4'
 
 export const ProjectContent = [
 

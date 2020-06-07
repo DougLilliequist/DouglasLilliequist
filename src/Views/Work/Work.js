@@ -101,7 +101,7 @@ export default class Work extends View {
 
     const params = {
       referenceElement: this.domGLReferenceElement,
-      media: contentManager.ProjectMedia, 
+      media: contentManager.projects, 
       getFirstQuad: true
     }
 
