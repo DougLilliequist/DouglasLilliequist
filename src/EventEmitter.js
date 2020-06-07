@@ -27,6 +27,8 @@ class EventEmitter {
             passive: false
         });
         window.addEventListener('resize', this.onResize);
+
+        gsap.ticker.fps(60);
         gsap.ticker.add(this.tick);
 
     }

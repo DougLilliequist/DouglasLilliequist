@@ -19,7 +19,7 @@ export default class DomquadMediator extends Transform {
     
     unloadQuads = () => {
         
-        this.children.map((quad) => {
+        this.children.forEach((quad) => {
             quad.visible = false;
         });
 

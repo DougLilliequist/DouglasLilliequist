@@ -1,12 +1,12 @@
-import ProjectQuad from "../Projects/ProjectQuad/ProjectQuad";
-import DomquadMediator from '../../extras/DomQuad/DomquadMediator';
+import ProjectQuad from "../Projects/ProjectQuad/ProjectQuad.js";
+import DomquadMediator from '../../extras/DomQuad/DomquadMediator.js';
 
 import eventEmitter from '../../../EventEmitter.js';
 const emitter = eventEmitter.emitter;
 import events from '../../../../utils/events.js';
 
 import {gsap} from 'gsap';
-import { Vec2 } from "../../../../vendors/ogl/src/math/Vec2";
+import { Vec2 } from "../../../../vendors/ogl/src/math/Vec2.js";
 
 export default class ProjectQuadMediator extends DomquadMediator {
   constructor(gl, scene, camera) {
@@ -107,7 +107,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
   
     }
 
-  this.children.map((quad) => {
+  this.children.forEach((quad) => {
 
       quad.visible = true;
 
@@ -206,7 +206,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
         this.updateInputForce({inputDelta, dt});
       }
         
-      this.children.map((quad) => {
+      this.children.forEach((quad) => {
           
         quad.update({force: this.inputForce.y, deltaTime: dt});
         quad.program.uniforms._InputForce.value = Math.min(1.0, Math.abs(this.inputForce.y * 1.0));
@@ -224,7 +224,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
   loopQuads() {
 
-    this.children.map((quad) => {
+    this.children.forEach((quad) => {
 
       if(quad.position.z < -5.0) {
         this.swapQuad({quad, direction: -1});
@@ -276,7 +276,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
     newQuad.setParent(this);
 
     //loop positions
-    this.children.map((quad) => {
+    this.children.forEach((quad) => {
 
       if(quad.position.z < -5.0) {
         quad.position.z += 5.0;
@@ -295,7 +295,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
       
       let quadInView;
 
-      this.children.map((quad) => {  
+      this.children.forEach((quad) => {  
         
         if(quad.inView({inViewPosZ: 0 - this.position.z})) {          
         // if(quad.inView({inViewPosZ: this.position.z})) {          

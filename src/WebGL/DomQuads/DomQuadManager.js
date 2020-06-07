@@ -2,8 +2,8 @@ import eventEmitter from '../../EventEmitter.js';
 const emitter = eventEmitter.emitter;
 import events from '../../../utils/events.js';
 
-import ProjectQuadMediator from './Projects/projectQuadMediator.js'
-import AboutQuadMediator from './About/AboutQudMediator.js';
+import ProjectQuadMediator from './Projects/ProjectQuadMediator.js'
+import AboutQuadMediator from './About/AboutQuadMediator.js';
 
 import {gsap} from 'gsap';
 
@@ -63,7 +63,7 @@ export default class DomQuadManager {
         if(this.activeMediator === null) return;
 
         this.activeMediator.update({dt, inputPos, inputDelta, flowMap});
-        this.activeMediator.children.map((quad) => {
+        this.activeMediator.children.forEach((quad) => {
 
             quad.calcDomToWebGLPos({
                 domElement: this.activeMediator.referenceElement,
@@ -77,7 +77,7 @@ export default class DomQuadManager {
 
         if(this.activeMediator === null) return;
 
-        this.activeMediator.children.map((quad) => {
+        this.activeMediator.children.forEach((quad) => {
           
             quad.updateDimensions({
             domElement: this.activeMediator.referenceElement,
