@@ -1,12 +1,12 @@
-import ProjectQuad from "../Projects/ProjectQuad/ProjectQuad.js";
-import DomquadMediator from '../../extras/DomQuad/DomquadMediator.js';
+import ProjectQuad from "../Projects/ProjectQuad/ProjectQuad";
+import DomquadMediator from '../../extras/DomQuad/DomquadMediator';
 
 import eventEmitter from '../../../EventEmitter.js';
 const emitter = eventEmitter.emitter;
 import events from '../../../../utils/events.js';
 
 import {gsap} from 'gsap';
-import { Vec2 } from "../../../../vendors/ogl/src/math/Vec2.js";
+import { Vec2 } from "../../../../vendors/ogl/src/math/Vec2";
 
 export default class ProjectQuadMediator extends DomquadMediator {
   constructor(gl, scene, camera) {
@@ -67,6 +67,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     //videos
     this.media = media;
+
     //dom element that quads position's and scales will have it's
     //world position and scales be based on
     this.referenceElement = referenceElement;
@@ -74,8 +75,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
     if(this.quadsLoaded === false) {
     
       //create quads for each project video
-      let i = 0;
-      while (i < this.media.length) {
+      for(let i = 0; i < this.media.length; i++) {
 
         const video = this.media[i].media;
 
@@ -92,15 +92,13 @@ export default class ProjectQuadMediator extends DomquadMediator {
         this.calculateDomTransforms({quad});
         
         this.quads[i] = quad;
-        i++;
         
       }
       
       this.quadsLoaded = true;
-      emitter.emit(events.PAUSE_VIDEO); //explicit pause
 
       //only append the amount of quads based on quad count
-      i = 0;
+      let i = 0;
       while(i < this.quadCount) {
         this.quads[i].setParent(this);
         i++;
@@ -146,7 +144,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     this.revealQuadAnim = gsap.timeline({
       onComplete: () => {
-        this.children.map((quad) => {
+        this.children.forEach((quad) => {
           quad.program.uniforms._RevealPhase.value = 1.0
         });
       }
@@ -172,8 +170,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
   hideQuads = () => {
 
-    this.children.map((quad) => {
-
+    this.children.forEach((quad) => {
       gsap.set(quad.program.uniforms._RevealDirection, {
         value: 1.0
       });
@@ -188,7 +185,6 @@ export default class ProjectQuadMediator extends DomquadMediator {
           });
         }
       });
-
     });
 
   }
@@ -196,9 +192,8 @@ export default class ProjectQuadMediator extends DomquadMediator {
   //add the quadratic inertia here as well
   updateInputForce({inputDelta, dt = 14.0}) {
 
-    this.inputForce.y += inputDelta.y * 0.007 / dt;
-    // this.inputForce.y += inputDelta.y * 0.005 / dt;
-
+    this.inputForce.y += inputDelta.y * 0.01 / dt;
+    
   }
 
   update({dt, inputDelta, flowMap}) {
@@ -207,36 +202,49 @@ export default class ProjectQuadMediator extends DomquadMediator {
         this.updateInputForce({inputDelta, dt});
       }
         
-      this.children.forEach((quad) => {
-          
+      // this.children.map((quad) => {
+      for(let i = 0; i < this.children.length; i++) {
+        const quad = this.children[i];
         quad.update({force: this.inputForce.y, deltaTime: dt});
         quad.program.uniforms._InputForce.value = Math.min(1.0, Math.abs(this.inputForce.y * 1.0));
         quad.program.uniforms._Time.value += dt;
         quad.program.uniforms._FlowMap.value = flowMap;
           
-      });
-
-      this.inputForce.y *= this.inputForceInertia;
-      if(Math.abs(this.inputForce.y) < 0.001) this.inputForce.y = 0.0;
+      };
 
       this.loopQuads();
 
+      this.inputForce.y *= this.inputForceInertia;
+      if(Math.abs(this.inputForce.y) < 0.001) this.inputForce.y = 0.0;
+      
   }
 
   loopQuads() {
 
-    this.children.forEach((quad) => {
-
-      if(quad.position.z < -5.0) {
-        this.swapQuad({quad, direction: -1});
-      } else if(quad.position.z > 0.0) {
-        this.swapQuad({quad, direction: 1});
+    for(let i = 0; i < this.children.length; i++) {
+      const quad = this.children[i];
+      if(quad.position.z < -5.0 || quad.position.z > 0.0) {
+        this.swapQuad({quad, direction: quad.position.z < -5.0 ? -1 : 1});
+        break;
       }
+      // if(quad.position.z < -5.0) {
+      //   this.swapQuad({quad, direction: -1});
+      //   break;
+      // } else if(quad.position.z > 0.0) {
+      //   this.swapQuad({quad, direction: 1});
+      //   break;
+      // }
 
-    });
+    };
 
   }
 
+
+  //POTENTIAL REFACTOR?
+  //Add every single quad into transforms
+  //check if quad is inside bounds
+  //if true, set quad to visible and update uniforms etc
+  //if outside, set visibe to false and don't apply update
   swapQuad = ({quad, direction}) => {
 
     //current quad's position
@@ -260,7 +268,10 @@ export default class ProjectQuadMediator extends DomquadMediator {
     //remove quad
     for(let i = 0; i < this.quadCount; i++) {
       if(this.children[i].id === id) {
-        this.removeChild(this.children[i]);        
+        const prevQuad = this.children[i];
+        prevQuad.program.uniforms._RevealPhase.value = 0.0;
+        if(prevQuad.visible) prevQuad.visible = false;
+        this.removeChild(prevQuad); 
         break;
       }
     }
@@ -268,24 +279,21 @@ export default class ProjectQuadMediator extends DomquadMediator {
     //init new quad
     const newQuad = this.quads[index];
     newQuad.position = pos;
+
+    //loop position
+    if(newQuad.position.z < -5.0) {
+      newQuad.position.z += 5.0;
+      } else if(newQuad.position.z > 0.0) {
+        newQuad.position.z -= 5.0;
+    }
     newQuad.program.uniforms._RevealPhase.value = 1.0;
-    
+    if(newQuad.visible === false) newQuad.visible = true;
+
     //calculte position and scale based on reference dom element
     //and append to parent transform
-    this.calculateDomTransforms({quad: newQuad}); 
+    // this.calculateDomTransforms({quad: newQuad}); 
     
     newQuad.setParent(this);
-
-    //loop positions
-    this.children.forEach((quad) => {
-
-      if(quad.position.z < -5.0) {
-        quad.position.z += 5.0;
-      } else if(quad.position.z > 0.0) {
-        quad.position.z -= 5.0;
-      }
-
-    });
 
   }
 
