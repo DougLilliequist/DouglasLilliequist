@@ -39,8 +39,10 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
       this.media = media;
   
       this.video = this.media.video;
+
+      this.loopLimit = 6; //hardcoded for now
   
-      this.initPos = this.position.z = 0 - (posOffset % 5.0);
+      this.initPos = this.position.z = 0 - posOffset;
     
       this.targetPos = this.position.z;
 
@@ -82,7 +84,7 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
     });
   
       this.texture = new Texture(this.gl, {
-        generateMipmaps: false,
+        generateMipmaps: true,
         minFilter: this.gl.LINEAR,
         magFilter: this.gl.LINEAR
       });
@@ -162,21 +164,28 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
     }
   
     update({force}) {
-
-      if(this.video !== null) {
-        this.updateVideoTexture();
-      }
       
       if(this.inScrollMode) {
           
           this.position.z += force;
           this.scrollPhase += force;
 
+          // if(this.position.z < -this.loopLimit) {
+          //   this.position.z += this.loopLimit + 1;
+          // } else if(this.position.z > 1.0) {
+          //   this.position.z -= this.loopLimit + 1;
+          // }
+
       } else {
         this.restorePosition();
       }
 
       this.updateScrollPhase();
+      // this.visible = this.inBounds();
+
+      if(this.video !== null) {
+        this.updateVideoTexture();
+      }
 
     }
 
@@ -264,6 +273,13 @@ import { Plane } from '../../../../../vendors/ogl/src/extras/Plane.js';
       this.video.pause();
   
     }
+
+    // inBounds() {
+
+    //   const roundPosZ = Math.round(this.position.z);
+    //   return (roundPosZ > -5.0 && roundPosZ < 1.0);
+
+    // }
 
     inView({inViewPosZ}) {
   

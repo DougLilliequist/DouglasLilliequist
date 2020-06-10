@@ -22,6 +22,11 @@ export default class DomQuad extends Mesh {
 
     this.viewPlaneSize = new Vec2(1.0, 1.0);
     this.aspect = 1.0;
+    this.w = window.innerWidth;
+    this.h = window.innerHeight;
+    this.wK = 1.0 / this.w;
+    this.hK = 1.0 / this.h;
+    this.rect = null;
 
   }
 
@@ -32,9 +37,16 @@ export default class DomQuad extends Mesh {
     domElement,
     camera
   }) {
+    
+    this.w = window.innerWidth;
+    this.h = window.innerHeight;
+    this.wK = 1.0 / this.w;
+    this.hK = 1.0 / this.h;
+    this.rect = domElement.getBoundingClientRect();
+
     //get current viewplane size based on perspective camera's fov and desired plane distance
     this.cameraViewplaneSize = getCameraViewplaneSize(camera); //make this globally available
-    this.viewportScalePhase = this.calcViewportScalePhase(domElement);
+    this.viewportScalePhase = this.calcViewportScalePhase();
 
     //rename viewplane size
     this.viewPlaneSize.x = this.cameraViewplaneSize.x * this.viewportScalePhase.x;
@@ -45,14 +57,16 @@ export default class DomQuad extends Mesh {
 
   }
 
-  calcViewportScalePhase(domElement) {
+  calcViewportScalePhase() {
     
-    const rect = domElement.getBoundingClientRect();
+    // const rect = domElement.getBoundingClientRect();
+    const {width, height} = this.rect;
+
+
+    const viewportScaleX = width * this.wK;
+    const viewportScaleY = height * this.hK;
     
-    const viewportScaleX = rect.width / window.innerWidth;
-    const viewportScaleY = rect.height / window.innerHeight;
-    
-    this.aspect = rect.width / rect.height;
+    this.aspect = width / height;
 
     return new Vec2(viewportScaleX, viewportScaleY);
   
@@ -63,25 +77,22 @@ export default class DomQuad extends Mesh {
   calcDomToWebGLPos({
     domElement
   }) {
-    
-    const rect = domElement.getBoundingClientRect();
+
+    const {width, height, top, left} = this.rect;
 
     const posPhaseX =
-      2.0 * ((rect.left + (rect.width * 0.5)) / window.innerWidth) - 1.0;
+      2.0 * ((left + (width * 0.5)) * this.wK) - 1.0;
     const posPhaseY =
-      2.0 * ((rect.top + (rect.height * 0.5)) / window.innerHeight) - 1.0;
+      2.0 * ((top + (height * 0.5)) * this.hK) - 1.0;
 
     //a bit isoteric (maybe), but a normalized coordinate plane goes between -1 and 1
     //in my case, I have a normalized position in the domain -1 and 1, which I multiply
     //with the widht and height equal to "half" the near plane's width and height,
     //which gives me a coordinate plane where the domain is [-viewplane size, viewplane size]
     //which will result in the "correct" position on the coordinate plane based on the calculated near plane
-    const posX = posPhaseX * this.cameraViewplaneSize.x;
-    const posY = posPhaseY * this.cameraViewplaneSize.y * -1.0;
+    this.position.x = posPhaseX * this.cameraViewplaneSize.x;
+    this.position.y = posPhaseY * this.cameraViewplaneSize.y * -1.0;
 
-    //set position of quad
-    this.position.x = posX;
-    this.position.y = posY;
   }
 
   dispose() {

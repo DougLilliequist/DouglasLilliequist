@@ -30,7 +30,7 @@ export default class App {
 
         this.navigation = new Navigation();
 
-        this.webGLCTX = new WebGLContext();
+        this.webGLCTX = new WebGLContext({canvas: document.querySelector('.webgl-canvas')});
         
         contentManager.initContent();
 

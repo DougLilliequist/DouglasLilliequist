@@ -154,7 +154,7 @@ export default class Cursor {
     onMouseDown = () => {
 
         this.inScrollMode = true;
-        this.canvas.style.zIndex = 10; //prevent click + drag issues in safari
+        // this.canvas.style.zIndex = 10; //prevent click + drag issues in safari
         this.prevPosition.x = this.target.x;
         this.prevPosition.y = this.target.y;
         this.animateScrollMode();
@@ -179,7 +179,7 @@ export default class Cursor {
 
     onMouseUp = () => {
 
-        this.canvas.style.zIndex = 0; //restore normal browser behaviour
+        // this.canvas.style.zIndex = 0; //restore normal browser behaviour
         this.restore();
 
     }

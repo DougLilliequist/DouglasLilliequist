@@ -23,12 +23,13 @@ class EventEmitter {
         window.addEventListener('mouseup', this.onMouseUp, {
             passive: true
         });
-        window.addEventListener('wheel', this.onScroll, {
-            passive: false
-        });
+        // window.addEventListener('wheel', this.onScroll, {
+        //     passive: false
+        // });
         window.addEventListener('resize', this.onResize);
 
-        gsap.ticker.fps(60);
+        gsap.ticker.fps(240);
+        gsap.ticker.lagSmoothing(0);
         gsap.ticker.add(this.tick);
 
     }
@@ -51,11 +52,11 @@ class EventEmitter {
 
     }
 
-    onScroll = (e) => {
+    // onScroll = (e) => {
 
-        this.emitter.emit(events.SCROLLING, e, false);
+    //     this.emitter.emit(events.SCROLLING, e, false);
 
-    }   
+    // }   
 
     tick = () => {
 

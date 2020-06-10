@@ -21,7 +21,10 @@ void main() {
     toInput.x *= _Aspect;
 
     float phase = smoothstep(_Radius, 0.0, length(toInput));
-    vec3 vel = vec3(_InputVel,1.0 - pow(1.0 - min(1.0, length(_InputVel)), 2.0)) * phase * _Force;
+    // vec3 vel = vec3(_InputVel,1.0 - pow(1.0 - min(1.0, length(_InputVel)), 2.0)) * phase * _Force;
+    float fallOff = 1.0 - min(1.0, length(_InputVel));
+    fallOff *= fallOff;
+    vec3 vel = vec3(_InputVel,1.0 - fallOff) * phase * _Force;
     
     // vec3 vel = vec3(_InputVel,1.0 - pow(1.0 - min(1.0, length(_InputVel)), 2.0)) * _Force;
     // float phase = smoothstep(vel.z * 0.5, 0.0, length(toInput));

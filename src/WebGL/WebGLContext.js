@@ -24,7 +24,7 @@ import {gsap} from 'gsap';
 
 const Stats = require('stats-js'); 
 
-import * as dat from 'dat.gui';
+// import * as dat from 'dat.gui';
 
 // window.gui = new dat.GUI({});
 
@@ -36,30 +36,38 @@ export default class WebGLContext {
     this.initMouseflowMap();
   }
 
-  initScene(container) {
+  initScene({canvas}) {
+    
     this.renderer = new Renderer({
       width: window.innerWidth,
       height: window.innerHeight,
       antialias: true,
-      dpr: 1.0
+      autoClear: true,
+      dpr: 1.0,
+      webgl: 1,
+      canvas
     });
     this.gl = this.renderer.gl;
     this.gl.clearColor(0.9, 0.9, 0.9, 1.0);
 
-    this.gl.canvas.style.position = "absolute";
-    this.gl.canvas.style.width = "100%";
-    this.gl.canvas.style.height = "100%";
-    this.gl.canvas.style.top = "0%";
-    this.gl.canvas.style.left = "0%";
-    this.gl.canvas.style.zIndex = "-1";
+    // this.gl.canvas.style.position = "absolute";
+    // this.gl.canvas.style.width = "100%";
+    // this.gl.canvas.style.height = "100%";
+    // this.gl.canvas.style.top = "0%";
+    // this.gl.canvas.style.left = "0%";
+    // this.gl.canvas.style.zIndex = "-1";
 
-    document.body.appendChild(this.gl.canvas);
+    // document.body.appendChild(this.gl.canvas);
+
+    const {width, height} = this.gl.canvas;
+    this.wk = 1.0 / width;
+    this.hK = 1.0 / height;
 
     this.camera = new Camera(this.gl, {
       fov: 35,
-      aspect: window.innerWidth / window.innerHeight,
+      aspect: width / height,
       near: 0.1,
-      far: 50.0
+      far: 10.0
     });
 
     this.camera.position.set(0.0, 0.0, 1.0);
@@ -70,7 +78,7 @@ export default class WebGLContext {
 
     this.scene = new Transform();
 
-    this.stats = new Stats();
+    // this.stats = new Stats();
     // document.body.appendChild(this.stats.dom);
 
   }
@@ -108,22 +116,21 @@ export default class WebGLContext {
   onMouseDown = (e) => {
 
     this.isInteracting = true;
-    this.inputPos.x = 2.0 * (e.x / window.innerWidth) - 1.0;
-    this.inputPos.y = -1 * (2.0 * (e.y / window.innerHeight) - 1.0);
+    this.inputPos.x = 2.0 * (e.x * this.wk) - 1.0;
+    this.inputPos.y = -1 * (2.0 * (e.y * this.hK) - 1.0);
     this.prevInputPos.copy(this.inputPos);
-    this.inputDelta = this.inputPos.clone().sub(this.prevInputPos);
+    this.inputDelta.copy(this.inputPos).sub(this.prevInputPos);
 
   }
 
   onMouseMove = (e) => {
 
-
-     this.inputPos.x = 2.0 * (e.x / window.innerWidth) - 1.0;
-     this.inputPos.y = -1 * (2.0 * (e.y / window.innerHeight) - 1.0);
+     this.inputPos.x = 2.0 * (e.x * this.wk) - 1.0;
+     this.inputPos.y = -1 * (2.0 * (e.y * this.hK) - 1.0);
      if(this.firstMove === false) {
       this.firstMove = true;
       this.prevInputPos.copy(this.inputPos);
-      this.inputDelta = this.inputPos.clone().sub(this.prevInputPos);
+      this.inputDelta.copy(this.inputPos).sub(this.prevInputPos);
     }
 
   }
@@ -138,7 +145,7 @@ export default class WebGLContext {
   render() {
     this.renderer.render({
       scene: this.scene,
-      camera: this.camera
+      camera: this.camera,
     });
   }
 
@@ -148,7 +155,7 @@ export default class WebGLContext {
     this.deltaTime = (this.currentTime - this.prevtime) / 1000.0;
 
     // if(this.isInteracting) this.inputDelta = this.inputPos.clone().sub(this.prevInputPos);
-    this.inputDelta = this.inputPos.clone().sub(this.prevInputPos);
+    this.inputDelta.copy(this.inputPos).sub(this.prevInputPos);
 
     this.mouseFlowmap.update(this.renderer, {dt: this.deltaTime, inputPos: this.inputPos, inputDelta: this.inputDelta});
 
@@ -173,10 +180,13 @@ export default class WebGLContext {
 
     if(this.resizeContext) this.resizeContext.kill();
 
-    this.resizeContext = gsap.delayedCall(0.05, () => {
+    const w = window.innerWidth;
+    const h = window.innerHeight;
 
-      const w = window.innerWidth;
-      const h = window.innerHeight;
+    this.wk = 1.0 / w;
+    this.hK = 1.0 / h;
+
+    this.resizeContext = gsap.delayedCall(0.05, () => {
 
       this.renderer.setSize(w, h);
       const aspectRatio = w / h;

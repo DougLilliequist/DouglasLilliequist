@@ -340,7 +340,6 @@ export class Renderer {
 
         // Get render list - entails culling and sorting
         const renderList = this.getRenderList({scene, camera, frustumCull, sort});
-
         renderList.forEach(node => {
             node.draw({camera});
         });

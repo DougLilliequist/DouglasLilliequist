@@ -24,6 +24,7 @@ varying float vDist;
 #define MAXVIEWDIST 0.5
 // #define ALPHAFALLOFFDIST 20.0
 #define ALPHAFALLOFFDIST 30.0
+
 void main() {
 
     vec2 uv = vUv;

@@ -22,7 +22,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     this.quadSwapped = false;
     
-    this.position.z = 1.0;
+    this.position.z = 0.0;
 
     this.inputForce = new Vec2(0.0, 0.0);
 
@@ -90,7 +90,6 @@ export default class ProjectQuadMediator extends DomquadMediator {
         );
 
         this.calculateDomTransforms({quad});
-        
         this.quads[i] = quad;
         
       }
@@ -106,11 +105,11 @@ export default class ProjectQuadMediator extends DomquadMediator {
   
     }
 
-  this.children.forEach((quad) => {
+  // this.children.forEach((quad) => {
 
-      quad.visible = true;
+  //     //quad.visible = !quad.inBounds();
 
-  })
+  // });
 
   if(getFirstQuad) {
     this.quadInView = this.getQuadInView();
@@ -209,9 +208,9 @@ export default class ProjectQuadMediator extends DomquadMediator {
         quad.program.uniforms._InputForce.value = Math.min(1.0, Math.abs(this.inputForce.y * 1.0));
         quad.program.uniforms._Time.value += dt;
         quad.program.uniforms._FlowMap.value = flowMap;
-          
-      };
 
+      }
+      
       this.loopQuads();
 
       this.inputForce.y *= this.inputForceInertia;
@@ -223,17 +222,10 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     for(let i = 0; i < this.children.length; i++) {
       const quad = this.children[i];
-      if(quad.position.z < -5.0 || quad.position.z > 0.0) {
-        this.swapQuad({quad, direction: quad.position.z < -5.0 ? -1 : 1});
+      if(quad.position.z < -4.0 || quad.position.z > 1.0) {
+        this.swapQuad({quad, direction: quad.position.z < -4.0 ? -1 : 1});
         break;
       }
-      // if(quad.position.z < -5.0) {
-      //   this.swapQuad({quad, direction: -1});
-      //   break;
-      // } else if(quad.position.z > 0.0) {
-      //   this.swapQuad({quad, direction: 1});
-      //   break;
-      // }
 
     };
 
@@ -281,17 +273,13 @@ export default class ProjectQuadMediator extends DomquadMediator {
     newQuad.position = pos;
 
     //loop position
-    if(newQuad.position.z < -5.0) {
+    if(newQuad.position.z < -4.0) {
       newQuad.position.z += 5.0;
-      } else if(newQuad.position.z > 0.0) {
+      } else if(newQuad.position.z > 1.0) {
         newQuad.position.z -= 5.0;
     }
     newQuad.program.uniforms._RevealPhase.value = 1.0;
     if(newQuad.visible === false) newQuad.visible = true;
-
-    //calculte position and scale based on reference dom element
-    //and append to parent transform
-    // this.calculateDomTransforms({quad: newQuad}); 
     
     newQuad.setParent(this);
 
