@@ -34,14 +34,11 @@
   },
   "dependencies": {
     "@dogstudio/highway": "^2.2.1",
-    "anime": "^0.1.2",
-    "animejs": "^3.1.0",
     "dat.gui": "^0.7.6",
     "glslify": "^7.0.0",
     "gsap": "^3.2.6",
     "ogl": "0.0.42",
     "preload-it": "^1.4.0",
-    "stats-js": "^1.0.1",
     "tiny-emitter": "^2.1.0"
   }
 }
