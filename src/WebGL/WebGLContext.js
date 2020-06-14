@@ -20,9 +20,9 @@ import eventEmitter from '../EventEmitter';
 const emitter = eventEmitter.emitter;
 import events from '../../utils/events';
 
-import {gsap} from 'gsap';
-
-const Stats = require('stats-js'); 
+import {
+  gsap
+} from 'gsap';
 
 // import * as dat from 'dat.gui';
 
@@ -36,30 +36,24 @@ export default class WebGLContext {
     this.initMouseflowMap();
   }
 
-  initScene({canvas}) {
-    
+  initScene({
+    canvas
+  }) {
+
     this.renderer = new Renderer({
       width: window.innerWidth,
       height: window.innerHeight,
-      antialias: true,
-      autoClear: true,
-      dpr: 1.0,
-      webgl: 1,
+      antialias: false,
+      autoClear: false,
       canvas
     });
     this.gl = this.renderer.gl;
     this.gl.clearColor(0.9, 0.9, 0.9, 1.0);
 
-    // this.gl.canvas.style.position = "absolute";
-    // this.gl.canvas.style.width = "100%";
-    // this.gl.canvas.style.height = "100%";
-    // this.gl.canvas.style.top = "0%";
-    // this.gl.canvas.style.left = "0%";
-    // this.gl.canvas.style.zIndex = "-1";
-
-    // document.body.appendChild(this.gl.canvas);
-
-    const {width, height} = this.gl.canvas;
+    const {
+      width,
+      height
+    } = this.gl.canvas;
     this.wk = 1.0 / width;
     this.hK = 1.0 / height;
 
@@ -91,7 +85,9 @@ export default class WebGLContext {
 
   initMouseflowMap() {
 
-    this.mouseFlowmap = new MouseFlowmap(this.gl, {size: 256});
+    this.mouseFlowmap = new MouseFlowmap(this.gl, {
+      size: 256
+    });
 
   }
 
@@ -125,9 +121,9 @@ export default class WebGLContext {
 
   onMouseMove = (e) => {
 
-     this.inputPos.x = 2.0 * (e.x * this.wk) - 1.0;
-     this.inputPos.y = -1 * (2.0 * (e.y * this.hK) - 1.0);
-     if(this.firstMove === false) {
+    this.inputPos.x = 2.0 * (e.x * this.wk) - 1.0;
+    this.inputPos.y = -1 * (2.0 * (e.y * this.hK) - 1.0);
+    if (this.firstMove === false) {
       this.firstMove = true;
       this.prevInputPos.copy(this.inputPos);
       this.inputDelta.copy(this.inputPos).sub(this.prevInputPos);
@@ -146,6 +142,7 @@ export default class WebGLContext {
     this.renderer.render({
       scene: this.scene,
       camera: this.camera,
+      clear: true
     });
   }
 
@@ -157,17 +154,21 @@ export default class WebGLContext {
     // if(this.isInteracting) this.inputDelta = this.inputPos.clone().sub(this.prevInputPos);
     this.inputDelta.copy(this.inputPos).sub(this.prevInputPos);
 
-    this.mouseFlowmap.update(this.renderer, {dt: this.deltaTime, inputPos: this.inputPos, inputDelta: this.inputDelta});
+    this.mouseFlowmap.update(this.renderer, {
+      dt: this.deltaTime,
+      inputPos: this.inputPos,
+      inputDelta: this.inputDelta
+    });
 
     this.domQuadManager.update({
       dt: this.deltaTime,
-      inputPos: this.inputPos, 
+      inputPos: this.inputPos,
       inputDelta: this.inputDelta,
-      flowMap: this.mouseFlowmap.Texture 
+      flowMap: this.mouseFlowmap.Texture
     });
 
     this.render();
-    
+
     this.prevInputPos.copy(this.inputPos);
 
     this.prevtime = this.currentTime;
@@ -178,7 +179,7 @@ export default class WebGLContext {
 
   onResize = () => {
 
-    if(this.resizeContext) this.resizeContext.kill();
+    if (this.resizeContext) this.resizeContext.kill();
 
     const w = window.innerWidth;
     const h = window.innerHeight;
@@ -193,8 +194,8 @@ export default class WebGLContext {
       this.camera.perspective({
         aspect: aspectRatio
       });
-  
-      this.mouseFlowmap.Aspect = w/h;
+
+      this.mouseFlowmap.Aspect = w / h;
 
     });
 

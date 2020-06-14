@@ -1,4 +1,6 @@
-import {Vec3} from '../math/Vec3.js';
+import {
+    Vec3
+} from '../math/Vec3.js';
 
 // TODO: Handle context loss https://www.khronos.org/webgl/wiki/HandlingContextLost
 
@@ -28,7 +30,15 @@ export class Renderer {
         autoClear = true,
         webgl = 2,
     } = {}) {
-        const attributes = {alpha, depth, stencil, antialias, premultipliedAlpha, preserveDrawingBuffer, powerPreference};
+        const attributes = {
+            alpha,
+            depth,
+            stencil,
+            antialias,
+            premultipliedAlpha,
+            preserveDrawingBuffer,
+            powerPreference
+        };
         this.dpr = dpr;
         this.alpha = alpha;
         this.color = true;
@@ -52,8 +62,13 @@ export class Renderer {
 
         // gl state stores to avoid redundant calls on methods used internally
         this.state = {};
-        this.state.blendFunc = {src: this.gl.ONE, dst: this.gl.ZERO};
-        this.state.blendEquation = {modeRGB: this.gl.FUNC_ADD};
+        this.state.blendFunc = {
+            src: this.gl.ONE,
+            dst: this.gl.ZERO
+        };
+        this.state.blendEquation = {
+            modeRGB: this.gl.FUNC_ADD
+        };
         this.state.cullFace = null;
         this.state.frontFace = this.gl.CCW;
         this.state.depthMask = true;
@@ -62,12 +77,15 @@ export class Renderer {
         this.state.flipY = false;
         this.state.unpackAlignment = 4;
         this.state.framebuffer = null;
-        this.state.viewport = {width: null, height: null};
+        this.state.viewport = {
+            width: null,
+            height: null
+        };
         this.state.textureUnits = [];
         this.state.activeTextureUnit = 0;
         this.state.boundBuffer = null;
         this.state.uniformLocations = new Map();
-        
+
         // store requested extensions
         this.extensions = {};
 
@@ -86,7 +104,7 @@ export class Renderer {
             this.getExtension('WEBGL_depth_texture');
             this.getExtension('WEBGL_draw_buffers');
         }
-        
+
         // Create method aliases using extension (WebGL1) or native if available (WebGL2)
         this.vertexAttribDivisor = this.getExtension('ANGLE_instanced_arrays', 'vertexAttribDivisor', 'vertexAttribDivisorANGLE');
         this.drawArraysInstanced = this.getExtension('ANGLE_instanced_arrays', 'drawArraysInstanced', 'drawArraysInstancedANGLE');
@@ -99,7 +117,7 @@ export class Renderer {
         // Store device parameters
         this.parameters = {};
         this.parameters.maxTextureUnits = this.gl.getParameter(this.gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS);
-        this.parameters.maxAnisotropy = this.getExtension('EXT_texture_filter_anisotropic') ? 
+        this.parameters.maxAnisotropy = this.getExtension('EXT_texture_filter_anisotropic') ?
             this.gl.getParameter(this.getExtension('EXT_texture_filter_anisotropic').MAX_TEXTURE_MAX_ANISOTROPY_EXT) : 0;
 
     }
@@ -188,7 +206,10 @@ export class Renderer {
         this.gl.activeTexture(this.gl.TEXTURE0 + value);
     }
 
-    bindFramebuffer({target = this.gl.FRAMEBUFFER, buffer = null} = {}) {
+    bindFramebuffer({
+        target = this.gl.FRAMEBUFFER,
+        buffer = null
+    } = {}) {
         if (this.state.framebuffer === buffer) return;
         this.state.framebuffer = buffer;
         this.gl.bindFramebuffer(target, buffer);
@@ -229,7 +250,8 @@ export class Renderer {
     sortTransparent(a, b) {
         if (a.renderOrder !== b.renderOrder) {
             return a.renderOrder - b.renderOrder;
-        } if (a.zDepth !== b.zDepth) {
+        }
+        if (a.zDepth !== b.zDepth) {
             return b.zDepth - a.zDepth;
         } else {
             return b.id - a.id;
@@ -246,7 +268,12 @@ export class Renderer {
         }
     }
 
-    getRenderList({scene, camera, frustumCull, sort}) {
+    getRenderList({
+        scene,
+        camera,
+        frustumCull,
+        sort
+    }) {
         let renderList = [];
 
         if (camera && frustumCull) camera.updateFrustum();
@@ -339,9 +366,16 @@ export class Renderer {
         if (camera) camera.updateMatrixWorld();
 
         // Get render list - entails culling and sorting
-        const renderList = this.getRenderList({scene, camera, frustumCull, sort});
+        const renderList = this.getRenderList({
+            scene,
+            camera,
+            frustumCull,
+            sort
+        });
         renderList.forEach(node => {
-            node.draw({camera});
+            node.draw({
+                camera
+            });
         });
     }
 }

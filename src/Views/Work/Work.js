@@ -5,18 +5,20 @@ import eventEmitter from '../../EventEmitter.js';
 const emitter = eventEmitter.emitter;
 import events from '../../../utils/events.js';
 
-import {gsap} from 'gsap';
+import {
+  gsap
+} from 'gsap';
 
 
 export default class Work extends View {
 
   onEnter() {
-  
+
     super.onEnter();
     this.initReferences();
     this.initEvents();
 
-    if(window.contentLoaded) {
+    if (window.contentLoaded) {
       this.initDomGL();
     }
 
@@ -25,7 +27,7 @@ export default class Work extends View {
   onEnterCompleted() {
     super.onEnterCompleted();
 
-    if(window.contentLoaded) {
+    if (window.contentLoaded) {
       emitter.emit(events.SHOW_CLICKDRAG_CTA);
       this.playEnterAnim();
     }
@@ -58,24 +60,28 @@ export default class Work extends View {
     this.enableUserInteraction = true;
     this.inScrollMode = false;
     this.inTraverseMode = false;
-    
-    emitter.on(events.CONTENT_LOADED,this.initDomGL);
+
+    emitter.on(events.CONTENT_LOADED, this.initDomGL);
     emitter.on(events.LOADING_ANIM_COMPLETED, () => { //RENAME FUNCTION
       this.playEnterAnim();
       emitter.emit(events.SHOW_CLICKDRAG_CTA);
     });
-    
+
     emitter.on(events.LOAD_PROJECT_CONTENT, this.populateContent);
     emitter.on(events.MOUSE_DOWN, this.enableScrollMode);
     emitter.on(events.MOUSE_UP, this.disableScrollMode);
 
     this.projectLink.addEventListener('mouseenter', () => {
-      this.updateLinkHoverState({hovering: true});
+      this.updateLinkHoverState({
+        hovering: true
+      });
     });
     this.projectLink.addEventListener('mouseleave', () => {
-      this.updateLinkHoverState({hovering: false});
+      this.updateLinkHoverState({
+        hovering: false
+      });
     });
-  
+
   }
 
   removeEvents() {
@@ -87,12 +93,16 @@ export default class Work extends View {
     emitter.off(events.LOAD_PROJECT_CONTENT, this.populateContent);
     emitter.off(events.MOUSE_DOWN, this.enableScrollMode);
     emitter.off(events.MOUSE_UP, this.disableScrollMode);
-    
+
     this.projectLink.removeEventListener('mouseenter', () => {
-      this.updateLinkHoverState({hovering: true});
+      this.updateLinkHoverState({
+        hovering: true
+      });
     });
     this.projectLink.removeEventListener('mouseleave', () => {
-      this.updateLinkHoverState({hovering: false});
+      this.updateLinkHoverState({
+        hovering: false
+      });
     });
 
   }
@@ -101,11 +111,14 @@ export default class Work extends View {
 
     const params = {
       referenceElement: this.domGLReferenceElement,
-      media: contentManager.projects, 
+      media: contentManager.projects,
       getFirstQuad: true
     }
 
-    super.initDomGL({view: "PROJECTS", params});
+    super.initDomGL({
+      view: "PROJECTS",
+      params
+    });
 
   }
 
@@ -126,7 +139,7 @@ export default class Work extends View {
 
   enableScrollMode = () => {
 
-    if(window.hoveringLink) return;
+    if (window.hoveringLink) return;
     document.querySelector('.project-container').classList.add('project-container--scrolling');
     this.inScrollMode = true;
     this.enableUserInteraction = false;
@@ -137,7 +150,7 @@ export default class Work extends View {
 
   disableScrollMode = () => {
 
-    if(window.hoveringLink) return;
+    if (window.hoveringLink) return;
     document.querySelector('.project-container').classList.remove('project-container--scrolling');
     this.inScrollMode = false;
     this.enableUserInteraction = true;
@@ -183,14 +196,13 @@ export default class Work extends View {
       stagger: 0.05,
       // ease: ease
 
-    // }, "<0.3");
+      // }, "<0.3");
     }, "<0.05");
 
     this.enterAnim.fromTo(this.projectLink, {
       opacity: 0.01,
       y: startX
-    },
-    {
+    }, {
       duration: dur,
       opacity: 0.99,
       y: 0,
@@ -226,8 +238,7 @@ export default class Work extends View {
       ease: ease
     }, "<0.01");
 
-    this.leaveAnim.to(this.projectLink,
-    {
+    this.leaveAnim.to(this.projectLink, {
       duration: dur,
       opacity: 0.01,
       ease: ease
@@ -242,12 +253,11 @@ export default class Work extends View {
     this.scrollAnim = gsap.timeline({});
 
     const scrolling = this.inScrollMode;
-    const pow =  "power1.out";
+    const pow = "power1.out";
 
     this.scrollAnim.fromTo(this.projectTitle, {
       y: scrolling ? 0 : -10
-    },
-    {
+    }, {
       duration: scrolling ? 0.1 : 0.75,
       y: 0,
       opacity: scrolling ? 0.01 : 0.99,
@@ -258,8 +268,7 @@ export default class Work extends View {
       duration: scrolling ? 0.1 : 1.0,
       stagger: scrolling ? 0.0 : 0.1,
     }, scrolling ? "<" : "<0.05")
-    this.scrollAnim.to(this.projectLink,
-    {
+    this.scrollAnim.to(this.projectLink, {
       duration: scrolling ? 0.1 : 0.5,
       opacity: scrolling ? 0.01 : 0.99,
       ease: pow
@@ -267,10 +276,12 @@ export default class Work extends View {
 
   }
 
-  updateLinkHoverState({hovering}) {
+  updateLinkHoverState({
+    hovering
+  }) {
 
-    if(this.inScrollMode === false) {
-      if(hovering) {
+    if (this.inScrollMode === false) {
+      if (hovering) {
         emitter.emit(events.HOVERING_LINK)
         window.hoveringLink = hovering;
       } else {
@@ -284,8 +295,8 @@ export default class Work extends View {
 
   killActiveAnimations() {
 
-    if(this.enterAnim) this.enterAnim.kill();
-    if(this.scrollAnim) this.scrollAnim.kill();
+    if (this.enterAnim) this.enterAnim.kill();
+    if (this.scrollAnim) this.scrollAnim.kill();
 
   }
 

@@ -5,8 +5,12 @@ import eventEmitter from '../../../EventEmitter.js';
 const emitter = eventEmitter.emitter;
 import events from '../../../../utils/events.js';
 
-import {gsap} from 'gsap';
-import { Vec2 } from "../../../../vendors/ogl/src/math/Vec2";
+import {
+  gsap
+} from 'gsap';
+import {
+  Vec2
+} from "../../../../vendors/ogl/src/math/Vec2";
 
 export default class ProjectQuadMediator extends DomquadMediator {
   constructor(gl, scene, camera) {
@@ -21,7 +25,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
     this.quadInView;
 
     this.quadSwapped = false;
-    
+
     this.position.z = 0.0;
 
     this.inputForce = new Vec2(0.0, 0.0);
@@ -56,7 +60,11 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
   }
 
-  initQuads = ({referenceElement, media, getFirstQuad}) => {
+  initQuads = ({
+    referenceElement,
+    media,
+    getFirstQuad
+  }) => {
 
     this.setParent(this.scene);
 
@@ -72,10 +80,10 @@ export default class ProjectQuadMediator extends DomquadMediator {
     //world position and scales be based on
     this.referenceElement = referenceElement;
 
-    if(this.quadsLoaded === false) {
-    
+    if (this.quadsLoaded === false) {
+
       //create quads for each project video
-      for(let i = 0; i < this.media.length; i++) {
+      for (let i = 0; i < this.media.length; i++) {
 
         const video = this.media[i].media;
 
@@ -89,34 +97,27 @@ export default class ProjectQuadMediator extends DomquadMediator {
           }
         );
 
-        this.calculateDomTransforms({quad});
-        this.quads[i] = quad;
-        
+        this.calculateDomTransforms({
+          quad
+        });
+        quad.setParent(this);
+
       }
-      
+
       this.quadsLoaded = true;
 
-      //only append the amount of quads based on quad count
-      let i = 0;
-      while(i < this.quadCount) {
-        this.quads[i].setParent(this);
-        i++;
-      }
-  
     }
 
-  // this.children.forEach((quad) => {
+    this.children.forEach((quad) => {
 
-  //     //quad.visible = !quad.inBounds();
+      quad.visible = true;
 
-  // });
+    });
 
-  if(getFirstQuad) {
-    this.quadInView = this.getQuadInView();
-    this.quadInView.playVideo();
-  }
-
-    // this.revealQuads();
+    if (getFirstQuad) {
+      this.quadInView = this.getQuadInView();
+      this.quadInView.playVideo();
+    }
 
   }
 
@@ -134,12 +135,12 @@ export default class ProjectQuadMediator extends DomquadMediator {
     this.quadInView = this.getQuadInView();
     this.quadInView.playVideo();
     emitter.emit(events.REMOVE_SCROLL_MODE_ANIM);
-    
+
   }
 
   revealQuads = () => {
 
-    if(this.revealQuadAnim) this.revealQuadAnim.kill();
+    if (this.revealQuadAnim) this.revealQuadAnim.kill();
 
     this.revealQuadAnim = gsap.timeline({
       onComplete: () => {
@@ -164,7 +165,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
       value: 1.0,
       ease: "circ.inOut",
     }, "<");
-      
+
   }
 
   hideQuads = () => {
@@ -173,7 +174,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
       gsap.set(quad.program.uniforms._RevealDirection, {
         value: 1.0
       });
-  
+
       gsap.to(quad.program.uniforms._RevealPhase, {
         duration: 0.9,
         value: 0.0,
@@ -189,99 +190,45 @@ export default class ProjectQuadMediator extends DomquadMediator {
   }
 
   //add the quadratic inertia here as well
-  updateInputForce({inputDelta, dt = 14.0}) {
+  updateInputForce({
+    inputDelta,
+    dt = 14.0
+  }) {
 
     this.inputForce.y += inputDelta.y * 0.01 / dt;
-    
+
   }
 
-  update({dt, inputDelta, flowMap}) {
+  update({
+    dt,
+    inputDelta,
+    flowMap
+  }) {
 
-      if(this.inScrollMode) {
-        this.updateInputForce({inputDelta, dt});
-      }
-        
-      // this.children.map((quad) => {
-      for(let i = 0; i < this.children.length; i++) {
-        const quad = this.children[i];
-        quad.update({force: this.inputForce.y, deltaTime: dt});
-        quad.program.uniforms._InputForce.value = Math.min(1.0, Math.abs(this.inputForce.y * 1.0));
-        quad.program.uniforms._Time.value += dt;
-        quad.program.uniforms._FlowMap.value = flowMap;
+    if (this.inScrollMode) {
+      this.updateInputForce({
+        inputDelta,
+        dt
+      });
+    }
 
-      }
-      
-      this.loopQuads();
-
-      this.inputForce.y *= this.inputForceInertia;
-      if(Math.abs(this.inputForce.y) < 0.001) this.inputForce.y = 0.0;
-      
-  }
-
-  loopQuads() {
-
-    for(let i = 0; i < this.children.length; i++) {
+    // this.children.map((quad) => {
+    for (let i = 0; i < this.children.length; i++) {
       const quad = this.children[i];
-      if(quad.position.z < -4.0 || quad.position.z > 1.0) {
-        this.swapQuad({quad, direction: quad.position.z < -4.0 ? -1 : 1});
-        break;
-      }
+      quad.update({
+        force: this.inputForce.y,
+        deltaTime: dt
+      });
+      quad.program.uniforms._InputForce.value = Math.min(1.0, Math.abs(this.inputForce.y * 1.0));
+      quad.program.uniforms._Time.value += dt;
+      quad.program.uniforms._FlowMap.value = flowMap;
 
-    };
-
-  }
-
-
-  //POTENTIAL REFACTOR?
-  //Add every single quad into transforms
-  //check if quad is inside bounds
-  //if true, set quad to visible and update uniforms etc
-  //if outside, set visibe to false and don't apply update
-  swapQuad = ({quad, direction}) => {
-
-    //current quad's position
-    const pos = quad.position;
-    
-    //current quad's ID
-    const id = quad.id;
-
-    //current quad's index;
-    let index = quad.index;
-
-    //increase or decrease index based on active quad length which will be used
-    //to tell which quad to append
-    index = direction <= -1 ? index - this.quadCount : index + this.quadCount;
-
-    //loop index
-    //*NOTE* I have no idea how it makes sense, but after some pen & paper coding I noticed
-    //that applying the delta between the video count and the quad count gives me the desired index
-    index = (((index % this.quads.length) + this.quads.length) % this.quads.length);
-
-    //remove quad
-    for(let i = 0; i < this.quadCount; i++) {
-      if(this.children[i].id === id) {
-        const prevQuad = this.children[i];
-        prevQuad.program.uniforms._RevealPhase.value = 0.0;
-        if(prevQuad.visible) prevQuad.visible = false;
-        this.removeChild(prevQuad); 
-        break;
-      }
     }
-    
-    //init new quad
-    const newQuad = this.quads[index];
-    newQuad.position = pos;
 
-    //loop position
-    if(newQuad.position.z < -4.0) {
-      newQuad.position.z += 5.0;
-      } else if(newQuad.position.z > 1.0) {
-        newQuad.position.z -= 5.0;
-    }
-    newQuad.program.uniforms._RevealPhase.value = 1.0;
-    if(newQuad.visible === false) newQuad.visible = true;
-    
-    newQuad.setParent(this);
+    // this.loopQuads();
+
+    this.inputForce.y *= this.inputForceInertia;
+    if (Math.abs(this.inputForce.y) < 0.001) this.inputForce.y = 0.0;
 
   }
 
@@ -289,25 +236,29 @@ export default class ProjectQuadMediator extends DomquadMediator {
   //and offsetted by the parents transform. That way I'll get the quad
   //that is in view of the camera (or simply in front)
   getQuadInView() {
-      
-      let quadInView;
 
-      this.children.forEach((quad) => {  
-        
-        if(quad.inView({inViewPosZ: 0 - this.position.z})) {          
+    let quadInView;
+
+    this.children.forEach((quad) => {
+
+      if (quad.inView({
+          inViewPosZ: 0
+        })) {
         // if(quad.inView({inViewPosZ: this.position.z})) {          
-          quadInView = quad;
-          emitter.emit(events.LOAD_PROJECT_CONTENT, quadInView.index);
+        quadInView = quad;
+        emitter.emit(events.LOAD_PROJECT_CONTENT, quadInView.index);
 
-        }
-      
-      });
+      }
 
-      return quadInView;
-      
+    });
+
+    return quadInView;
+
   }
 
-  calculateDomTransforms({quad}) {
+  calculateDomTransforms({
+    quad
+  }) {
 
     quad.updateDimensions({
       domElement: this.referenceElement,

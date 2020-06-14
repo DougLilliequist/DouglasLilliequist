@@ -1,7 +1,9 @@
 const Emitter = require('tiny-emitter');
 import events from '../utils/events';
 
-import {gsap} from 'gsap';
+import {
+    gsap
+} from 'gsap';
 
 class EventEmitter {
 
@@ -28,14 +30,12 @@ class EventEmitter {
         // });
         window.addEventListener('resize', this.onResize);
 
-        gsap.ticker.fps(240);
-        gsap.ticker.lagSmoothing(0);
         gsap.ticker.add(this.tick);
 
     }
 
     onMouseDown = (e) => {
-        
+
         this.emitter.emit(events.MOUSE_DOWN, e, false);
 
     }
