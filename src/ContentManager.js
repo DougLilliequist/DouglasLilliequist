@@ -60,9 +60,6 @@ class ContentManager {
 
             if (c.media.videoSrc) {
 
-                // this.loadVideo({src: c.media.videoSrc}).then((video) => {
-                //     c.media.video = video;
-                // });
                 c.media.video = this.loadVideo({
                     src: c.media.videoSrc
                 });
@@ -70,10 +67,6 @@ class ContentManager {
 
             if (c.media.imageSrc) {
 
-
-                // this.loadImage({src: c.media.imageSrc}).then((image) => {
-                //     c.media.image = image;
-                // });
                 c.media.image = this.loadImage({
                     src: c.media.imageSrc
                 });
@@ -90,13 +83,9 @@ class ContentManager {
         src
     }) {
 
-        // return new Promise((resolve) => {
-
-        // fetch(src).then((res) => {
-
         const video = document.createElement('video');
 
-        video.preload = "none";
+        //video.preload = "none";
 
         video.crossOrigin = "*";
 
@@ -107,8 +96,8 @@ class ContentManager {
         //         resolve(video);
         //     }
         // });
-        video.src = this.preLoader.getItemByUrl(src).url;
 
+        video.src = this.preLoader.getItemByUrl(src).url;
 
         video.setAttribute('webkit-playsinline', true);
 
@@ -118,17 +107,9 @@ class ContentManager {
 
         video.loop = true;
 
-        video.load();
-
         video.currentTime = Math.random() + 0.01;
 
         return video;
-        // resolve(video);
-        // resolve(video);
-
-        // });
-
-        // });
 
     }
 
@@ -136,22 +117,13 @@ class ContentManager {
         src
     }) {
 
-        // return new Promise((resolve) => {
-
         const img = new Image();
 
         img.crossOrigin = "*";
 
-        // img.addEventListener('load' , () => {
-        //     resolve(img);
-        // });
-
-        img.src = src;
+        img.src = this.preLoader.getItemByUrl(src).url;
 
         return img;
-        // resolve(img);
-
-        // });
 
     }
 
@@ -164,32 +136,6 @@ class ContentManager {
             window.contentLoaded = true;
             emitter.emit(events.CONTENT_LOADED);
         }
-
-    }
-
-    getFetchCount({
-        viewContent
-    }) {
-
-        let count = 0;
-
-        viewContent.map((content) => {
-
-            content.map((c) => {
-
-                if (c.media.videoSrc) {
-                    count++;
-                }
-
-                if (c.media.imageSrc) {
-                    count++;
-                }
-
-            });
-
-        })
-
-        return count;
 
     }
 

@@ -1,9 +1,21 @@
-import { Transform } from "../../../vendors/ogl/src/core/Transform";
-import {Triangle} from "../../../vendors/ogl/src/extras/Triangle";
-import {Mesh} from "../../../vendors/ogl/src/core/Mesh";
-import {Program} from "../../../vendors/ogl/src/core/Program";
-import { Vec2 } from "../../../vendors/ogl/src/math/Vec2";
-import { RenderTarget } from "../../../vendors/ogl/src/core/RenderTarget";
+import {
+    Transform
+} from "../../../vendors/ogl/src/core/Transform";
+import {
+    Triangle
+} from "../../../vendors/ogl/src/extras/Triangle";
+import {
+    Mesh
+} from "../../../vendors/ogl/src/core/Mesh";
+import {
+    Program
+} from "../../../vendors/ogl/src/core/Program";
+import {
+    Vec2
+} from "../../../vendors/ogl/src/math/Vec2";
+import {
+    RenderTarget
+} from "../../../vendors/ogl/src/core/RenderTarget";
 
 const vert = require('./shaders/mouseFlowmap.vert');
 const frag = require('./shaders/mouseFlowmap.frag');
@@ -28,7 +40,7 @@ export default class MouseFlowmap {
 
         this.read = this.createRenderTexture(size);
         this.write = this.createRenderTexture(size);
-        
+
     }
 
     swap() {
@@ -46,7 +58,8 @@ export default class MouseFlowmap {
             height: s,
             type: this.gl.HALF_FLOAT || this.gl.renderer.extensions['OES_texture_half_float'].HALF_FLOAT_OES,
             format: this.gl.RGBA,
-            internalFormat: this.gl.RGBA16F,
+            internalFormat: this.gl.renderer.isWebgl2 ?
+                this.gl.RGBA16F : this.gl.RGBA,
             depth: false
         }
         return new RenderTarget(this.gl, params);
@@ -90,12 +103,19 @@ export default class MouseFlowmap {
             depthWrite: false,
         });
 
-        this.flowMap = new Mesh(this.gl, {geometry: geo, program: program});
+        this.flowMap = new Mesh(this.gl, {
+            geometry: geo,
+            program: program
+        });
         this.flowMap.setParent(this.scene);
 
     }
 
-    update(renderer, {dt = 1.0, inputPos, inputDelta}) {
+    update(renderer, {
+        dt = 1.0,
+        inputPos,
+        inputDelta
+    }) {
 
         this.flowMap.program.uniforms._InputPos.value.copy(inputPos);
 
@@ -106,7 +126,11 @@ export default class MouseFlowmap {
 
         this.flowMap.program.uniforms._PrevFrame.value = this.read.texture;
 
-        renderer.render({scene: this.scene, target: this.write, clear: false});
+        renderer.render({
+            scene: this.scene,
+            target: this.write,
+            clear: false
+        });
 
         this.swap();
 

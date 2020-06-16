@@ -49,7 +49,9 @@ export default class Work extends View {
   initReferences() {
 
     this.domGLReferenceElement = this.el.querySelector('.project-video');
-    this.projectTitle = this.el.querySelector('.title-container__title');
+    this.projectTitle = document.getElementById('project_title');
+    this.projectType = document.getElementById('project_type');
+    this.projectYear = document.getElementById('project_year');
     this.projectContentInfo = this.el.querySelectorAll('.project-info');
     this.projectLink = this.el.querySelector(".project-link");
 
@@ -124,16 +126,32 @@ export default class Work extends View {
 
   populateContent = (contentIndex) => {
 
-    const projectContent = contentManager.Projects[contentIndex];
-    document.getElementById('project_title').innerHTML = projectContent.title;
-    document.getElementById('project_type').innerHTML = projectContent.type;
-    document.getElementById('project_year').innerHTML = projectContent.year;
-    document.getElementById('project_description').innerHTML = projectContent.description;
-    document.getElementById('project_tech').innerHTML = projectContent.tech;
+    const {
+      title,
+      type,
+      year,
+      description,
+      tech,
+      role,
+      link
+    } = contentManager.Projects[contentIndex];
+    document.getElementById('project_title').innerHTML = title;
+    document.getElementById('project_type').innerHTML = type;
+    document.getElementById('project_year').innerHTML = year;
+    document.getElementById('project_description').innerHTML = description;
+    document.getElementById('project_tech').innerHTML = tech;
 
-    const link = document.getElementById('project_link');
-    link.innerHTML = projectContent.link === '' ? '' : "view project";
-    link.href = projectContent.link;
+    document.getElementById('project_role').innerHTML = role !== null ? role : '';
+    document.getElementById('project_role').style.display = role !== null ? 'inline-block' : 'none';
+    // if (role === null) {
+    //   document.getElementById('project_role').innerHTML = role;
+    // } else {
+    //   document.getElementById('project_role').style.display = "none";
+    // }
+
+    const projectLink = document.getElementById('project_link');
+    projectLink.innerHTML = link === '' ? '' : "view project";
+    projectLink.href = link;
 
   }
 
@@ -170,12 +188,12 @@ export default class Work extends View {
     });
 
     const ease = "sine.inOut";
-    const startX = 20;
+    const startY = 5;
     const dur = 0.85
 
     this.enterAnim.fromTo(this.projectTitle, {
       opacity: 0.01,
-      y: -startX,
+      y: -startY,
     }, {
       duration: dur,
       opacity: 0.99,
@@ -186,7 +204,7 @@ export default class Work extends View {
     this.enterAnim.fromTo(this.projectContentInfo, {
 
       opacity: 0.01,
-      y: startX
+      y: startY
 
     }, {
 
@@ -199,9 +217,25 @@ export default class Work extends View {
       // }, "<0.3");
     }, "<0.05");
 
+    this.enterAnim.fromTo(this.projectType, {
+      opacity: 0.01,
+    }, {
+      duration: dur,
+      opacity: 0.99,
+      ease: ease
+    }, "<");
+
+    this.enterAnim.fromTo(this.projectYear, {
+      opacity: 0.01
+    }, {
+      duration: dur,
+      opacity: 0.99,
+      ease: ease
+    }, "<0.01");
+
     this.enterAnim.fromTo(this.projectLink, {
       opacity: 0.01,
-      y: startX
+      y: startY
     }, {
       duration: dur,
       opacity: 0.99,
@@ -222,7 +256,6 @@ export default class Work extends View {
 
     const ease = "sine.inOut";
     const dur = 0.75;
-    const targetX = -20;
 
     this.leaveAnim.to(this.projectTitle, {
       opacity: 0.01,
@@ -236,13 +269,25 @@ export default class Work extends View {
       opacity: 0.01,
       stagger: -0.05,
       ease: ease
-    }, "<0.01");
+    }, "<");
+
+    this.leaveAnim.to(this.projectType, {
+      duration: dur,
+      opacity: 0.01,
+      ease: ease
+    }, "<");
+
+    this.leaveAnim.to(this.projectYear, {
+      duration: dur,
+      opacity: 0.01,
+      ease: ease
+    }, "<");
 
     this.leaveAnim.to(this.projectLink, {
       duration: dur,
       opacity: 0.01,
       ease: ease
-    }, "<0.01");
+    }, "<");
 
   }
 
@@ -256,13 +301,25 @@ export default class Work extends View {
     const pow = "power1.out";
 
     this.scrollAnim.fromTo(this.projectTitle, {
-      y: scrolling ? 0 : -10
+      y: scrolling ? 0 : -5
     }, {
       duration: scrolling ? 0.1 : 0.75,
       y: 0,
       opacity: scrolling ? 0.01 : 0.99,
       ease: pow
     }, "<");
+    this.scrollAnim.to(this.projectType, {
+      duration: scrolling ? 0.01 : 0.75,
+      y: 0,
+      opacity: scrolling ? 0.01 : 0.99,
+      ease: pow
+    }, "<0.05");
+    this.scrollAnim.to(this.projectYear, {
+      duration: scrolling ? 0.01 : 0.75,
+      y: 0,
+      opacity: scrolling ? 0.01 : 0.99,
+      ease: pow
+    }, "<0.02");
     this.scrollAnim.to(this.projectContentInfo, {
       opacity: scrolling ? 0.01 : 0.99,
       duration: scrolling ? 0.1 : 1.0,

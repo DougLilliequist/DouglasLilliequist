@@ -4,10 +4,9 @@ export const AboutContent = [
 
     {
         title: "Hi!",
-        introText: "Im Swedish Creative Technologist at Adventure Club in Helsinki. I want to use my skills to create surreal and interactive experiences that in some way, makes one dream or feel inspired in some way! As well as be able to manifest my ideas and dream while awake.",
+        introText: 'I\'m a Swedish Creative Technologist with passion for interactivity and making visually interesting experiences, at Adventure Club Helsinki. I want to use my skills to create experiences that in some way, makes one dream or feel inspired!\nThis portfolio is a showcase of my recent client work and sketches, where I\'m still exploring visual approaches and finding "my own voice".',
         contactHeader: "Feel free to reach me on...",
-        contactMethods: [
-            {
+        contactMethods: [{
                 type: "mail",
                 url: "mailto:douglas@adventureclub.io"
             },

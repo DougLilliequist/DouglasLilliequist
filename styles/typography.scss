@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Muli:wght@300;600;700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Muli:wght@300;600;700;900&display=swap');
 $muli: 'Muli', sans-serif;
 
 $light: 300;
 $semi-bold: 600;
 $bold: 700;
+$black: 900;
 
 $minFontSize-body: 10px;
 $maxFontSize-body: 10px;
@@ -23,15 +23,18 @@ $maxFontSize__loading-title: 30px;
 $minFontSize__loading-sub-title: 5px;
 $maxFontSize__loading-sub-title: 20px;
 
-//project typograpgy rules
+//project typography rules
 $minFontSize__projects-title: 12px;
-$maxFontSize__projects-title: 30px;
+$maxFontSize__projects-title: 33.5px;
 
 $minFontSize__projects-header: 8px;
 $maxFontSize__projects-header: 16px;
 
-$minFontSize__projects-body: 5px;
-$maxFontSize__projects-body: 13px;
+$minFontSize__projects-body: 7px;
+$maxFontSize__projects-body: 12px;
+
+$minFontSize__projects-details: 7px;
+$maxFontSize__projects-details: 9px;
 
 //about page
 $minFontSize__about-header: 15px;

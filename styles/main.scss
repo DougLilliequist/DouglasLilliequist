@@ -26,7 +26,7 @@ body {
     width: 100vw;
     height: 100vh;
     position: fixed;
-    // z-index: 0;
+    z-index: -1;
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -40,7 +40,7 @@ body {
     position: fixed;
     top: 0%;
     left: 0%;
-    z-index: -1;
+    z-index: -2;
 
 }
 
@@ -97,19 +97,30 @@ body {
 
 .navigation {
 
-    position: relative;
+    position: absolute;
+    height: 100vh;
+    width: 7vw;
+    right: 0%;
     z-index: 0;
-    user-select: none;
-    -webkit-user-select: none;
+    // user-select: none;
+    // -webkit-user-select: none;
 
     &__links {
         
+        position: absolute;
+        writing-mode: vertical-lr;
         list-style: none;
         display: flex;
-        justify-content: space-evenly;
-        padding: 0;
+        justify-content: center;
+        align-items: center;
         width: 100%;
+        top: 5%;
+        padding: 0;
         margin: 0;
+
+        li {
+            display: inline-block;
+        }
         
         .link {
             text-decoration: none;
@@ -144,16 +155,16 @@ body {
             &::before {
 
                 position: absolute;
-                width: 100%;
+                height: 100%;
                 bottom: 0%;
-                height: 1px;
+                width: 1px;
                 background-color: black;
                 content: '';
-                will-change: transform;
-                transform: scaleX(0);
+                transform: scaleY(0);
                 transform-origin: bottom right;
                 transition: transform 0.2s;
-    
+                will-change: transform;
+
             }
 
             &:hover {
@@ -163,10 +174,10 @@ body {
                 will-change: opacity;
 
                 &::before {
-                    will-change: transform;
-                    transform: scaleX(1);
-                    transform-origin: bottom left;
+                    transform: scaleY(1);
+                    transform-origin: top left;
                     transition: transform 0.2s;
+                    will-change: transform;
                 }
     
             }

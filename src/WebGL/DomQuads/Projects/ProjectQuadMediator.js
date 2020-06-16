@@ -100,6 +100,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
         this.calculateDomTransforms({
           quad
         });
+
         quad.setParent(this);
 
       }
@@ -189,30 +190,15 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
   }
 
-  //add the quadratic inertia here as well
-  updateInputForce({
-    inputDelta,
-    dt = 14.0
-  }) {
-
-    this.inputForce.y += inputDelta.y * 0.01 / dt;
-
-  }
-
   update({
     dt,
     inputDelta,
     flowMap
   }) {
 
-    if (this.inScrollMode) {
-      this.updateInputForce({
-        inputDelta,
-        dt
-      });
-    }
+    this.inputForce.y += this.inScrollMode ? inputDelta.y * 0.007 / dt : 0.0;
+    this.inputForce.y *= (Math.abs(this.inputForce.y) < 0.001) ? 0.0 : this.inputForceInertia;
 
-    // this.children.map((quad) => {
     for (let i = 0; i < this.children.length; i++) {
       const quad = this.children[i];
       quad.update({
@@ -224,11 +210,6 @@ export default class ProjectQuadMediator extends DomquadMediator {
       quad.program.uniforms._FlowMap.value = flowMap;
 
     }
-
-    // this.loopQuads();
-
-    this.inputForce.y *= this.inputForceInertia;
-    if (Math.abs(this.inputForce.y) < 0.001) this.inputForce.y = 0.0;
 
   }
 

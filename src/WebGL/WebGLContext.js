@@ -24,10 +24,6 @@ import {
   gsap
 } from 'gsap';
 
-// import * as dat from 'dat.gui';
-
-// window.gui = new dat.GUI({});
-
 export default class WebGLContext {
   constructor(container) {
     this.initScene(container);
@@ -40,12 +36,15 @@ export default class WebGLContext {
     canvas
   }) {
 
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+
     this.renderer = new Renderer({
-      width: window.innerWidth,
-      height: window.innerHeight,
+      width: w,
+      height: h,
       antialias: false,
-      autoClear: false,
-      canvas
+      canvas,
+      powerPreference: "low-power"
     });
     this.gl = this.renderer.gl;
     this.gl.clearColor(0.9, 0.9, 0.9, 1.0);
@@ -61,7 +60,7 @@ export default class WebGLContext {
       fov: 35,
       aspect: width / height,
       near: 0.1,
-      far: 10.0
+      far: 5.0
     });
 
     this.camera.position.set(0.0, 0.0, 1.0);
@@ -71,9 +70,6 @@ export default class WebGLContext {
     this.deltaTime = 1;
 
     this.scene = new Transform();
-
-    // this.stats = new Stats();
-    // document.body.appendChild(this.stats.dom);
 
   }
 
@@ -147,10 +143,11 @@ export default class WebGLContext {
   }
 
   update = () => {
-    // this.stats.begin();
+
     this.currentTime = performance.now();
     this.deltaTime = (this.currentTime - this.prevtime) / 1000.0;
 
+    let start = performance.now();
     // if(this.isInteracting) this.inputDelta = this.inputPos.clone().sub(this.prevInputPos);
     this.inputDelta.copy(this.inputPos).sub(this.prevInputPos);
 
@@ -173,12 +170,9 @@ export default class WebGLContext {
 
     this.prevtime = this.currentTime;
 
-    // this.stats.end();
-
   }
 
   onResize = () => {
-
     if (this.resizeContext) this.resizeContext.kill();
 
     const w = window.innerWidth;

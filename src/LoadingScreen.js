@@ -2,7 +2,9 @@ import eventEmitter from './EventEmitter.js';
 const emitter = eventEmitter.emitter;
 import events from '../utils/events.js';
 
-import {gsap} from 'gsap';
+import {
+    gsap
+} from 'gsap';
 
 export default class LoadingScreen {
 
@@ -22,7 +24,7 @@ export default class LoadingScreen {
 
         this.title.firstElementChild.innerHTML = "Douglas Lilliequist"
         this.subTitle.firstElementChild.innerHTML = "Creative Technologist"
-        
+
         this.reveal();
 
         this.initEvents();

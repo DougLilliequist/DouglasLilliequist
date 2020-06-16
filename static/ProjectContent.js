@@ -8,6 +8,7 @@ export const ProjectContent = [
         description: 'Beings flocking in a peaceful purgatory',
         tech: 'WebGL(THREE.js) / GLSL / GPGPU',
         year: 2019,
+        role: null,
         link: 'https://douglilliequist.github.io/SpiritualBeings/',
         media: {
             videoSrc: projectVideos.spiritualBeings512512,
@@ -22,6 +23,7 @@ export const ProjectContent = [
         description: 'Evanescent AR voxels',
         tech: 'Unity3D / ARFoundation + ARKit / GPGPU',
         year: 2019,
+        role: null,
         link: '',
         media: {
             videoSrc: projectVideos.sken512512,
@@ -37,6 +39,7 @@ export const ProjectContent = [
         description: 'Shaded particles with noise sampled curl noise',
         tech: 'WebGL(THREE.js) / GPGPU',
         year: 2020,
+        role: null,
         link: 'https://douglilliequist.github.io/CrashingDawn/',
         media: {
             videoSrc: projectVideos.crashingdawn512512,
@@ -49,7 +52,7 @@ export const ProjectContent = [
     {
         title: 'Let\'s Get Physical',
         type: 'Client Project',
-        description: 'Interactive + floor projected lines',
+        description: 'Floor projected trails which reacts to the amount of present people and distance from eachother',
         tech: 'Unity3D / Custom GPGPU ribbons / In-house Blob Detection by Yipp Interactive',
         year: 2019,
         role: 'Developer',
@@ -66,10 +69,11 @@ export const ProjectContent = [
         description: 'Flocking Ribbons',
         tech: 'WebGL(THREE.js) / GLSL / GPGPU',
         year: 2018,
+        role: null,
         link: 'https://douglilliequist.github.io/SKEN/',
         media: {
             videoSrc: projectVideos.sken512512,
-            imageSrc: null, 
+            imageSrc: null,
             brightVal: 0.0
         }
     },
@@ -77,8 +81,9 @@ export const ProjectContent = [
         title: 'Need a hand?',
         type: 'Experiment',
         description: 'Interactive, displacing mesh',
-        tech: 'WebGL(THREE.js) / GLSL /Computed triangles from mesh data',
+        tech: 'WebGL(THREE.js) / GLSL / Computed triangles from mesh data',
         year: 2018,
+        role: null,
         link: 'https://douglilliequist.github.io/needAHand/',
         media: {
             videoSrc: projectVideos.needahand512512,
@@ -95,7 +100,7 @@ export const ProjectContent = [
         role: 'Developer, Designer',
         link: '',
         media: {
-            videoSrc:  projectVideos.gnsw512512,
+            videoSrc: projectVideos.gnsw512512,
             imageSrc: null,
             brightVal: 0.0
         }

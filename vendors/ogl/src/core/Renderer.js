@@ -13,6 +13,7 @@ import {
 // gl.clearStencil( stencil );
 
 const tempVec3 = new Vec3();
+let ID = 1;
 
 export class Renderer {
     constructor({
@@ -46,6 +47,7 @@ export class Renderer {
         this.stencil = stencil;
         this.premultipliedAlpha = premultipliedAlpha;
         this.autoClear = autoClear;
+        this.id = ID++;
 
         // Attempt WebGL2 unless forced to 1, if not supported fallback to WebGL1
         if (webgl === 2) this.gl = canvas.getContext('webgl2', attributes);
@@ -118,8 +120,8 @@ export class Renderer {
         this.parameters = {};
         this.parameters.maxTextureUnits = this.gl.getParameter(this.gl.MAX_COMBINED_TEXTURE_IMAGE_UNITS);
         this.parameters.maxAnisotropy = this.getExtension('EXT_texture_filter_anisotropic') ?
-            this.gl.getParameter(this.getExtension('EXT_texture_filter_anisotropic').MAX_TEXTURE_MAX_ANISOTROPY_EXT) : 0;
-
+            this.gl.getParameter(this.getExtension('EXT_texture_filter_anisotropic').MAX_TEXTURE_MAX_ANISOTROPY_EXT) :
+            0;
     }
 
     setSize(width, height) {
@@ -155,10 +157,13 @@ export class Renderer {
     }
 
     setBlendFunc(src, dst, srcAlpha, dstAlpha) {
-        if (this.state.blendFunc.src === src &&
+        if (
+            this.state.blendFunc.src === src &&
             this.state.blendFunc.dst === dst &&
             this.state.blendFunc.srcAlpha === srcAlpha &&
-            this.state.blendFunc.dstAlpha === dstAlpha) return;
+            this.state.blendFunc.dstAlpha === dstAlpha
+        )
+            return;
         this.state.blendFunc.src = src;
         this.state.blendFunc.dst = dst;
         this.state.blendFunc.srcAlpha = srcAlpha;
@@ -168,8 +173,7 @@ export class Renderer {
     }
 
     setBlendEquation(modeRGB, modeAlpha) {
-        if (this.state.blendEquation.modeRGB === modeRGB &&
-            this.state.blendEquation.modeAlpha === modeAlpha) return;
+        if (this.state.blendEquation.modeRGB === modeRGB && this.state.blendEquation.modeAlpha === modeAlpha) return;
         this.state.blendEquation.modeRGB = modeRGB;
         this.state.blendEquation.modeAlpha = modeAlpha;
         if (modeAlpha !== undefined) this.gl.blendEquationSeparate(modeRGB, modeAlpha);
@@ -216,7 +220,6 @@ export class Renderer {
     }
 
     getExtension(extension, webgl2Func, extFunc) {
-
         // if webgl2 function supported, return func bound to gl context
         if (webgl2Func && this.gl[webgl2Func]) return this.gl[webgl2Func].bind(this.gl);
 
@@ -279,7 +282,8 @@ export class Renderer {
         if (camera && frustumCull) camera.updateFrustum();
 
         // Get visible
-        scene.traverse(node => {
+        scene.traverse((node) => {
+
             if (!node.visible) return true;
             if (!node.draw) return;
 
@@ -295,7 +299,7 @@ export class Renderer {
             const transparent = []; // depthTest true
             const ui = []; // depthTest false
 
-            renderList.forEach(node => {
+            renderList.forEach((node) => {
 
                 // Split into the 3 render groups
                 if (!node.program.transparent) {
@@ -310,7 +314,6 @@ export class Renderer {
 
                 // Only calculate z-depth if renderOrder unset and depthTest is true
                 if (node.renderOrder !== 0 || !node.program.depthTest || !camera) return;
-
                 // update z-depth
                 node.worldMatrix.getTranslation(tempVec3);
                 tempVec3.applyMatrix4(camera.projectionViewMatrix);
@@ -334,29 +337,29 @@ export class Renderer {
         update = true,
         sort = true,
         frustumCull = true,
-        clear,
+        clear
     }) {
-
         if (target === null) {
-
             // make sure no render target bound so draws to canvas
             this.bindFramebuffer();
             this.setViewport(this.width * this.dpr, this.height * this.dpr);
         } else {
-
             // bind supplied render target and update viewport
             this.bindFramebuffer(target);
             this.setViewport(target.width, target.height);
         }
 
         if (clear || (this.autoClear && clear !== false)) {
-
             // Ensure depth buffer writing is enabled so it can be cleared
             if (this.depth && (!target || target.depth)) {
                 this.enable(this.gl.DEPTH_TEST);
                 this.setDepthMask(true);
             }
-            this.gl.clear((this.color ? this.gl.COLOR_BUFFER_BIT : 0) | (this.depth ? this.gl.DEPTH_BUFFER_BIT : 0) | (this.stencil ? this.gl.STENCIL_BUFFER_BIT : 0));
+            this.gl.clear(
+                (this.color ? this.gl.COLOR_BUFFER_BIT : 0) |
+                (this.depth ? this.gl.DEPTH_BUFFER_BIT : 0) |
+                (this.stencil ? this.gl.STENCIL_BUFFER_BIT : 0)
+            );
         }
 
         // updates all scene graph matrices
@@ -372,7 +375,8 @@ export class Renderer {
             frustumCull,
             sort
         });
-        renderList.forEach(node => {
+
+        renderList.forEach((node) => {
             node.draw({
                 camera
             });

@@ -9,7 +9,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 80vw;
-    height: 40vw;
+    height: 60vw;
     max-width: $maxWidth;
     max-height: $maxHeight;
     display: flex;
@@ -32,9 +32,9 @@
     &__portrait {
 
         position: absolute;
-        left: 5%;
+        // left: 5%;
         width: 60%;
-        height: 60%;
+        height: 100%;
         will-change: transform;
 
     }
@@ -55,7 +55,7 @@
     .about-copy {
 
         position: relative;
-        width: 100%;
+        width: 80%;
         height: 50%;
         display: flex;
         justify-content: center;

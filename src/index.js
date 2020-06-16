@@ -4,7 +4,7 @@ import About from "./Views/About/About.js";
 
 import WebGLContext from "./Webgl/WebGLContext.js";
 
-import LoadingScreen from './LoadingScreen.js'; 
+import LoadingScreen from './LoadingScreen.js';
 import Navigation from './Navigation.js';
 import Cursor from '../src/CanvasComponents/Cursor.js';
 
@@ -22,16 +22,18 @@ export default class App {
             transition: Transition
         });
 
+        this.navigation = new Navigation();
+
         this.loadingScreen = new LoadingScreen();
-        
+
         window.contentLoaded = false;
 
         this.cursor = new Cursor();
 
-        this.navigation = new Navigation();
+        this.webGLCTX = new WebGLContext({
+            canvas: document.querySelector('.webgl-canvas')
+        });
 
-        this.webGLCTX = new WebGLContext({canvas: document.querySelector('.webgl-canvas')});
-        
         contentManager.initContent();
 
     }

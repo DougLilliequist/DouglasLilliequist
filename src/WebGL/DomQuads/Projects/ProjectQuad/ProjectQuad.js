@@ -194,11 +194,7 @@ export default class ProjectQuad extends DomQuad {
       this.position.z += force;
       this.scrollPhase += force;
 
-      if (this.position.z < -this.loopLimit) {
-        this.position.z += this.loopLimit + 1;
-      } else if (this.position.z > 1.0) {
-        this.position.z -= this.loopLimit + 1;
-      }
+      this.loopPosition();
 
     } else {
       if (this.positionRestored === false) {
@@ -214,12 +210,21 @@ export default class ProjectQuad extends DomQuad {
 
   }
 
+  loopPosition() {
+
+    if (this.position.z < -this.loopLimit) {
+      this.position.z += this.loopLimit + 1;
+    } else if (this.position.z > 1.0) {
+      this.position.z -= this.loopLimit + 1;
+    }
+
+  }
+
   updateScrollPhase() {
 
     this.scrollPhase = Math.max(-1.0, Math.min(1.0, this.scrollPhase));
     this.program.uniforms._ScrollPhase.value = this.scrollPhase;
-    this.scrollPhase *= 0.94;
-    if (Math.abs(this.scrollPhase) < 0.0001) this.scrollPhase = 0;
+    this.scrollPhase *= Math.abs(this.scrollPhase) < 0.001 ? 0.0 : 0.94;
 
   }
 
@@ -294,7 +299,7 @@ export default class ProjectQuad extends DomQuad {
 
     if (this.video === null) return;
     if (this.inView({
-        inViewPosZ: 0 - this.parent.position.z
+        inViewPosZ: 0
       })) this.video.play();
 
   }

@@ -12,7 +12,7 @@ uniform float _ScrollPhase;
 
 varying vec2 vUv;
 varying vec3 vMvPos;
-varying vec2 vClipPos;
+// varying vec2 vClipPos;
 varying float vDist;
 varying vec3 vDistort;
 
