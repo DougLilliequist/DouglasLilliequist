@@ -1,7 +1,11 @@
 import Highway from "@dogstudio/highway";
 
 export default class ViewMediator extends Highway.Core {
-  constructor({ home, work, about, transition} = {}) {
+  constructor({
+    work,
+    about,
+    transition
+  } = {}) {
     const highwayArgs = {
       renderers: {
         work: work,
@@ -13,6 +17,6 @@ export default class ViewMediator extends Highway.Core {
     };
 
     super(highwayArgs);
-    
+
   }
 }

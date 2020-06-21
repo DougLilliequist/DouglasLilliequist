@@ -37,7 +37,7 @@
     "dat.gui": "^0.7.6",
     "event-emitter": "^0.3.5",
     "glslify": "^7.0.0",
-    "gsap": "^3.2.6",
+    "gsap": "^3.3.1",
     "ogl": "0.0.42",
     "preload-it": "^1.4.0",
     "tiny-emitter": "^2.1.0"

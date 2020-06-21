@@ -78,13 +78,15 @@ export default class DomQuadManager {
             inputDelta,
             flowMap
         });
-        this.activeMediator.children.forEach((quad) => {
 
+        let i = 0;
+        while (i < this.activeMediator.children.length) {
+            let quad = this.activeMediator.children[i];
             quad.calcDomToWebGLPos({
                 domElement: this.activeMediator.referenceElement,
             });
-
-        });
+            i++;
+        };
 
     }
 

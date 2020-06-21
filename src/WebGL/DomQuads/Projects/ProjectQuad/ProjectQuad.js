@@ -209,7 +209,8 @@ export default class ProjectQuad extends DomQuad {
     this.updateScrollPhase();
     this.visible = this.inBounds();
 
-    if (this.video === null || this.inScrollMode || this.visible === false) return;
+    // if (this.video === null || this.inScrollMode || this.visible === false) return;
+    if (this.video === null || this.inScrollMode) return;
     this.updateVideoTexture();
 
   }

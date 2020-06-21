@@ -199,8 +199,9 @@ export default class ProjectQuadMediator extends DomquadMediator {
     this.inputForce.y += this.inScrollMode ? inputDelta.y * 0.008 / dt : 0.0;
     this.inputForce.y *= (Math.abs(this.inputForce.y) < 0.001) ? 0.0 : this.inputForceInertia;
 
-    for (let i = 0; i < this.children.length; i++) {
-      const quad = this.children[i];
+    let i = 0;
+    while (i < this.children.length) {
+      let quad = this.children[i];
       quad.update({
         force: this.inputForce.y,
         deltaTime: dt
@@ -208,7 +209,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
       quad.program.uniforms._InputForce.value = Math.min(1.0, Math.abs(this.inputForce.y * 1.0));
       quad.program.uniforms._Time.value += dt;
       quad.program.uniforms._FlowMap.value = flowMap;
-
+      i++;
     }
 
   }
@@ -216,22 +217,22 @@ export default class ProjectQuadMediator extends DomquadMediator {
   //get the quad whose position equals to the camera's position along Z
   //and offsetted by the parents transform. That way I'll get the quad
   //that is in view of the camera (or simply in front)
+
   getQuadInView() {
 
     let quadInView;
-
-    this.children.forEach((quad) => {
-
+    let i = 0;
+    while (i < this.children.length) {
+      const quad = this.children[i];
       if (quad.inView({
           inViewPosZ: 0
         })) {
-        // if(quad.inView({inViewPosZ: this.position.z})) {          
         quadInView = quad;
         emitter.emit(events.LOAD_PROJECT_CONTENT, quadInView.index);
 
       }
-
-    });
+      i++;
+    }
 
     return quadInView;
 
