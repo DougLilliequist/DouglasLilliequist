@@ -100,8 +100,12 @@ export default class ProjectQuad extends DomQuad {
     this.texture = new Texture(this.gl, {
       generateMipmaps: false,
       width: 512,
-      height: 512
+      height: 512,
+      minFilter: this.gl.LINEAR,
+      magFilter: this.gl.LINEAR
     });
+
+    this.updateTexture = false;
 
     const u = {
       _ViewplaneSize: {
@@ -205,7 +209,7 @@ export default class ProjectQuad extends DomQuad {
     this.updateScrollPhase();
     this.visible = this.inBounds();
 
-    if (this.video === null) return;
+    if (this.video === null || this.inScrollMode || this.visible === false) return;
     this.updateVideoTexture();
 
   }
@@ -230,7 +234,7 @@ export default class ProjectQuad extends DomQuad {
 
   restorePosition() {
 
-    const delta = this.targetPos - this.position.z;
+    let delta = this.targetPos - this.position.z;
     this.restoreEase = delta * 0.1;
     this.position.z += this.restoreEase;
     if (Math.abs(delta) < 0.0001) {
@@ -239,7 +243,7 @@ export default class ProjectQuad extends DomQuad {
       this.positionRestored = true;
     } else {
       this.restorePhase = delta / this.restoreDelta;
-      const fallOff = 1.0 - ((1.0 - this.restorePhase) * (1.0 - this.restorePhase));
+      let fallOff = 1.0 - ((1.0 - this.restorePhase) * (1.0 - this.restorePhase));
       this.restoreEase *= 0.1 + (1.0 - 0.1) * fallOff;
     }
 
@@ -285,14 +289,27 @@ export default class ProjectQuad extends DomQuad {
     // this.video = this.videos[this.index].vid;
     this.program.uniforms._FlipFlowMapForce.value = this.media.brightVal;
 
-    if (this.inView && this.visible) {
-      if (this.video.readyState >= this.video.HAVE_ENOUGH_DATA) {
-        this.texture.image = this.video;
-        this.texture.needsUpdate = true;
+    // if (this.isInView && this.visible) {
+    //   if (this.video.readyState >= this.video.HAVE_ENOUGH_DATA) {
+    //     this.texture.image = this.video;
+    //     // this.updateTexture = !this.updateTexture;
+    //     this.texture.needsUpdate = true;
+    //   }
+    // }
+
+    // if (this.visible) {
+    if (this.video.readyState >= this.video.HAVE_ENOUGH_DATA) {
+      this.texture.image = this.video;
+      if (this.isInView) {
+
+        this.updateTexture = !this.updateTexture;
+        this.texture.needsUpdate = this.updateTexture;
+
       }
-    } else {
-      this.texture.needsUpdate = false;
+
     }
+    // }
+
   }
 
   playVideo = () => {

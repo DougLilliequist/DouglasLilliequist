@@ -13,7 +13,7 @@ uniform float _ScrollPhase;
 varying vec2 vUv;
 varying vec3 vMvPos;
 // varying vec2 vClipPos;
-varying float vDist;
+// varying float vDist;
 varying vec3 vDistort;
 
 #define OFFSETAMOUNTX 0.008
@@ -131,8 +131,6 @@ void main() {
     // alpha *= step(abs((vUv.y * 0.99) * 2.0 - 1.0), _RevealPhase);
     // alpha *= step(vUv.x, _RevealPhase);
     alpha *= mix(step(vUv.y, _RevealPhase), step(1.0 - (vUv.x * 0.99), _RevealPhase), _RevealDirection);
-    if(alpha <= 0.1) discard;
-    // if(dither8x8(gl_FragCoord.xy, alpha) <= 0.0) discard;  
   
     gl_FragColor = vec4(vec3(r,g,b), alpha);
 

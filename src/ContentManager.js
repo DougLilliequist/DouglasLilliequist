@@ -99,6 +99,8 @@ class ContentManager {
 
         video.src = this.preLoader.getItemByUrl(src).url;
 
+        video.load();
+
         video.setAttribute('webkit-playsinline', true);
 
         video.playsinline = true;
@@ -107,7 +109,8 @@ class ContentManager {
 
         video.loop = true;
 
-        video.currentTime = Math.random() + 0.01;
+        video.currentTime = Math.random() + 0.5;
+
 
         return video;
 

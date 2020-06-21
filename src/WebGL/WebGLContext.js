@@ -1,28 +1,18 @@
-import {
-  Transform
-} from "../../vendors/ogl/src/core/Transform";
-import {
-  Renderer
-} from "../../vendors/ogl/src/core/Renderer";
-import {
-  Camera
-} from "../../vendors/ogl/src/core/Camera";
+import { Transform } from "../../vendors/ogl/src/core/Transform";
+import { Renderer } from "../../vendors/ogl/src/core/Renderer";
+import { Camera } from "../../vendors/ogl/src/core/Camera";
 
-import {
-  Vec2
-} from "../../vendors/ogl/src/math/Vec2";
+import { Vec2 } from "../../vendors/ogl/src/math/Vec2";
 
-import DomQuadManager from './DomQuads/DomQuadManager.js'
+import DomQuadManager from "./DomQuads/DomQuadManager.js";
 
-import MouseFlowmap from './MouseFlowmap/MouseFlowmap';
+import MouseFlowmap from "./MouseFlowmap/MouseFlowmap";
 
-import eventEmitter from '../EventEmitter';
+import eventEmitter from "../EventEmitter";
 const emitter = eventEmitter.emitter;
-import events from '../../utils/events';
+import events from "../../utils/events";
 
-import {
-  gsap
-} from 'gsap';
+import { gsap } from "gsap";
 
 export default class WebGLContext {
   constructor(container) {
@@ -32,10 +22,7 @@ export default class WebGLContext {
     this.initMouseflowMap();
   }
 
-  initScene({
-    canvas
-  }) {
-
+  initScene({ canvas }) {
     const w = window.innerWidth;
     const h = window.innerHeight;
 
@@ -49,10 +36,7 @@ export default class WebGLContext {
     this.gl = this.renderer.gl;
     this.gl.clearColor(0.9, 0.9, 0.9, 1.0);
 
-    const {
-      width,
-      height
-    } = this.gl.canvas;
+    const { width, height } = this.gl.canvas;
     this.wk = 1.0 / width;
     this.hK = 1.0 / height;
 
@@ -70,25 +54,19 @@ export default class WebGLContext {
     this.deltaTime = 1;
 
     this.scene = new Transform();
-
   }
 
   initDomQuadManager() {
-
     this.domQuadManager = new DomQuadManager(this.gl, this.scene, this.camera);
-
   }
 
   initMouseflowMap() {
-
     this.mouseFlowmap = new MouseFlowmap(this.gl, {
       size: 256
     });
-
   }
 
   initEvents() {
-
     emitter.on(events.MOUSE_DOWN, this.onMouseDown);
     emitter.on(events.MOUSE_MOVE, this.onMouseMove);
     emitter.on(events.MOUSE_UP, this.onMouseUp);
@@ -102,21 +80,17 @@ export default class WebGLContext {
 
     emitter.on(events.RESIZE, this.onResize);
     this.isResizing = false;
-
   }
 
-  onMouseDown = (e) => {
-
+  onMouseDown = e => {
     this.isInteracting = true;
     this.inputPos.x = 2.0 * (e.x * this.wk) - 1.0;
     this.inputPos.y = -1 * (2.0 * (e.y * this.hK) - 1.0);
     this.prevInputPos.copy(this.inputPos);
     this.inputDelta.copy(this.inputPos).sub(this.prevInputPos);
+  };
 
-  }
-
-  onMouseMove = (e) => {
-
+  onMouseMove = e => {
     this.inputPos.x = 2.0 * (e.x * this.wk) - 1.0;
     this.inputPos.y = -1 * (2.0 * (e.y * this.hK) - 1.0);
     if (this.firstMove === false) {
@@ -124,15 +98,12 @@ export default class WebGLContext {
       this.prevInputPos.copy(this.inputPos);
       this.inputDelta.copy(this.inputPos).sub(this.prevInputPos);
     }
-
-  }
+  };
 
   onMouseUp = () => {
-
     this.isInteracting = false;
     this.firstMove = false;
-
-  }
+  };
 
   render() {
     this.renderer.render({
@@ -142,12 +113,11 @@ export default class WebGLContext {
     });
   }
 
-  update = () => {
+  update = ({ deltaTime }) => {
+    // this.currentTime = performance.now();
+    // this.deltaTime = (this.currentTime - this.prevtime) * 0.001;
+    this.deltaTime = deltaTime * 0.001;
 
-    this.currentTime = performance.now();
-    this.deltaTime = (this.currentTime - this.prevtime) / 1000.0;
-
-    let start = performance.now();
     // if(this.isInteracting) this.inputDelta = this.inputPos.clone().sub(this.prevInputPos);
     this.inputDelta.copy(this.inputPos).sub(this.prevInputPos);
 
@@ -168,9 +138,8 @@ export default class WebGLContext {
 
     this.prevInputPos.copy(this.inputPos);
 
-    this.prevtime = this.currentTime;
-
-  }
+    // this.prevtime = this.currentTime;
+  };
 
   onResize = () => {
     if (this.resizeContext) this.resizeContext.kill();
@@ -182,7 +151,6 @@ export default class WebGLContext {
     this.hK = 1.0 / h;
 
     this.resizeContext = gsap.delayedCall(0.05, () => {
-
       this.renderer.setSize(w, h);
       const aspectRatio = w / h;
       this.camera.perspective({
@@ -190,8 +158,6 @@ export default class WebGLContext {
       });
 
       this.mouseFlowmap.Aspect = w / h;
-
     });
-
-  }
+  };
 }

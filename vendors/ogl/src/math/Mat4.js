@@ -2,15 +2,26 @@ import * as Mat4Func from './functions/Mat4Func.js';
 
 export class Mat4 extends Array {
     constructor(
-        m00 = 1, m01 = 0, m02 = 0, m03 = 0,
-        m10 = 0, m11 = 1, m12 = 0, m13 = 0,
-        m20 = 0, m21 = 0, m22 = 1, m23 = 0,
-        m30 = 0, m31 = 0, m32 = 0, m33 = 1
+        m00 = 1,
+        m01 = 0,
+        m02 = 0,
+        m03 = 0,
+        m10 = 0,
+        m11 = 1,
+        m12 = 0,
+        m13 = 0,
+        m20 = 0,
+        m21 = 0,
+        m22 = 1,
+        m23 = 0,
+        m30 = 0,
+        m31 = 0,
+        m32 = 0,
+        m33 = 1
     ) {
         super(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33);
         return this;
     }
-
 
     get x() {
         return this[12];
@@ -61,7 +72,7 @@ export class Mat4 extends Array {
     }
 
     scale(v, m = this) {
-        Mat4Func.scale(this, m, typeof v === "number" ? [v, v, v] : v);
+        Mat4Func.scale(this, m, typeof v === 'number' ? [v, v, v] : v);
         return this;
     }
 
@@ -142,5 +153,45 @@ export class Mat4 extends Array {
 
     determinant() {
         return Mat4Func.determinant(this);
+    }
+
+    fromArray(a, o = 0) {
+        this[0] = a[o];
+        this[1] = a[o + 1];
+        this[2] = a[o + 2];
+        this[3] = a[o + 3];
+        this[4] = a[o + 4];
+        this[5] = a[o + 5];
+        this[6] = a[o + 6];
+        this[7] = a[o + 7];
+        this[8] = a[o + 8];
+        this[9] = a[o + 9];
+        this[10] = a[o + 10];
+        this[11] = a[o + 11];
+        this[12] = a[o + 12];
+        this[13] = a[o + 13];
+        this[14] = a[o + 14];
+        this[15] = a[o + 15];
+        return this;
+    }
+
+    toArray(a = [], o = 0) {
+        a[o] = this[0];
+        a[o + 1] = this[1];
+        a[o + 2] = this[2];
+        a[o + 3] = this[3];
+        a[o + 4] = this[4];
+        a[o + 5] = this[5];
+        a[o + 6] = this[6];
+        a[o + 7] = this[7];
+        a[o + 8] = this[8];
+        a[o + 9] = this[9];
+        a[o + 10] = this[10];
+        a[o + 11] = this[11];
+        a[o + 12] = this[12];
+        a[o + 13] = this[13];
+        a[o + 14] = this[14];
+        a[o + 15] = this[15];
+        return a;
     }
 }

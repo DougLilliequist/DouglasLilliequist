@@ -54,6 +54,7 @@
             bottom: 15%;
             width: 90%;
             pointer-events: none;
+            will-change: opacity, transform;
                 
             h1 {
                 margin: 0;
@@ -72,6 +73,7 @@
             display: inline-block;
             right: 0%;
             bottom: 15%;
+            will-change: opacity, transform;
             p {
                 margin: 0;
                 @include fluid-type($minWidth, $maxWidth, $minFontSize__projects-details, $maxFontSize__projects-details);
@@ -141,6 +143,7 @@
         position: absolute;
         top: 15%;
         right: 0%;
+        will-change: opacity, transform;
         cursor: pointer;
 
             a {

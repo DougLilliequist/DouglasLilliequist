@@ -27,7 +27,7 @@ class EventEmitter {
         window.addEventListener("resize", this.onResize);
 
         gsap.ticker.add(this.tick);
-        gsap.ticker.fps(60);
+        //gsap.ticker.fps(60);
     }
 
     onMouseDown = e => {
@@ -48,8 +48,10 @@ class EventEmitter {
 
     // }
 
-    tick = () => {
-        this.emitter.emit(events.UPDATE);
+    tick = (time, deltaTime, frame) => {
+        this.emitter.emit(events.UPDATE, {
+            deltaTime
+        });
     };
 
     onResize = () => {

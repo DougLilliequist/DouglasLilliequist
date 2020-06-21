@@ -1,6 +1,6 @@
 {
     "name": "ogl",
-    "version": "0.0.40",
+    "version": "0.0.53",
     "description": "WebGL Library",
     "main": "src/index.mjs",
     "sideEffects": false,
@@ -29,7 +29,7 @@
         "url": "https://github.com/oframe/ogl/issues"
     },
     "devDependencies": {
-        "@babel/core": "^7.9.0",
+        "@babel/core": "^7.10.2",
         "rollup": "^1.27.13"
     },
     "homepage": "https://github.com/oframe/ogl#readme"

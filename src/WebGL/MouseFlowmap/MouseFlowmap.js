@@ -58,8 +58,7 @@ export default class MouseFlowmap {
             height: s,
             type: this.gl.HALF_FLOAT || this.gl.renderer.extensions['OES_texture_half_float'].HALF_FLOAT_OES,
             format: this.gl.RGBA,
-            internalFormat: this.gl.renderer.isWebgl2 ?
-                this.gl.RGBA16F : this.gl.RGBA,
+            internalFormat: this.gl.RGBA16F,
             depth: false
         }
         return new RenderTarget(this.gl, params);

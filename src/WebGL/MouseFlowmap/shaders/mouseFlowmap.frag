@@ -22,7 +22,8 @@ void main() {
 
     float phase = smoothstep(_Radius, 0.0, length(toInput));
     // vec3 vel = vec3(_InputVel,1.0 - pow(1.0 - min(1.0, length(_InputVel)), 2.0)) * phase * _Force;
-    float fallOff = 1.0 - min(1.0, length(_InputVel));
+    // float fallOff = 1.0 - min(1.0, length(_InputVel));
+    float fallOff = 1.0 - min(1.0, dot(_InputVel, _InputVel) * 0.1);
     fallOff *= fallOff;
     vec3 vel = vec3(_InputVel,1.0 - fallOff) * phase * _Force;
     

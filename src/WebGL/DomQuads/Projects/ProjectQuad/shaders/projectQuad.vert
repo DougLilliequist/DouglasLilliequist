@@ -19,10 +19,9 @@ uniform bool _InView;
 
 uniform vec2 _ViewplaneSize;
 varying vec3 vMvPos;
-varying vec3 mPos;
 
 varying vec2 vUv;
-varying vec2 vClipPos;
+// varying vec2 vClipPos;
 varying vec3 vDistort;
 
 #define DISTORTSTR 0.7
@@ -58,7 +57,7 @@ void main() {
     vDistort = distort;
     heightMapDistort = mix(heightMapDistort, 1.0 - heightMapDistort, _FlipFlowMapForce);
     pos += distort * max(0.2, heightMapDistort) * _FlowMapPhase * distort.z * mix(0.0, 1.0, _InView ? 1.0 : 0.0);
-    vClipPos = clipPos.xy;
+    // vClipPos = clipPos.xy;
 
     gl_Position = modelViewProjection * vec4(pos, 1.0);
     vUv = uv;
