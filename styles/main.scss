@@ -57,7 +57,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    will-change: opacity;
+    // will-change: opacity;
 
     &__clip-section {
         overflow: hidden;
@@ -67,7 +67,7 @@ body {
         
         display: flex;
         align-items: baseline;
-        will-change: transform;
+        // will-change: transform;
         // padding: 0;
         // text-align: justify;
 
@@ -104,7 +104,7 @@ body {
     width: 7vw;
     right: 0%;
     z-index: 0;
-    will-change: opacity;
+    // will-change: opacity;
     // user-select: none;
     // -webkit-user-select: none;
 

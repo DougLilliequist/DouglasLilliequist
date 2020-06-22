@@ -43,7 +43,7 @@ export default class WebGLContext {
       height: h,
       antialias: false,
       canvas,
-      powerPreference: "low-power"
+      powerPreference: "default",
     });
     this.gl = this.renderer.gl;
     this.gl.clearColor(0.9, 0.9, 0.9, 1.0);
