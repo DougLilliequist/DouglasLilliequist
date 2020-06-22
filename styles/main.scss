@@ -136,14 +136,14 @@ body {
             @include fluid-type($minWidth, $maxWidth, $minFontSize__navigation, $maxFontSize__navigation);
             opacity: 0.5;
             transition: opacity 0.5s;
-            will-change: opacity;
+            // will-change: opacity;
             text-align: center;
 
             &--active {
 
                 opacity: 0.99;
                 transition: opacity 0.5s;
-                will-change: opacity;
+                // will-change: opacity;
     
             }
 
@@ -155,7 +155,7 @@ body {
 
             // cursor: none;
 
-            &::before {
+            &:before {
 
                 position: absolute;
                 height: 100%;
@@ -166,21 +166,21 @@ body {
                 transform: scaleY(0);
                 transform-origin: bottom right;
                 transition: transform 0.2s;
-                will-change: transform;
+                // will-change: transform;
 
             }
 
             &:hover {
 
-                opacity: 1.0;
+                opacity: 0.99;
                 transition: opacity 0.5s;
-                will-change: opacity;
+                // will-change: opacity;
 
-                &::before {
+                &:before {
                     transform: scaleY(1);
                     transform-origin: top left;
                     transition: transform 0.2s;
-                    will-change: transform;
+                    // will-change: transform;
                 }
     
             }

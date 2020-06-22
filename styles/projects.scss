@@ -151,7 +151,7 @@
                 color:#000000;
                 margin: 0;
     
-                &::before {
+                &:before {
     
                     position: absolute;
                     height: 1px;
@@ -168,7 +168,7 @@
             }
             a:hover {
     
-                &::before {
+                &:before {
                     transform: scaleX(1);
                     transform-origin: top left;
                     transition: transform .5s;
