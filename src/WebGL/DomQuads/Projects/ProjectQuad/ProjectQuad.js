@@ -303,8 +303,8 @@ export default class ProjectQuad extends DomQuad {
       this.texture.image = this.video;
       if (this.isInView) {
 
-        // this.updateTexture = !this.updateTexture;
-        this.texture.needsUpdate = true;
+        this.updateTexture = !this.updateTexture;
+        this.texture.needsUpdate = this.updateTexture;
 
       }
 

@@ -4,7 +4,7 @@ export const AboutContent = [
 
     {
         title: "Hi!",
-        introText: 'I\'m a Swedish Creative Technologist with passion for interactivity and making visually interesting experiences, at Adventure Club Helsinki. I want to use my skills to create experiences that in some way, makes one dream or feel inspired!\nThis portfolio is a showcase of my recent client work and sketches, where I\'m still exploring visual approaches and finding "my own voice".',
+        introText: 'I\'m a Swedish Creative Technologist at Adventure Club who is passionate about interactivity and making visually interesting experiences - that in some way makes one dream or feel inspired!<br><br>This portfolio is a showcase of my recent client work and sketches - through which I\'m (still) finding "my own voice" by exploring visual approaches and experimenting with concepts that piques my curiosity!',
         contactHeader: "Feel free to reach me on...",
         contactMethods: [{
                 type: "mail",

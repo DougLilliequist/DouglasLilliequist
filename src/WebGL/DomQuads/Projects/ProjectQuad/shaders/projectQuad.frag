@@ -130,7 +130,8 @@ void main() {
     //reveal phase
     // alpha *= step(abs((vUv.y * 0.99) * 2.0 - 1.0), _RevealPhase);
     // alpha *= step(vUv.x, _RevealPhase);
-    alpha *= mix(step(vUv.y, _RevealPhase), step(1.0 - (vUv.x * 0.99), _RevealPhase), _RevealDirection);
+    // alpha *= mix(step(vUv.y, _RevealPhase), step(1.0 - (vUv.x * 0.99), _RevealPhase), _RevealDirection);
+    alpha *= mix(step(vUv.y, _RevealPhase), 1.0 - step((vUv.y * 0.99), 1.0 - _RevealPhase), _RevealDirection);
   
     gl_FragColor = vec4(vec3(r,g,b), alpha);
 

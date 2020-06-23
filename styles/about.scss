@@ -8,10 +8,10 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 80vw;
-    height: 60vw;
-    max-width: $maxWidth;
-    max-height: $maxHeight;
+    width: 75vw;
+    height: 37.5vw;
+    max-width: 1440px;
+    max-height: 1440px;
     display: flex;
     justify-content: space-evenly;
     z-index: 2;
@@ -23,7 +23,8 @@
 
     position: relative;
     width: 50%;
-    height: 100%;
+    max-width: 768px;
+    max-height: 768px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -31,12 +32,16 @@
     
     &__portrait {
 
-        position: absolute;
-        // left: 2.5%;
-        width: 60%;
+        width: 100%;
         height: 100%;
-        // will-change: transform;
+    }
 
+    //https://spin.atomicobject.com/2015/07/14/css-responsive-square/
+    //maintains perfect square
+    &:after {
+        content: "";
+        display: block;
+        padding-bottom: 100%;
     }
 
 }
@@ -48,14 +53,13 @@
         height: 100%;
         display: flex;
         align-items: center;
-        // right: 0%;
 
     }
 
     .about-copy {
 
         position: relative;
-        width: 80%;
+        width: 90%;
         height: 50%;
         display: flex;
         justify-content: center;
@@ -63,15 +67,14 @@
 
         &__intro {
 
-            margin-top: 2em;
             pointer-events: none;
+            padding-right: 10%;
 
             
             &__header {
                 @include fluid-type($minWidth, $maxWidth, $minFontSize__about-header, $maxFontSize__about-header);
                 margin-top: 0em;
                 margin-bottom: 0.5em;
-                // will-change: transform, opacity;
                 pointer-events: none;
 
             }
@@ -79,7 +82,6 @@
             &__body-text {
                 @include fluid-type($minWidth, $maxWidth, $minFontSize__about-body, $maxFontSize__about-body);
                 margin-top: 0;
-                // will-change: transform, opacity;
                 pointer-events: none;
 
             }
@@ -101,18 +103,14 @@
             margin: 0;
 
         }
-        // top: 20%;
         &__methods {
             display: flex;
-            // flex-direction: column;
-            // justify-content: space-evenly;
             margin-top: 1em;
 
             &__wrapper {
 
                 display: inline-block;
                 margin-bottom: 0.2em;
-                // will-change: transform, opacity;
                 margin-right: 1.5em;
 
             }
