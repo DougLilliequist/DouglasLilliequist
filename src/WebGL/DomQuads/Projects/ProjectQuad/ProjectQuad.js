@@ -1,43 +1,25 @@
-import DomQuad from '../../../extras/DomQuad/DomQuad.js';
-import {
-  Program
-} from '../../../../../vendors/ogl/src/core/Program.js';
-import {
-  Texture
-} from '../../../../../vendors/ogl/src/core/Texture.js';
-import {
-  Plane
-} from '../../../../../vendors/ogl/src/extras/Plane.js';
+import DomQuad from "../../../extras/DomQuad/DomQuad.js";
+import { Program } from "../../../../../vendors/ogl/src/core/Program.js";
+import { Texture } from "../../../../../vendors/ogl/src/core/Texture.js";
+import { Plane } from "../../../../../vendors/ogl/src/extras/Plane.js";
 
 const vert = require("./shaders/projectQuad.vert");
 const frag = require("./shaders/projectQuad.frag");
 
-import {
-  loopNegativeNumber,
-  makeid
-} from '../../../../../utils/Math.js';
-import eventEmitter from '../../../../EventEmitter.js'
+import { loopNegativeNumber, makeid } from "../../../../../utils/Math.js";
+import eventEmitter from "../../../../EventEmitter.js";
 const emitter = eventEmitter.emitter;
-import events from '../../../../../utils/events.js';
+import events from "../../../../../utils/events.js";
 
-import {
-  gsap
-} from 'gsap';
+import { gsap } from "gsap";
 
 export default class ProjectQuad extends DomQuad {
   constructor(
     gl,
-    media, {
-      widthSegments = 1.0,
-      heightSegments = 1.0,
-      posOffset = 0.0,
-    } = {}
+    media,
+    { widthSegments = 1.0, heightSegments = 1.0, posOffset = 0.0 } = {}
   ) {
-
-    super(gl, {
-      widthSegments,
-      heightSegments,
-    } = {});
+    super(gl, ({ widthSegments, heightSegments } = {}));
 
     this.gl = gl;
 
@@ -75,21 +57,17 @@ export default class ProjectQuad extends DomQuad {
     this.initProgram();
 
     this.initEvents();
-
   }
 
   initEvents() {
-
     emitter.on(events.PLAY_VIDEO, this.playVideo);
     emitter.on(events.PAUSE_VIDEO, this.pauseVideo);
 
     emitter.on(events.APPLY_SCROLL_MODE_ANIM, this.applyScrollMode);
     emitter.on(events.REMOVE_SCROLL_MODE_ANIM, this.removeScrollMode);
-
   }
 
   initProgram = () => {
-
     this.geometry = new Plane(this.gl, {
       width: 2,
       height: 2,
@@ -149,20 +127,19 @@ export default class ProjectQuad extends DomQuad {
       },
       _Scale: {
         value: 1.0
-      },
+      }
     };
 
     this.program = new Program(this.gl, {
       vertex: vert,
       fragment: frag,
       uniforms: u,
-      transparent: true,
+      transparent: true
     });
-  }
+  };
 
   //consider making the animation faster
   applyScrollMode = () => {
-
     this.inScrollMode = true;
     this.animteUniforms({
       scale: 0.85,
@@ -170,11 +147,9 @@ export default class ProjectQuad extends DomQuad {
       alphaPhase: 1.0,
       flowMapPhase: 0.0
     });
-
-  }
+  };
 
   removeScrollMode = () => {
-
     this.inScrollMode = false;
     this.animteUniforms({
       scale: 1.0,
@@ -185,25 +160,19 @@ export default class ProjectQuad extends DomQuad {
     this.targetPos = Math.round(this.position.z);
     const delta = this.targetPos - this.position.z;
     this.restoreDelta = Math.abs(delta) > 0 ? delta : 1.0;
+  };
 
-  }
-
-  update({
-    force
-  }) {
-
+  update({ force }) {
     if (this.inScrollMode) {
-
-      this.positionRestored = false;
+      // this.positionRestored = false;
       this.position.z += force;
       this.scrollPhase += force;
 
       this.loopPosition();
-
     } else {
-      if (this.positionRestored === false) {
-        this.restorePosition();
-      }
+      // if (this.positionRestored === false) {
+      this.restorePosition();
+      // }
     }
 
     this.updateScrollPhase();
@@ -212,81 +181,82 @@ export default class ProjectQuad extends DomQuad {
     // if (this.video === null || this.inScrollMode || this.visible === false) return;
     if (this.video === null || this.inScrollMode) return;
     this.updateVideoTexture();
-
   }
 
   loopPosition() {
-
     if (this.position.z < -this.loopLimit) {
       this.position.z += this.loopLimit + 1;
     } else if (this.position.z > 1.0) {
       this.position.z -= this.loopLimit + 1;
     }
-
   }
 
   updateScrollPhase() {
-
     this.scrollPhase = Math.max(-1.0, Math.min(1.0, this.scrollPhase));
     this.program.uniforms._ScrollPhase.value = this.scrollPhase;
     this.scrollPhase *= Math.abs(this.scrollPhase) < 0.001 ? 0.0 : 0.94;
-
   }
 
   restorePosition() {
-
     let delta = this.targetPos - this.position.z;
     this.restoreEase = delta * 0.1;
     this.position.z += this.restoreEase;
     if (Math.abs(delta) < 0.0001) {
       this.position.z = Math.round(this.position.z);
       this.restoreEase = 0;
-      this.positionRestored = true;
+      // this.positionRestored = true;
     } else {
       this.restorePhase = delta / this.restoreDelta;
-      let fallOff = 1.0 - ((1.0 - this.restorePhase) * (1.0 - this.restorePhase));
+      let fallOff = 1.0 - (1.0 - this.restorePhase) * (1.0 - this.restorePhase);
       this.restoreEase *= 0.1 + (1.0 - 0.1) * fallOff;
     }
-
   }
 
-  animteUniforms({
-    scale,
-    alpha,
-    alphaPhase,
-    flowMapPhase
-  }) {
-
+  animteUniforms({ scale, alpha, alphaPhase, flowMapPhase }) {
     if (this.scrollModeTl) this.scrollModeTl.kill();
-    this.scrollModeTl = gsap.timeline({})
-    this.scrollModeTl.to(this.program.uniforms._Alpha, {
-      value: alpha,
-      duration: 0.5,
-      ease: "power1.out"
-    }, "<");
+    this.scrollModeTl = gsap.timeline({});
+    this.scrollModeTl.to(
+      this.program.uniforms._Alpha,
+      {
+        value: alpha,
+        duration: 0.5,
+        ease: "power1.out"
+      },
+      "<"
+    );
 
-    this.scrollModeTl.to(this.program.uniforms._Scale, {
-      value: scale,
-      duration: 0.35,
-      ease: "power1.out"
-    }, "<");
+    this.scrollModeTl.to(
+      this.program.uniforms._Scale,
+      {
+        value: scale,
+        duration: 0.35,
+        ease: "power1.out"
+      },
+      "<"
+    );
 
-    this.scrollModeTl.to(this.program.uniforms._ScalePhase, {
-      value: alphaPhase,
-      duration: 0.35,
-      ease: "power1.out"
-    }, "<");
+    this.scrollModeTl.to(
+      this.program.uniforms._ScalePhase,
+      {
+        value: alphaPhase,
+        duration: 0.35,
+        ease: "power1.out"
+      },
+      "<"
+    );
 
-    this.scrollModeTl.to(this.program.uniforms._FlowMapPhase, {
-      value: flowMapPhase,
-      duration: 0.3,
-      ease: "power1.out"
-    }, "<");
-
+    this.scrollModeTl.to(
+      this.program.uniforms._FlowMapPhase,
+      {
+        value: flowMapPhase,
+        duration: 0.3,
+        ease: "power1.out"
+      },
+      "<"
+    );
   }
 
   updateVideoTexture() {
-
     // this.video = this.videos[this.index].vid;
     this.program.uniforms._FlipFlowMapForce.value = this.media.brightVal;
 
@@ -302,48 +272,37 @@ export default class ProjectQuad extends DomQuad {
     if (this.video.readyState >= this.video.HAVE_ENOUGH_DATA) {
       this.texture.image = this.video;
       if (this.isInView) {
-
         this.updateTexture = !this.updateTexture;
         this.texture.needsUpdate = this.updateTexture;
-
       }
-
     }
     // }
-
   }
 
   playVideo = () => {
-
     if (this.video === null) return;
-    if (this.inView({
+    if (
+      this.inView({
         inViewPosZ: 0
-      })) this.video.play();
-
-  }
+      })
+    )
+      this.video.play();
+  };
 
   pauseVideo = () => {
-
     if (this.video === null) return;
     this.video.pause();
-
-  }
+  };
 
   inBounds() {
-
     const roundPosZ = Math.round(this.position.z);
-    return (roundPosZ > -4.0 && roundPosZ < 1.0);
+    return roundPosZ > -4.0 && roundPosZ < 1.0;
     // return (this.position.z > -5.0 && this.position.z < 1.0);
-
   }
 
-  inView({
-    inViewPosZ
-  }) {
-
-    this.program.uniforms._InView.value = this.isInView = Math.round(this.position.z) === inViewPosZ ? true : false;
+  inView({ inViewPosZ }) {
+    this.program.uniforms._InView.value = this.isInView =
+      Math.round(this.position.z) === inViewPosZ ? true : false;
     return this.isInView;
-
   }
-
 }
