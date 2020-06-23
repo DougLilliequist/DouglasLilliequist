@@ -204,7 +204,7 @@ export default class Work extends View {
     this.enterAnim.fromTo(this.projectContentInfo, {
 
       opacity: 0.01,
-      y: startY
+      y: -startY
 
     }, {
 
@@ -235,7 +235,7 @@ export default class Work extends View {
 
     this.enterAnim.fromTo(this.projectLink, {
       opacity: 0.01,
-      y: startY
+      y: -startY
     }, {
       duration: dur,
       opacity: 0.99,
