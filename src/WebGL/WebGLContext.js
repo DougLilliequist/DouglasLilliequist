@@ -58,7 +58,7 @@ export default class WebGLContext {
     this.camera = new Camera(this.gl, {
       fov: 35,
       aspect: width / height,
-      near: 0.1,
+      near: 0.01,
       far: 5.0
     });
 

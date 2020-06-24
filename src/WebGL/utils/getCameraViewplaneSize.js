@@ -13,6 +13,8 @@ export const getCameraViewplaneSize = (camera) => {
     let viewportHeight = Math.tan((cameraFov * (Math.PI / 180.0)) * 0.5) * dist;
     let viewportWidth = viewportHeight * cameraAspect;
 
+    console.log(viewportWidth, viewportHeight)
+
     return new Vec2(viewportWidth, viewportHeight);
 
 }

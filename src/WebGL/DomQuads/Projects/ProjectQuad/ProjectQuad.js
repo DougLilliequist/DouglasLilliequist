@@ -84,7 +84,6 @@ export default class ProjectQuad extends DomQuad {
     });
 
     this.updateTexture = false;
-
     const u = {
       _ViewplaneSize: {
         value: this.viewPlaneSize
@@ -102,6 +101,9 @@ export default class ProjectQuad extends DomQuad {
         value: 1.0
       },
       _ScrollPhase: {
+        value: 0
+      },
+      _RestorePhase: {
         value: 0
       },
       _InputForce: {
@@ -142,7 +144,7 @@ export default class ProjectQuad extends DomQuad {
   applyScrollMode = () => {
     this.inScrollMode = true;
     this.animteUniforms({
-      scale: 0.85,
+      scale: 0.0,
       alpha: 1.0,
       alphaPhase: 1.0,
       flowMapPhase: 0.0
@@ -206,7 +208,7 @@ export default class ProjectQuad extends DomQuad {
       this.restoreEase = 0;
       // this.positionRestored = true;
     } else {
-      this.restorePhase = delta / this.restoreDelta;
+      this.restorePhase = this.program.uniforms._RestorePhase.value =  delta / this.restoreDelta;
       let fallOff = 1.0 - (1.0 - this.restorePhase) * (1.0 - this.restorePhase);
       this.restoreEase *= 0.1 + (1.0 - 0.1) * fallOff;
     }

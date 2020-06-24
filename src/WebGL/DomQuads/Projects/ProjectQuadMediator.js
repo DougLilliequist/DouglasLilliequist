@@ -30,7 +30,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     this.inputForce = new Vec2(0.0, 0.0);
 
-    this.inputForceInertia = 0.93;
+    this.inputForceInertia = 0.91;
 
     this.inScrollMode = false;
 
