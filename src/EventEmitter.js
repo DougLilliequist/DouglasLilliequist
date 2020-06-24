@@ -21,9 +21,12 @@ class EventEmitter {
         window.addEventListener("mouseup", this.onMouseUp, {
             passive: true
         });
-        // window.addEventListener('wheel', this.onScroll, {
-        //     passive: false
-        // });
+
+        window.addEventListener("touchstart", this.onTouchStart, false);
+        window.addEventListener("touchmove", this.onTouchMove, false);
+        window.addEventListener("touchend", this.onTouchEnd, false);
+        window.addEventListener("touchcancel", this.onTouchCancel, false);
+
         window.addEventListener("resize", this.onResize);
 
         gsap.config({
@@ -47,11 +50,21 @@ class EventEmitter {
         this.emitter.emit(events.MOUSE_UP);
     };
 
-    // onScroll = (e) => {
+    onTouchStart = e => {
+        this.emitter.emit(events.TOUCH_START, e);
+    }
 
-    //     this.emitter.emit(events.SCROLLING, e, false);
+    onTouchMove = e => {
+        this.emitter.emit(events.TOUCH_MOVE, e);
+    }
 
-    // }
+    onTouchEnd = () => {
+        this.emitter.emit(events.TOUCH_END);
+    }
+
+    onTouchCancel = () => {
+        this.emitter.emit(events.TOUCH_CANCEL);
+    }
 
     tick = (time, deltaTime, frame) => {
         this.emitter.emit(events.UPDATE, {

@@ -22,6 +22,11 @@ const events = {
     MOUSE_MOVE: 'mouse_move',
     MOUSE_UP: 'mouse_up',
 
+    TOUCH_START: 'touch_start',
+    TOUCH_MOVE: 'touch_move',
+    TOUCH_END: 'touch_end',
+    TOUCH_CANCEL: 'touch_cancel',
+
     SCROLLING: 'scrolling',
 
     TOUCH_START: 'touch_start',
