@@ -1,6 +1,6 @@
 import {
     Vec2
-} from 'ogl';
+} from '../../../vendors/ogl/src/math/Vec2.js';
 
 //use trig to get viewPort dimensions
 export const getCameraViewplaneSize = (camera) => {
@@ -12,8 +12,6 @@ export const getCameraViewplaneSize = (camera) => {
     // let viewportHeight = 2.0 * Math.tan((cameraFov * (Math.PI / 180.0)) * 0.5) * dist;
     let viewportHeight = Math.tan((cameraFov * (Math.PI / 180.0)) * 0.5) * dist;
     let viewportWidth = viewportHeight * cameraAspect;
-
-    console.log(viewportWidth, viewportHeight)
 
     return new Vec2(viewportWidth, viewportHeight);
 

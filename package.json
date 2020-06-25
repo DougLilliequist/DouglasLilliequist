@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "parcel src/Views/index.html --host 192.168.1.109 --open",
+    "dev": "parcel src/Views/index.html --host 192.168.1.103 --open",
     "build": "parcel build src/Views/index.html --public-url ./",
     "deploy": "gh-pages -d dist"
   },
@@ -34,11 +34,12 @@
   },
   "dependencies": {
     "@dogstudio/highway": "^2.2.1",
+    "bowser": "^2.9.0",
     "dat.gui": "^0.7.6",
     "event-emitter": "^0.3.5",
     "glslify": "^7.0.0",
     "gsap": "^3.3.1",
-    "ogl": "0.0.42",
+    "ogl": "0.0.54",
     "preload-it": "^1.4.0",
     "tiny-emitter": "^2.1.0"
   }

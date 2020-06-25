@@ -1,25 +1,42 @@
 import DomQuad from "../../../extras/DomQuad/DomQuad.js";
-import { Program } from "../../../../../vendors/ogl/src/core/Program.js";
-import { Texture } from "../../../../../vendors/ogl/src/core/Texture.js";
-import { Plane } from "../../../../../vendors/ogl/src/extras/Plane.js";
+import {
+  Program
+} from "../../../../../vendors/ogl/src/core/Program.js";
+import {
+  Texture
+} from "../../../../../vendors/ogl/src/core/Texture.js";
+import {
+  Plane
+} from "../../../../../vendors/ogl/src/extras/Plane.js";
 
 const vert = require("./shaders/projectQuad.vert");
 const frag = require("./shaders/projectQuad.frag");
 
-import { loopNegativeNumber, makeid } from "../../../../../utils/Math.js";
+import {
+  loopNegativeNumber,
+  makeid
+} from "../../../../../utils/Math.js";
 import eventEmitter from "../../../../EventEmitter.js";
 const emitter = eventEmitter.emitter;
 import events from "../../../../../utils/events.js";
 
-import { gsap } from "gsap";
+import {
+  gsap
+} from "gsap";
 
 export default class ProjectQuad extends DomQuad {
   constructor(
     gl,
-    media,
-    { widthSegments = 1.0, heightSegments = 1.0, posOffset = 0.0 } = {}
+    media, {
+      widthSegments = 1.0,
+      heightSegments = 1.0,
+      posOffset = 0.0
+    } = {}
   ) {
-    super(gl, ({ widthSegments, heightSegments } = {}));
+    super(gl, ({
+      widthSegments,
+      heightSegments
+    } = {}));
 
     this.gl = gl;
 
@@ -164,7 +181,10 @@ export default class ProjectQuad extends DomQuad {
     this.restoreDelta = Math.abs(delta) > 0 ? delta : 1.0;
   };
 
-  update({ force }) {
+  update({
+    force
+  }) {
+
     if (this.inScrollMode) {
       // this.positionRestored = false;
       this.position.z += force;
@@ -181,7 +201,7 @@ export default class ProjectQuad extends DomQuad {
     this.visible = this.inBounds();
 
     // if (this.video === null || this.inScrollMode || this.visible === false) return;
-    if (this.video === null || this.inScrollMode) return;
+    if (this.video === null || this.video === undefined || this.inScrollMode) return;
     this.updateVideoTexture();
   }
 
@@ -208,18 +228,22 @@ export default class ProjectQuad extends DomQuad {
       this.restoreEase = 0;
       // this.positionRestored = true;
     } else {
-      this.restorePhase = this.program.uniforms._RestorePhase.value =  delta / this.restoreDelta;
+      this.restorePhase = this.program.uniforms._RestorePhase.value = delta / this.restoreDelta;
       let fallOff = 1.0 - (1.0 - this.restorePhase) * (1.0 - this.restorePhase);
       this.restoreEase *= 0.1 + (1.0 - 0.1) * fallOff;
     }
   }
 
-  animteUniforms({ scale, alpha, alphaPhase, flowMapPhase }) {
+  animteUniforms({
+    scale,
+    alpha,
+    alphaPhase,
+    flowMapPhase
+  }) {
     if (this.scrollModeTl) this.scrollModeTl.kill();
     this.scrollModeTl = gsap.timeline({});
     this.scrollModeTl.to(
-      this.program.uniforms._Alpha,
-      {
+      this.program.uniforms._Alpha, {
         value: alpha,
         duration: 0.5,
         ease: "power1.out"
@@ -228,8 +252,7 @@ export default class ProjectQuad extends DomQuad {
     );
 
     this.scrollModeTl.to(
-      this.program.uniforms._Scale,
-      {
+      this.program.uniforms._Scale, {
         value: scale,
         duration: 0.35,
         ease: "power1.out"
@@ -238,8 +261,7 @@ export default class ProjectQuad extends DomQuad {
     );
 
     this.scrollModeTl.to(
-      this.program.uniforms._ScalePhase,
-      {
+      this.program.uniforms._ScalePhase, {
         value: alphaPhase,
         duration: 0.35,
         ease: "power1.out"
@@ -248,8 +270,7 @@ export default class ProjectQuad extends DomQuad {
     );
 
     this.scrollModeTl.to(
-      this.program.uniforms._FlowMapPhase,
-      {
+      this.program.uniforms._FlowMapPhase, {
         value: flowMapPhase,
         duration: 0.3,
         ease: "power1.out"
@@ -282,7 +303,7 @@ export default class ProjectQuad extends DomQuad {
   }
 
   playVideo = () => {
-    if (this.video === null) return;
+    if (this.video === null || this.video === undefined) return;
     if (
       this.inView({
         inViewPosZ: 0
@@ -292,7 +313,7 @@ export default class ProjectQuad extends DomQuad {
   };
 
   pauseVideo = () => {
-    if (this.video === null) return;
+    if (this.video === null || this.video === undefined) return;
     this.video.pause();
   };
 
@@ -302,7 +323,9 @@ export default class ProjectQuad extends DomQuad {
     // return (this.position.z > -5.0 && this.position.z < 1.0);
   }
 
-  inView({ inViewPosZ }) {
+  inView({
+    inViewPosZ
+  }) {
     this.program.uniforms._InView.value = this.isInView =
       Math.round(this.position.z) === inViewPosZ ? true : false;
     return this.isInView;

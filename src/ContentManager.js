@@ -1,5 +1,9 @@
-import { ProjectContent } from "../Static/ProjectContent.js";
-import { AboutContent } from "../Static/AboutContent.js";
+import {
+  ProjectContent
+} from "../Static/ProjectContent.js";
+import {
+  AboutContent
+} from "../Static/AboutContent.js";
 
 import eventEmitter from "./EventEmitter.js";
 const emitter = eventEmitter.emitter;
@@ -43,12 +47,18 @@ class ContentManager {
     };
   }
 
-  loadViewContent({ content }) {
+  loadViewContent({
+    content
+  }) {
     return content.map(c => {
-      if (c.media.videoSrc) {
-        c.media.video = this.loadVideo({
-          src: c.media.videoSrc
-        });
+
+      if (window.isMobile === false) {
+        console.log('using desktop')
+        if (c.media.videoSrc) {
+          c.media.video = this.loadVideo({
+            src: c.media.videoSrc
+          });
+        }
       }
 
       if (c.media.imageSrc) {
@@ -61,7 +71,9 @@ class ContentManager {
     });
   }
 
-  loadVideo({ src }) {
+  loadVideo({
+    src
+  }) {
     const video = document.createElement("video");
 
     //video.preload = "none";
@@ -93,7 +105,9 @@ class ContentManager {
     return video;
   }
 
-  loadImage({ src }) {
+  loadImage({
+    src
+  }) {
     const img = new Image();
 
     img.crossOrigin = "*";

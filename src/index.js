@@ -10,6 +10,7 @@ import Cursor from '../src/CanvasComponents/Cursor.js';
 
 import Transition from "./Transitions/Transition.js";
 import ViewMediator from "./Views/ViewMediator.js";
+import Bowser from "bowser";
 
 import contentManager from './ContentManager.js'
 
@@ -28,7 +29,16 @@ export default class App {
 
         window.contentLoaded = false;
 
-        this.cursor = new Cursor();
+        const browser = Bowser.getParser(window.navigator.userAgent);
+        const {
+            type
+        } = browser.parsedResult.platform;
+
+        window.isMobile = type !== "desktop";
+
+        if (!window.isMobile) {
+            this.cursor = new Cursor();
+        }
 
         this.webGLCTX = new WebGLContext({
             canvas: document.querySelector('.webgl-canvas')

@@ -70,8 +70,15 @@ export default class Work extends View {
     });
 
     emitter.on(events.LOAD_PROJECT_CONTENT, this.populateContent);
-    emitter.on(events.MOUSE_DOWN, this.enableScrollMode);
-    emitter.on(events.MOUSE_UP, this.disableScrollMode);
+
+    if (!window.isMobile) {
+      emitter.on(events.MOUSE_DOWN, this.enableScrollMode);
+      emitter.on(events.MOUSE_UP, this.disableScrollMode);
+    } else {
+      emitter.on(events.TOUCH_START, this.enableScrollMode);
+      emitter.on(events.TOUCH_END, this.disableScrollMode);
+      emitter.on(events.TOUCH_CANCEL, this.disableScrollMode);
+    }
 
     this.projectLink.addEventListener('mouseenter', () => {
       this.updateLinkHoverState({
@@ -93,8 +100,15 @@ export default class Work extends View {
     emitter.off(events.CONTENT_LOADED, this.initDomGL);
     emitter.off(events.LOADING_ANIM_COMPLETED, this.playEnterAnim);
     emitter.off(events.LOAD_PROJECT_CONTENT, this.populateContent);
-    emitter.off(events.MOUSE_DOWN, this.enableScrollMode);
-    emitter.off(events.MOUSE_UP, this.disableScrollMode);
+
+    if (!window.isMobile) {
+      emitter.off(events.MOUSE_DOWN, this.enableScrollMode);
+      emitter.off(events.MOUSE_UP, this.disableScrollMode);
+    } else {
+      emitter.off(events.TOUCH_START, this.enableScrollMode);
+      emitter.off(events.TOUCH_END, this.disableScrollMode);
+      emitter.off(events.TOUCH_CANCEL, this.disableScrollMode);
+    }
 
     this.projectLink.removeEventListener('mouseenter', () => {
       this.updateLinkHoverState({
@@ -157,7 +171,7 @@ export default class Work extends View {
 
   enableScrollMode = () => {
 
-    if (window.hoveringLink) return;
+    if (window.hoveringLink && !window.isMobile) return;
     document.querySelector('.project-container').classList.add('project-container--scrolling');
     this.inScrollMode = true;
     this.enableUserInteraction = false;
@@ -168,7 +182,7 @@ export default class Work extends View {
 
   disableScrollMode = () => {
 
-    if (window.hoveringLink) return;
+    if (window.hoveringLink && !window.isMobile) return;
     document.querySelector('.project-container').classList.remove('project-container--scrolling');
     this.inScrollMode = false;
     this.enableUserInteraction = true;

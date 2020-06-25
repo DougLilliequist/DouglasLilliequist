@@ -82,9 +82,23 @@ export default class WebGLContext {
   }
 
   initEvents() {
-    emitter.on(events.MOUSE_DOWN, this.onMouseDown);
-    emitter.on(events.MOUSE_MOVE, this.onMouseMove);
-    emitter.on(events.MOUSE_UP, this.onMouseUp);
+
+    if (!window.isMobile) {
+      emitter.on(events.MOUSE_DOWN, this.onMouseDown);
+      emitter.on(events.MOUSE_MOVE, this.onMouseMove);
+      emitter.on(events.MOUSE_UP, this.onMouseUp);
+
+    } else {
+
+      emitter.on(events.TOUCH_START, this.onTouchStart);
+      emitter.on(events.TOUCH_MOVE, this.onTouchMove);
+      emitter.on(events.TOUCH_END, this.onTouchEnd);
+      emitter.on(events.TOUCH_CANCEL, this.onTouchEnd);
+
+      this.touchCount = 0;
+
+    }
+
     emitter.on(events.UPDATE, this.update);
 
     this.isInteracting = false;
@@ -118,6 +132,39 @@ export default class WebGLContext {
   onMouseUp = () => {
     this.isInteracting = false;
     this.firstMove = false;
+  };
+
+  onTouchStart = e => {
+
+    e.preventDefault();
+    this.touchCount++;
+    this.isInteracting = true;
+    const currentTouch = e.touches[0];
+    this.inputPos.x = 2.0 * (currentTouch.clientX * this.wk) - 1.0;
+    this.inputPos.y = -1 * (2.0 * (currentTouch.clientY * this.hK) - 1.0);
+    this.prevInputPos.copy(this.inputPos);
+    this.inputDelta.copy(this.inputPos).sub(this.prevInputPos);
+  };
+
+  onTouchMove = e => {
+    e.preventDefault();
+    if (this.touchCount < 2) {
+      const currentTouch = e.touches[0];
+      this.inputPos.x = 2.0 * (currentTouch.clientX * this.wk) - 1.0;
+      this.inputPos.y = -1 * (2.0 * (currentTouch.clientY * this.hK) - 1.0);
+
+      if (this.firstMove === false) {
+        this.firstMove = true;
+        this.prevInputPos.copy(this.inputPos);
+        this.inputDelta.copy(this.inputPos).sub(this.prevInputPos);
+      }
+    }
+  };
+
+  onTouchEnd = () => {
+    this.isInteracting = false;
+    this.firstMove = false;
+    this.touchCount = 0;
   };
 
   render() {
