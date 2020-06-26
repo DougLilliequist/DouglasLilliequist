@@ -12,6 +12,11 @@ import {
   Vec2
 } from "../../vendors/ogl/src/math/Vec2";
 
+import {
+  Post
+} from '../../vendors/ogl/src/extras/Post.js';
+const fxaa = require('./utils/fxaa.frag');
+
 import DomQuadManager from "./DomQuads/DomQuadManager.js";
 
 import MouseFlowmap from "./MouseFlowmap/MouseFlowmap";
@@ -41,7 +46,6 @@ export default class WebGLContext {
     this.renderer = new Renderer({
       width: w,
       height: h,
-      antialias: false,
       canvas,
       powerPreference: "default",
     });
@@ -69,6 +73,20 @@ export default class WebGLContext {
     this.deltaTime = 1;
 
     this.scene = new Transform();
+
+    this.post = new Post(this.gl);
+    this.renderToScreen = false;
+    this.canvasResolution = new Vec2(this.gl.canvas.width, this.gl.canvas.height);
+
+    this.post.addPass({
+      fragment: fxaa,
+      uniforms: {
+        uResolution: {
+          value: this.canvasResolution
+        }
+      }
+    });
+
   }
 
   initDomQuadManager() {
@@ -168,21 +186,28 @@ export default class WebGLContext {
   };
 
   render() {
-    this.renderer.render({
-      scene: this.scene,
-      camera: this.camera,
-      clear: true
-    });
+
+    if (this.renderToScreen === false) {
+      this.post.render({
+        scene: this.scene,
+        camera: this.camera,
+        clear: true
+      });
+    } else {
+      this.renderer.render({
+        scene: this.scene,
+        camera: this.camera,
+        clear: true
+      });
+    }
   }
 
   update = ({
     deltaTime
   }) => {
-    // this.currentTime = performance.now();
-    // this.deltaTime = (this.currentTime - this.prevtime) * 0.001;
+
     this.deltaTime = deltaTime * 0.001;
 
-    // if(this.isInteracting) this.inputDelta = this.inputPos.clone().sub(this.prevInputPos);
     this.inputDelta.copy(this.inputPos).sub(this.prevInputPos);
 
     this.mouseFlowmap.update(this.renderer, {
@@ -202,7 +227,6 @@ export default class WebGLContext {
 
     this.prevInputPos.copy(this.inputPos);
 
-    // this.prevtime = this.currentTime;
   };
 
   onResize = () => {
@@ -220,6 +244,9 @@ export default class WebGLContext {
       this.camera.perspective({
         aspect: aspectRatio
       });
+
+      this.post.resize();
+      this.post.passes[0].uniforms.uResolution.value.set(this.gl.canvas.width, this.gl.canvas.height);
 
       this.mouseFlowmap.Aspect = w / h;
     });

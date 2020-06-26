@@ -53,7 +53,6 @@ class ContentManager {
     return content.map(c => {
 
       if (window.isMobile === false) {
-        console.log('using desktop')
         if (c.media.videoSrc) {
           c.media.video = this.loadVideo({
             src: c.media.videoSrc
