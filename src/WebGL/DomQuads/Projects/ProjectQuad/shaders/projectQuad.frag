@@ -5,6 +5,7 @@ uniform sampler2D _FlowMap;
 uniform float _FlowMapPhase;
 
 uniform float _ScalePhase;
+uniform float _Scale;
 uniform float _Alpha;
 uniform float _RevealPhase;
 uniform float _RevealDirection;

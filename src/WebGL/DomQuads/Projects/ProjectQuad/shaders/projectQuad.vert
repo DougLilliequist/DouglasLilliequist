@@ -14,6 +14,8 @@ uniform float _FlipFlowMapForce;
 uniform float _RestorePhase;
 uniform float _ScrollPhase;
 
+uniform float _ViewModePhase;
+
 uniform sampler2D _Image;
 uniform float _Scale;
 uniform bool _InView;
@@ -52,7 +54,8 @@ varying float vPhase;
 void main() {
 
     vec3 pos = position;
-    pos.xy *= _ViewplaneSize * mix(0.8, 1.0, _Scale);
+    // pos.xy *= _ViewplaneSize * mix(0.8, 1.0, cos(_Time*2.0)*.5+.5);
+    pos.xy *= _ViewplaneSize * mix(0.85, 1.0, _Scale);
 
     vec3 col = texture2D(_Image, uv).xyz;
     float heightMapDistort = (col.x + col.y + col.z) * lumaK;
@@ -60,11 +63,20 @@ void main() {
 
     vec2 phasePos = position.xy;
     phasePos.xy *= 0.7; //makes quads look better but I dont think this is correct (could have just used any constant)
-    // phasePos.y *= _Aspect; //this gives me a "square" phase
     float phase = 1.0 - (dot(phasePos, phasePos));
     vPhase = phase;
 
     pos.z += (phase * DISPLACEMENTSTR + (heightMapDistort * HEIGHTMAPSTR)) * _ScrollPhase * SCROLLDISTORTSTR;
+    pos.z += mix(0.0, 0.125, _ViewModePhase);
+    // pos.z += mix(0.0, 0.125, 1.0);
+    // pos.z += (1.0 - cos(3.0 * _ViewModePhase + (phase * 3.0))) * (0.08 + (heightMapDistort * 0.1)) * (1.0 - abs(_ViewModePhase * 2.0 - 1.0));
+    
+    
+    pos.z += (1.0 - (cos(8.0 * _ViewModePhase + (phase * 4.0)) * 0.5 + 0.5)) * (0.15 + (heightMapDistort * 0.4)) * (1.0 - abs(_ViewModePhase * 2.0 - 1.0));
+    // pos.z += (1.0 - (cos(8.0 * _ViewModePhase + (phase * 4.0)))) * (0.08 + (heightMapDistort * 0.4)) * (1.0 - abs(_ViewModePhase * 2.0 - 1.0));
+
+
+    // pos.z += (1.0 - cos(20.0 * _ViewModePhase + (phase * 5.0))) * (0.08 + (heightMapDistort * 0.1)) * (1.0 - abs(_ViewModePhase * 2.0 - 1.0));
 
     mat4 modelViewProjection = projectionMatrix * modelViewMatrix;
 

@@ -21,6 +21,45 @@ body {
     background-color: #e6e6e6;
 }
 
+.grid {
+
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+
+    &__column {
+        height: 100vh;
+        width: 80px;
+        background-color: red;
+        opacity: 0.2;
+        margin-left: 15px;
+        margin-right:15px;
+    }
+
+    &__row {
+        height: 46px;
+        width: 100vw;
+        background-color: red;
+        opacity: 0.2;
+        margin-top: 5px;
+        margin-bottom:5px;
+    }
+
+    z-index: 10000;
+
+}
+
+.column {
+    flex-direction: row;
+}
+
+.row {
+    flex-direction: column;
+}
+
 .main-cursor {
 
     top: 0;
@@ -101,7 +140,7 @@ body {
 
     position: absolute;
     height: 100vh;
-    width: 7vw;
+    width: 10vw;
     right: 0%;
     z-index: 0;
 

@@ -78,6 +78,8 @@ export default class Cursor {
 
         this.startAngle = 0;
 
+        this.hoveringSticky = false;
+
         this.endAngle = Math.PI * 2.0;
 
         this.ease = 0.2;
@@ -156,9 +158,16 @@ export default class Cursor {
         emitter.on(events.LOADING_ANIM_COMPLETED, this.reveal)
         emitter.on(events.SHOW_CLICKDRAG_CTA, this.showCTAText);
         emitter.on(events.HIDE_CLICKDRAG_CTA, this.hideCTAText);
+        
         emitter.on(events.MOUSE_MOVE, this.onMouseMove);
         emitter.on(events.ENTER_SCROLL_MODE, this.onMouseDown);
         emitter.on(events.EXIT_SCROLL_MODE, this.onMouseUp);
+        
+        emitter.on(events.HOVERING_STICKY_COMPONENT, this.stickyComponentAnim);
+        emitter.on(events.LEAVING_STICKY_COMPONENT, () => {
+            this.hoveringSticky = false;
+        });
+
         emitter.on(events.HOVERING_LINK, this.animteHoverMode);
         emitter.on(events.LEAVING_LINK, this.restore);
         emitter.on(events.UPDATE, this.update);
@@ -178,8 +187,10 @@ export default class Cursor {
 
     onMouseMove = (event) => {
 
-        this.target.x = event.clientX;
-        this.target.y = event.clientY;
+        if(!this.hoveringSticky) {
+            this.target.x = event.clientX;
+            this.target.y = event.clientY;
+        }
 
         if (this.inScrollMode) {
 
@@ -231,6 +242,19 @@ export default class Cursor {
             }, "<");
 
         }
+
+    }
+
+    stickyComponentAnim = (e) => {
+
+        this.hoveringSticky = true;
+
+        const {target} = e;
+
+        this.target.x = target.x;
+        this.target.y = target.y;
+
+        this.hideCTAText();
 
     }
 

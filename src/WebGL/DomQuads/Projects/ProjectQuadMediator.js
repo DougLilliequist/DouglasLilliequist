@@ -38,14 +38,17 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     this.maxBounds = 0.0;
 
+    this.inViewMode = false;
+
   }
 
   initEvents() {
 
     emitter.on(events.ENTER_SCROLL_MODE, this.enterScrollMode);
     emitter.on(events.EXIT_SCROLL_MODE, this.exitScrollMode);
+    emitter.on(events.SHOW_PROJECT, this.updateViewMode);
+    emitter.on(events.CLOSE_PROJECT, this.updateViewMode);
     emitter.on(events.REVEAL_QUADS, this.revealQuads);
-    emitter.on(events.SWAP_QUAD, this.swapQuad);
     emitter.on(events.PREPARE_UNMOUNT, this.hideQuads);
 
   }
@@ -54,8 +57,9 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     emitter.off(events.ENTER_SCROLL_MODE, this.enterScrollMode);
     emitter.off(events.EXIT_SCROLL_MODE, this.exitScrollMode);
+    emitter.off(events.SHOW_PROJECT, this.updateViewMode);
+    emitter.off(events.CLOSE_PROJECT, this.updateViewMode);
     emitter.off(events.REVEAL_QUADS, this.revealQuads);
-    emitter.off(events.SWAP_QUAD, this.swapQuad);
     emitter.off(events.PREPARE_UNMOUNT, this.hideQuads);
 
   }
@@ -139,6 +143,23 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
   }
 
+  //toggle values
+  updateViewMode = () => {
+
+    const {uniforms} = this.quadInView.program;
+    const duration = 1.0;
+    const ease = "sine.inOut"
+
+    this.inViewMode = !this.inViewMode
+
+    gsap.to(uniforms._ViewModePhase, {
+      value: this.inViewMode ? 1.0 : 0.0,
+      duration,
+      ease
+    });
+
+  }
+
   revealQuads = () => {
 
     if (this.revealQuadAnim) this.revealQuadAnim.kill();
@@ -151,17 +172,19 @@ export default class ProjectQuadMediator extends DomquadMediator {
       }
     })
 
-    this.revealQuadAnim.set(this.quadInView.program.uniforms._RevealDirection, {
+    const {uniforms} = this.quadInView.program;
+
+    this.revealQuadAnim.set(uniforms._RevealDirection, {
       value: 0.0
     }, "<");
 
-    this.revealQuadAnim.to(this.quadInView.program.uniforms._Alpha, {
+    this.revealQuadAnim.to(uniforms._Alpha, {
       duration: 0.1,
       value: 1.0,
       ease: "sine.in"
     }, "<");
 
-    this.revealQuadAnim.to(this.quadInView.program.uniforms._RevealPhase, {
+    this.revealQuadAnim.to(uniforms._RevealPhase, {
       duration: 0.85,
       value: 1.0,
       ease: "circ.inOut",

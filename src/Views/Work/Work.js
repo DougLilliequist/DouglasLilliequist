@@ -5,6 +5,8 @@ import eventEmitter from '../../EventEmitter.js';
 const emitter = eventEmitter.emitter;
 import events from '../../../utils/events.js';
 
+import StickyComponent from '../../StickyComponent.js';
+
 import {
   gsap
 } from 'gsap';
@@ -49,11 +51,19 @@ export default class Work extends View {
   initReferences() {
 
     this.domGLReferenceElement = this.el.querySelector('.project-video');
+    this.projectTitleScrolling = this.el.querySelector('.project-title'); //RENAME
+    this.viewProjectButton = this.el.querySelector('.view-project-button');
+    this.viewProjectButton.stickyTransform = new StickyComponent({domElement: this.el.querySelector('.view-project-button__transform')});
+    this.exitButton = this.el.querySelector('.exit-button');
+    this.exitButton.stickyTransform = new StickyComponent({domElement: this.el.querySelector('.exit-button__transform')});
+
     this.projectTitle = document.getElementById('project_title');
     this.projectType = document.getElementById('project_type');
     this.projectYear = document.getElementById('project_year');
     this.projectContentInfo = this.el.querySelectorAll('.project-info');
     this.projectLink = this.el.querySelector(".project-link");
+    this.projectLink.stickyTransform = new StickyComponent({domElement: this.el.querySelector('.project-link__transform')});
+
 
   }
 
@@ -61,6 +71,7 @@ export default class Work extends View {
 
     this.enableUserInteraction = true;
     this.inScrollMode = false;
+    this.inViewProjectMode = false;
     this.inTraverseMode = false;
 
     emitter.on(events.CONTENT_LOADED, this.initDomGL);
@@ -79,6 +90,11 @@ export default class Work extends View {
       emitter.on(events.TOUCH_END, this.disableScrollMode);
       emitter.on(events.TOUCH_CANCEL, this.disableScrollMode);
     }
+
+    //rename events
+    this.viewProjectButton.stickyTransform.el.addEventListener('mousedown', this.showProject);
+    this.exitButton.stickyTransform.el.addEventListener('mousedown', this.closeProject);
+
 
     this.projectLink.addEventListener('mouseenter', () => {
       this.updateLinkHoverState({
@@ -109,6 +125,9 @@ export default class Work extends View {
       emitter.off(events.TOUCH_END, this.disableScrollMode);
       emitter.off(events.TOUCH_CANCEL, this.disableScrollMode);
     }
+
+    this.viewProjectButton.stickyTransform.el.removeEventListener('mousedown', this.showProject);
+    this.exitButton.stickyTransform.el.removeEventListener('mousedown', this.closeProject);
 
     this.projectLink.removeEventListener('mouseenter', () => {
       this.updateLinkHoverState({
@@ -149,6 +168,7 @@ export default class Work extends View {
       role,
       link
     } = contentManager.Projects[contentIndex];
+    document.querySelector('.project-title__title').innerHTML = title;
     document.getElementById('project_title').innerHTML = title;
     document.getElementById('project_type').innerHTML = type;
     document.getElementById('project_year').innerHTML = year;
@@ -157,11 +177,11 @@ export default class Work extends View {
 
     document.getElementById('project_role').innerHTML = role !== null ? role : '';
     document.getElementById('project_role').style.display = role !== null ? 'inline-block' : 'none';
-    // if (role === null) {
-    //   document.getElementById('project_role').innerHTML = role;
-    // } else {
-    //   document.getElementById('project_role').style.display = "none";
-    // }
+    if (role === null) {
+      document.getElementById('project_role').innerHTML = role;
+    } else {
+      document.getElementById('project_role').style.display = "none";
+    }
 
     const projectLink = document.getElementById('project_link');
     projectLink.innerHTML = link === '' ? '' : "view project";
@@ -171,23 +191,24 @@ export default class Work extends View {
 
   enableScrollMode = () => {
 
-    if (window.hoveringLink && !window.isMobile) return;
-    document.querySelector('.project-container').classList.add('project-container--scrolling');
+    if ((this.onButton() && !window.isMobile) || this.inViewProjectMode) return;
+
+    // document.querySelector('.project-container').classList.add('project-container--scrolling');
     this.inScrollMode = true;
     this.enableUserInteraction = false;
     emitter.emit(events.ENTER_SCROLL_MODE);
-    this.animateProjectContent();
+    this.updateInterface();
 
   }
 
   disableScrollMode = () => {
 
-    if (window.hoveringLink && !window.isMobile) return;
-    document.querySelector('.project-container').classList.remove('project-container--scrolling');
+    if ((this.onButton() && !window.isMobile) || this.inViewProjectMode) return;
+    // document.querySelector('.project-container').classList.remove('project-container--scrolling');
     this.inScrollMode = false;
     this.enableUserInteraction = true;
     emitter.emit(events.EXIT_SCROLL_MODE);
-    this.animateProjectContent();
+    this.updateInterface();
 
   }
 
@@ -205,7 +226,7 @@ export default class Work extends View {
     const startY = 5;
     const dur = 0.85
 
-    this.enterAnim.fromTo(this.projectTitle, {
+    this.enterAnim.fromTo(this.projectTitleScrolling, {
       opacity: 0.01,
       y: -startY,
     }, {
@@ -215,47 +236,100 @@ export default class Work extends View {
       ease: ease
     }, "<");
 
-    this.enterAnim.fromTo(this.projectContentInfo, {
-
+    this.enterAnim.fromTo(this.viewProjectButton, {
       opacity: 0.01,
-      y: -startY
-
+      y: startY,
     }, {
-
       duration: dur,
       opacity: 0.99,
       y: 0,
-      stagger: 0.05,
-      // ease: ease
-
-      // }, "<0.3");
-    }, "<0.05");
-
-    this.enterAnim.fromTo(this.projectType, {
-      opacity: 0.01,
-    }, {
-      duration: dur,
-      opacity: 0.99,
       ease: ease
     }, "<");
 
-    this.enterAnim.fromTo(this.projectYear, {
-      opacity: 0.01
-    }, {
-      duration: dur,
-      opacity: 0.99,
-      ease: ease
-    }, "<0.01");
-
-    this.enterAnim.fromTo(this.projectLink, {
+    gsap.set(this.projectTitle, {
       opacity: 0.01,
-      y: -startY
-    }, {
+    });
+
+    gsap.set(this.projectContentInfo, {
+
       duration: dur,
-      opacity: 0.99,
-      y: 0,
+      opacity: 0.01,
+    });
+
+    gsap.set(this.projectType, {
+      opacity: 0.01,
+    });
+
+    gsap.set(this.projectYear, {
+      opacity: 0.01,
+    });
+
+    gsap.set(this.projectLink, {
+      opacity: 0.01,
+    });
+
+    gsap.set(this.exitButton, {
+      opacity: 0.01,
+    });
+
+  }
+
+  playLeaveAnim = () => {
+
+
+    this.killActiveAnimations();
+
+    //not including this to kill animation function
+    //As we don't want this animation to be killable
+    this.leaveAnim = gsap.timeline();
+
+    const ease = "sine.inOut";
+    const dur = 0.75;
+
+    this.leaveAnim.to(this.projectTitle, {
+      opacity: 0.01,
+      duration: dur,
       ease: ease
-    }, "<0.01");
+    });
+
+    this.leaveAnim.to(this.viewProjectButton, {
+       
+      duration: dur,
+      opacity: 0.01,
+      y: 5,
+      ease: ease
+    }, "<");
+
+  }
+
+  updateInterface = () => {
+
+    this.killActiveAnimations();
+
+    this.interfaceAnim = gsap.timeline();
+
+    // const {inScrollMode} = this.inScrollMode;
+    const pow = "power1.out";
+    const duration = 0.25;
+    const {inScrollMode, inViewProjectMode} = this;
+
+    console.log(inViewProjectMode);
+
+    this.interfaceAnim.to(this.projectTitleScrolling, {
+
+      duration,
+      ease: pow,
+      opacity: (inViewProjectMode || inScrollMode) ? 0.01 : 0.99
+
+    });
+
+    this.interfaceAnim.to(this.viewProjectButton, {
+
+      duration,
+      ease: pow,
+      opacity: (inViewProjectMode || inScrollMode) ? 0.01 : 0.99
+
+    }, "<");
 
   }
 
@@ -303,47 +377,77 @@ export default class Work extends View {
       ease: ease
     }, "<");
 
+    this.leaveAnim.to(this.exitButton, {
+      duration: dur,
+      opacity: 0.01,
+      ease: ease
+    }, "<");
+
   }
 
-  animateProjectContent() {
+  showProject = () => {
 
+    this.inViewProjectMode = true;
+    emitter.emit(events.SHOW_PROJECT);
+    this.updateInterface();
+    this.animateProjectContent();
+
+  }
+
+  closeProject = () => {
+
+    this.inViewProjectMode = false;
+    emitter.emit(events.CLOSE_PROJECT);
+    this.updateInterface();
+    this.animateProjectContent();
+  }
+
+  animateProjectContent = () => {
 
     this.killActiveAnimations();
     this.scrollAnim = gsap.timeline({});
 
-    const scrolling = this.inScrollMode;
+    const {inViewProjectMode} = this;
     const pow = "power1.out";
 
     this.scrollAnim.fromTo(this.projectTitle, {
-      y: scrolling ? 0 : -5
+      y: inViewProjectMode ? 0 : -5
     }, {
-      duration: scrolling ? 0.1 : 0.75,
+      duration: inViewProjectMode ? 0.75 : 0.1,
       y: 0,
-      opacity: scrolling ? 0.01 : 0.99,
+      opacity: inViewProjectMode ? 0.99 : 0.01,
       ease: pow
     }, "<");
     this.scrollAnim.to(this.projectType, {
-      duration: scrolling ? 0.01 : 0.75,
+      duration: inViewProjectMode ?  0.75 : 0.01,
       y: 0,
-      opacity: scrolling ? 0.01 : 0.99,
+      opacity: inViewProjectMode ? 0.99 : 0.01,
       ease: pow
     }, "<0.05");
     this.scrollAnim.to(this.projectYear, {
-      duration: scrolling ? 0.01 : 0.75,
+      duration: inViewProjectMode ? 0.75 : 0.01,
       y: 0,
-      opacity: scrolling ? 0.01 : 0.99,
+      opacity: inViewProjectMode ? 0.99 : 0.01,
       ease: pow
     }, "<0.02");
     this.scrollAnim.to(this.projectContentInfo, {
-      opacity: scrolling ? 0.01 : 0.99,
-      duration: scrolling ? 0.1 : 1.0,
-      stagger: scrolling ? 0.0 : 0.1,
-    }, scrolling ? "<" : "<0.05")
+      opacity: inViewProjectMode ? 0.99 : 0.01,
+      duration: inViewProjectMode ? 1.0 : 0.1,
+      stagger: inViewProjectMode ? 0.1 : 0.0,
+    }, inViewProjectMode ? "<0.05" : "<")
     this.scrollAnim.to(this.projectLink, {
-      duration: scrolling ? 0.1 : 0.5,
-      opacity: scrolling ? 0.01 : 0.99,
+      duration: inViewProjectMode ? 0.5 : 0.1,
+      opacity: inViewProjectMode ? 0.99 : 0.01,
       ease: pow
-    }, scrolling ? "<" : "<0.05");
+    }, inViewProjectMode ? "<0.05" : "<");
+
+    this.scrollAnim.to(this.exitButton, {
+
+      duration: inViewProjectMode ? 0.5 : 0.1,
+      ease: pow,
+      opacity: inViewProjectMode ? 0.9 : 0.01
+
+    },inViewProjectMode ? "<0.05" : "<");
 
   }
 
@@ -368,6 +472,15 @@ export default class Work extends View {
 
     if (this.enterAnim) this.enterAnim.kill();
     if (this.scrollAnim) this.scrollAnim.kill();
+    // if (this.interfaceAnim) this.interfaceAnim.kill();
+
+  }
+
+  //in future version: make some kind of global check if a sticky transform is being hovered
+
+  onButton() {
+
+    return window.hoveringLink || this.viewProjectButton.stickyTransform.hovered || this.exitButton.stickyTransform.hovered;
 
   }
 

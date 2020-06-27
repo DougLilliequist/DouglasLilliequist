@@ -83,7 +83,8 @@ export default class MouseFlowmap {
                 value: 1.5
             },
             _Radius: {
-                value: 0.5
+                // value: 0.5
+                value: 0.35
             },
             _FadeRate: {
                 value: 0.97
