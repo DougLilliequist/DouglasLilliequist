@@ -52,18 +52,20 @@ export default class Work extends View {
 
     this.domGLReferenceElement = this.el.querySelector('.project-video');
     this.projectTitleScrolling = this.el.querySelector('.project-title'); //RENAME
+    
     this.viewProjectButton = this.el.querySelector('.view-project-button');
-    this.viewProjectButton.stickyTransform = new StickyComponent({domElement: this.el.querySelector('.view-project-button__transform')});
+    this.viewProjectButton.stickyTransform = new StickyComponent({domElement: this.el.querySelector('.view-project-button__transform'), enable: true, event: this.showProject});
+    
     this.exitButton = this.el.querySelector('.exit-button');
-    this.exitButton.stickyTransform = new StickyComponent({domElement: this.el.querySelector('.exit-button__transform')});
+    this.exitButton.stickyTransform = new StickyComponent({domElement: this.el.querySelector('.exit-button__transform'), enable: true, event: this.closeProject});
 
     this.projectTitle = document.getElementById('project_title');
     this.projectType = document.getElementById('project_type');
     this.projectYear = document.getElementById('project_year');
     this.projectContentInfo = this.el.querySelectorAll('.project-info');
+    
     this.projectLink = this.el.querySelector(".project-link");
-    this.projectLink.stickyTransform = new StickyComponent({domElement: this.el.querySelector('.project-link__transform')});
-
+    this.projectLink.stickyTransform = new StickyComponent({domElement: this.el.querySelector('.project-link__transform'), enable: true});
 
   }
 
@@ -92,8 +94,8 @@ export default class Work extends View {
     }
 
     //rename events
-    this.viewProjectButton.stickyTransform.el.addEventListener('mousedown', this.showProject);
-    this.exitButton.stickyTransform.el.addEventListener('mousedown', this.closeProject);
+    // this.viewProjectButton.stickyTransform.el.addEventListener('mousedown', this.showProject);
+    // this.exitButton.stickyTransform.el.addEventListener('mousedown', this.closeProject);
 
 
     this.projectLink.addEventListener('mouseenter', () => {
@@ -126,8 +128,8 @@ export default class Work extends View {
       emitter.off(events.TOUCH_CANCEL, this.disableScrollMode);
     }
 
-    this.viewProjectButton.stickyTransform.el.removeEventListener('mousedown', this.showProject);
-    this.exitButton.stickyTransform.el.removeEventListener('mousedown', this.closeProject);
+    // this.viewProjectButton.stickyTransform.el.removeEventListener('mousedown', this.showProject);
+    // this.exitButton.stickyTransform.el.removeEventListener('mousedown', this.closeProject);
 
     this.projectLink.removeEventListener('mouseenter', () => {
       this.updateLinkHoverState({
@@ -197,6 +199,7 @@ export default class Work extends View {
     this.inScrollMode = true;
     this.enableUserInteraction = false;
     emitter.emit(events.ENTER_SCROLL_MODE);
+    this.viewProjectButton.stickyTransform.deActivate();
     this.updateInterface();
 
   }
@@ -208,6 +211,7 @@ export default class Work extends View {
     this.inScrollMode = false;
     this.enableUserInteraction = true;
     emitter.emit(events.EXIT_SCROLL_MODE);
+    this.viewProjectButton.stickyTransform.activate();
     this.updateInterface();
 
   }
@@ -241,7 +245,7 @@ export default class Work extends View {
       y: startY,
     }, {
       duration: dur,
-      opacity: 0.99,
+      opacity: 0.65,
       y: 0,
       ease: ease
     }, "<");
@@ -398,6 +402,7 @@ export default class Work extends View {
     emitter.emit(events.CLOSE_PROJECT);
     this.updateInterface();
     this.animateProjectContent();
+
   }
 
   animateProjectContent = () => {

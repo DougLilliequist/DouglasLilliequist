@@ -72,6 +72,8 @@ export default class Cursor {
 
         this.scrollModeRadius = 22.0;
 
+        this.hoverRadius = 1.0;
+
         this.radius = this.defaultRadius;
 
         this.strokeWidth = 0.5;
@@ -163,12 +165,11 @@ export default class Cursor {
         emitter.on(events.ENTER_SCROLL_MODE, this.onMouseDown);
         emitter.on(events.EXIT_SCROLL_MODE, this.onMouseUp);
         
-        emitter.on(events.HOVERING_STICKY_COMPONENT, this.stickyComponentAnim);
-        emitter.on(events.LEAVING_STICKY_COMPONENT, () => {
-            this.hoveringSticky = false;
-        });
+        emitter.on(events.HOVERING_STICKY_COMPONENT, this.animateHoverMode);
+        emitter.on(events.LEAVING_STICKY_COMPONENT, this.animateLeaveHoverMode);
+        emitter.on(events.UPDATE_STICKY_TARGET, this.updateStickyTarget);
 
-        emitter.on(events.HOVERING_LINK, this.animteHoverMode);
+        // emitter.on(events.HOVERING_LINK, this.animteHoverMode);
         emitter.on(events.LEAVING_LINK, this.restore);
         emitter.on(events.UPDATE, this.update);
         emitter.on(events.RESIZE, this.onResize);
@@ -187,7 +188,7 @@ export default class Cursor {
 
     onMouseMove = (event) => {
 
-        if(!this.hoveringSticky) {
+        if(this.hoveringSticky === false) {
             this.target.x = event.clientX;
             this.target.y = event.clientY;
         }
@@ -245,18 +246,18 @@ export default class Cursor {
 
     }
 
-    stickyComponentAnim = (e) => {
+    // stickyComponentAnim = (e) => {
 
-        this.hoveringSticky = true;
+    //     this.hoveringSticky = true;
 
-        const {target} = e;
+    //     const {target, rect} = e;
 
-        this.target.x = target.x;
-        this.target.y = target.y;
+    //     this.target.x = target.x;
+    //     this.target.y = target.y;
 
-        this.hideCTAText();
+    //     this.hideCTAText();
 
-    }
+    // }
 
     restore = () => {
 
@@ -297,15 +298,52 @@ export default class Cursor {
 
     }
 
-    animteHoverMode = () => {
+    animateHoverMode = (event) => {
+        
+        if(this.hoveringSticky === false) {
 
-        if (this.hoverModeAnim) this.hoverModeAnim.kill();
-        this.hoverModeAnim = gsap.to(this, {
-            duration: 0.2,
-            radius: 0,
-            ctaTextAlpha: 0.0,
-        });
+            this.hoveringSticky = true;
+            const {target, rect} = event;
+            const {width, height} = rect;
+    
+            this.hoverRadius = Math.sqrt(width * width + height * height) * 0.3115;
+        
+            if (this.hoverModeAnim) this.hoverModeAnim.kill();
+            this.hoverModeAnim = gsap.to(this, {
+                duration: 0.2,
+                ease: "power1.out",
+                radius: this.hoverRadius,
+            });
+            
+        }
+
     }
+
+    animateLeaveHoverMode = () => {
+        
+        if(this.hoveringSticky) {
+        this.hoveringSticky = false;
+            
+        if (this.leaveHoverModeAnim) this.leaveHoverModeAnim.kill();
+        this.leaveHoverModeAnim = gsap.to(this,  
+            {
+                duration: 0.2,
+                ease: "power1.out",
+                radius: this.defaultRadius,
+
+            });
+        
+        }
+        
+    }
+
+    updateStickyTarget = (event) => {
+        
+        const {target} = event;
+        this.target.x = target.x;
+        this.target.y = target.y;
+
+    } 
 
     drawCursorArrows() {
 

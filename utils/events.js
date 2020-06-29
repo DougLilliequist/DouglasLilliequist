@@ -38,6 +38,7 @@ const events = {
 
     HOVERING_STICKY_COMPONENT: 'hovering_sticky_component',
     LEAVING_STICKY_COMPONENT: 'leaving_sticky_component',
+    UPDATE_STICKY_TARGET: 'update_sticky_target',
 
     HOVERING_LINK: 'hovering_link',
     LEAVING_LINK: 'leaving_link',

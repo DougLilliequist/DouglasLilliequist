@@ -13,9 +13,11 @@ import events from '../utils/events.js';
 
  export default class StickyComponent {
 
-    constructor({domElement}) {
+    constructor({domElement, enable, event = null}) {
 
         this.el = domElement;
+        this.defaultDisplay = this.el.style.display;
+        this.event = event;
 
         this.hovered = false;
 
@@ -29,6 +31,13 @@ import events from '../utils/events.js';
 
         this.initForceParams();
         this.initEvents();
+
+        this.enable = enable;
+        if(this.enable) {
+            this.activate();
+        } else {
+            this.deActivate();
+        }
 
     }
 
@@ -60,6 +69,9 @@ import events from '../utils/events.js';
             y: 0
         }
 
+        //invisible padding for more resistance when going out from link
+        this.hoverScale = 1.5;
+
         this.inertia = 0.8;
 
         this.ease = 0.2;
@@ -83,9 +95,11 @@ import events from '../utils/events.js';
 
     initEvents() {
 
-        emitter.on(events.MOUSE_MOVE, this.onMouseMove);
         emitter.on(events.UPDATE, this.update);
         emitter.on(events.RESIZE, this.onResize);
+        // emitter.on(events.MOUSE_MOVE, this.onMouseMove);
+        // this.el.addEventListener('mousedown', this.event);
+
     }
 
     removeEvents() {
@@ -105,9 +119,9 @@ import events from '../utils/events.js';
 
     inBounds() {
 
-        const {top, left, width, height} = this.rect;
+        let {top, left, width, height} = this.rect;
 
-        const {x, y} = this.inputPos;
+        let {x, y} = this.inputPos;
 
         const inBoundsX = x >= left && x <= left + width;
         const inBoundsY = y >= top && y <= top + height;
@@ -116,83 +130,95 @@ import events from '../utils/events.js';
 
     }
 
-    // inBounds() {
-
-    //     const {top, left, width, height} = this.rect;
-
-    //     const r = ((width * width) + (height * height));
-    //     const {x, y} = this.inputPos;
-    //     const posSq = (x * x) + (y * y);
-    //     console.log(r)
-    //     return posSq < r;
-
-    // }
-
     //standard force
-    // updateForce() {
-
-    //     this.targetPos.x = this.hovered ? this.inputPos.x : this.initPos.x;
-    //     this.targetPos.y = this.hovered ? this.inputPos.y : this.initPos.y;
-
-    //     this.currentPos.x += (this.targetPos.x - this.currentPos.x) * 0.1;
-    //     this.currentPos.y += (this.targetPos.y - this.currentPos.y) * 0.1;
-
-    //     let translateX = (this.currentPos.x - this.initPos.x) * 0.5;
-    //     let translateY = (this.currentPos.y - this.initPos.y) * 0.5;
-        
-    //     this.offsetPos.x = this.initPos.x + translateX;
-    //     this.offsetPos.y = this.initPos.y + translateY;
-    //     //translate3d needs a constantly updating value
-    //     this.el.style.transform = `translate3d(${translateX}px, ${translateY}px, 0.0)`;
-
-    // }
-
-    //spring force
     updateForce() {
 
         this.targetPos.x = this.hovered ? this.inputPos.x : this.initPos.x;
         this.targetPos.y = this.hovered ? this.inputPos.y : this.initPos.y;
 
-        this.force.x += (this.targetPos.x - this.currentPos.x) * 0.05;
-        this.force.y += (this.targetPos.y - this.currentPos.y) * 0.05;
-        
-        this.currentPos.x += this.force.x;
-        this.currentPos.y += this.force.y;
+        this.currentPos.x += (this.targetPos.x - this.currentPos.x) * 0.1;
+        this.currentPos.y += (this.targetPos.y - this.currentPos.y) * 0.1;
 
         let translateX = (this.currentPos.x - this.initPos.x) * 0.5;
         let translateY = (this.currentPos.y - this.initPos.y) * 0.5;
         
         this.offsetPos.x = this.initPos.x + translateX;
         this.offsetPos.y = this.initPos.y + translateY;
-
+        //translate3d needs a constantly updating value
         this.el.style.transform = `translate3d(${translateX}px, ${translateY}px, 0.0)`;
-        
-        this.force.x *= this.inertia;
-        this.force.y *= this.inertia;
 
     }
 
-    //CLEAN UP CONDITIONS
-    //MAKE THE CURSOR SWITCH A ONE TIME EVENT
-    //MAKE THE COMPONENT POSITION CHANGE INSTANT ON RESIZE
-    //COMPUTE COMPONENT DIMENSIONS FOR CIRCLE RADIUS
-    //CONSIDER INCREASING THE PADDING / MIN DISTANCE SOMEWHAT TO HAVE MORE RESISTANCE WHEN GOING OUT FROM LINK
-    //ALWAYS PASS HOVERED STATE IN EMITTED EVENT
+    //spring force
+    // updateForce() {
+
+    //     this.targetPos.x = this.hovered ? this.inputPos.x : this.initPos.x;
+    //     this.targetPos.y = this.hovered ? this.inputPos.y : this.initPos.y;
+
+    //     this.force.x += (this.targetPos.x - this.currentPos.x) * 0.05;
+    //     this.force.y += (this.targetPos.y - this.currentPos.y) * 0.05;
+        
+    //     this.currentPos.x += this.force.x;
+    //     this.currentPos.y += this.force.y;
+
+    //     let translateX = (this.currentPos.x - this.initPos.x) * 0.5;
+    //     let translateY = (this.currentPos.y - this.initPos.y) * 0.5;
+        
+    //     this.offsetPos.x = this.initPos.x + translateX;
+    //     this.offsetPos.y = this.initPos.y + translateY;
+
+    //     this.el.style.transform = `translate3d(${translateX}px, ${translateY}px, 0.0)`;
+        
+    //     this.force.x *= this.inertia;
+    //     this.force.y *= this.inertia;
+
+    // }
 
     update = () => {
 
-        //make this to a constant function that sets hovered
-        this.hovered = this.inBounds();
+        // if(this.enable) {
+            // this.hovered = this.inBounds();
+            this.updateForce();
 
+            if(this.hovered) {
+                emitter.emit(events.UPDATE_STICKY_TARGET, {target: this.offsetPos, rect: this.rect});
+            } else {
+                // emitter.emit(events.LEAVING_STICKY_COMPONENT);
+            }
+        
+        // }
+    }
+
+    updateHoverState = () => {
+
+        this.hovered = !this.hovered;
         if(this.hovered) {
-            // document.body.style.cursor = "pointer";
-            emitter.emit(events.HOVERING_STICKY_COMPONENT, {target: this.offsetPos});
+            emitter.emit(events.HOVERING_STICKY_COMPONENT, {rect: this.rect});
         } else {
-            // document.body.style.cursor = "default";
             emitter.emit(events.LEAVING_STICKY_COMPONENT);
         }
 
-        this.updateForce();
+    }
+
+    activate = () => {
+
+        emitter.on(events.MOUSE_MOVE, this.onMouseMove);
+        this.el.addEventListener('mouseenter', this.updateHoverState);
+        this.el.addEventListener('mouseleave', this.updateHoverState);
+        if(this.event) this.el.addEventListener('mousedown', this.event);
+        this.enable = true;
+        // this.el.style.display = this.defaultDisplay;
+    }
+
+    deActivate = () => {
+
+        emitter.off(events.MOUSE_MOVE, this.onMouseMove);
+        this.el.addEventListener('mouseenter', this.updateHoverState);
+        this.el.addEventListener('mouseleave', this.updateHoverState);
+        if(this.event) this.el.removeEventListener('mousedown', this.event);
+        this.enable = false;
+        this.hovered = false;
+        // this.el.style.display = "none";
 
     }
 

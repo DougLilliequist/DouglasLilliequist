@@ -8,8 +8,8 @@ html {
 }
 
 body {
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     // min-height: 100vh;
     // min-height:-webkit-fill-available;
     position: absolute;
@@ -19,6 +19,8 @@ body {
     overflow: hidden;
     font-family: $muli;
     background-color: #e6e6e6;
+    touch-action: none;
+
 }
 
 .grid {
@@ -185,12 +187,11 @@ body {
             text-decoration: none;
             color:#000000;
             display: inline-block;
-            margin-top: 2.3vw;
-            margin-bottom: 1.25vw;
+            padding: 2vw;
             position: relative;
             font-weight: $semi-bold;
             @include fluid-type($minWidth, $maxWidth, $minFontSize__navigation, $maxFontSize__navigation);
-            opacity: 0.5;
+            opacity: 0.7;
             transition: opacity 0.5s;
             text-align: center;
 
@@ -207,38 +208,7 @@ body {
 
             }
 
-            // cursor: none;
-
-            &:before {
-
-                position: absolute;
-                height: 100%;
-                bottom: 0%;
-                width: 1px;
-                background-color: black;
-                content: '';
-                transform: scaleY(0);
-                transform-origin: bottom right;
-                transition: transform 0.2s;
-
-            }
-
-            &:hover {
-
-                opacity: 0.99;
-                transition: opacity 0.5s;
-
-                
-                &:before {
-                    transform: scaleY(1);
-                    transform-origin: top left;
-                    transition: transform 0.2s;
-                }
-    
-            }
 
         }
-
     }
-
 }   
