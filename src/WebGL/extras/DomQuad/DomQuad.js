@@ -1,82 +1,53 @@
 import {
-  Mesh,
-  Vec2,
-  Plane
-} from "ogl";
-
-import {
   getCameraViewplaneSize
 } from "../../utils/getCameraViewplaneSize";
-import { Program } from "../../../../vendors/ogl/src/core/Program";
+import { Mesh } from "../../../../vendors/ogl/src/core/Mesh.js";
+import { Vec2 } from "../../../../vendors/ogl/src/math/Vec2.js";
 
 export default class DomQuad extends Mesh {
   constructor(
     gl,
-    {
-      widthSegments = 1.0,
-      heightSegments = 1.0,
-    }
-  ) {
+    domElement) {
     
     super(gl);
 
     this.viewPlaneSize = new Vec2(1.0, 1.0);
-    this.aspect = 1.0;
-    this.w = window.innerWidth;
-    this.h = window.innerHeight;
-    this.wK = 1.0 / this.w;
-    this.hK = 1.0 / this.h;
-    this.rect = null;
+    this.scaleOffset = new Vec2(1.0, 1.0);
+    this.domElement = domElement;    
 
   }
 
-  //get camera's current viewplane dimensions as well as the reference dom's scale phase
-  //based on the viewport's current size to determine final width and height
-  //relative to the camera's view plane
-  updateDimensions({
-    domElement,
-    camera
-  }) {
-    
+  //updates necessary paramters required for translating a dom elements position + scale
+  //relative to the viewport to be relative to the perspective camera's near plane dimensions (which covers the viewport as well)
+  updateRelations({camera}) {
+
     this.w = window.innerWidth;
     this.h = window.innerHeight;
+
     this.wK = 1.0 / this.w;
     this.hK = 1.0 / this.h;
-    this.rect = domElement.getBoundingClientRect();
 
-    //get current viewplane size based on perspective camera's fov and desired plane distance
+    this.rect = this.domElement.getBoundingClientRect();
     this.cameraViewplaneSize = getCameraViewplaneSize(camera); //make this globally available
-    this.viewportScalePhase = this.calcViewportScalePhase();
-
-    //rename viewplane size
-    this.viewPlaneSize.x = this.cameraViewplaneSize.x * this.viewportScalePhase.x;
-    this.viewPlaneSize.y = this.cameraViewplaneSize.y * this.viewportScalePhase.y;
-
-    // this.scale.x = this.viewPlaneSize.x;
-    // this.scale.y = this.viewPlaneSize.y;
 
   }
 
-  calcViewportScalePhase() {
+  //sets scale relative to the width + height of the near plane's size
+  updateDimensions() {
     
-    // const rect = domElement.getBoundingClientRect();
     const {width, height} = this.rect;
 
-
-    const viewportScaleX = width * this.wK;
-    const viewportScaleY = height * this.hK;
+    const viewportScaleX = width * this.scaleOffset.x * this.wK;
+    const viewportScaleY = height * this.scaleOffset.y * this.hK;
     
-    this.aspect = width / height;
-
-    return new Vec2(viewportScaleX, viewportScaleY);
-  
+    this.viewPlaneSize.x = this.cameraViewplaneSize.x * viewportScaleX;
+    this.viewPlaneSize.y = this.cameraViewplaneSize.y * viewportScaleY;
+    
   }
 
   //tranlate the dom elements position in "dom space" to a position relative
   //to the calculted view plane's dimensions
-  calcDomToWebGLPos({
-    domElement
-  }) {
+  calcDomToWebGLPos() {
 
     const {width, height, top, left} = this.rect;
 

@@ -82,7 +82,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     //dom element that quads position's and scales will have it's
     //world position and scales be based on
-    this.referenceElement = referenceElement;
+    // this.referenceElement = referenceElement;
 
     if (this.quadsLoaded === false) {
 
@@ -93,13 +93,14 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
         const quad = new ProjectQuad(
           this.gl,
-          video, {
-            widthSegments: 16.0,
-            heightSegments: 16.0,
+          video,
+          referenceElement,{
             posOffset: i, //rename or make new prop for index?
             // phase: phase
           }
         );
+
+        quad.updateRelations({camera:this.camera});
 
         this.calculateDomTransforms({
           quad
@@ -147,10 +148,18 @@ export default class ProjectQuadMediator extends DomquadMediator {
   updateViewMode = () => {
 
     const {uniforms} = this.quadInView.program;
+    const {inViewMode} = this;
     const duration = 1.0;
     const ease = "sine.inOut"
 
-    this.inViewMode = !this.inViewMode
+    this.inViewMode = !this.inViewMode;
+
+    gsap.to(this.quadInView.scaleOffset, {
+      x: this.inViewMode ? 1.535 : 1.0,
+      y: this.inViewMode ? 1.535 : 1.0,
+      duration,
+      ease
+    });
 
     gsap.to(uniforms._ViewModePhase, {
       value: this.inViewMode ? 1.0 : 0.0,
@@ -265,14 +274,8 @@ export default class ProjectQuadMediator extends DomquadMediator {
     quad
   }) {
 
-    quad.updateDimensions({
-      domElement: this.referenceElement,
-      camera: this.camera
-    });
-
-    quad.calcDomToWebGLPos({
-      domElement: this.referenceElement,
-    });
+    quad.updateDimensions();
+    quad.calcDomToWebGLPos();
 
   }
 

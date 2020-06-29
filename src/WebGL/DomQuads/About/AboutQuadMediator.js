@@ -38,10 +38,12 @@ export default class AboutQuadMediator extends DomquadMediator {
 
         if (this.quadsLoaded === false) {
 
-            this.quad = new AboutQuad(this.gl, media, {
+            this.quad = new AboutQuad(this.gl, media, referenceElement, {
                 widthSegments: 32.0,
                 heightSegments: 32.0
             });
+
+            this.quad.updateRelations({camera: this.camera});
 
             this.quad.setParent(this);
 
@@ -76,14 +78,8 @@ export default class AboutQuadMediator extends DomquadMediator {
 
     calculateDomTransforms() {
 
-        this.quad.updateDimensions({
-            domElement: this.referenceElement,
-            camera: this.camera
-        });
-
-        this.quad.calcDomToWebGLPos({
-            domElement: this.referenceElement,
-        });
+        this.quad.updateDimensions();
+        this.quad.calcDomToWebGLPos();
 
     }
 

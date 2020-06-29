@@ -27,16 +27,13 @@ import {
 export default class ProjectQuad extends DomQuad {
   constructor(
     gl,
-    media, {
-      widthSegments = 1.0,
-      heightSegments = 1.0,
+    media,
+    domElement,{
       posOffset = 0.0
-    } = {}
+    }
   ) {
-    super(gl, ({
-      widthSegments,
-      heightSegments
-    } = {}));
+    super(gl,
+      domElement);
 
     this.gl = gl;
 

@@ -24,16 +24,14 @@ export default class AboutQuad extends DomQuad {
 
   constructor(
     gl,
-    media, {
+    media,
+    domElement, {
       widthSegments,
       heightSegments,
     } = {}
   ) {
 
-    super(gl, {
-      widthSegments,
-      heightSegments
-    });
+    super(gl, domElement);
 
     this.gl = gl;
 
@@ -77,7 +75,7 @@ export default class AboutQuad extends DomQuad {
         value: 0.0
       },
       _Aspect: {
-        value: this.aspect
+        value: this.viewPlaneSize.x / this.viewPlaneSize.y
       }
 
     }
@@ -121,7 +119,7 @@ export default class AboutQuad extends DomQuad {
 
   update(flowMap) {
 
-    this.program.uniforms._Aspect.value = this.aspect;
+    // this.program.uniforms._Aspect.value = this.aspect;
     this.program.uniforms._FlowMap.value = flowMap;
 
   }

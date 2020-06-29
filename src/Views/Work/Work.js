@@ -313,8 +313,6 @@ export default class Work extends View {
     const duration = 0.25;
     const {inScrollMode, inViewProjectMode} = this;
 
-    console.log(inViewProjectMode);
-
     this.interfaceAnim.to(this.projectTitleScrolling, {
 
       duration,

@@ -31,7 +31,7 @@ varying vec3 vDistort;
 varying float vPhase;
 
 // #define DISTORTSTR 0.9
-#define DISTORTSTR 0.7
+#define DISTORTSTR 1.2
 #define SCROLLDISTORTSTR 0.5
 #define DISPLACEMENTSTR 0.4
 // #define HEIGHTMAPSTR 0.83
@@ -67,14 +67,14 @@ void main() {
     vPhase = phase;
 
     pos.z += (phase * DISPLACEMENTSTR + (heightMapDistort * HEIGHTMAPSTR)) * _ScrollPhase * SCROLLDISTORTSTR;
-    pos.z += mix(0.0, 0.125, _ViewModePhase);
+    // pos.z += mix(0.0, 0.125, _ViewModePhase);
     // pos.z += mix(0.0, 0.125, 1.0);
     // pos.z += (1.0 - cos(3.0 * _ViewModePhase + (phase * 3.0))) * (0.08 + (heightMapDistort * 0.1)) * (1.0 - abs(_ViewModePhase * 2.0 - 1.0));
     
     
-    pos.z += (1.0 - (cos(8.0 * _ViewModePhase + (phase * 4.0)) * 0.5 + 0.5)) * (0.15 + (heightMapDistort * 0.4)) * (1.0 - abs(_ViewModePhase * 2.0 - 1.0));
-    // pos.z += (1.0 - (cos(8.0 * _ViewModePhase + (phase * 4.0)))) * (0.08 + (heightMapDistort * 0.4)) * (1.0 - abs(_ViewModePhase * 2.0 - 1.0));
-
+    // pos.z += (1.0 - (cos(8.0 * _ViewModePhase + (phase * 4.0)) * 0.5 + 0.5)) * (0.15 + (heightMapDistort * 0.5)) * (1.0 - abs(_ViewModePhase * 2.0 - 1.0));
+    // pos.z += (1.0 - (cos(8.0 * _ViewModePhase + (phase * 4.0)) * 0.5 + 0.5)) * (0.15 + (heightMapDistort * 0.5)) * (1.0 - abs(_ViewModePhase * 2.0 - 1.0));
+    pos.z += (1.0 - (cos(8.0 * _ViewModePhase + (phase * 4.0)) * 0.5 + 0.5)) * (0.3) * (1.0 - abs(_ViewModePhase * 2.0 - 1.0));
 
     // pos.z += (1.0 - cos(20.0 * _ViewModePhase + (phase * 5.0))) * (0.08 + (heightMapDistort * 0.1)) * (1.0 - abs(_ViewModePhase * 2.0 - 1.0));
 

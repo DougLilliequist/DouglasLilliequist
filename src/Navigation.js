@@ -2,6 +2,8 @@ import eventEmitter from './EventEmitter.js';
 const emitter = eventEmitter.emitter;
 import events from '../utils/events';
 
+import StickyComponent from './StickyComponent.js';
+
 import {
     gsap
 } from 'gsap';

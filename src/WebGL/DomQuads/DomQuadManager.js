@@ -82,9 +82,8 @@ export default class DomQuadManager {
         let i = 0;
         while (i < this.activeMediator.children.length) {
             let quad = this.activeMediator.children[i];
-            quad.calcDomToWebGLPos({
-                domElement: this.activeMediator.referenceElement,
-            });
+            quad.updateDimensions();
+            quad.calcDomToWebGLPos();
             i++;
         };
 
@@ -96,10 +95,8 @@ export default class DomQuadManager {
 
         this.activeMediator.children.forEach((quad) => {
 
-            quad.updateDimensions({
-                domElement: this.activeMediator.referenceElement,
+            quad.updateRelations({
                 camera: this.camera
-
             });
 
         });

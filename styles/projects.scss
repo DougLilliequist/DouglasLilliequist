@@ -6,12 +6,12 @@
 
     position: absolute;
     top: 50%;
-    left: 4.7vw;
+    left: 4.2vw;
     transform: translate(0%, -50%);
-    width: 13.35vw;
-    height: 30.6vw;
+    // width: 12vw;
+    width: 13.65vw;
+    height: 30.9vw;
     max-width: 638px;
-    max-height: 486px;
     margin: 0;
     padding: 0;
     display: flex;
@@ -36,10 +36,8 @@
     }
 
     &__details {
-
         position: relative;
-        margin: 0 0 1em 0;
-
+        margin: 3vw 0 0.2vw 0;
     }
 
     &__year {
@@ -47,7 +45,6 @@
         display: inline-block;
 
         p {
-            margin: 0;
             @include fluid-type($minWidth, $maxWidth, $minFontSize__projects-details, $maxFontSize__projects-details);
         }
     }
@@ -68,7 +65,6 @@
 .title-container {
 
     position: relative;
-    width: 100%;
 
     // @media screen and (max-width: 414px) {
     //     height: 5%;
@@ -82,8 +78,9 @@
             pointer-events: none;
                 
             h1 {
-                margin-top: -0.28em;
-                @include fluid-type($minWidth, $maxWidth, $minFontSize__projects-title, $maxFontSize__projects-title);
+                margin-top: -0.23em;
+                // @include fluid-type($minWidth, $maxWidth, $minFontSize__projects-title, $maxFontSize__projects-title);
+                font-size: 1.320vw;
                 font-weight: $black;
                 letter-spacing: 0.05em;
                 text-transform: uppercase;
@@ -105,27 +102,30 @@
         width: 100%;
         margin: 0;
 
-        h3 {
-            @include fluid-type($minWidth, $maxWidth, $minFontSize__projects-header, $maxFontSize__projects-header);
-            margin: 0 0 1em 0;
-            font-weight: $bold;
-        }
-
-        p {
-            @include fluid-type($minWidth, $maxWidth, $minFontSize__projects-body, $maxFontSize__projects-body);
-            margin: 0 0 0 0;
-            font-weight: $light;
-        }
-
         &__content {
 
+            position: relative;
+            height: 9.45vw;
+
+            h3 {
+                // @include fluid-type($minWidth, $maxWidth, $minFontSize__projects-header, $maxFontSize__projects-header);
+                font-size: 1vw;
+                // margin: 0 0 1em 0;
+                font-weight: $bold;
+            }
+    
+            p {
+                @include fluid-type($minWidth, $maxWidth, $minFontSize__projects-body, $maxFontSize__projects-body);
+                margin: 0 0 0 0;
+                font-weight: $light;
+            }
 
         }
 
         .project-info {
 
             position: relative;
-
+            margin-top: 1.45vw;
         }
 
     }
@@ -134,8 +134,8 @@
 
         position: absolute;
         display: inline-block;
-        bottom: -0.7em;
-        left: -2.5em;
+        bottom: -2.5vw;
+        left: -2.5vw;
         cursor: pointer;
 
         &__transform {
@@ -148,7 +148,7 @@
                 text-decoration: none;
                 color:#000000;
                 margin: 0;
-                padding: 2.5em;
+                padding: 2.5vw;
     
             }
 
@@ -160,13 +160,16 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
-        width: 38.76vw;
-        height: 26.8vw;
+        // width: 38.76vw;
+        // height: 27.05vw;
+        // width: 34.76vw;
+        // height: 23.2vw;
+        // width: 26vw;
+        width: 29.23vw;
+        height: 20.075vw;
+        max-width: 739.06px;
+        max-height: 515.79px;
         margin: 0;
-        max-width: 556px;
-        max-height: 386px;
-        // max-width: 630px;
-        // max-height: 405px;
     
         @media screen and (max-width: 414px) {
             width: 100%;
@@ -180,7 +183,7 @@
 
         position: absolute;
         width: 100%;
-        top: -22.5%;
+        top: -4.35vw;
 
         h1 {
             margin: 0;
@@ -203,7 +206,7 @@
 
         position: absolute;
         width: 100%;
-        bottom: -26.5%;
+        bottom: -3.5vw;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -211,7 +214,7 @@
         &__transform {
             position: absolute;
             display: inline-block;
-            padding: 2.5em;
+            padding: 2.5vw;
 
             &:hover {
                 cursor: pointer;
@@ -231,13 +234,13 @@
     .exit-button {
 
         position: absolute;
-        right: -50.5%;
+        right: -22.5vw;
         top: 50%;
         transform: translate(0%, -50%);
         // background-color: black;
 
         &__transform {
-            padding: 3em;
+            padding: 3vw;
 
             &:hover {
                 cursor: pointer;
