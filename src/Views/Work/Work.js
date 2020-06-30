@@ -57,7 +57,7 @@ export default class Work extends View {
     this.viewProjectButton.stickyTransform = new StickyComponent({domElement: this.el.querySelector('.view-project-button__transform'), enable: true, event: this.showProject});
     
     this.exitButton = this.el.querySelector('.exit-button');
-    this.exitButton.stickyTransform = new StickyComponent({domElement: this.el.querySelector('.exit-button__transform'), enable: true, event: this.closeProject});
+    this.exitButton.stickyTransform = new StickyComponent({domElement: this.el.querySelector('.exit-button__transform'), enable: false, event: this.closeProject});
 
     this.projectTitle = document.getElementById('project_title');
     this.projectType = document.getElementById('project_type');
@@ -65,7 +65,7 @@ export default class Work extends View {
     this.projectContentInfo = this.el.querySelectorAll('.project-info');
     
     this.projectLink = this.el.querySelector(".project-link");
-    this.projectLink.stickyTransform = new StickyComponent({domElement: this.el.querySelector('.project-link__transform'), enable: true});
+    this.projectLink.stickyTransform = new StickyComponent({domElement: this.el.querySelector('.project-link__transform'), enable: false});
 
   }
 
@@ -98,16 +98,16 @@ export default class Work extends View {
     // this.exitButton.stickyTransform.el.addEventListener('mousedown', this.closeProject);
 
 
-    this.projectLink.addEventListener('mouseenter', () => {
-      this.updateLinkHoverState({
-        hovering: true
-      });
-    });
-    this.projectLink.addEventListener('mouseleave', () => {
-      this.updateLinkHoverState({
-        hovering: false
-      });
-    });
+    // this.projectLink.addEventListener('mouseenter', () => {
+    //   this.updateLinkHoverState({
+    //     hovering: true
+    //   });
+    // });
+    // this.projectLink.addEventListener('mouseleave', () => {
+    //   this.updateLinkHoverState({
+    //     hovering: false
+    //   });
+    // });
 
   }
 
@@ -119,6 +119,18 @@ export default class Work extends View {
     emitter.off(events.LOADING_ANIM_COMPLETED, this.playEnterAnim);
     emitter.off(events.LOAD_PROJECT_CONTENT, this.populateContent);
 
+    this.viewProjectButton.stickyTransform.deActivate();
+    this.exitButton.stickyTransform.deActivate();
+    this.projectLink.stickyTransform.deActivate();
+
+    this.viewProjectButton.stickyTransform.removeEvents();
+    this.exitButton.stickyTransform.removeEvents();
+    this.projectLink.stickyTransform.removeEvents();
+
+    this.viewProjectButton.stickyTransform = null;
+    this.exitButton.stickyTransform = null;
+    this.projectLink.stickyTransform = null;
+
     if (!window.isMobile) {
       emitter.off(events.MOUSE_DOWN, this.enableScrollMode);
       emitter.off(events.MOUSE_UP, this.disableScrollMode);
@@ -127,20 +139,6 @@ export default class Work extends View {
       emitter.off(events.TOUCH_END, this.disableScrollMode);
       emitter.off(events.TOUCH_CANCEL, this.disableScrollMode);
     }
-
-    // this.viewProjectButton.stickyTransform.el.removeEventListener('mousedown', this.showProject);
-    // this.exitButton.stickyTransform.el.removeEventListener('mousedown', this.closeProject);
-
-    this.projectLink.removeEventListener('mouseenter', () => {
-      this.updateLinkHoverState({
-        hovering: true
-      });
-    });
-    this.projectLink.removeEventListener('mouseleave', () => {
-      this.updateLinkHoverState({
-        hovering: false
-      });
-    });
 
   }
 
@@ -193,25 +191,20 @@ export default class Work extends View {
 
   enableScrollMode = () => {
 
-    if ((this.onButton() && !window.isMobile) || this.inViewProjectMode) return;
-
-    // document.querySelector('.project-container').classList.add('project-container--scrolling');
+    if ((window.hoveringLink && !window.isMobile) || this.inViewProjectMode) return;
     this.inScrollMode = true;
     this.enableUserInteraction = false;
     emitter.emit(events.ENTER_SCROLL_MODE);
-    this.viewProjectButton.stickyTransform.deActivate();
     this.updateInterface();
 
   }
 
   disableScrollMode = () => {
 
-    if ((this.onButton() && !window.isMobile) || this.inViewProjectMode) return;
-    // document.querySelector('.project-container').classList.remove('project-container--scrolling');
+    if ((window.hoveringLink && !window.isMobile) || this.inViewProjectMode) return;
     this.inScrollMode = false;
     this.enableUserInteraction = true;
     emitter.emit(events.EXIT_SCROLL_MODE);
-    this.viewProjectButton.stickyTransform.activate();
     this.updateInterface();
 
   }
@@ -308,8 +301,7 @@ export default class Work extends View {
 
   updateInterface = () => {
 
-    this.killActiveAnimations();
-
+    if(this.interfaceAnim) this.interfaceAnim.kill();
     this.interfaceAnim = gsap.timeline();
 
     // const {inScrollMode} = this.inScrollMode;
@@ -339,9 +331,6 @@ export default class Work extends View {
 
 
     this.killActiveAnimations();
-
-    //not including this to kill animation function
-    //As we don't want this animation to be killable
     this.leaveAnim = gsap.timeline();
 
     const ease = "sine.inOut";
@@ -390,18 +379,24 @@ export default class Work extends View {
   showProject = () => {
 
     this.inViewProjectMode = true;
-    emitter.emit(events.SHOW_PROJECT);
     this.updateInterface();
     this.animateProjectContent();
+    emitter.emit(events.SHOW_PROJECT);
+    this.viewProjectButton.stickyTransform.deActivate();
+    this.exitButton.stickyTransform.activate();
+    this.projectLink.stickyTransform.activate();
 
   }
 
   closeProject = () => {
 
     this.inViewProjectMode = false;
-    emitter.emit(events.CLOSE_PROJECT);
     this.updateInterface();
     this.animateProjectContent();
+    emitter.emit(events.CLOSE_PROJECT);
+    this.viewProjectButton.stickyTransform.activate();
+    this.exitButton.stickyTransform.deActivate();
+    this.projectLink.stickyTransform.deActivate();
 
   }
 
@@ -454,36 +449,11 @@ export default class Work extends View {
 
   }
 
-  updateLinkHoverState({
-    hovering
-  }) {
-
-    if (this.inScrollMode === false) {
-      if (hovering) {
-        emitter.emit(events.HOVERING_LINK)
-        window.hoveringLink = hovering;
-      } else {
-        emitter.emit(events.LEAVING_LINK)
-        window.hoveringLink = false;
-      }
-
-    }
-
-  }
-
   killActiveAnimations() {
 
     if (this.enterAnim) this.enterAnim.kill();
     if (this.scrollAnim) this.scrollAnim.kill();
     // if (this.interfaceAnim) this.interfaceAnim.kill();
-
-  }
-
-  //in future version: make some kind of global check if a sticky transform is being hovered
-
-  onButton() {
-
-    return window.hoveringLink || this.viewProjectButton.stickyTransform.hovered || this.exitButton.stickyTransform.hovered;
 
   }
 

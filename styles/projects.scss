@@ -136,7 +136,6 @@
         display: inline-block;
         bottom: -2.5vw;
         left: -2.5vw;
-        cursor: pointer;
 
         &__transform {
             position: relative;
@@ -149,7 +148,6 @@
                 color:#000000;
                 margin: 0;
                 padding: 2.5vw;
-    
             }
 
     }
@@ -214,9 +212,9 @@
             display: inline-block;
             padding: 2.5vw;
 
-            &:hover {
-                cursor: pointer;
-            }
+            // &:hover {
+            //     cursor: pointer;
+            // }
 
         }
 
@@ -239,10 +237,6 @@
 
         &__transform {
             padding: 3vw;
-
-            &:hover {
-                cursor: pointer;
-            }
         }
 
         &__icon {

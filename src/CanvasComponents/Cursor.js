@@ -14,7 +14,7 @@ export default class Cursor {
 
     constructor() {
 
-        this.dpr = Math.min(2, window.devicePixelRatio);
+        this.dpr = Math.min(1.5, window.devicePixelRatio);
 
         this.canvas = document.querySelector('.main-cursor');
 
@@ -67,6 +67,8 @@ export default class Cursor {
         }
 
         this.inScrollMode = false;
+
+        this.inViewProjectMode = false;
 
         this.defaultRadius = 18.0;
 
@@ -169,8 +171,9 @@ export default class Cursor {
         emitter.on(events.LEAVING_STICKY_COMPONENT, this.animateLeaveHoverMode);
         emitter.on(events.UPDATE_STICKY_TARGET, this.updateStickyTarget);
 
-        // emitter.on(events.HOVERING_LINK, this.animteHoverMode);
-        emitter.on(events.LEAVING_LINK, this.restore);
+        emitter.on(events.SHOW_PROJECT, () => this.inViewProjectMode = true);
+        emitter.on(events.CLOSE_PROJECT, () => this.inViewProjectMode = false);
+
         emitter.on(events.UPDATE, this.update);
         emitter.on(events.RESIZE, this.onResize);
 
@@ -179,9 +182,12 @@ export default class Cursor {
     onMouseDown = () => {
 
         this.inScrollMode = true;
-        // this.canvas.style.zIndex = 10; //prevent click + drag issues in safari
-        this.prevPosition.x = this.target.x;
-        this.prevPosition.y = this.target.y;
+
+        // if(this.hoveringSticky === false) {
+            this.prevPosition.x = this.target.x;
+            this.prevPosition.y = this.target.y;
+        // }
+        
         this.animateScrollMode();
 
     }
@@ -206,7 +212,6 @@ export default class Cursor {
 
     onMouseUp = () => {
 
-        // this.canvas.style.zIndex = 0; //restore normal browser behaviour
         this.restore();
 
     }
@@ -303,16 +308,19 @@ export default class Cursor {
         if(this.hoveringSticky === false) {
 
             this.hoveringSticky = true;
-            const {target, rect} = event;
+            const {rect} = event;
             const {width, height} = rect;
     
             this.hoverRadius = Math.sqrt(width * width + height * height) * 0.3115;
         
             if (this.hoverModeAnim) this.hoverModeAnim.kill();
             this.hoverModeAnim = gsap.to(this, {
-                duration: 0.2,
+                duration: 0.4,
                 ease: "power1.out",
                 radius: this.hoverRadius,
+                onStart: () => {
+                    this.hideCTAText();
+                }
             });
             
         }
@@ -327,9 +335,12 @@ export default class Cursor {
         if (this.leaveHoverModeAnim) this.leaveHoverModeAnim.kill();
         this.leaveHoverModeAnim = gsap.to(this,  
             {
-                duration: 0.2,
+                duration: 0.4,
                 ease: "power1.out",
                 radius: this.defaultRadius,
+                onStart: () => {
+                    this.showCTAText();
+                }
 
             });
         
@@ -398,40 +409,36 @@ export default class Cursor {
 
     showCTAText = () => {
 
-        if (this.removeCTA === false) {
+        if (this.removeCTA || this.inViewProjectMode) return;
             this.drawMessage = true;
             gsap.to(this, {
-                duration: 0.5,
-                ctaTextAlpha: 1,
-                ease: "power1.out"
-            });
-        }
+            duration: 0.5,
+            ctaTextAlpha: 1,
+            ease: "power1.out"
+        });
     }
 
     hideCTAText = () => {
 
-        if (this.removeCTA === false) {
+        if (this.removeCTA || this.inViewProjectMode) return;
             this.drawMessage = false;
             gsap.to(this, {
-                duration: 0.5,
-                ctaTextAlpha: 0,
-                ease: "power1.out"
-            });
-        }
+            duration: 0.5,
+            ctaTextAlpha: 0,
+            ease: "power1.out"
+        }); 
     }
 
     removeCTAText() {
 
-        if (this.removeCTA == false) {
+        if (this.removeCTA === false) {
             this.removeCTA = true;
             gsap.to(this, {
                 duration: 0.5,
                 ctaTextAlpha: 0,
                 ease: "power1.out"
             });
-
         }
-
     }
 
     draw() {

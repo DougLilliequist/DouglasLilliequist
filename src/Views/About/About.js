@@ -6,6 +6,8 @@ import eventEmitter from '../../EventEmitter.js';
 const emitter = eventEmitter.emitter;
 import events from '../../../utils/events.js';
 
+import StickyComponent from '../../StickyComponent.js';
+
 import {gsap} from 'gsap';
 
 export default class About extends View {
@@ -34,6 +36,7 @@ export default class About extends View {
 
   onLeaveCompleted() {
     super.onLeaveCompleted();
+    this.removeEvents();
     emitter.emit(events.REMOVE_DOMGL);
   }
 
@@ -47,7 +50,8 @@ export default class About extends View {
     this.header = document.querySelector('.about-copy__intro__header');
     this.introText = document.querySelector('.about-copy__intro__body-text');
     this.contactHeader = document.querySelector('.contact-container__header');
-    this.links = document.querySelectorAll('.contact-container__methods__wrapper');
+    this.links = document.querySelectorAll('.contact-container__methods__transform');
+
   }
 
   initEvents() {
@@ -57,13 +61,10 @@ export default class About extends View {
     emitter.on(events.LOADING_ANIM_COMPLETED, () => {
       this.populateContent();
       this.playEnterAnim();
-    });
-
-    this.links.forEach((link) => {
-
-      link.addEventListener('mouseenter', this.onLinkHover);
-      link.addEventListener('mouseleave', this.onLinkLeave);
-
+      this.links.forEach((link) => {
+        console.log(link)
+        link.stickyTransform = new StickyComponent({domElement: link, enable: true});
+      });
     });
 
   }
@@ -71,10 +72,8 @@ export default class About extends View {
   removeEvents() {
 
     this.links.forEach((link) => {
-
-      link.removeEventListener('mouseenter', this.onLinkHover);
-      link.removeEventListener('mouseleave', this.onLinkLeave);
-
+      link.stickyTransform.deActivate();
+      link.stickyTransform = null;
     });
 
     emitter.off(events.LOADING_ANIM_COMPLETED, () => {
@@ -135,11 +134,11 @@ export default class About extends View {
       onStart: () => {
         emitter.emit(events.REVEAL_QUADS);
       },
-      onComplete: () => {
-        this.links.forEach((link) => {
-          link.children[0].classList.add('link--enabled');
-        });
-      }
+      // onComplete: () => {
+      //   this.links.forEach((link) => {
+      //     link.children[0].classList.add('link--enabled');
+      //   });
+      // }
     });
 
     enterAnim.fromTo(this.header, {
@@ -174,13 +173,10 @@ export default class About extends View {
 
     enterAnim.fromTo(this.links, {
       opacity: 0.01,
-      y: startY
     }, {
       duration: dur,
       opacity: 0.99,
-      y: 0,
       stagger: 0.1,
-      // ease: ease
     }, "<0.1");
 
   }
