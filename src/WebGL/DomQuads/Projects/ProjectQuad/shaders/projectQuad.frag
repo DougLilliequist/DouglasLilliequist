@@ -14,20 +14,13 @@ uniform float _ViewModePhase;
 
 varying vec2 vUv;
 varying vec3 vMvPos;
-// varying vec2 vClipPos;
-// varying float vDist;
 varying vec3 vDistort;
 varying float vPhase;
 
 #define OFFSETAMOUNTX 0.008
 #define OFFSETAMOUNTY 0.001
-
-// #define MINVIEWDIST 0.18
 #define MINVIEWDIST 0.24
-// #define MAXVIEWDIST 0.4
 #define MAXVIEWDIST 0.5
-// #define MAXVIEWDIST 0.5
-// #define ALPHAFALLOFFDIST 20.0
 #define ALPHAFALLOFFDIST 30.0
 
 void main() {
