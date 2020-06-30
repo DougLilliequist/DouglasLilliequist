@@ -17,6 +17,9 @@ export default class About extends View {
     this.initEvents();
     if(window.contentLoaded) {
       this.populateContent();
+      this.links.forEach((link) => {
+        link.stickyTransform = new StickyComponent({domElement: link, enable: true});
+      });
       this.initDomGL();
     }
 
@@ -58,11 +61,11 @@ export default class About extends View {
 
     emitter.on(events.CONTENT_LOADED, this.initDomGL);
 
+
     emitter.on(events.LOADING_ANIM_COMPLETED, () => {
       this.populateContent();
       this.playEnterAnim();
       this.links.forEach((link) => {
-        console.log(link)
         link.stickyTransform = new StickyComponent({domElement: link, enable: true});
       });
     });

@@ -52,6 +52,7 @@ export default class AboutQuadMediator extends DomquadMediator {
         }
 
         this.quad.visible = true;
+        this.quad.domElement = referenceElement;
 
         this.calculateDomTransforms();
     }

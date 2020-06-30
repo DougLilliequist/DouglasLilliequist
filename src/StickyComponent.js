@@ -1,6 +1,7 @@
 import eventEmitter from './EventEmitter.js';
 const emitter = eventEmitter.emitter;
 import events from '../utils/events.js';
+import {gsap} from 'gsap';
 
 /**
  * Accepts a dom element which will have elasticity applied to it when close enough
@@ -27,18 +28,16 @@ import events from '../utils/events.js';
         this.wK = 1.0 / this.w;
         this.hK = 1.0 / this.h;
 
-        this.enable = enable;
-
         this.initForceParams();
         this.initEvents();
 
-        // if(enable) {
-        //     this.enable = enable;
-        //     this.activate();
-        // } else {
-        //     this.enable = false;
-        //     this.deActivate();
-        // }
+        if(enable) {
+            this.enable = enable;
+            this.activate();
+        } else {
+            this.enable = false;
+            this.deActivate();
+        }
 
     }
 
@@ -49,6 +48,11 @@ import events from '../utils/events.js';
             x: 0,
             y: 0
 
+        }
+
+        this.initPos = {
+            x: 0,
+            y: 0
         }
 
         // this.getInitPos();
@@ -78,8 +82,6 @@ import events from '../utils/events.js';
     getInitPos() {
 
         this.rect = this.el.getBoundingClientRect();
-
-        console.log(this.rect)
 
         const {top, left, width, height} = this.rect;
 
@@ -193,10 +195,10 @@ import events from '../utils/events.js';
 
     update = () => {
 
-        if(this.enable) {
-            this.updateForce();
-            if(this.hovered) emitter.emit(events.UPDATE_STICKY_TARGET, {target: this.offsetPos, rect: this.rect});
-        }
+        // if(this.enable) {
+        this.updateForce();
+        if(this.hovered) emitter.emit(events.UPDATE_STICKY_TARGET, {target: this.offsetPos, rect: this.rect});
+        // }
          
     }
 
@@ -237,7 +239,7 @@ import events from '../utils/events.js';
     }
 
     onResize = () => {
-
+        
         this.w = window.innerWidth;
         this.h = window.innerHeight;
         this.rect = this.el.getBoundingClientRect();

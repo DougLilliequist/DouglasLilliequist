@@ -2,7 +2,7 @@ const events = {
 
     INIT_DOMGL: 'init_DomGL',
     QUADS_LOADED: 'quads_loaded',
-    SWAP_QUAD: 'swap_quad',
+    RESET_QUADS: 'reset_quad',
     REVEAL_QUADS: 'reveal_quads',
 
     PREPARE_UNMOUNT: 'prepare_unmount',

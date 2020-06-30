@@ -26,7 +26,6 @@ export default class DomQuad extends Mesh {
 
     this.wK = 1.0 / this.w;
     this.hK = 1.0 / this.h;
-
     this.rect = this.domElement.getBoundingClientRect();
     this.cameraViewplaneSize = getCameraViewplaneSize(camera); //make this globally available
 

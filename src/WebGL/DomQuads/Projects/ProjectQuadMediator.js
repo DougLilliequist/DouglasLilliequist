@@ -49,6 +49,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
     emitter.on(events.SHOW_PROJECT, this.updateViewMode);
     emitter.on(events.CLOSE_PROJECT, this.updateViewMode);
     emitter.on(events.REVEAL_QUADS, this.revealQuads);
+    emitter.on(events.RESET_QUADS, this.resetQuads);
     emitter.on(events.PREPARE_UNMOUNT, this.hideQuads);
 
   }
@@ -60,6 +61,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
     emitter.off(events.SHOW_PROJECT, this.updateViewMode);
     emitter.off(events.CLOSE_PROJECT, this.updateViewMode);
     emitter.off(events.REVEAL_QUADS, this.revealQuads);
+    emitter.off(events.RESET_QUADS, this.resetQuads);
     emitter.off(events.PREPARE_UNMOUNT, this.hideQuads);
 
   }
@@ -77,12 +79,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
       return;
     }
 
-    //videos
     this.media = media;
-
-    //dom element that quads position's and scales will have it's
-    //world position and scales be based on
-    // this.referenceElement = referenceElement;
 
     if (this.quadsLoaded === false) {
 
@@ -100,12 +97,6 @@ export default class ProjectQuadMediator extends DomquadMediator {
           }
         );
 
-        quad.updateRelations({camera:this.camera});
-
-        this.calculateDomTransforms({
-          quad
-        });
-
         quad.setParent(this);
 
       }
@@ -115,9 +106,10 @@ export default class ProjectQuadMediator extends DomquadMediator {
     }
 
     this.children.forEach((quad) => {
-
       quad.visible = true;
-
+      quad.domElement = referenceElement;
+      quad.updateRelations({camera:this.camera});
+      this.calculateDomTransforms({quad});
     });
 
     if (getFirstQuad) {
@@ -165,6 +157,20 @@ export default class ProjectQuadMediator extends DomquadMediator {
       value: this.inViewMode ? 1.0 : 0.0,
       duration,
       ease
+    });
+
+  }
+
+  resetQuads = () => {
+
+    this.inViewMode = false;
+
+    this.children.forEach((quad) => {
+
+      quad.scaleOffset.set(1.0, 1.0);
+      const {uniforms} = quad.program;
+      uniforms._ViewModePhase.value = 0.0
+
     });
 
   }
