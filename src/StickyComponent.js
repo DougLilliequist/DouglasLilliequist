@@ -204,12 +204,14 @@ import {gsap} from 'gsap';
 
     applyHoverState = () => {
         window.hoveringLink = this.hovered = true;
+        this.el.style.willChange = "transform";
         document.body.style.cursor = "pointer";
         emitter.emit(events.HOVERING_STICKY_COMPONENT, {rect: this.rect});
     }
 
     removeHoverState = () => {
         window.hoveringLink = this.hovered = false;
+        this.el.style.willChange = "auto";
         document.body.style.cursor = "default";
         emitter.emit(events.LEAVING_STICKY_COMPONENT);
     }
