@@ -30,25 +30,23 @@ varying vec2 vUv;
 varying vec3 vDistort;
 varying float vPhase;
 
-// #define DISTORTSTR 0.9
+uniform float _SpatialF;
+uniform float _TemporalF;
+uniform float _Amp;
+uniform float _HeightAmp;
+
 #define DISTORTSTR 1.2
 #define SCROLLDISTORTSTR 0.5
 #define DISPLACEMENTSTR 0.4
-// #define HEIGHTMAPSTR 0.83
 #define HEIGHTMAPSTR 0.33
 #define lumaK 0.33333333333333333
 #define PI 3.14159265359
 
-// #define DISTORTSTR 0.7
-// #define SCROLLDISTORTSTR 0.5
-// #define DISPLACEMENTSTR 0.2
-// #define HEIGHTMAPSTR 0.4
-// #define lumaK 0.33333333333333333
-
-// #define DISTORTSTR 0.8
-// #define SCROLLDISTORTSTR 0.5
-// #define DISPLACEMENTSTR 0.3
-// #define HEIGHTMAPSTR 1.4
+#define RIPPLE_SPATIALF 3.0
+#define RIPPLE_TEMPORALF 4.21
+#define RIPPLE_AMP 0.125
+// #define HEIGHTMAP_AMP 0.53
+#define HEIGHTMAP_AMP 0.33
 
 
 void main() {
@@ -58,25 +56,23 @@ void main() {
     pos.xy *= _ViewplaneSize * mix(0.85, 1.0, _Scale);
 
     vec3 col = texture2D(_Image, uv).xyz;
-    float heightMapDistort = (col.x + col.y + col.z) * lumaK;
+    // float heightMapDistort = (col.x + col.y + col.z) * lumaK;
+    float heightMapDistort = dot(col, vec3(0.333, 0.333, 0.333));
     heightMapDistort = mix(heightMapDistort, 1.0 - heightMapDistort, _FlipFlowMapForce);
 
     vec2 phasePos = position.xy;
     phasePos.xy *= 0.7; //makes quads look better but I dont think this is correct (could have just used any constant)
     float phase = 1.0 - (dot(phasePos, phasePos));
     vPhase = phase;
-
     pos.z += (phase * DISPLACEMENTSTR + (heightMapDistort * HEIGHTMAPSTR)) * _ScrollPhase * SCROLLDISTORTSTR;
-    // pos.z += mix(0.0, 0.125, _ViewModePhase);
-    // pos.z += mix(0.0, 0.125, 1.0);
-    // pos.z += (1.0 - cos(3.0 * _ViewModePhase + (phase * 3.0))) * (0.08 + (heightMapDistort * 0.1)) * (1.0 - abs(_ViewModePhase * 2.0 - 1.0));
     
-    
-    // pos.z += (1.0 - (cos(8.0 * _ViewModePhase + (phase * 4.0)) * 0.5 + 0.5)) * (0.15 + (heightMapDistort * 0.5)) * (1.0 - abs(_ViewModePhase * 2.0 - 1.0));
-    // pos.z += (1.0 - (cos(8.0 * _ViewModePhase + (phase * 4.0)) * 0.5 + 0.5)) * (0.15 + (heightMapDistort * 0.5)) * (1.0 - abs(_ViewModePhase * 2.0 - 1.0));
-    pos.z += (1.0 - (cos(8.0 * _ViewModePhase + (phase * 4.0)) * 0.5 + 0.5)) * (0.3) * (1.0 - abs(_ViewModePhase * 2.0 - 1.0));
+    float viewmodePhase = (1.0 - abs(_ViewModePhase * 2.0 - 1.0));
 
-    // pos.z += (1.0 - cos(20.0 * _ViewModePhase + (phase * 5.0))) * (0.08 + (heightMapDistort * 0.1)) * (1.0 - abs(_ViewModePhase * 2.0 - 1.0));
+    // float ripplePhase = (1.0 - (cos(_TemporalF * _ViewModePhase + (phase * mix(_SpatialF, _SpatialF * 2.0, viewmodePhase))))) * _Amp;
+    float ripplePhase = (1.0 - (cos(RIPPLE_TEMPORALF * _ViewModePhase + (phase * RIPPLE_SPATIALF)))) * RIPPLE_AMP;
+    ripplePhase *= viewmodePhase;
+    pos.z += ripplePhase;
+    pos.z += (phase * heightMapDistort * HEIGHTMAP_AMP) * viewmodePhase;
 
     mat4 modelViewProjection = projectionMatrix * modelViewMatrix;
 

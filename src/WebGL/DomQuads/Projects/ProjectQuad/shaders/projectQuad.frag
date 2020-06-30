@@ -10,6 +10,7 @@ uniform float _Alpha;
 uniform float _RevealPhase;
 uniform float _RevealDirection;
 uniform float _ScrollPhase;
+uniform float _ViewModePhase;
 
 varying vec2 vUv;
 varying vec3 vMvPos;
@@ -43,9 +44,13 @@ void main() {
     vec2 offsetX = (vec2(inputPhase, 0.0)) * OFFSETAMOUNTX;
     vec2 offsetY = (vec2(0.0, inputPhase)) * OFFSETAMOUNTY;
 
-    float r = texture2D(_Image, uv - offsetX - (flow * 0.02)).x;
-    float g = texture2D(_Image, uv + offsetY + (flow * 0.002)).y;
-    float b = texture2D(_Image, uv + offsetX + (flow * 0.02)).z;
+    float viewModePhase = (1.0 - abs(_ViewModePhase * 2.0 - 1.0));
+    vec2 transitionOffsetX = vec2(0.02, 0.0) * viewModePhase;
+    vec2 transitionOffsetY = vec2(0.0, 0.002) * viewModePhase;
+
+    float r = texture2D(_Image, uv - transitionOffsetX - offsetX - (flow * 0.02)).x;
+    float g = texture2D(_Image, uv + transitionOffsetY + offsetY + (flow * 0.002)).y;
+    float b = texture2D(_Image, uv + transitionOffsetX + offsetX + (flow * 0.02)).z;
 
     float len = (vMvPos.z * vMvPos.z);
     float idleAlpha = smoothstep(MINVIEWDIST, MAXVIEWDIST, len);

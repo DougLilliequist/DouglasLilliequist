@@ -146,7 +146,7 @@ export default class ProjectQuad extends DomQuad {
       },
       _Scale: {
         value: 1.0
-      }
+      },
     };
 
     this.program = new Program(this.gl, {
@@ -184,6 +184,11 @@ export default class ProjectQuad extends DomQuad {
   update({
     force
   }) {
+
+    // this.program.uniforms._SpatialF.value = window.params.RIPPLE_SPATIALF
+    // this.program.uniforms._TemporalF.value = window.params.RIPPLE_TEMPORALF
+    // this.program.uniforms._Amp.value = window.params.RIPPLE_AMP
+    // this.program.uniforms._HeightAmp.value = window.params.HEIGHTMAP_AMP
 
     if (this.inScrollMode) {
       // this.positionRestored = false;

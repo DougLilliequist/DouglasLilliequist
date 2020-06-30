@@ -12,6 +12,8 @@ import {
   Vec2
 } from "../../../../vendors/ogl/src/math/Vec2";
 
+const Tweakpane = require('tweakpane');
+
 export default class ProjectQuadMediator extends DomquadMediator {
   constructor(gl, scene, camera) {
     super(gl, scene, camera);
@@ -142,6 +144,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
     const {uniforms} = this.quadInView.program;
     const {inViewMode} = this;
     const duration = 1.0;
+    // const ease = "power1.inOut"
     const ease = "sine.inOut"
 
     this.inViewMode = !this.inViewMode;

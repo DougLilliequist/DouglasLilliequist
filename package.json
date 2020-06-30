@@ -41,6 +41,7 @@
     "gsap": "^3.3.1",
     "ogl": "0.0.54",
     "preload-it": "^1.4.0",
-    "tiny-emitter": "^2.1.0"
+    "tiny-emitter": "^2.1.0",
+    "tweakpane": "^1.5.2"
   }
 }
