@@ -1,0 +1,47 @@
+{
+  "name": "douglaslilliequist",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "parcel src/Views/index.html --host 192.168.1.103 --open",
+    "build": "parcel build src/Views/index.html --public-url ./",
+    "deploy": "gh-pages -d dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DougLilliequist/DouglasLilliequist.git"
+  },
+  "author": "Douglas Lilliequist",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DougLilliequist/DouglasLilliequist/issues"
+  },
+  "homepage": "https://github.com/DougLilliequist/DouglasLilliequist#readme",
+  "browserslist": [
+    "last 1 chrome version",
+    "> 0.25%",
+    "not dead"
+  ],
+  "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-transform-runtime": "^7.9.0",
+    "@babel/preset-env": "^7.9.0",
+    "gh-pages": "^3.0.0",
+    "parcel-bundler": "^1.12.4",
+    "sass": "^1.26.3"
+  },
+  "dependencies": {
+    "@dogstudio/highway": "^2.2.1",
+    "bowser": "^2.9.0",
+    "dat.gui": "^0.7.6",
+    "event-emitter": "^0.3.5",
+    "glslify": "^7.0.0",
+    "gsap": "^3.3.1",
+    "ogl": "0.0.54",
+    "preload-it": "^1.4.0",
+    "tiny-emitter": "^2.1.0",
+    "tweakpane": "^1.5.2"
+  }
+}

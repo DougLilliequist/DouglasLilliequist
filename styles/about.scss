@@ -1,0 +1,184 @@
+@import 'constants';
+@import 'typography';
+@import 'mixins';
+
+.content {
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    // width: 60.5vw;
+    width: 76vw;
+    height: 30.8vw;
+    max-width: 1450px;
+    // max-height: 1440px;
+    display: flex;
+    justify-content: space-between;
+    z-index: 2;
+
+    @media screen and (max-width: 414px) and (orientation: portrait) {
+        width: 90vw;
+        height: 100%;
+        flex-direction: column-reverse;
+        justify-content: space-evenly;
+
+    }
+
+}
+
+
+.portrait-container {
+
+    position: relative;
+    width: 29vw;
+    max-width: 512px;
+    max-height: 512px;
+    align-self: center;
+
+    @media screen and (max-width: 414px) and (orientation: portrait) {
+        width: 100%;
+        height: 50%;
+        max-width: 256px;
+        max-height: 256px;
+    }
+
+    
+    &__portrait {
+
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+
+    //https://spin.atomicobject.com/2015/07/14/css-responsive-square/
+    //maintains perfect square
+    &:after {
+        content: "";
+        display: block;
+        padding-bottom: 100%;
+    }
+
+}
+
+    .copy-container {
+
+        position: relative;
+        width: 48.5%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+
+        @media screen and (max-width: 414px) and (orientation: portrait) {
+            justify-content: center;
+            width: 100%;
+            height: 50%;
+            flex-direction: column-reverse;
+            margin-top: -5em;
+        }
+
+    }
+
+    .about-copy {
+
+        position: relative;
+        width: 90%;
+        height: 50%;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+
+        
+        &__intro {
+
+            pointer-events: none;
+            // padding-right: 10%;
+
+            @media screen and (min-width: 414px){
+                padding-right: 10%;
+            }
+
+            
+            &__header {
+                @include fluid-type($minWidth, $maxWidth, $minFontSize__about-header, $maxFontSize__about-header);
+                margin-top: 0em;
+                margin-bottom: 0.5em;
+                pointer-events: none;
+                
+                @media screen and (max-width: 414px) and (orientation: portrait) {
+                    font-size: 8vw;
+                }
+
+            }
+    
+            &__body-text {
+                @include fluid-type($minWidth, $maxWidth, $minFontSize__about-body, $maxFontSize__about-body);
+                margin-top: 0;
+                pointer-events: none;
+
+                @media screen and (max-width: 414px) and (orientation: portrait) {
+                    font-size: 3vw;
+                }
+
+            }
+
+        }
+
+    }
+
+    .contact-container {
+
+        position: relative;
+        margin-top: 2em;
+        transform: translateZ(0);
+
+        &__header {
+
+            margin-top: 0;
+            color: #000000;
+            @include fluid-type($minWidth, $maxWidth, $minFontSize__about__links-header, $maxFontSize__about__links-header);
+            pointer-events: none;
+
+            
+        @media screen and (max-width: 414px) and (orientation: portrait) {
+            font-size: 3vw;
+        }
+
+        }
+        &__methods {
+     
+            position: absolute;
+            left: -2vw;
+
+            &__transform {
+
+                display: inline-block;
+                // position: absolute;
+            }
+
+            &__link {
+                display: inline-block;
+                text-decoration: none;
+                color:#000000;
+
+                padding: 2vw;
+                opacity: 0.5;
+                transition: .1s;
+                @include fluid-type($minWidth, $maxWidth, $minFontSize__about__links-body, $maxFontSize__about__links-body);
+
+                @media screen and (max-width: 414px) and (orientation: portrait) {
+                    font-size: 3vw;
+                }
+
+                // &:hover {
+                //     opacity: 0.99;
+                //     color: red;
+                //     transition: .1s;
+                //     will-change: opacity;
+                // }
+    
+            }
+
+        }
+
+    }
