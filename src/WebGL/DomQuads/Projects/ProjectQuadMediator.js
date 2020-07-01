@@ -93,7 +93,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
         const quad = new ProjectQuad(
           this.gl,
           video,
-          referenceElement,{
+          referenceElement, {
             posOffset: i, //rename or make new prop for index?
             // phase: phase
           }
@@ -110,8 +110,12 @@ export default class ProjectQuadMediator extends DomquadMediator {
     this.children.forEach((quad) => {
       quad.visible = true;
       quad.domElement = referenceElement;
-      quad.updateRelations({camera:this.camera});
-      this.calculateDomTransforms({quad});
+      quad.updateRelations({
+        camera: this.camera
+      });
+      this.calculateDomTransforms({
+        quad
+      });
     });
 
     if (getFirstQuad) {
@@ -141,20 +145,24 @@ export default class ProjectQuadMediator extends DomquadMediator {
   //toggle values
   updateViewMode = () => {
 
-    const {uniforms} = this.quadInView.program;
-    const {inViewMode} = this;
+    const {
+      uniforms
+    } = this.quadInView.program;
+    const {
+      inViewMode
+    } = this;
     const duration = 1.0;
     // const ease = "power1.inOut"
     const ease = "sine.inOut"
 
     this.inViewMode = !this.inViewMode;
 
-    gsap.to(this.quadInView.scaleOffset, {
-      x: this.inViewMode ? 1.535 : 1.0,
-      y: this.inViewMode ? 1.535 : 1.0,
-      duration,
-      ease
-    });
+    // gsap.to(this.quadInView.scaleOffset, {
+    //   x: this.inViewMode ? 1.535 : 1.0,
+    //   y: this.inViewMode ? 1.535 : 1.0,
+    //   duration,
+    //   ease
+    // });
 
     gsap.to(uniforms._ViewModePhase, {
       value: this.inViewMode ? 1.0 : 0.0,
@@ -171,7 +179,9 @@ export default class ProjectQuadMediator extends DomquadMediator {
     this.children.forEach((quad) => {
 
       quad.scaleOffset.set(1.0, 1.0);
-      const {uniforms} = quad.program;
+      const {
+        uniforms
+      } = quad.program;
       uniforms._ViewModePhase.value = 0.0
 
     });
@@ -190,7 +200,9 @@ export default class ProjectQuadMediator extends DomquadMediator {
       }
     })
 
-    const {uniforms} = this.quadInView.program;
+    const {
+      uniforms
+    } = this.quadInView.program;
 
     this.revealQuadAnim.set(uniforms._RevealDirection, {
       value: 0.0

@@ -28,7 +28,7 @@ export default class ProjectQuad extends DomQuad {
   constructor(
     gl,
     media,
-    domElement,{
+    domElement, {
       posOffset = 0.0
     }
   ) {
@@ -185,11 +185,6 @@ export default class ProjectQuad extends DomQuad {
     force
   }) {
 
-    // this.program.uniforms._SpatialF.value = window.params.RIPPLE_SPATIALF
-    // this.program.uniforms._TemporalF.value = window.params.RIPPLE_TEMPORALF
-    // this.program.uniforms._Amp.value = window.params.RIPPLE_AMP
-    // this.program.uniforms._HeightAmp.value = window.params.HEIGHTMAP_AMP
-
     if (this.inScrollMode) {
       // this.positionRestored = false;
       this.position.z += force;
@@ -285,18 +280,9 @@ export default class ProjectQuad extends DomQuad {
   }
 
   updateVideoTexture() {
-    // this.video = this.videos[this.index].vid;
+
     this.program.uniforms._FlipFlowMapForce.value = this.media.brightVal;
 
-    // if (this.isInView && this.visible) {
-    //   if (this.video.readyState >= this.video.HAVE_ENOUGH_DATA) {
-    //     this.texture.image = this.video;
-    //     // this.updateTexture = !this.updateTexture;
-    //     this.texture.needsUpdate = true;
-    //   }
-    // }
-
-    // if (this.visible) {
     if (this.video.readyState >= this.video.HAVE_ENOUGH_DATA) {
       this.texture.image = this.video;
       if (this.isInView) {
@@ -304,7 +290,7 @@ export default class ProjectQuad extends DomQuad {
         this.texture.needsUpdate = this.updateTexture;
       }
     }
-    // }
+
   }
 
   playVideo = () => {

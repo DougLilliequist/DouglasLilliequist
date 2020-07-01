@@ -12,9 +12,9 @@ body {
     height: 100vh;
     // min-height: 100vh;
     // min-height:-webkit-fill-available;
-    position: absolute;
-    top: 0;
-    left: 0;
+    //position: absolute;
+    //top: 0;
+    //left: 0;
     margin: 0;
     overflow: hidden;
     font-family: $muli;
@@ -211,4 +211,8 @@ body {
 
         }
     }
-}   
+}
+
+.deactivated {
+    pointer-events: none;
+}

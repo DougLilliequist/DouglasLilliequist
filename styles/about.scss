@@ -130,6 +130,7 @@
 
         position: relative;
         margin-top: 2em;
+        transform: translateZ(0);
 
         &__header {
 
@@ -152,7 +153,7 @@
             &__transform {
 
                 display: inline-block;
-                position: relative;
+                // position: absolute;
             }
 
             &__link {
@@ -169,10 +170,12 @@
                     font-size: 3vw;
                 }
 
-                &:hover {
-                    opacity: 0.99;
-                    transition: .1s;
-                }
+                // &:hover {
+                //     opacity: 0.99;
+                //     color: red;
+                //     transition: .1s;
+                //     will-change: opacity;
+                // }
     
             }
 

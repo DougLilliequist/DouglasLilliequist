@@ -46,7 +46,7 @@ export default class Work extends View {
   onLeaveCompleted() {
     super.onLeaveCompleted();
     this.removeStickyTransforms();
-    if(this.inViewProjectMode) emitter.emit(events.RESET_QUADS);
+    if (this.inViewProjectMode) emitter.emit(events.RESET_QUADS);
     emitter.emit(events.REMOVE_DOMGL);
   }
 
@@ -54,20 +54,31 @@ export default class Work extends View {
 
     this.domGLReferenceElement = this.el.querySelector('.project-video');
     this.projectTitleScrolling = this.el.querySelector('.project-title'); //RENAME
-    
+
     this.viewProjectButton = this.el.querySelector('.view-project-button');
-    this.viewProjectButton.stickyTransform = new StickyComponent({domElement: this.el.querySelector('.view-project-button__transform'), enable: true, event: this.showProject});
-    
+    this.viewProjectButton.stickyTransform = new StickyComponent({
+      domElement: this.el.querySelector('.view-project-button__transform'),
+      enable: true,
+      event: this.showProject
+    });
+
     this.exitButton = this.el.querySelector('.exit-button');
-    this.exitButton.stickyTransform = new StickyComponent({domElement: this.el.querySelector('.exit-button__transform'), enable: false, event: this.closeProject});
+    this.exitButton.stickyTransform = new StickyComponent({
+      domElement: this.el.querySelector('.exit-button__transform'),
+      enable: false,
+      event: this.closeProject
+    });
 
     this.projectTitle = document.getElementById('project_title');
     this.projectType = document.getElementById('project_type');
     this.projectYear = document.getElementById('project_year');
     this.projectContentInfo = this.el.querySelectorAll('.project-info');
-    
+
     this.projectLink = this.el.querySelector(".project-link");
-    this.projectLink.stickyTransform = new StickyComponent({domElement: this.el.querySelector('.project-link__transform'), enable: false});
+    this.projectLink.stickyTransform = new StickyComponent({
+      domElement: this.el.querySelector('.project-link__transform'),
+      enable: false
+    });
 
   }
 
@@ -217,6 +228,7 @@ export default class Work extends View {
       duration: dur,
       opacity: 0.99,
       y: 0,
+      z: 0,
       ease: ease
     }, "<");
 
@@ -227,6 +239,7 @@ export default class Work extends View {
       duration: dur,
       opacity: 0.65,
       y: 0,
+      z: 0,
       ease: ease
     }, "<");
 
@@ -268,43 +281,48 @@ export default class Work extends View {
     const ease = "sine.inOut";
     const dur = 0.75;
 
-    if(this.inViewProjectMode) {
+    if (this.inViewProjectMode) {
 
       this.leaveAnim.to(this.projectTitle, {
         opacity: 0.01,
         duration: dur,
-        ease: ease
+        ease: ease,
+        z: 0
       });
 
       this.leaveAnim.to(this.projectContentInfo, {
 
         duration: dur,
         opacity: 0.01,
-        stagger: -0.05,
+        z: 0,
         ease: ease
       }, "<");
 
       this.leaveAnim.to(this.projectType, {
         duration: dur,
         opacity: 0.01,
+        z: 0,
         ease: ease
       }, "<");
 
       this.leaveAnim.to(this.projectYear, {
         duration: dur,
         opacity: 0.01,
+        z: 0,
         ease: ease
       }, "<");
 
       this.leaveAnim.to(this.projectLink, {
         duration: dur,
         opacity: 0.01,
+        z: 0,
         ease: ease
       }, "<");
 
       this.leaveAnim.to(this.exitButton, {
         duration: dur,
         opacity: 0.01,
+        z: 0,
         ease: ease
       }, "<");
 
@@ -313,14 +331,15 @@ export default class Work extends View {
       this.leaveAnim.to(this.projectTitleScrolling, {
         opacity: 0.01,
         duration: dur,
-        ease: ease
+        ease: ease,
+        z: 0,
       });
-  
+
       this.leaveAnim.to(this.viewProjectButton, {
-         
+
         duration: dur,
         opacity: 0.01,
-        y: 5,
+        z: 0,
         ease: ease
       }, "<0.1");
 
@@ -330,7 +349,7 @@ export default class Work extends View {
 
   updateInterface = () => {
 
-    if(this.interfaceAnim) this.interfaceAnim.kill();
+    if (this.interfaceAnim) this.interfaceAnim.kill();
     this.interfaceAnim = gsap.timeline();
     this.showScrollInterface = !this.showScrollInterface;
     const pow = "power1.out";
@@ -340,7 +359,8 @@ export default class Work extends View {
 
       duration,
       ease: pow,
-      opacity: this.showScrollInterface ? 0.99 : 0.01
+      opacity: this.showScrollInterface ? 0.99 : 0.01,
+      z: 0
 
     });
 
@@ -348,60 +368,12 @@ export default class Work extends View {
 
       duration,
       ease: pow,
-      opacity: this.showScrollInterface ? 0.99 : 0.01
+      opacity: this.showScrollInterface ? 0.99 : 0.01,
+      z: 0
 
     }, "<");
 
   }
-
-  // playLeaveAnim = () => {
-
-
-  //   this.killActiveAnimations();
-  //   this.leaveAnim = gsap.timeline();
-
-  //   const ease = "sine.inOut";
-  //   const dur = 0.75;
-
-  //   this.leaveAnim.to(this.projectTitle, {
-  //     opacity: 0.01,
-  //     duration: dur,
-  //     ease: ease
-  //   });
-
-  //   this.leaveAnim.to(this.projectContentInfo, {
-
-  //     duration: dur,
-  //     opacity: 0.01,
-  //     stagger: -0.05,
-  //     ease: ease
-  //   }, "<");
-
-  //   this.leaveAnim.to(this.projectType, {
-  //     duration: dur,
-  //     opacity: 0.01,
-  //     ease: ease
-  //   }, "<");
-
-  //   this.leaveAnim.to(this.projectYear, {
-  //     duration: dur,
-  //     opacity: 0.01,
-  //     ease: ease
-  //   }, "<");
-
-  //   this.leaveAnim.to(this.projectLink, {
-  //     duration: dur,
-  //     opacity: 0.01,
-  //     ease: ease
-  //   }, "<");
-
-  //   this.leaveAnim.to(this.exitButton, {
-  //     duration: dur,
-  //     opacity: 0.01,
-  //     ease: ease
-  //   }, "<");
-
-  // }
 
   showProject = () => {
     this.updateInterface();
@@ -418,101 +390,111 @@ export default class Work extends View {
   revealProjectContent() {
 
     // this.killActiveAnimations();
-    if(this.revealProjectContentAnim) this.revealProjectContentAnim.kill();
+    if (this.revealProjectContentAnim) this.revealProjectContentAnim.kill();
     this.revealProjectContentAnim = gsap.timeline({
       onStart: () => {
         this.inViewProjectMode = true;
-        this.exitButton.stickyTransform.activate();
-        this.projectLink.stickyTransform.activate();
         this.viewProjectButton.stickyTransform.deActivate();
       },
       onComplete: () => {
-        // this.viewProjectButton.stickyTransform.deActivate();
+        this.exitButton.stickyTransform.activate();
+        const projectLink = document.getElementById('project_link');
+        if (projectLink.innerHTML === '') return;
+        this.projectLink.stickyTransform.activate();
       }
     });
 
-    const pow = "power1.out";
+    const pow = "linear";
+    const duration = 0.5;
 
-    this.revealProjectContentAnim.fromTo(this.projectTitle, {
-      y: 0
-    }, {
-      duration: 0.75,
-      y: 0,
+    this.revealProjectContentAnim.to(this.projectTitle, {
+      duration,
       opacity: 0.99,
-      ease: pow
+      ease: pow,
+      z: 0,
     }, "<");
     this.revealProjectContentAnim.to(this.projectType, {
-      duration: 0.75,
-      y: 0,
+      duration,
       opacity: 0.99,
-      ease: pow
-    }, "<0.05");
+      ease: pow,
+      z: 0,
+    }, "<0.02");
     this.revealProjectContentAnim.to(this.projectYear, {
-      duration: 0.75,
-      y: 0,
+      duration,
       opacity: 0.99,
-      ease: pow
+      ease: pow,
+      z: 0,
     }, "<0.02");
     this.revealProjectContentAnim.to(this.projectContentInfo, {
       opacity: 0.99,
-      duration: 1.0,
-      stagger: 0.1,
-    }, "<0.05")
+      duration,
+      z: 0,
+      // stagger: 0.1,
+    }, "<0.02")
     this.revealProjectContentAnim.to(this.projectLink, {
-      duration: 0.5,
+      duration,
       opacity: 0.99,
-      ease: pow
-    },"<0.05");
+      ease: pow,
+      z: 0,
+    }, "<0.02");
 
     this.revealProjectContentAnim.to(this.exitButton, {
 
-      duration: 0.5,
+      duration,
       ease: pow,
-      opacity: 0.9
+      opacity: 0.99,
+      z: 0,
 
-    },"<0.05");
+    }, "<0.02");
 
   }
 
   hideProjectContent = () => {
 
     // this.killActiveAnimations();
-    if(this.hideProjectContentAnim) this.hideProjectContentAnim.kill();
+    if (this.hideProjectContentAnim) this.hideProjectContentAnim.kill();
     this.hideProjectContentAnim = gsap.timeline({
+      onStart: () => {
+        this.exitButton.stickyTransform.deActivate();
+        this.projectLink.stickyTransform.deActivate();
+      },
       onComplete: () => {
         this.inViewProjectMode = false;
         this.viewProjectButton.stickyTransform.activate();
-        this.exitButton.stickyTransform.deActivate();
-        this.projectLink.stickyTransform.deActivate();
         this.updateInterface();
       }
     });
 
-    const pow = "power1.out";
+    const pow = "linear";
     const duration = 0.4;
 
     this.hideProjectContentAnim.to(this.projectTitle, {
       duration,
       opacity: 0.01,
+      z: 0,
       ease: pow
     }, "<");
     this.hideProjectContentAnim.to(this.projectType, {
       duration,
       opacity: 0.01,
+      z: 0,
       ease: pow
     }, "<");
     this.hideProjectContentAnim.to(this.projectYear, {
       duration,
       opacity: 0.01,
+      z: 0,
       ease: pow
     }, "<");
     this.hideProjectContentAnim.to(this.projectContentInfo, {
       duration,
       opacity: 0.01,
+      z: 0,
     }, "<")
     this.hideProjectContentAnim.to(this.projectLink, {
       duration,
       opacity: 0.01,
+      z: 0,
       ease: pow
     }, "<");
 
@@ -520,7 +502,8 @@ export default class Work extends View {
 
       duration,
       ease: pow,
-      opacity: 0.01
+      opacity: 0.01,
+      z: 0,
 
     }, "<");
 

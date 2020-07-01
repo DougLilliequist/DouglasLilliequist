@@ -8,17 +8,22 @@ import events from '../../../utils/events.js';
 
 import StickyComponent from '../../StickyComponent.js';
 
-import {gsap} from 'gsap';
+import {
+  gsap
+} from 'gsap';
 
 export default class About extends View {
   onEnter() {
     super.onEnter();
     this.initReferences();
     this.initEvents();
-    if(window.contentLoaded) {
+    if (window.contentLoaded) {
       this.populateContent();
       this.links.forEach((link) => {
-        link.stickyTransform = new StickyComponent({domElement: link, enable: true});
+        link.stickyTransform = new StickyComponent({
+          domElement: link,
+          enable: true
+        });
       });
       this.initDomGL();
     }
@@ -27,7 +32,7 @@ export default class About extends View {
   onEnterCompleted() {
     super.onEnterCompleted();
 
-    if(window.contentLoaded) {
+    if (window.contentLoaded) {
       this.playEnterAnim();
     }
   }
@@ -66,7 +71,10 @@ export default class About extends View {
       this.populateContent();
       this.playEnterAnim();
       this.links.forEach((link) => {
-        link.stickyTransform = new StickyComponent({domElement: link, enable: true});
+        link.stickyTransform = new StickyComponent({
+          domElement: link,
+          enable: true
+        });
       });
     });
 
@@ -90,11 +98,14 @@ export default class About extends View {
   initDomGL = () => {
 
     const params = {
-      referenceElement: this.domGLReferenceElement, 
+      referenceElement: this.domGLReferenceElement,
       media: contentManager.AboutMedia[0]
     }
 
-    super.initDomGL({view: "ABOUT", params});
+    super.initDomGL({
+      view: "ABOUT",
+      params
+    });
 
   }
 
@@ -132,8 +143,7 @@ export default class About extends View {
     const startY = -10;
     const ease = "linear";
 
-    const enterAnim = gsap.timeline(
-      {
+    const enterAnim = gsap.timeline({
       onStart: () => {
         emitter.emit(events.REVEAL_QUADS);
       },
@@ -151,6 +161,7 @@ export default class About extends View {
       duration: dur,
       opacity: 0.99,
       y: 0,
+      z: 0,
       // ease: ease
     }, "<0.1");
 
@@ -161,6 +172,7 @@ export default class About extends View {
       duration: dur,
       opacity: 0.99,
       y: 0,
+      z: 0,
       // ease: ease
     }, "<0.1");
 
@@ -171,6 +183,7 @@ export default class About extends View {
       duration: dur,
       opacity: 0.99,
       y: 0,
+      z: 0,
       // ease: ease
     }, "<0.1");
 
@@ -180,6 +193,7 @@ export default class About extends View {
       duration: dur,
       opacity: 0.99,
       stagger: 0.1,
+      z: 0
     }, "<0.1");
 
   }
@@ -203,25 +217,29 @@ export default class About extends View {
       duration: dur,
       opacity: 0.01,
       stagger: -0.05,
+      z: 0,
       ease: ease
     }, "<");
 
     leaveAnim.to(this.contactHeader, {
       duration: dur,
       opacity: 0.01,
-      ease: ease
+      ease: ease,
+      z: 0,
     }, "<0.05");
 
     leaveAnim.to(this.introText, {
       duration: dur,
       opacity: 0.01,
-      ease: ease
+      ease: ease,
+      z: 0,
     }, "<0.05");
 
     leaveAnim.to(this.header, {
       duration: dur,
       opacity: 0.01,
-      ease: ease
+      ease: ease,
+      z: 0
     }, "<0.05");
 
   }

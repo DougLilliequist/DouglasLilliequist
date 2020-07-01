@@ -14,7 +14,7 @@ export default class Cursor {
 
     constructor() {
 
-        this.dpr = Math.min(1.5, window.devicePixelRatio);
+        this.dpr = Math.min(2.0, window.devicePixelRatio);
 
         this.canvas = document.querySelector('.main-cursor');
 
@@ -162,11 +162,11 @@ export default class Cursor {
         emitter.on(events.LOADING_ANIM_COMPLETED, this.reveal)
         emitter.on(events.SHOW_CLICKDRAG_CTA, this.showCTAText);
         emitter.on(events.HIDE_CLICKDRAG_CTA, this.hideCTAText);
-        
+
         emitter.on(events.MOUSE_MOVE, this.onMouseMove);
         emitter.on(events.ENTER_SCROLL_MODE, this.onMouseDown);
         emitter.on(events.EXIT_SCROLL_MODE, this.onMouseUp);
-        
+
         emitter.on(events.HOVERING_STICKY_COMPONENT, this.animateHoverMode);
         emitter.on(events.LEAVING_STICKY_COMPONENT, this.animateLeaveHoverMode);
         emitter.on(events.UPDATE_STICKY_TARGET, this.updateStickyTarget);
@@ -184,17 +184,17 @@ export default class Cursor {
         this.inScrollMode = true;
 
         // if(this.hoveringSticky === false) {
-            this.prevPosition.x = this.target.x;
-            this.prevPosition.y = this.target.y;
+        this.prevPosition.x = this.target.x;
+        this.prevPosition.y = this.target.y;
         // }
-        
+
         this.animateScrollMode();
 
     }
 
     onMouseMove = (event) => {
 
-        if(this.hoveringSticky === false) {
+        if (this.hoveringSticky === false) {
             this.target.x = event.clientX;
             this.target.y = event.clientY;
         }
@@ -251,19 +251,6 @@ export default class Cursor {
 
     }
 
-    // stickyComponentAnim = (e) => {
-
-    //     this.hoveringSticky = true;
-
-    //     const {target, rect} = e;
-
-    //     this.target.x = target.x;
-    //     this.target.y = target.y;
-
-    //     this.hideCTAText();
-
-    // }
-
     restore = () => {
 
         if (this.restoreAnim) this.restoreAnim.kill();
@@ -304,15 +291,20 @@ export default class Cursor {
     }
 
     animateHoverMode = (event) => {
-        
-        if(this.hoveringSticky === false) {
+
+        if (this.hoveringSticky === false) {
 
             this.hoveringSticky = true;
-            const {rect} = event;
-            const {width, height} = rect;
-    
+            const {
+                rect
+            } = event;
+            const {
+                width,
+                height
+            } = rect;
+
             this.hoverRadius = Math.sqrt(width * width + height * height) * 0.3115;
-        
+
             if (this.hoverModeAnim) this.hoverModeAnim.kill();
             this.hoverModeAnim = gsap.to(this, {
                 duration: 0.4,
@@ -322,19 +314,17 @@ export default class Cursor {
                     this.hideCTAText();
                 }
             });
-            
+
         }
 
     }
 
     animateLeaveHoverMode = () => {
-        
-        if(this.hoveringSticky) {
-        this.hoveringSticky = false;
-            
-        if (this.leaveHoverModeAnim) this.leaveHoverModeAnim.kill();
-        this.leaveHoverModeAnim = gsap.to(this,  
-            {
+
+        if (this.hoveringSticky) {
+            this.hoveringSticky = false;
+            if (this.leaveHoverModeAnim) this.leaveHoverModeAnim.kill();
+            this.leaveHoverModeAnim = gsap.to(this, {
                 duration: 0.4,
                 ease: "power1.out",
                 radius: this.defaultRadius,
@@ -343,18 +333,20 @@ export default class Cursor {
                 }
 
             });
-        
+
         }
-        
+
     }
 
     updateStickyTarget = (event) => {
-        
-        const {target} = event;
+
+        const {
+            target
+        } = event;
         this.target.x = target.x;
         this.target.y = target.y;
 
-    } 
+    }
 
     drawCursorArrows() {
 
@@ -410,8 +402,8 @@ export default class Cursor {
     showCTAText = () => {
 
         if (this.removeCTA || this.inViewProjectMode) return;
-            this.drawMessage = true;
-            gsap.to(this, {
+        this.drawMessage = true;
+        gsap.to(this, {
             duration: 0.5,
             ctaTextAlpha: 1,
             ease: "power1.out"
@@ -421,12 +413,12 @@ export default class Cursor {
     hideCTAText = () => {
 
         if (this.removeCTA || this.inViewProjectMode) return;
-            this.drawMessage = false;
-            gsap.to(this, {
+        this.drawMessage = false;
+        gsap.to(this, {
             duration: 0.5,
             ctaTextAlpha: 0,
             ease: "power1.out"
-        }); 
+        });
     }
 
     removeCTAText() {

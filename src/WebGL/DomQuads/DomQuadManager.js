@@ -89,7 +89,7 @@ export default class DomQuadManager {
 
     }
 
-    updateQuadDimensions() {
+    updateQuadRelations() {
 
         if (this.activeMediator === null) return;
 
@@ -105,9 +105,9 @@ export default class DomQuadManager {
 
     resize = () => {
 
-        if (this.updateDimensions) this.updateDimensions.kill();
-        this.updateDimensions = gsap.delayedCall(0.1, () => {
-            this.updateQuadDimensions();
+        if (this.resizeEvent) this.resizeEvent.kill();
+        this.resizeEvent = gsap.delayedCall(0.1, () => {
+            this.updateQuadRelations();
         });
 
     }
