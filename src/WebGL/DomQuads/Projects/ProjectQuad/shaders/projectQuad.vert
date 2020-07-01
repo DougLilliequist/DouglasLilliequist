@@ -36,23 +36,25 @@ uniform float _Amp;
 uniform float _HeightAmp;
 
 #define DISTORTSTR 1.2
-#define SCROLLDISTORTSTR 0.5
+#define SCROLLDISTORTSTR 0.6
 #define DISPLACEMENTSTR 0.4
 #define HEIGHTMAPSTR 0.33
 #define lumaK 0.33333333333333333
 #define PI 3.14159265359
 
-#define RIPPLE_SPATIALF 3.0
+// #define RIPPLE_SPATIALF 3.0
+#define RIPPLE_SPATIALF 3.5
 #define RIPPLE_TEMPORALF 4.21
+// #define RIPPLE_TEMPORALF 6.21
 #define RIPPLE_AMP 0.125
 // #define HEIGHTMAP_AMP 0.53
-#define HEIGHTMAP_AMP 0.33
+// #define HEIGHTMAP_AMP 0.33
+#define HEIGHTMAP_AMP 0.8
 
 
 void main() {
 
     vec3 pos = position;
-    // pos.xy *= _ViewplaneSize * mix(0.8, 1.0, cos(_Time*2.0)*.5+.5);
     pos.xy *= _ViewplaneSize * mix(0.85, 1.0, _Scale) * mix(1.0, 1.535, _ViewModePhase);
 
     vec3 col = texture2D(_Image, uv).xyz;
@@ -66,10 +68,8 @@ void main() {
     vPhase = phase;
     pos.z += (phase * DISPLACEMENTSTR + (heightMapDistort * HEIGHTMAPSTR)) * _ScrollPhase * SCROLLDISTORTSTR;
     
-    // float viewmodePhase = (1.0 - abs(_ViewModePhase * 2.0 - 1.0));
     float viewmodePhase = _ViewModePhase * 4.0 * (1.0 - _ViewModePhase);
 
-    // float ripplePhase = (1.0 - (cos(_TemporalF * _ViewModePhase + (phase * mix(_SpatialF, _SpatialF * 2.0, viewmodePhase))))) * _Amp;
     float ripplePhase = (1.0 - (cos(RIPPLE_TEMPORALF * _ViewModePhase + (phase * RIPPLE_SPATIALF)))) * RIPPLE_AMP;
     ripplePhase *= viewmodePhase;
     pos.z += ripplePhase;
@@ -89,7 +89,6 @@ void main() {
         pos += distort * max(0.2, heightMapDistort) * _FlowMapPhase * distort.z;
 
     }
-    // vClipPos = clipPos.xy;
 
     gl_Position = modelViewProjection * vec4(pos, 1.0);
     vUv = uv;

@@ -19,7 +19,10 @@ export default class Navigation {
         this.linkTransforms = this.el.querySelectorAll('.navigation__links__transform');
 
         this.linkTransforms.forEach((transform) => {
-            transform.stickyComponent = new StickyComponent({domElement: transform, enable: true});
+            transform.stickyComponent = new StickyComponent({
+                domElement: transform,
+                enable: true
+            });
         });
 
         this.active = false;

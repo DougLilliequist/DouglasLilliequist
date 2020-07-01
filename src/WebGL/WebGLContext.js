@@ -47,6 +47,7 @@ export default class WebGLContext {
       width: w,
       height: h,
       canvas,
+      antialias: true,
       // dpr: 2,
       powerPreference: "default",
     });
@@ -76,7 +77,7 @@ export default class WebGLContext {
     this.scene = new Transform();
 
     this.post = new Post(this.gl);
-    this.renderToScreen = false;
+    this.renderToScreen = true;
     this.canvasResolution = new Vec2(this.gl.canvas.width, this.gl.canvas.height);
 
     this.post.addPass({

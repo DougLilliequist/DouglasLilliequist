@@ -26,8 +26,8 @@ export default class StickyComponent {
         this.event = event;
 
         this.hovered = false;
-
         this.inBounds = false;
+        this.onMobile = window.isMobile;
 
         this.w = window.innerWidth;
         this.h = window.innerHeight;
@@ -62,7 +62,6 @@ export default class StickyComponent {
             y: 0
         }
 
-        this.getInitPos();
         this.currentPos = {
             x: 0,
             y: 0
@@ -85,6 +84,8 @@ export default class StickyComponent {
         this.inertia = 0.8;
 
         this.ease = 0.125;
+
+        this.getInitPos();
 
     }
 
@@ -117,6 +118,7 @@ export default class StickyComponent {
         emitter.on(events.UPDATE, this.update);
         emitter.on(events.RESIZE, this.onResize);
         if (this.event !== null) this.el.addEventListener('mousedown', this.event);
+        if (this.event !== null && this.onMobile) this.el.addEventListener('touchstart', this.event);
         this.el.addEventListener('mouseenter', this.applyHoverState);
         this.el.addEventListener('mouseleave', this.removeHoverState);
 
@@ -133,6 +135,7 @@ export default class StickyComponent {
         emitter.off(events.UPDATE, this.update);
         emitter.off(events.RESIZE, this.onResize);
         if (this.event !== null) this.el.removeEventListener('mousedown', this.event);
+        if (this.event !== null && this.onMobile) this.el.removeEventListener('touchstart', this.event);
         this.el.removeEventListener('mouseenter', this.applyHoverState);
         this.el.removeEventListener('mouseleave', this.removeHoverState);
 
@@ -224,6 +227,7 @@ export default class StickyComponent {
 
     update = () => {
 
+        if (this.onMobile) return;
         this.updateForce();
         if (this.hovered) emitter.emit(events.UPDATE_STICKY_TARGET, {
             target: this.offsetPos,

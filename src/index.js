@@ -16,6 +16,13 @@ import contentManager from './ContentManager.js'
 export default class App {
     constructor() {
 
+        const browser = Bowser.getParser(window.navigator.userAgent);
+        const {
+            type
+        } = browser.parsedResult.platform;
+
+        window.isMobile = type !== "desktop";
+
         window.viewMediator = new ViewMediator({
             work: Work,
             about: About,
@@ -27,13 +34,6 @@ export default class App {
         this.loadingScreen = new LoadingScreen();
 
         window.contentLoaded = false;
-
-        const browser = Bowser.getParser(window.navigator.userAgent);
-        const {
-            type
-        } = browser.parsedResult.platform;
-
-        window.isMobile = type !== "desktop";
 
         if (!window.isMobile) {
             this.cursor = new Cursor();

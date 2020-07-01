@@ -19,7 +19,7 @@ body {
     overflow: hidden;
     font-family: $muli;
     background-color: #e6e6e6;
-    touch-action: none;
+    //touch-action: none;
 
 }
 
@@ -35,7 +35,8 @@ body {
     &__column {
         height: 100vh;
         // width: 80px;
-        width: 5.8vw;
+        // width: 5.8vw;
+        width: 20vw;
         background-color: red;
         opacity: 0.2;
         margin-left: 1vw;
@@ -52,7 +53,8 @@ body {
     // }
 
     &__row {
-        height: 3.8vw;
+        // height: 7.5vh;
+        height: 16.25vw;
         width: 100vw;
         background-color: red;
         opacity: 0.2;
@@ -70,7 +72,7 @@ body {
     // }
 
 
-    z-index: 10000;
+    // z-index: 10000;
 
 }
 

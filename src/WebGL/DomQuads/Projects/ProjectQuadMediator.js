@@ -151,18 +151,11 @@ export default class ProjectQuadMediator extends DomquadMediator {
     const {
       inViewMode
     } = this;
-    const duration = 1.0;
+    const duration = 1.25;
     // const ease = "power1.inOut"
     const ease = "sine.inOut"
 
     this.inViewMode = !this.inViewMode;
-
-    // gsap.to(this.quadInView.scaleOffset, {
-    //   x: this.inViewMode ? 1.535 : 1.0,
-    //   y: this.inViewMode ? 1.535 : 1.0,
-    //   duration,
-    //   ease
-    // });
 
     gsap.to(uniforms._ViewModePhase, {
       value: this.inViewMode ? 1.0 : 0.0,

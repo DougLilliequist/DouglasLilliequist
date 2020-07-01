@@ -186,7 +186,7 @@ export default class Work extends View {
     }
 
     const projectLink = document.getElementById('project_link');
-    projectLink.innerHTML = link === '' ? '' : "view project";
+    projectLink.innerHTML = link === '' ? '' : "visit project";
     projectLink.href = link;
 
   }
@@ -210,6 +210,8 @@ export default class Work extends View {
   }
 
   playEnterAnim = () => {
+
+    this.showScrollInterface = true;
 
     this.enterAnim = gsap.timeline({
       onStart: () => {
@@ -350,6 +352,8 @@ export default class Work extends View {
   updateInterface = () => {
 
     if (this.interfaceAnim) this.interfaceAnim.kill();
+    if (this.enterAnim) this.enterAnim.kill();
+
     this.interfaceAnim = gsap.timeline();
     this.showScrollInterface = !this.showScrollInterface;
     const pow = "power1.out";
@@ -461,7 +465,7 @@ export default class Work extends View {
       onComplete: () => {
         this.inViewProjectMode = false;
         this.viewProjectButton.stickyTransform.activate();
-        this.updateInterface();
+        gsap.delayedCall(0.5, this.playEnterAnim);
       }
     });
 
@@ -512,7 +516,7 @@ export default class Work extends View {
   // killActiveAnimations() {
 
   //   if (this.enterAnim) this.enterAnim.kill();
-  //   if (this.scrollAnim) this.scrollAnim.kill();
+  //   // if (this.scrollAnim) this.scrollAnim.kill();
 
   // }
 
