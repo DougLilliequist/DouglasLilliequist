@@ -155,43 +155,43 @@ export default class About extends View {
     });
 
     enterAnim.fromTo(this.header, {
-      opacity: 0.01,
+      opacity: 0,
       y: startY
     }, {
       duration: dur,
-      opacity: 0.99,
+      opacity: 1,
       y: 0,
       z: 0,
       // ease: ease
     }, "<0.1");
 
     enterAnim.fromTo(this.introText, {
-      opacity: 0.01,
+      opacity: 0,
       y: startY
     }, {
       duration: dur,
-      opacity: 0.99,
+      opacity: 1,
       y: 0,
       z: 0,
       // ease: ease
     }, "<0.1");
 
     enterAnim.fromTo(this.contactHeader, {
-      opacity: 0.01,
+      opacity: 0,
       y: startY
     }, {
       duration: dur,
-      opacity: 0.99,
+      opacity: 1,
       y: 0,
       z: 0,
       // ease: ease
     }, "<0.1");
 
     enterAnim.fromTo(this.links, {
-      opacity: 0.01,
+      opacity: 0,
     }, {
       duration: dur,
-      opacity: 0.99,
+      opacity: 1,
       stagger: 0.1,
       z: 0
     }, "<0.1");
@@ -215,7 +215,7 @@ export default class About extends View {
 
     leaveAnim.to(this.links, {
       duration: dur,
-      opacity: 0.01,
+      opacity: 0,
       stagger: -0.05,
       z: 0,
       ease: ease
@@ -223,21 +223,21 @@ export default class About extends View {
 
     leaveAnim.to(this.contactHeader, {
       duration: dur,
-      opacity: 0.01,
+      opacity: 0,
       ease: ease,
       z: 0,
     }, "<0.05");
 
     leaveAnim.to(this.introText, {
       duration: dur,
-      opacity: 0.01,
+      opacity: 0,
       ease: ease,
       z: 0,
     }, "<0.05");
 
     leaveAnim.to(this.header, {
       duration: dur,
-      opacity: 0.01,
+      opacity: 0,
       ease: ease,
       z: 0
     }, "<0.05");

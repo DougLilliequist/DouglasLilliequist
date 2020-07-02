@@ -34,6 +34,7 @@ export default class LoadingScreen {
     initEvents() {
 
         emitter.on(events.UPDATE_PROGRESS, this.updateProgressAnim);
+        emitter.on(events.UPDATE, this.update);
         emitter.on(events.CONTENT_LOADED, this.hide);
 
     }
@@ -41,8 +42,8 @@ export default class LoadingScreen {
     reveal() {
 
         gsap.fromTo(this.copyContainer, {
-            y: -10,
-            opacity: 0.01
+            y: -50,
+            opacity: 1
         }, {
             delay: 1.0,
             duration: 1.0,
@@ -60,12 +61,13 @@ export default class LoadingScreen {
             onComplete: () => {
                 this.el.classList.add('loaded');
                 emitter.emit(events.LOADING_ANIM_COMPLETED);
+                emitter.off(events.UPDATE, this.update);
             }
         });
 
         hideTl.to(this.copyContainer, {
             duration: 1.0,
-            // opacity: 0.001,
+            // opacity: 1.001,
             y: 50,
             ease: "power2.in"
         });
@@ -81,17 +83,13 @@ export default class LoadingScreen {
 
     updateProgressAnim = (phase) => {
 
-        emitter.on(events.UPDATE, this.update);
         this.targetAlpha = phase;
-        gsap.delayedCall(0.3, () => {
-            emitter.off(events.UPDATE, this.update);
-        })
 
     }
 
     update = () => {
 
-        this.alpha += (this.targetAlpha - this.alpha) * 0.5;
+        this.alpha += (this.targetAlpha - this.alpha) * 0.125;
 
         this.title.style.opacity = this.alpha;
         this.subTitle.style.opacity = this.alpha;

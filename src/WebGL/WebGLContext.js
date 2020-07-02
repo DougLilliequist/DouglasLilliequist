@@ -1,10 +1,20 @@
-import { Transform } from "../../vendors/ogl/src/core/Transform";
-import { Renderer } from "../../vendors/ogl/src/core/Renderer";
-import { Camera } from "../../vendors/ogl/src/core/Camera";
+import {
+  Transform
+} from "../../vendors/ogl/src/core/Transform";
+import {
+  Renderer
+} from "../../vendors/ogl/src/core/Renderer";
+import {
+  Camera
+} from "../../vendors/ogl/src/core/Camera";
 
-import { Vec2 } from "../../vendors/ogl/src/math/Vec2";
+import {
+  Vec2
+} from "../../vendors/ogl/src/math/Vec2";
 
-import { Post } from "../../vendors/ogl/src/extras/Post.js";
+import {
+  Post
+} from "../../vendors/ogl/src/extras/Post.js";
 const fxaa = require("./utils/fxaa.frag");
 
 import DomQuadManager from "./DomQuads/DomQuadManager.js";
@@ -15,7 +25,9 @@ import eventEmitter from "../EventEmitter";
 const emitter = eventEmitter.emitter;
 import events from "../../utils/events";
 
-import { gsap } from "gsap";
+import {
+  gsap
+} from "gsap";
 
 export default class WebGLContext {
   constructor(container) {
@@ -25,7 +37,9 @@ export default class WebGLContext {
     this.initMouseflowMap();
   }
 
-  initScene({ canvas }) {
+  initScene({
+    canvas
+  }) {
     const w = window.innerWidth;
     const h = window.innerHeight;
 
@@ -33,14 +47,15 @@ export default class WebGLContext {
       width: w,
       height: h,
       canvas,
-      // antialias: true,
-      // dpr: 2,
       powerPreference: "default"
     });
     this.gl = this.renderer.gl;
     this.gl.clearColor(0.9, 0.9, 0.9, 1.0);
 
-    const { width, height } = this.gl.canvas;
+    const {
+      width,
+      height
+    } = this.gl.canvas;
     this.wk = 1.0 / width;
     this.hK = 1.0 / height;
 
@@ -183,7 +198,9 @@ export default class WebGLContext {
     }
   }
 
-  update = ({ deltaTime }) => {
+  update = ({
+    deltaTime
+  }) => {
     this.deltaTime = deltaTime * 0.001;
 
     this.inputDelta.copy(this.inputPos).sub(this.prevInputPos);

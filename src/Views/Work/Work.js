@@ -224,18 +224,20 @@ export default class Work extends View {
     const dur = 0.85
 
     this.enterAnim.fromTo(this.projectTitleScrolling, {
-      opacity: 0.01,
+      opacity: 0,
+      z: 0,
       y: -startY,
     }, {
       duration: dur,
-      opacity: 0.99,
+      opacity: 1,
       y: 0,
       z: 0,
       ease: ease
     }, "<");
 
     this.enterAnim.fromTo(this.viewProjectButton, {
-      opacity: 0.01,
+      opacity: 0,
+      z: 0,
       y: startY,
     }, {
       duration: dur,
@@ -246,27 +248,27 @@ export default class Work extends View {
     }, "<");
 
     gsap.set(this.projectTitle, {
-      opacity: 0.01,
+      opacity: 0,
     });
 
     gsap.set(this.projectContentInfo, {
-      opacity: 0.01,
+      opacity: 0,
     });
 
     gsap.set(this.projectType, {
-      opacity: 0.01,
+      opacity: 0,
     });
 
     gsap.set(this.projectYear, {
-      opacity: 0.01,
+      opacity: 0,
     });
 
     gsap.set(this.projectLink, {
-      opacity: 0.01,
+      opacity: 0,
     });
 
     gsap.set(this.exitButton, {
-      opacity: 0.01,
+      opacity: 0,
     });
 
   }
@@ -286,7 +288,7 @@ export default class Work extends View {
     if (this.inViewProjectMode) {
 
       this.leaveAnim.to(this.projectTitle, {
-        opacity: 0.01,
+        opacity: 0,
         duration: dur,
         ease: ease,
         z: 0
@@ -295,35 +297,35 @@ export default class Work extends View {
       this.leaveAnim.to(this.projectContentInfo, {
 
         duration: dur,
-        opacity: 0.01,
+        opacity: 0,
         z: 0,
         ease: ease
       }, "<");
 
       this.leaveAnim.to(this.projectType, {
         duration: dur,
-        opacity: 0.01,
+        opacity: 0,
         z: 0,
         ease: ease
       }, "<");
 
       this.leaveAnim.to(this.projectYear, {
         duration: dur,
-        opacity: 0.01,
+        opacity: 0,
         z: 0,
         ease: ease
       }, "<");
 
       this.leaveAnim.to(this.projectLink, {
         duration: dur,
-        opacity: 0.01,
+        opacity: 0,
         z: 0,
         ease: ease
       }, "<");
 
       this.leaveAnim.to(this.exitButton, {
         duration: dur,
-        opacity: 0.01,
+        opacity: 0,
         z: 0,
         ease: ease
       }, "<");
@@ -331,7 +333,7 @@ export default class Work extends View {
     } else {
 
       this.leaveAnim.to(this.projectTitleScrolling, {
-        opacity: 0.01,
+        opacity: 0,
         duration: dur,
         ease: ease,
         z: 0,
@@ -340,7 +342,7 @@ export default class Work extends View {
       this.leaveAnim.to(this.viewProjectButton, {
 
         duration: dur,
-        opacity: 0.01,
+        opacity: 0,
         z: 0,
         ease: ease
       }, "<0.1");
@@ -413,31 +415,31 @@ export default class Work extends View {
 
     this.revealProjectContentAnim.to(this.projectTitle, {
       duration,
-      opacity: 0.99,
+      opacity: 1,
       ease: pow,
       z: 0,
     }, "<");
     this.revealProjectContentAnim.to(this.projectType, {
       duration,
-      opacity: 0.99,
+      opacity: 1,
       ease: pow,
       z: 0,
     }, "<0.02");
     this.revealProjectContentAnim.to(this.projectYear, {
       duration,
-      opacity: 0.99,
+      opacity: 1,
       ease: pow,
       z: 0,
     }, "<0.02");
     this.revealProjectContentAnim.to(this.projectContentInfo, {
-      opacity: 0.99,
+      opacity: 1,
       duration,
       z: 0,
       // stagger: 0.1,
     }, "<0.02")
     this.revealProjectContentAnim.to(this.projectLink, {
       duration,
-      opacity: 0.99,
+      opacity: 1,
       ease: pow,
       z: 0,
     }, "<0.02");
@@ -446,7 +448,7 @@ export default class Work extends View {
 
       duration,
       ease: pow,
-      opacity: 0.99,
+      opacity: 1,
       z: 0,
 
     }, "<0.02");
@@ -474,30 +476,30 @@ export default class Work extends View {
 
     this.hideProjectContentAnim.to(this.projectTitle, {
       duration,
-      opacity: 0.01,
+      opacity: 0,
       z: 0,
       ease: pow
     }, "<");
     this.hideProjectContentAnim.to(this.projectType, {
       duration,
-      opacity: 0.01,
+      opacity: 0,
       z: 0,
       ease: pow
     }, "<");
     this.hideProjectContentAnim.to(this.projectYear, {
       duration,
-      opacity: 0.01,
+      opacity: 0,
       z: 0,
       ease: pow
     }, "<");
     this.hideProjectContentAnim.to(this.projectContentInfo, {
       duration,
-      opacity: 0.01,
+      opacity: 0,
       z: 0,
     }, "<")
     this.hideProjectContentAnim.to(this.projectLink, {
       duration,
-      opacity: 0.01,
+      opacity: 0,
       z: 0,
       ease: pow
     }, "<");
@@ -506,7 +508,7 @@ export default class Work extends View {
 
       duration,
       ease: pow,
-      opacity: 0.01,
+      opacity: 0,
       z: 0,
 
     }, "<");

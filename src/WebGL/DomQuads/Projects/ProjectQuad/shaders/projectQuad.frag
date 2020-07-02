@@ -38,8 +38,8 @@ void main() {
     vec2 offsetY = (vec2(0.0, inputPhase)) * OFFSETAMOUNTY;
 
     float viewModePhase = (1.0 - abs(_ViewModePhase * 2.0 - 1.0));
-    vec2 transitionOffsetX = vec2(0.02, 0.0) * viewModePhase;
-    vec2 transitionOffsetY = vec2(0.0, 0.002) * viewModePhase;
+    vec2 transitionOffsetX = vec2(0.01, 0.0) * viewModePhase * 0.0;
+    vec2 transitionOffsetY = vec2(0.0, 0.001) * viewModePhase * 0.0;
 
     float r = texture2D(_Image, uv - transitionOffsetX - offsetX - (flow * 0.02)).x;
     float g = texture2D(_Image, uv + transitionOffsetY + offsetY + (flow * 0.002)).y;

@@ -1,5 +1,5 @@
-import ProjectQuad from "../Projects/ProjectQuad/ProjectQuad";
-import DomquadMediator from '../../extras/DomQuad/DomquadMediator';
+import ProjectQuad from "../Projects/ProjectQuad/ProjectQuad.js";
+import DomquadMediator from '../../extras/DomQuad/DomquadMediator.js';
 
 import eventEmitter from '../../../EventEmitter.js';
 const emitter = eventEmitter.emitter;
