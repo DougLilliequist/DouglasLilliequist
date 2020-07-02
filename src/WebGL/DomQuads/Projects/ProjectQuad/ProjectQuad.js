@@ -136,7 +136,7 @@ export default class ProjectQuad extends DomQuad {
         value: 0.0
       },
       _Entering: {
-        value: false
+        value: 0.0
       },
       _RevealDirection: {
         value: 0.0

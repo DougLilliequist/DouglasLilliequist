@@ -15,7 +15,7 @@ uniform float _RestorePhase;
 uniform float _ScrollPhase;
 
 uniform float _ViewModePhase;
-uniform bool _Entering;
+uniform float _Entering;
 
 uniform sampler2D _Image;
 uniform float _Scale;
@@ -71,7 +71,8 @@ void main() {
     
     float viewmodePhase = _ViewModePhase * 4.0 * (1.0 - _ViewModePhase);
 
-    float ripplePhase = (1.0 - (cos(RIPPLE_TEMPORALF * _ViewModePhase + (phase * RIPPLE_SPATIALF * (_Entering ? 1.0 : -0.5))))) * RIPPLE_AMP;
+    // float ripplePhase = (1.0 - (cos(RIPPLE_TEMPORALF * _ViewModePhase + (phase * RIPPLE_SPATIALF * (_Entering ? 1.0 : -0.5))))) * RIPPLE_AMP;
+    float ripplePhase = (1.0 - (cos(RIPPLE_TEMPORALF * _ViewModePhase + (phase * RIPPLE_SPATIALF * mix(-0.5, 1.0, _Entering))))) * RIPPLE_AMP;
     ripplePhase *= viewmodePhase;
     pos.z += ripplePhase;
     pos.z += (phase * heightMapDistort * HEIGHTMAP_AMP) * viewmodePhase;

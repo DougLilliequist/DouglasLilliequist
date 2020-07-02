@@ -80,6 +80,7 @@ export default class Navigation {
         }, {
             opacity: 1.0,
             duration: 0.8,
+            z: 0,
             onComplete: () => {
                 this.active = true;
                 this.updateActiveState();

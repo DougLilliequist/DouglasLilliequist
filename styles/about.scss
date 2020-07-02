@@ -7,7 +7,7 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate3d(-50%, -50%, 0px);
     // width: 60.5vw;
     width: 76vw;
     height: 30.8vw;
@@ -130,7 +130,7 @@
 
         position: relative;
         margin-top: 2em;
-        transform: translateZ(0);
+        transform: translate3d(0px, 0px, 0px);
 
         &__header {
 

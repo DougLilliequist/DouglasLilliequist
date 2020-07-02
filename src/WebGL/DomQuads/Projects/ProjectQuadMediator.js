@@ -155,7 +155,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     this.inViewMode = !this.inViewMode;
 
-    uniforms._Entering.value = !uniforms._Entering.value;
+    uniforms._Entering.value = this.inViewMode ? 1.0 : 0.0;
 
     gsap.to(uniforms._ViewModePhase, {
       value: this.inViewMode ? 1.0 : 0.0,
@@ -176,7 +176,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
         uniforms
       } = quad.program;
       uniforms._ViewModePhase.value = 0.0
-      uniforms._Entering.value = false;
+      uniforms._Entering.value = 0.0;
 
     });
 

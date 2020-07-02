@@ -217,7 +217,7 @@ export default class StickyComponent {
     update = () => {
 
         if (this.onMobile) return;
-        this.updateForce();
+        if (this.enable) this.updateForce();
         if (this.hovered) emitter.emit(events.UPDATE_STICKY_TARGET, {
             target: this.offsetPos,
             rect: this.rect
@@ -244,17 +244,17 @@ export default class StickyComponent {
 
     activate = () => {
 
-        this.el.classList.remove('deactivated');
         this.enable = true;
+        this.el.classList.remove('deactivated');
 
     }
 
     deActivate = () => {
 
-        this.el.classList.add('deactivated');
         if (this.hovered) this.removeHoverState();
         this.enable = false;
         this.hovered = false;
+        this.el.classList.add('deactivated');
 
     }
 

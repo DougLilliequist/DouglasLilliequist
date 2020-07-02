@@ -7,7 +7,7 @@
     position: absolute;
     top: 50%;
     left: 4.2vw;
-    transform: translate(0%, -50%);
+    transform: translate3d(0%, -50%, 0px);
     // width: 12vw;
     width: 13.65vw;
     height: 30.9vw;
@@ -153,7 +153,7 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(-50%, -50%);
+        transform: translate3d(-50%, -50%, 0px);
         width: 29.23vw;
         height: 20.075vw;
         max-width: 739.06px;
@@ -183,7 +183,7 @@
 
         h1 {
             margin: 0;
-            font-size: clamp(12px, 2.5vw, 31.5px);
+            font-size: clamp(12px, 2.5vw, 21.5px);
             font-weight: $black;
             letter-spacing: 0.05em;
             text-align: center;

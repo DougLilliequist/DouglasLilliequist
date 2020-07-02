@@ -58,7 +58,7 @@ export default class LoadingScreen {
         const hideTl = new gsap.timeline({
             delay: 2.0,
             onComplete: () => {
-                this.el.style.display = "none";
+                this.el.classList.add('loaded');
                 emitter.emit(events.LOADING_ANIM_COMPLETED);
             }
         });
