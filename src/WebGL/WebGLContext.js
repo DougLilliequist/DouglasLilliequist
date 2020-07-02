@@ -77,8 +77,8 @@ export default class WebGLContext {
     this.post = new Post(this.gl);
     this.renderToScreen = false;
     this.canvasResolution = new Vec2(
-      this.gl.canvas.width,
-      this.gl.canvas.height
+      width,
+      height
     );
 
     this.post.addPass({
