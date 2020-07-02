@@ -135,6 +135,9 @@ export default class ProjectQuad extends DomQuad {
       _ViewModePhase: {
         value: 0.0
       },
+      _Entering: {
+        value: false
+      },
       _RevealDirection: {
         value: 0.0
       },

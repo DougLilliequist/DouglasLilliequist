@@ -1,21 +1,11 @@
-import {
-  Transform
-} from "../../vendors/ogl/src/core/Transform";
-import {
-  Renderer
-} from "../../vendors/ogl/src/core/Renderer";
-import {
-  Camera
-} from "../../vendors/ogl/src/core/Camera";
+import { Transform } from "../../vendors/ogl/src/core/Transform";
+import { Renderer } from "../../vendors/ogl/src/core/Renderer";
+import { Camera } from "../../vendors/ogl/src/core/Camera";
 
-import {
-  Vec2
-} from "../../vendors/ogl/src/math/Vec2";
+import { Vec2 } from "../../vendors/ogl/src/math/Vec2";
 
-import {
-  Post
-} from '../../vendors/ogl/src/extras/Post.js';
-const fxaa = require('./utils/fxaa.frag');
+import { Post } from "../../vendors/ogl/src/extras/Post.js";
+const fxaa = require("./utils/fxaa.frag");
 
 import DomQuadManager from "./DomQuads/DomQuadManager.js";
 
@@ -25,9 +15,7 @@ import eventEmitter from "../EventEmitter";
 const emitter = eventEmitter.emitter;
 import events from "../../utils/events";
 
-import {
-  gsap
-} from "gsap";
+import { gsap } from "gsap";
 
 export default class WebGLContext {
   constructor(container) {
@@ -37,9 +25,7 @@ export default class WebGLContext {
     this.initMouseflowMap();
   }
 
-  initScene({
-    canvas
-  }) {
+  initScene({ canvas }) {
     const w = window.innerWidth;
     const h = window.innerHeight;
 
@@ -49,15 +35,12 @@ export default class WebGLContext {
       canvas,
       // antialias: true,
       // dpr: 2,
-      powerPreference: "default",
+      powerPreference: "default"
     });
     this.gl = this.renderer.gl;
     this.gl.clearColor(0.9, 0.9, 0.9, 1.0);
 
-    const {
-      width,
-      height
-    } = this.gl.canvas;
+    const { width, height } = this.gl.canvas;
     this.wk = 1.0 / width;
     this.hK = 1.0 / height;
 
@@ -78,7 +61,10 @@ export default class WebGLContext {
 
     this.post = new Post(this.gl);
     this.renderToScreen = false;
-    this.canvasResolution = new Vec2(this.gl.canvas.width, this.gl.canvas.height);
+    this.canvasResolution = new Vec2(
+      this.gl.canvas.width,
+      this.gl.canvas.height
+    );
 
     this.post.addPass({
       fragment: fxaa,
@@ -88,7 +74,6 @@ export default class WebGLContext {
         }
       }
     });
-
   }
 
   initDomQuadManager() {
@@ -102,21 +87,17 @@ export default class WebGLContext {
   }
 
   initEvents() {
-
     if (!window.isMobile) {
       emitter.on(events.MOUSE_DOWN, this.onMouseDown);
       emitter.on(events.MOUSE_MOVE, this.onMouseMove);
       emitter.on(events.MOUSE_UP, this.onMouseUp);
-
     } else {
-
       emitter.on(events.TOUCH_START, this.onTouchStart);
       emitter.on(events.TOUCH_MOVE, this.onTouchMove);
       emitter.on(events.TOUCH_END, this.onTouchEnd);
       emitter.on(events.TOUCH_CANCEL, this.onTouchEnd);
 
       this.touchCount = 0;
-
     }
 
     emitter.on(events.UPDATE, this.update);
@@ -155,7 +136,6 @@ export default class WebGLContext {
   };
 
   onTouchStart = e => {
-
     e.preventDefault();
     this.touchCount++;
     this.isInteracting = true;
@@ -188,7 +168,6 @@ export default class WebGLContext {
   };
 
   render() {
-
     if (this.renderToScreen === false) {
       this.post.render({
         scene: this.scene,
@@ -204,10 +183,7 @@ export default class WebGLContext {
     }
   }
 
-  update = ({
-    deltaTime
-  }) => {
-
+  update = ({ deltaTime }) => {
     this.deltaTime = deltaTime * 0.001;
 
     this.inputDelta.copy(this.inputPos).sub(this.prevInputPos);
@@ -228,7 +204,6 @@ export default class WebGLContext {
     this.render();
 
     this.prevInputPos.copy(this.inputPos);
-
   };
 
   onResize = () => {
@@ -248,7 +223,10 @@ export default class WebGLContext {
       });
 
       this.post.resize();
-      this.post.passes[0].uniforms.uResolution.value.set(this.gl.canvas.width, this.gl.canvas.height);
+      this.post.passes[0].uniforms.uResolution.value.set(
+        this.gl.canvas.width,
+        this.gl.canvas.height
+      );
 
       this.mouseFlowmap.Aspect = w / h;
     });

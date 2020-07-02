@@ -208,12 +208,17 @@
         left: 50%;
         transform: translate3d(-50%, 0px, 0px);
         display: inline-block;
+
         @media screen and (max-width: 414px) and (orientation: portrait) 
         {   
             display: none;
             // bottom: -15.0vw;
             // z-index: 5; 
         }
+
+        // &__transform {
+        //     padding: 2.5vw;
+        // }
 
         p {
             text-align: center;

@@ -12,8 +12,6 @@ import {
   Vec2
 } from "../../../../vendors/ogl/src/math/Vec2";
 
-const Tweakpane = require('tweakpane');
-
 export default class ProjectQuadMediator extends DomquadMediator {
   constructor(gl, scene, camera) {
     super(gl, scene, camera);
@@ -157,6 +155,8 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     this.inViewMode = !this.inViewMode;
 
+    uniforms._Entering.value = !uniforms._Entering.value;
+
     gsap.to(uniforms._ViewModePhase, {
       value: this.inViewMode ? 1.0 : 0.0,
       duration,
@@ -176,6 +176,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
         uniforms
       } = quad.program;
       uniforms._ViewModePhase.value = 0.0
+      uniforms._Entering.value = false;
 
     });
 
