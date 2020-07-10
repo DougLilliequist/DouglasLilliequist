@@ -1,7 +1,7 @@
 import Work from "./Views/Work/Work.js";
 import About from "./Views/About/About.js";
 
-import WebGLContext from "./Webgl/WebGLContext.js";
+import WebGLContext from "./WebGL/WebGLContext.js";
 
 import LoadingScreen from './LoadingScreen.js';
 import Navigation from './Navigation.js';

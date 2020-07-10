@@ -5,6 +5,9 @@
             uniform sampler2D tMap;
             uniform vec2 uResolution;
             varying vec2 vUv;
+            uniform float _Phase;
+            uniform float _Time;
+            #define PI 3.14159265359
             vec4 fxaa(sampler2D tex, vec2 uv, vec2 resolution) {
                 vec2 pixel = vec2(1) / resolution;
                 vec3 l = vec3(0.299, 0.587, 0.114);
@@ -40,9 +43,5 @@
             }
             void main() {
                 vec4 aa = fxaa(tMap, vUv, uResolution);
-                // Split screen in half to show side-by-side comparison
-                // gl_FragColor = mix(raw, aa, step(0.5, vUv.x));
-                // Darken left side a tad for clarity
-                // gl_FragColor -= step(vUv.x, 0.5) * 0.1;
                 gl_FragColor = aa;
             }

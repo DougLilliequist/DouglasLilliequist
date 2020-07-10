@@ -86,6 +86,12 @@ export default class WebGLContext {
       uniforms: {
         uResolution: {
           value: this.canvasResolution
+        },
+        _Time: {
+          value: 0
+        },
+        _Phase: {
+          value: 0
         }
       }
     });
@@ -115,6 +121,7 @@ export default class WebGLContext {
       this.touchCount = 0;
     }
 
+    emitter.on(events.PREPARE_UNMOUNT, this.distort);
     emitter.on(events.UPDATE, this.update);
 
     this.isInteracting = false;
@@ -182,6 +189,24 @@ export default class WebGLContext {
     this.touchCount = 0;
   };
 
+  distort = () => {
+
+    const {
+      uniforms
+    } = this.post.passes[0];
+    gsap.to(uniforms._Phase, {
+
+      ease: "power1.out",
+      duration: 1,
+      value: 1,
+      onComplete: () => {
+        uniforms._Phase.value = 0;
+      }
+
+    });
+
+  }
+
   render() {
     if (this.renderToScreen === false) {
       this.post.render({
@@ -204,6 +229,8 @@ export default class WebGLContext {
     this.deltaTime = deltaTime * 0.001;
 
     this.inputDelta.copy(this.inputPos).sub(this.prevInputPos);
+
+    this.post.passes[0].uniforms._Time.value += this.deltaTime;
 
     this.mouseFlowmap.update(this.renderer, {
       dt: this.deltaTime,

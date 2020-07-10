@@ -223,16 +223,16 @@ export default class ProjectQuadMediator extends DomquadMediator {
         value: 1.0
       });
 
-      gsap.to(quad.program.uniforms._RevealPhase, {
-        duration: 0.9,
-        value: 0.0,
-        ease: "circ.inOut",
-        onComplete: () => {
-          gsap.set(quad.program.uniforms._Alpha, {
-            value: 0.0
-          });
-        }
-      });
+      // gsap.to(quad.program.uniforms._RevealPhase, {
+      //   duration: 0.9,
+      //   value: 0.0,
+      //   ease: "circ.inOut",
+      //   onComplete: () => {
+      //     gsap.set(quad.program.uniforms._Alpha, {
+      //       value: 0.0
+      //     });
+      //   }
+      // });
     });
 
   }

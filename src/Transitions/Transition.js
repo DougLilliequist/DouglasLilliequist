@@ -2,6 +2,7 @@ import Highway from "@dogstudio/highway";
 import eventEmitter from '../EventEmitter';
 const emitter = eventEmitter.emitter;
 import events from '../../utils/events.js'
+import transitionSlide from '../TransitionSlide';
 
 import {
     gsap
@@ -17,6 +18,9 @@ export default class Transition extends Highway.Transition {
 
         from.remove();
         done();
+        transitionSlide.animate({
+            leaving: false
+        });
     }
 
     out({
@@ -25,9 +29,14 @@ export default class Transition extends Highway.Transition {
     }) {
 
         emitter.emit(events.PREPARE_UNMOUNT);
-        gsap.delayedCall(1.0, () => {
+        transitionSlide.animate({
+            leaving: true
+        }).then(() => {
             done();
-        })
+        });
+        // gsap.delayedCall(1.0, () => {
+        //     done();
+        // })
 
     }
 

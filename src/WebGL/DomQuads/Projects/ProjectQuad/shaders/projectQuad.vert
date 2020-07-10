@@ -57,7 +57,7 @@ void main() {
 
     vec3 pos = position;
     pos.xy *= _ViewplaneSize * mix(0.85, 1.0, _Scale) * mix(1.0, 1.535, _ViewModePhase);
-
+    
     vec3 col = texture2D(_Image, uv).xyz;
     // float heightMapDistort = (col.x + col.y + col.z) * lumaK;
     float heightMapDistort = dot(col, vec3(0.333, 0.333, 0.333));
@@ -70,9 +70,7 @@ void main() {
     pos.z += (phase * DISPLACEMENTSTR + (heightMapDistort * HEIGHTMAPSTR)) * _ScrollPhase * SCROLLDISTORTSTR;
     
     float viewmodePhase = _ViewModePhase * 4.0 * (1.0 - _ViewModePhase);
-
-    // float ripplePhase = (1.0 - (cos(RIPPLE_TEMPORALF * _ViewModePhase + (phase * RIPPLE_SPATIALF * (_Entering ? 1.0 : -0.5))))) * RIPPLE_AMP;
-    float ripplePhase = (1.0 - (cos(RIPPLE_TEMPORALF * _ViewModePhase + (phase * RIPPLE_SPATIALF * mix(-0.5, 1.0, _Entering))))) * RIPPLE_AMP;
+    float ripplePhase = (1.0 - (cos((RIPPLE_TEMPORALF * _ViewModePhase) + (phase * RIPPLE_SPATIALF * mix(-0.5, 1.0, _Entering))))) * RIPPLE_AMP;
     ripplePhase *= viewmodePhase;
     pos.z += ripplePhase;
     pos.z += (phase * heightMapDistort * HEIGHTMAP_AMP) * viewmodePhase;

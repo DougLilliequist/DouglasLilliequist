@@ -213,3 +213,14 @@ body {
 .deactivated {
     pointer-events: none;
 }
+
+.transition-slide {
+
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    z-index: 5;
+    background-color: #ffffff;
+    transform-origin: center center;
+
+}
