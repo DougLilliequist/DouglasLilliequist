@@ -18,8 +18,8 @@ import {
 const fxaa = require("./utils/fxaa.frag");
 
 import DomQuadManager from "./DomQuads/DomQuadManager.js";
-
 import MouseFlowmap from "./MouseFlowmap/MouseFlowmap";
+import Feedback from "./Feedback/Feedback.js";
 
 import eventEmitter from "../EventEmitter";
 const emitter = eventEmitter.emitter;
@@ -35,6 +35,7 @@ export default class WebGLContext {
     this.initEvents();
     this.initDomQuadManager();
     this.initMouseflowMap();
+    this.initPost();
   }
 
   initScene({
@@ -55,7 +56,7 @@ export default class WebGLContext {
     const {
       width,
       height
-    } = this.gl.canvas;
+    } = this.gl.renderer;
     this.wk = 1.0 / width;
     this.hK = 1.0 / height;
 
@@ -74,27 +75,6 @@ export default class WebGLContext {
 
     this.scene = new Transform();
 
-    this.post = new Post(this.gl);
-    this.renderToScreen = false;
-    this.canvasResolution = new Vec2(
-      width,
-      height
-    );
-
-    this.post.addPass({
-      fragment: fxaa,
-      uniforms: {
-        uResolution: {
-          value: this.canvasResolution
-        },
-        _Time: {
-          value: 0
-        },
-        _Phase: {
-          value: 0
-        }
-      }
-    });
   }
 
   initDomQuadManager() {
@@ -105,6 +85,36 @@ export default class WebGLContext {
     this.mouseFlowmap = new MouseFlowmap(this.gl, {
       size: 256
     });
+  }
+
+  initPost() {
+
+    const {
+      width,
+      height
+    } = this.gl.renderer;
+
+    this.canvasResolution = new Vec2(
+      width,
+      height
+    );
+
+    this.feedback = new Feedback(this.gl, {
+      resolution: this.canvasResolution
+    });
+
+    this.post = new Post(this.gl);
+    this.renderToScreen = false;
+
+    this.post.addPass({
+      fragment: fxaa,
+      uniforms: {
+        uResolution: {
+          value: this.canvasResolution
+        },
+      }
+    });
+
   }
 
   initEvents() {
@@ -196,7 +206,7 @@ export default class WebGLContext {
     } = this.post.passes[0];
     gsap.to(uniforms._Phase, {
 
-      ease: "power1.out",
+      ease: "power1.inOut",
       duration: 1,
       value: 1,
       onComplete: () => {
@@ -208,10 +218,17 @@ export default class WebGLContext {
   }
 
   render() {
+
+    this.feedback.render({
+      scene: this.scene,
+      camera: this.camera,
+      dt: this.deltaTime
+    });
+
     if (this.renderToScreen === false) {
       this.post.render({
-        scene: this.scene,
-        camera: this.camera,
+        scene: this.feedback.scene,
+        // camera: this.camera,
         clear: true
       });
     } else {
@@ -229,8 +246,6 @@ export default class WebGLContext {
     this.deltaTime = deltaTime * 0.001;
 
     this.inputDelta.copy(this.inputPos).sub(this.prevInputPos);
-
-    this.post.passes[0].uniforms._Time.value += this.deltaTime;
 
     this.mouseFlowmap.update(this.renderer, {
       dt: this.deltaTime,

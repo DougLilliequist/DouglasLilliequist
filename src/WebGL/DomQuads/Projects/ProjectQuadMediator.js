@@ -205,13 +205,13 @@ export default class ProjectQuadMediator extends DomquadMediator {
     this.revealQuadAnim.to(uniforms._Alpha, {
       duration: 0.1,
       value: 1.0,
-      ease: "sine.in"
+      ease: "power2.in"
     }, "<");
 
     this.revealQuadAnim.to(uniforms._RevealPhase, {
-      duration: 0.85,
+      duration: 1.0,
       value: 1.0,
-      ease: "circ.inOut",
+      ease: "power2.inOut",
     }, "<");
 
   }
@@ -223,16 +223,16 @@ export default class ProjectQuadMediator extends DomquadMediator {
         value: 1.0
       });
 
-      // gsap.to(quad.program.uniforms._RevealPhase, {
-      //   duration: 0.9,
-      //   value: 0.0,
-      //   ease: "circ.inOut",
-      //   onComplete: () => {
-      //     gsap.set(quad.program.uniforms._Alpha, {
-      //       value: 0.0
-      //     });
-      //   }
-      // });
+      gsap.to(quad.program.uniforms._RevealPhase, {
+        duration: 1.0,
+        value: 0.0,
+        ease: "power2.inOut",
+        onComplete: () => {
+          gsap.set(quad.program.uniforms._Alpha, {
+            value: 0.0
+          });
+        }
+      });
     });
 
   }
