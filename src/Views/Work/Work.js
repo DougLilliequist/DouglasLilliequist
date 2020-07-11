@@ -17,6 +17,7 @@ export default class Work extends View {
   onEnter() {
 
     super.onEnter();
+    this.firstReveal = false;
     this.initReferences();
     this.initEvents();
 
@@ -45,6 +46,7 @@ export default class Work extends View {
 
   onLeaveCompleted() {
     super.onLeaveCompleted();
+    this.firstReveal = false;
     this.removeStickyTransforms();
     if (this.inViewProjectMode) emitter.emit(events.RESET_QUADS);
     emitter.emit(events.REMOVE_DOMGL);
@@ -84,11 +86,10 @@ export default class Work extends View {
 
   initEvents() {
 
-    // this.enableUserInteraction = true;
+    this.enableUserInteraction = true;
     this.showScrollInterface = true;
     this.inScrollMode = false;
     this.inViewProjectMode = false;
-    // this.revealProjectContent = false;
 
     emitter.on(events.CONTENT_LOADED, this.initDomGL);
     emitter.on(events.LOADING_ANIM_COMPLETED, () => { //RENAME FUNCTION
@@ -170,24 +171,34 @@ export default class Work extends View {
       role,
       link
     } = contentManager.Projects[contentIndex];
-    document.querySelector('.project-title__title').innerHTML = title;
-    document.getElementById('project_title').innerHTML = title;
-    document.getElementById('project_type').innerHTML = type;
-    document.getElementById('project_year').innerHTML = year;
-    document.getElementById('project_description').innerHTML = description;
-    document.getElementById('project_tech').innerHTML = tech;
 
-    document.getElementById('project_role').innerHTML = role !== null ? role : '';
-    document.getElementById('project_role').style.display = role !== null ? 'inline-block' : 'none';
+    const projectTitleEl = document.querySelector('.project-title__title');
+    const projectTitleViewEl = document.getElementById('project_title');
+    const projectRoleEl = document.getElementById('project_role');
+    const projectTypeEl = document.getElementById('project_type');
+    const projectYearEl = document.getElementById('project_year');
+    const projectDescriptionEl = document.getElementById('project_description');
+    const projectTechEl = document.getElementById('project_tech');
+
+    projectTitleEl.innerHTML = title;
+    projectTitleViewEl.innerHTML = title;
+    projectTypeEl.innerHTML = type;
+    projectYearEl.innerHTML = year;
+    projectDescriptionEl.innerHTML = description;
+    projectTechEl.innerHTML = tech;
+
     if (role === null) {
-      document.getElementById('project_role').innerHTML = role;
+      projectRoleEl.innerHTML = '';
+      projectRoleEl.classList.add('no-role');
+
     } else {
-      document.getElementById('project_role').style.display = "none";
+      projectRoleEl.innerHTML = role;
+      projectRoleEl.classList.remove('no-role');
     }
 
-    const projectLink = document.getElementById('project_link');
-    projectLink.innerHTML = link === '' ? '' : "visit project";
-    projectLink.href = link;
+    const projectLinkEl = document.getElementById('project_link');
+    projectLinkEl.innerHTML = link === '' ? '' : "visit project";
+    projectLinkEl.href = link;
 
   }
 
@@ -195,8 +206,11 @@ export default class Work extends View {
 
     if ((window.hoveringLink && !window.isMobile) || (this.inViewProjectMode && !window.isMobile)) return;
     this.inScrollMode = true;
+    this.viewProjectButton.stickyTransform.deActivate();
     emitter.emit(events.ENTER_SCROLL_MODE);
-    this.updateInterface();
+    this.updateInterface({
+      state: false
+    });
 
   }
 
@@ -204,8 +218,11 @@ export default class Work extends View {
 
     if ((window.hoveringLink && !window.isMobile) || (this.inViewProjectMode && !window.isMobile)) return;
     this.inScrollMode = false;
+    this.viewProjectButton.stickyTransform.activate();
     emitter.emit(events.EXIT_SCROLL_MODE);
-    this.updateInterface();
+    this.updateInterface({
+      state: true
+    });
 
   }
 
@@ -215,7 +232,10 @@ export default class Work extends View {
 
     this.enterAnim = gsap.timeline({
       onStart: () => {
-        emitter.emit(events.REVEAL_QUADS);
+        if (this.firstReveal === false) {
+          this.firstReveal = true;
+          emitter.emit(events.REVEAL_QUADS);
+        }
       }
     });
 
@@ -247,28 +267,8 @@ export default class Work extends View {
       ease: ease
     }, "<");
 
-    gsap.set(this.projectTitle, {
-      opacity: 0,
-    });
-
-    gsap.set(this.projectContentInfo, {
-      opacity: 0,
-    });
-
-    gsap.set(this.projectType, {
-      opacity: 0,
-    });
-
-    gsap.set(this.projectYear, {
-      opacity: 0,
-    });
-
-    gsap.set(this.projectLink, {
-      opacity: 0,
-    });
-
-    gsap.set(this.exitButton, {
-      opacity: 0,
+    this.updateViewModeStyles({
+      viewing: false
     });
 
   }
@@ -351,13 +351,15 @@ export default class Work extends View {
 
   }
 
-  updateInterface = () => {
+  updateInterface = ({
+    state
+  }) => {
 
     if (this.interfaceAnim) this.interfaceAnim.kill();
     if (this.enterAnim) this.enterAnim.kill();
 
     this.interfaceAnim = gsap.timeline();
-    this.showScrollInterface = !this.showScrollInterface;
+    this.showScrollInterface = state;
     const pow = "power1.out";
     const duration = 0.25;
 
@@ -365,7 +367,7 @@ export default class Work extends View {
 
       duration,
       ease: pow,
-      opacity: this.showScrollInterface ? 0.99 : 0.01,
+      opacity: this.showScrollInterface ? 1 : 0,
       z: 0
 
     });
@@ -374,7 +376,7 @@ export default class Work extends View {
 
       duration,
       ease: pow,
-      opacity: this.showScrollInterface ? 0.99 : 0.01,
+      opacity: this.showScrollInterface ? 1 : 0,
       z: 0
 
     }, "<");
@@ -382,7 +384,9 @@ export default class Work extends View {
   }
 
   showProject = () => {
-    this.updateInterface();
+    this.updateInterface({
+      state: false
+    });
     this.revealProjectContent();
     emitter.emit(events.SHOW_PROJECT);
   }
@@ -404,6 +408,9 @@ export default class Work extends View {
       },
       onComplete: () => {
         this.exitButton.stickyTransform.activate();
+        this.updateViewModeStyles({
+          viewing: true
+        });
         const projectLink = document.getElementById('project_link');
         if (projectLink.innerHTML === '') return;
         this.projectLink.stickyTransform.activate();
@@ -435,7 +442,6 @@ export default class Work extends View {
       opacity: 1,
       duration,
       z: 0,
-      // stagger: 0.1,
     }, "<0.02")
     this.revealProjectContentAnim.to(this.projectLink, {
       duration,
@@ -465,9 +471,12 @@ export default class Work extends View {
         this.projectLink.stickyTransform.deActivate();
       },
       onComplete: () => {
-        this.inViewProjectMode = false;
-        this.viewProjectButton.stickyTransform.activate();
-        gsap.delayedCall(0.5, this.playEnterAnim);
+
+        gsap.delayedCall(0.5, () => {
+          this.inViewProjectMode = false;
+          this.viewProjectButton.stickyTransform.activate();
+          this.playEnterAnim();
+        })
       }
     });
 
@@ -515,11 +524,38 @@ export default class Work extends View {
 
   }
 
-  // killActiveAnimations() {
+  updateViewModeStyles({
+    viewing
+  }) {
 
-  //   if (this.enterAnim) this.enterAnim.kill();
-  //   // if (this.scrollAnim) this.scrollAnim.kill();
+    if (!viewing) {
 
-  // }
+      this.projectTitle.classList.add('not-viewing');
 
+      this.projectContentInfo.forEach((info) => {
+        info.classList.add('not-viewing');
+      })
+
+
+      this.projectType.classList.add('not-viewing');
+      this.projectYear.classList.add('not-viewing');
+      this.projectLink.classList.add('not-viewing');
+      this.exitButton.classList.add('not-viewing');
+
+    } else {
+
+      this.projectTitle.classList.remove('not-viewing');
+
+      this.projectContentInfo.forEach((info) => {
+        info.classList.remove('not-viewing');
+      })
+
+      this.projectType.classList.remove('not-viewing');
+      this.projectYear.classList.remove('not-viewing');
+      this.projectLink.classList.remove('not-viewing');
+      this.exitButton.classList.remove('not-viewing');
+
+    }
+
+  }
 }

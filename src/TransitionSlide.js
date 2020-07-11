@@ -11,7 +11,7 @@ class TransitionSlide {
         gsap.set(this.el, {
             xPercent: 0,
             yPercent: 100,
-            zPercent: 0
+            z: 0
         });
 
     }
@@ -28,7 +28,7 @@ class TransitionSlide {
             gsap.to(this.el, {
                 xPercent: 0,
                 yPercent: leaving ? 0 : -100,
-                zPercent: 0,
+                z: 0,
                 ease,
                 duration,
                 onComplete: () => {
@@ -36,7 +36,7 @@ class TransitionSlide {
                     gsap.set(this.el, {
                         xPercent: 0,
                         yPercent: leaving ? 0 : 100,
-                        zPercent: 0
+                        z: 0
                     });
 
                     resolve();

@@ -217,7 +217,8 @@ export default class StickyComponent {
     update = () => {
 
         if (this.onMobile) return;
-        if (this.enable) this.updateForce();
+        this.updateForce();
+        if (this.enable === false) return;
         if (this.hovered) emitter.emit(events.UPDATE_STICKY_TARGET, {
             target: this.offsetPos,
             rect: this.rect
@@ -229,6 +230,7 @@ export default class StickyComponent {
 
         if (this.enable === false) return;
         window.hoveringLink = this.hovered = true;
+        document.body.classList.add('pointer');
         emitter.emit(events.HOVERING_STICKY_COMPONENT, {
             rect: this.rect
         });
@@ -237,6 +239,7 @@ export default class StickyComponent {
     removeHoverState = () => {
 
         if (this.enable === false) return;
+        document.body.classList.remove('pointer');
         window.hoveringLink = this.hovered = false;
         emitter.emit(events.LEAVING_STICKY_COMPONENT);
 
