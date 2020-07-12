@@ -409,7 +409,6 @@ export default class Work extends View {
 
   revealProjectContent() {
 
-    // this.killActiveAnimations();
     if (this.revealProjectContentAnim) this.revealProjectContentAnim.kill();
     this.revealProjectContentAnim = gsap.timeline({
       onStart: () => {
@@ -474,7 +473,6 @@ export default class Work extends View {
 
   hideProjectContent = () => {
 
-    // this.killActiveAnimations();
     if (this.hideProjectContentAnim) this.hideProjectContentAnim.kill();
     this.hideProjectContentAnim = gsap.timeline({
       onStart: () => {

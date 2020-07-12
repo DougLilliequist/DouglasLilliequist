@@ -334,7 +334,7 @@ export default class ProjectQuad extends DomQuad {
 
     img.onload = () => {
       this.texture.image = img;
-      emitter.emit(TEXTURE_LOADED);
+      emitter.emit(events.TEXTURE_LOADED);
     };
   }
 

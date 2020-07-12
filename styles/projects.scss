@@ -161,6 +161,7 @@
             height: 70vw;
             max-width: 739.06px;
             max-height: 515.79px;
+            z-index: 20;
         }
     
     }
@@ -208,10 +209,10 @@
         transform: translate3d(-50%, 0px, 0px);
         display: inline-block;
 
-        @media screen and (max-width: 414px) and (orientation: portrait) 
-        {   
-            display: none;
-        }
+        // @media screen and (max-width: 414px) and (orientation: portrait) 
+        // {   
+        //     display: none;
+        // }
 
         p {
             text-align: center;
