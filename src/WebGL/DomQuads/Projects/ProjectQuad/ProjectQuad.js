@@ -91,8 +91,8 @@ export default class ProjectQuad extends DomQuad {
 
     this.texture = new Texture(this.gl, {
       generateMipmaps: false,
-      width: 256,
-      height: 256,
+      width: 360,
+      height: 360,
       minFilter: this.gl.LINEAR,
       magFilter: this.gl.LINEAR
     });
@@ -286,11 +286,17 @@ export default class ProjectQuad extends DomQuad {
 
     this.program.uniforms._FlipFlowMapForce.value = this.media.brightVal;
 
+    // if (this.video.readyState >= this.video.HAVE_ENOUGH_DATA) {
+    //   this.texture.image = this.video;
+    //   if (this.isInView) {
+    //     this.updateTexture = !this.updateTexture;
+    //     this.texture.needsUpdate = this.updateTexture;
+    //   }
+    // }
     if (this.video.readyState >= this.video.HAVE_ENOUGH_DATA) {
       this.texture.image = this.video;
       if (this.isInView) {
-        this.updateTexture = !this.updateTexture;
-        this.texture.needsUpdate = this.updateTexture;
+        this.texture.needsUpdate = true;
       }
     }
 
