@@ -103,7 +103,7 @@
             &__header {
                 @include fluid-type($minWidth, $maxWidth, $minFontSize__about-header, $maxFontSize__about-header);
                 margin-top: 0em;
-                margin-bottom: 0.5em;
+                margin-bottom: 1em;
                 // pointer-events: none;
                 
                 @media screen and (max-width: 414px) and (orientation: portrait) {

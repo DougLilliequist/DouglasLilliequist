@@ -47,24 +47,24 @@ body {
         margin-right:1vw;
     }
 
-    // &__row {
-    //     height: 46px;
-    //     width: 100vw;
-    //     background-color: red;
-    //     opacity: 0.2;
-    //     margin-top: 5px;
-    //     margin-bottom:5px;
-    // }
-
     &__row {
-        // height: 7.5vh;
-        height: 16.25vw;
+        height: 46px;
         width: 100vw;
         background-color: red;
         opacity: 0.2;
-        margin-top: 0.8vw;
-        margin-bottom:0.8vw;
+        margin-top: 5px;
+        margin-bottom:5px;
     }
+
+    // &__row {
+    //     // height: 7.5vh;
+    //     height: 16.25vw;
+    //     width: 100vw;
+    //     background-color: red;
+    //     opacity: 0.2;
+    //     margin-top: 0.8vw;
+    //     margin-bottom:0.8vw;
+    // }
 
     // &__row {
     //     height: 5vw;

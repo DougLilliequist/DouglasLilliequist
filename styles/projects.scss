@@ -169,7 +169,8 @@
 
         position: absolute;
         width: 100%;
-        top: -4.35vw;
+        // top: -4.35vw;
+        top: -5.55vw;
         pointer-events: none;
 
         @media screen and (max-width: 414px) and (orientation: portrait) 
@@ -179,7 +180,8 @@
 
         h1 {
             margin: 0;
-            font-size: clamp(12px, 2.5vw, 21.5px);
+            @include fluid-type($minWidth, $maxWidth, $minFontSize__projects-title-scrolling, $maxFontSize__projects-title-scrolling);
+            // font-size: clamp(12px, 2.5vw, 21.5px);
             font-weight: $black;
             letter-spacing: 0.05em;
             text-align: center;
@@ -200,7 +202,8 @@
     .view-project-button {
 
         position: absolute;
-        bottom: -6.5vw;
+        // bottom: -6.5vw;
+        bottom: -7.85vw;
         left: 50%;
         transform: translate3d(-50%, 0px, 0px);
         display: inline-block;

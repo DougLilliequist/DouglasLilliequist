@@ -242,22 +242,22 @@ export default class Work extends View {
       }
     });
 
-    const ease = "sine.inOut";
-    const startY = 5;
-    const dur = 0.85
+    const ease = "power2.out";
+    const startY = 20;
+    const dur = !this.firstReveal ? 1.5 : 0.85
 
     this.enterAnim.fromTo(this.projectTitleScrolling, {
       opacity: 0,
       x: 0,
       z: 0,
-      y: -startY,
+      y: startY,
     }, {
       duration: dur,
       opacity: 1,
       x: 0,
       y: 0,
       z: 0,
-      ease: ease
+      ease: "power2.out"
     }, "<");
 
     this.enterAnim.fromTo(this.viewProjectButton, {
@@ -271,8 +271,8 @@ export default class Work extends View {
       x: 0,
       y: 0,
       z: 0,
-      ease: ease
-    }, "<");
+      ease: "power1.out"
+    }, "<0.1");
 
     this.updateViewModeStyles({
       viewing: false

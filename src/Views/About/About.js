@@ -127,8 +127,8 @@ export default class About extends View {
   playEnterAnim() {
 
     const dur = 0.85;
-    const startY = -10;
-    const ease = "linear";
+    const startY = 20;
+    const ease = "power1.out";
 
     const enterAnim = gsap.timeline({
       onStart: () => {
@@ -150,8 +150,8 @@ export default class About extends View {
       opacity: 1,
       y: 0,
       z: 0,
-      // ease: ease
-    }, "<0.1");
+      ease: ease
+    }, "<");
 
     enterAnim.fromTo(this.introText, {
       opacity: 0,
@@ -162,8 +162,8 @@ export default class About extends View {
       opacity: 1,
       y: 0,
       z: 0,
-      // ease: ease
-    }, "<0.1");
+      ease: ease
+    }, "<0.05");
 
     enterAnim.fromTo(this.contactHeader, {
       opacity: 0,
@@ -174,15 +174,20 @@ export default class About extends View {
       opacity: 1,
       y: 0,
       z: 0,
-      // ease: ease
-    }, "<0.1");
+      ease: ease
+    }, "<0.05");
 
     enterAnim.fromTo(this.links, {
       opacity: 0,
+      y: startY,
+      z: 0
     }, {
       duration: dur,
       opacity: 0.7,
       stagger: 0.1,
+      y: 0,
+      z: 0,
+      ease
     }, "<0.1");
 
   }
