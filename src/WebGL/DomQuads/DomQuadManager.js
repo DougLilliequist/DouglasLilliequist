@@ -47,11 +47,12 @@ export default class DomQuadManager {
     loadMediator = ({
         view,
         params
-    }) => { //rename
+    }) => {
 
         this.activeMediator = this.mediators[view];
-        this.activeMediator.initQuads(params);
+        this.activeMediator.bindToDom(params);
         this.activeMediator.initEvents();
+        this.activeMediator.setParent(this.scene);
 
     }
 

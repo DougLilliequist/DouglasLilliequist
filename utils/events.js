@@ -12,6 +12,8 @@ const events = {
     CONTENT_LOADED: 'content_loaded',
     UPDATE_PROGRESS: 'update_progress',
     LOADING_ANIM_COMPLETED: 'loading_anim_completed',
+    TEXTURE_LOADED: 'texture_loaded',
+    UPDATE_CONTENT_COUNT: 'update_content_count',
 
     ENTER_SCROLL_MODE: 'enter_scroll_mode',
     EXIT_SCROLL_MODE: 'exit_scroll_mode',
@@ -42,13 +44,13 @@ const events = {
 
     HOVERING_LINK: 'hovering_link',
     LEAVING_LINK: 'leaving_link',
-    
+
     PLAY_VIDEO: 'play_video',
     PAUSE_VIDEO: 'pause_video',
 
     SHOW_CLICKDRAG_CTA: 'show_click-drag_cta',
     HIDE_CLICKDRAG_CTA: 'hide_click-drag_cta',
-    
+
     RESIZE: 'resize'
 
 }

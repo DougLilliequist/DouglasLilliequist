@@ -16,14 +16,11 @@ export default class LoadingScreen {
         this.title = document.body.querySelector('.loader__title');
         this.subTitle = document.body.querySelector('.loader__sub-title');
 
-        this.alpha = 0;
-        this.targetAlpha = 0;
-
-        this.title.style.opacity = 0;
-        this.subTitle.style.opacity = 0;
-
         this.title.firstElementChild.innerHTML = "Douglas Lilliequist"
         this.subTitle.firstElementChild.innerHTML = "Creative Technologist"
+
+        this.totalContent = 0;
+        this.contentCount = 0;
 
         this.reveal();
 
@@ -33,9 +30,13 @@ export default class LoadingScreen {
 
     initEvents() {
 
-        emitter.on(events.UPDATE_PROGRESS, this.updateProgressAnim);
-        emitter.on(events.UPDATE, this.update);
-        emitter.on(events.CONTENT_LOADED, this.hide);
+        emitter.on(events.UPDATE_CONTENT_COUNT, (count) => {
+            this.totalContent += count;
+        });
+
+        emitter.on(events.TEXTURE_LOADED, this.updateProgress);
+        // emitter.on(events.UPDATE, this.update);
+        // emitter.on(events.CONTENT_LOADED, this.hide);
 
     }
 
@@ -62,7 +63,8 @@ export default class LoadingScreen {
             onComplete: () => {
                 this.el.classList.add('loaded');
                 emitter.emit(events.LOADING_ANIM_COMPLETED);
-                emitter.off(events.UPDATE, this.update);
+                window.contentLoaded = true;
+                // emitter.off(events.UPDATE, this.update);
             }
         });
 
@@ -83,9 +85,10 @@ export default class LoadingScreen {
 
     }
 
-    updateProgressAnim = (phase) => {
+    updateProgress = (phase) => {
 
-        this.targetAlpha = phase;
+        this.contentCount++;
+        if (this.contentCount === this.totalContent) this.hide();
 
     }
 

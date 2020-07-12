@@ -10,14 +10,13 @@ import {
 
 export default class DomQuad extends Mesh {
   constructor(
-    gl,
-    domElement) {
+    gl) {
 
     super(gl);
 
     this.viewPlaneSize = new Vec2(1.0, 1.0);
     this.scaleOffset = new Vec2(1.0, 1.0);
-    this.domElement = domElement;
+    this.domElement = null;
 
   }
 
@@ -26,6 +25,8 @@ export default class DomQuad extends Mesh {
   updateRelations({
     camera
   }) {
+
+    if (this.domElement === null) return;
 
     this.w = window.innerWidth;
     this.h = window.innerHeight;
@@ -39,6 +40,8 @@ export default class DomQuad extends Mesh {
 
   //sets scale relative to the width + height of the near plane's size
   updateDimensions() {
+
+    if (this.domElement === null) return;
 
     let {
       width,
@@ -58,6 +61,8 @@ export default class DomQuad extends Mesh {
   //tranlate the dom elements position in "dom space" to a position relative
   //to the calculted view plane's dimensions
   calcDomToWebGLPos() {
+
+    if (this.domElement === null) return;
 
     let {
       width,

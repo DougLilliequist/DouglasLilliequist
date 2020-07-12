@@ -1,10 +1,12 @@
 import View from "../View.js";
 
-import contentManager from '../../ContentManager.js';
-
 import eventEmitter from '../../EventEmitter.js';
 const emitter = eventEmitter.emitter;
 import events from '../../../utils/events.js';
+
+import {
+  AboutContent
+} from '../../../static/AboutContent.js';
 
 import StickyComponent from '../../StickyComponent.js';
 
@@ -16,22 +18,12 @@ export default class About extends View {
   onEnter() {
     super.onEnter();
     this.initReferences();
+    this.populateContent();
     this.initEvents();
-    if (window.contentLoaded) {
-      this.populateContent();
-      this.links.forEach((link) => {
-        link.stickyTransform = new StickyComponent({
-          domElement: link,
-          enable: true
-        });
-      });
-      this.initDomGL();
-    }
-
+    this.initDomGL();
   }
   onEnterCompleted() {
     super.onEnterCompleted();
-
     if (window.contentLoaded) {
       this.playEnterAnim();
     }
@@ -64,17 +56,15 @@ export default class About extends View {
 
   initEvents() {
 
-    emitter.on(events.CONTENT_LOADED, this.initDomGL);
-
-
     emitter.on(events.LOADING_ANIM_COMPLETED, () => {
-      this.populateContent();
       this.playEnterAnim();
-      this.links.forEach((link) => {
-        link.stickyTransform = new StickyComponent({
-          domElement: link,
-          enable: true
-        });
+    });
+
+    this.links.forEach((link) => {
+      link.stickyTransform = new StickyComponent({
+        domElement: link,
+        enable: true,
+        includeHoverAnim: true
       });
     });
 
@@ -88,18 +78,15 @@ export default class About extends View {
     });
 
     emitter.off(events.LOADING_ANIM_COMPLETED, () => {
-      this.populateContent();
-      this.initDomGL();
       this.playEnterAnim();
     });
 
   }
 
-  initDomGL = () => {
+  initDomGL() {
 
     const params = {
       referenceElement: this.domGLReferenceElement,
-      media: contentManager.AboutMedia[0]
     }
 
     super.initDomGL({
@@ -111,7 +98,7 @@ export default class About extends View {
 
   populateContent() {
 
-    const aboutContent = contentManager.About[0];
+    const aboutContent = AboutContent[0];
     this.header.innerHTML = aboutContent.title;
     this.introText.innerHTML = aboutContent.introText;
     this.contactHeader.innerHTML = aboutContent.contactHeader;
@@ -194,7 +181,7 @@ export default class About extends View {
       opacity: 0,
     }, {
       duration: dur,
-      opacity: 1,
+      opacity: 0.7,
       stagger: 0.1,
     }, "<0.1");
 

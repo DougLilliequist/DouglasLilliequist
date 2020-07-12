@@ -11,8 +11,6 @@ import Transition from "./Transitions/Transition.js";
 import ViewMediator from "./Views/ViewMediator.js";
 import Bowser from "bowser";
 
-import contentManager from './ContentManager.js'
-
 export default class App {
     constructor() {
 
@@ -22,14 +20,6 @@ export default class App {
         } = browser.parsedResult.platform;
 
         window.isMobile = type !== "desktop";
-
-        window.viewMediator = new ViewMediator({
-            work: Work,
-            about: About,
-            transition: Transition
-        });
-
-        this.navigation = new Navigation();
 
         this.loadingScreen = new LoadingScreen();
 
@@ -43,7 +33,13 @@ export default class App {
             canvas: document.querySelector('.webgl-canvas')
         });
 
-        contentManager.initContent();
+        window.viewMediator = new ViewMediator({
+            work: Work,
+            about: About,
+            transition: Transition
+        });
+
+        this.navigation = new Navigation();
 
     }
 

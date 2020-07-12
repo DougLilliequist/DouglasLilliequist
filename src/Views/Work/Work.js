@@ -1,9 +1,12 @@
 import View from "../View.js";
-import contentManager from '../../ContentManager';
 
 import eventEmitter from '../../EventEmitter.js';
 const emitter = eventEmitter.emitter;
 import events from '../../../utils/events.js';
+
+import {
+  ProjectContent
+} from '../../../static/ProjectContent.js';
 
 import StickyComponent from '../../StickyComponent.js';
 
@@ -20,16 +23,13 @@ export default class Work extends View {
     this.firstReveal = false;
     this.initReferences();
     this.initEvents();
-
-    if (window.contentLoaded) {
-      this.initDomGL();
-    }
+    this.initDomGL();
 
   }
 
   onEnterCompleted() {
-    super.onEnterCompleted();
 
+    super.onEnterCompleted();
     if (window.contentLoaded) {
       emitter.emit(events.SHOW_CLICKDRAG_CTA);
       this.playEnterAnim();
@@ -61,7 +61,8 @@ export default class Work extends View {
     this.viewProjectButton.stickyTransform = new StickyComponent({
       domElement: this.el.querySelector('.view-project-button__transform'),
       enable: true,
-      event: this.showProject
+      event: this.showProject,
+      includeHoverAnim: true
     });
 
     this.exitButton = this.el.querySelector('.exit-button');
@@ -91,8 +92,7 @@ export default class Work extends View {
     this.inScrollMode = false;
     this.inViewProjectMode = false;
 
-    emitter.on(events.CONTENT_LOADED, this.initDomGL);
-    emitter.on(events.LOADING_ANIM_COMPLETED, () => { //RENAME FUNCTION
+    emitter.on(events.LOADING_ANIM_COMPLETED, () => {
       this.playEnterAnim();
       emitter.emit(events.SHOW_CLICKDRAG_CTA);
     });
@@ -114,9 +114,11 @@ export default class Work extends View {
 
     // this.enableUserInteraction = false;
 
-    emitter.off(events.CONTENT_LOADED, this.initDomGL);
     emitter.off(events.LOADING_ANIM_COMPLETED, this.playEnterAnim);
-    emitter.off(events.LOAD_PROJECT_CONTENT, this.populateContent);
+    emitter.off(events.LOAD_PROJECT_CONTENT, () => {
+      this.playEnterAnim();
+      emitter.emit(events.SHOW_CLICKDRAG_CTA);
+    });
 
     if (!window.isMobile) {
       emitter.off(events.MOUSE_DOWN, this.enableScrollMode);
@@ -145,11 +147,10 @@ export default class Work extends View {
 
   }
 
-  initDomGL = () => {
+  initDomGL() {
 
     const params = {
       referenceElement: this.domGLReferenceElement,
-      media: contentManager.projects,
       getFirstQuad: true
     }
 
@@ -170,7 +171,7 @@ export default class Work extends View {
       tech,
       role,
       link
-    } = contentManager.Projects[contentIndex];
+    } = ProjectContent[contentIndex];
 
     const projectTitleEl = document.querySelector('.project-title__title');
     const projectTitleViewEl = document.getElementById('project_title');
@@ -266,7 +267,7 @@ export default class Work extends View {
       y: startY,
     }, {
       duration: dur,
-      opacity: 0.65,
+      opacity: 0.7,
       x: 0,
       y: 0,
       z: 0,

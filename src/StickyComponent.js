@@ -2,6 +2,10 @@ import eventEmitter from './EventEmitter.js';
 const emitter = eventEmitter.emitter;
 import events from '../utils/events.js';
 
+import {
+    gsap
+} from 'gsap';
+
 /**
  * 
  * Accepts a dom element which will have easing / elasticity applied to it when hovering
@@ -15,7 +19,8 @@ export default class StickyComponent {
     constructor({
         domElement,
         enable,
-        event = null
+        event = null,
+        includeHoverAnim = false
     }) {
 
         this.el = domElement;
@@ -24,6 +29,11 @@ export default class StickyComponent {
         this.hovered = false;
         this.inBounds = false;
         this.onMobile = window.isMobile;
+        this.includeHoverAnim = includeHoverAnim;
+
+        // if (this.includeHoverAnim) gsap.set(this.el, {
+        //     opacity: 0.5
+        // });
 
         this.w = window.innerWidth;
         this.h = window.innerHeight;
@@ -234,6 +244,16 @@ export default class StickyComponent {
         emitter.emit(events.HOVERING_STICKY_COMPONENT, {
             rect: this.rect
         });
+
+        if (this.includeHoverAnim) {
+            // if (this.hoverAnim) this.hoverAnim.kill();
+            this.hoverAnim = gsap.to(this.el, {
+                duration: 0.5,
+                opacity: 1
+            });
+
+        }
+
     }
 
     removeHoverState = () => {
@@ -242,6 +262,15 @@ export default class StickyComponent {
         document.body.classList.remove('pointer');
         window.hoveringLink = this.hovered = false;
         emitter.emit(events.LEAVING_STICKY_COMPONENT);
+
+        if (this.includeHoverAnim) {
+            // if (this.hoverAnim) this.hoverAnim.kill();
+            this.hoverAnim = gsap.to(this.el, {
+                duration: 0.5,
+                opacity: 0.7
+            });
+
+        }
 
     }
 

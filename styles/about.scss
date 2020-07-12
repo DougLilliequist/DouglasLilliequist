@@ -163,7 +163,7 @@
                 color:#000000;
 
                 padding: 2vw;
-                opacity: 0.5;
+                // opacity: 0.5;
                 @include fluid-type($minWidth, $maxWidth, $minFontSize__about__links-body, $maxFontSize__about__links-body);
 
                 @media screen and (max-width: 414px) and (orientation: portrait) {
