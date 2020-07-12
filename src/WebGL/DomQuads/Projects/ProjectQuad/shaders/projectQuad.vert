@@ -45,7 +45,8 @@ uniform float _HeightAmp;
 
 // #define RIPPLE_SPATIALF 3.0
 #define RIPPLE_SPATIALF 3.5
-#define RIPPLE_TEMPORALF 4.21
+#define RIPPLE_TEMPORALF 4.2
+// #define RIPPLE_TEMPORALF 7.21
 // #define RIPPLE_TEMPORALF 6.21
 #define RIPPLE_AMP 0.125
 // #define HEIGHTMAP_AMP 0.53
@@ -70,7 +71,7 @@ void main() {
     pos.z += (phase * DISPLACEMENTSTR + (heightMapDistort * HEIGHTMAPSTR)) * _ScrollPhase * SCROLLDISTORTSTR;
     
     float viewmodePhase = _ViewModePhase * 4.0 * (1.0 - _ViewModePhase);
-    float ripplePhase = (1.0 - (cos((RIPPLE_TEMPORALF * _ViewModePhase) + (phase * RIPPLE_SPATIALF * mix(-0.5, 1.0, _Entering))))) * RIPPLE_AMP;
+    float ripplePhase = (1.0 - (cos((RIPPLE_TEMPORALF * _ViewModePhase) + (phase * RIPPLE_SPATIALF * mix(-1.0, 1.0, _Entering))))) * RIPPLE_AMP;
     ripplePhase *= viewmodePhase;
     pos.z += ripplePhase;
     pos.z += (phase * heightMapDistort * HEIGHTMAP_AMP) * viewmodePhase;
