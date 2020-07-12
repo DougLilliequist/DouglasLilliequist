@@ -91,8 +91,8 @@ export default class ProjectQuad extends DomQuad {
 
     this.texture = new Texture(this.gl, {
       generateMipmaps: false,
-      width: 360,
-      height: 360,
+      width: 256,
+      height: 256,
       minFilter: this.gl.LINEAR,
       magFilter: this.gl.LINEAR
     });
