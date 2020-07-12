@@ -32,7 +32,7 @@ class EventEmitter {
         // gsap.config({
         //     force3D: true
         // });
-        gsap.ticker.fps(60);
+        // gsap.ticker.fps(60);
         gsap.ticker.add(this.tick);
         //gsap.ticker.fps(60);
         // this.tick();

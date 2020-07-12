@@ -59,6 +59,11 @@ export default class Cursor {
 
         }
 
+        this.inputPos = {
+            x: 0,
+            y: 0
+        }
+
         this.target = {
 
             x: 0,
@@ -194,9 +199,11 @@ export default class Cursor {
 
     onMouseMove = (event) => {
 
+        this.inputPos.x = event.clientX;
+        this.inputPos.y = event.clientY;
         if (this.hoveringSticky === false) {
-            this.target.x = event.clientX;
-            this.target.y = event.clientY;
+            this.target.x = this.inputPos.x;
+            this.target.y = this.inputPos.y;
         }
 
         if (this.inScrollMode) {
@@ -330,6 +337,8 @@ export default class Cursor {
                 radius: this.defaultRadius,
                 onStart: () => {
                     this.showCTAText();
+                    this.target.x = this.inputPos.x;
+                    this.target.y = this.inputPos.y;
                 }
 
             });

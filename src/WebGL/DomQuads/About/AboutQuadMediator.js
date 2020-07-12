@@ -1,5 +1,8 @@
 import DomquadMediator from '../../extras/DomQuad/DomquadMediator.js';
 import AboutQuad from './AboutQuad/AboutQuad.js';
+import {
+    AboutContent
+} from '../../../../static/AboutContent.js';
 
 import eventEmitter from '../../../EventEmitter.js';
 const emitter = eventEmitter.emitter;
@@ -15,6 +18,8 @@ export default class AboutQuadMediator extends DomquadMediator {
 
         this.position.z = 0.0;
 
+        this.initQuads();
+
     }
 
     initEvents = () => {
@@ -27,34 +32,34 @@ export default class AboutQuadMediator extends DomquadMediator {
         emitter.off(events.PREPARE_UNMOUNT, this.animateOutQuads);
     }
 
-    initQuads = ({
-        referenceElement,
-        media
+    initQuads() {
+
+        const media = AboutContent.map((content) => {
+            return content.media;
+        });
+
+        emitter.emit(events.UPDATE_CONTENT_COUNT, media.length);
+
+        this.quad = new AboutQuad(this.gl, {
+            media,
+            widthSegments: 32.0,
+            heightSegments: 32.0
+        });
+
+        this.quad.setParent(this);
+    }
+
+    bindToDom = ({
+        referenceElement
     }) => {
-
-        this.setParent(this.scene);
-
-        this.referenceElement = referenceElement;
-
-        if (this.quadsLoaded === false) {
-
-            this.quad = new AboutQuad(this.gl, media, referenceElement, {
-                widthSegments: 32.0,
-                heightSegments: 32.0
-            });
-
-            this.quad.updateRelations({camera: this.camera});
-
-            this.quad.setParent(this);
-
-            this.quadsLoaded = true;
-
-        }
 
         this.quad.visible = true;
         this.quad.domElement = referenceElement;
-
+        this.quad.updateRelations({
+            camera: this.camera
+        });
         this.calculateDomTransforms();
+
     }
 
     revealQuad = () => {

@@ -2,25 +2,29 @@
 @import 'typography';
 @import 'mixins';
 
-html {
-    -webkit-user-select: none;
-    user-select: none;
-}
+// html {
+//     -webkit-user-select: none;
+//     user-select: none;
+// }
 
 body {
     width: 100vw;
     height: 100vh;
-    // min-height: 100vh;
-    // min-height:-webkit-fill-available;
-    //position: absolute;
-    //top: 0;
-    //left: 0;
     margin: 0;
     overflow: hidden;
     font-family: $muli;
     background-color: #e6e6e6;
-    //touch-action: none;
+    // touch-action: none;
 
+}
+
+.pointer {
+    cursor: pointer;
+}
+
+.scrolling {
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .grid {
@@ -43,24 +47,24 @@ body {
         margin-right:1vw;
     }
 
-    // &__row {
-    //     height: 46px;
-    //     width: 100vw;
-    //     background-color: red;
-    //     opacity: 0.2;
-    //     margin-top: 5px;
-    //     margin-bottom:5px;
-    // }
-
     &__row {
-        // height: 7.5vh;
-        height: 16.25vw;
+        height: 46px;
         width: 100vw;
         background-color: red;
         opacity: 0.2;
-        margin-top: 0.8vw;
-        margin-bottom:0.8vw;
+        margin-top: 5px;
+        margin-bottom:5px;
     }
+
+    // &__row {
+    //     // height: 7.5vh;
+    //     height: 16.25vw;
+    //     width: 100vw;
+    //     background-color: red;
+    //     opacity: 0.2;
+    //     margin-top: 0.8vw;
+    //     margin-bottom:0.8vw;
+    // }
 
     // &__row {
     //     height: 5vw;
@@ -90,7 +94,7 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    position: fixed;
+    position: absolute;
     z-index: -1;
     user-select: none;
     -webkit-user-select: none;
@@ -102,26 +106,26 @@ body {
 
 .webgl-canvas {
 
-    position: fixed;
+    position: absolute;
     top: 0%;
     left: 0%;
     z-index: -2;
+    pointer-events: none;
 
 }
 
 .loader {
     position: absolute;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
     z-index: 100;
-    top: 0;
-    left: 0;
     overflow: hidden;
     pointer-events: none;
     background-color: rgba($color: #e6e6e6, $alpha: 1.0);
     display: flex;
     justify-content: center;
     align-items: center;
+    transform: translate3d(0, 0, 0);
 
     &__clip-section {
         overflow: hidden;
@@ -131,8 +135,6 @@ body {
         
         display: flex;
         align-items: baseline;
-        // padding: 0;
-        // text-align: justify;
 
     }
 
@@ -160,13 +162,18 @@ body {
 
 }
 
+.loaded {
+    display: none;
+}
+
 .navigation {
 
     position: absolute;
     height: 100vh;
     width: 10vw;
     right: 0%;
-    z-index: 0;
+    transform: translate3d(0,0,0);
+    z-index: 2;
 
     &__links {
         
@@ -196,11 +203,13 @@ body {
             opacity: 0.7;
             transition: opacity 0.5s;
             text-align: center;
+            // transform: translate3d(0, 0, 0);
 
             &--active {
 
-                opacity: 0.99;
+                opacity: 1.0;
                 transition: opacity 0.5s;
+                // transform: translate3d(0,0,0);
     
             }
 
@@ -217,4 +226,17 @@ body {
 
 .deactivated {
     pointer-events: none;
+}
+
+.transition-slide {
+
+    position: absolute;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    z-index: 3;
+    background-color: #ffffff;
+    transform-origin: center center;
+    pointer-events: none;
+
 }

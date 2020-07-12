@@ -1,5 +1,8 @@
-import ProjectQuad from "../Projects/ProjectQuad/ProjectQuad";
-import DomquadMediator from '../../extras/DomQuad/DomquadMediator';
+import ProjectQuad from "../Projects/ProjectQuad/ProjectQuad.js";
+import DomquadMediator from '../../extras/DomQuad/DomquadMediator.js';
+import {
+  ProjectContent
+} from '../../../../static/ProjectContent.js';
 
 import eventEmitter from '../../../EventEmitter.js';
 const emitter = eventEmitter.emitter;
@@ -11,8 +14,6 @@ import {
 import {
   Vec2
 } from "../../../../vendors/ogl/src/math/Vec2";
-
-const Tweakpane = require('tweakpane');
 
 export default class ProjectQuadMediator extends DomquadMediator {
   constructor(gl, scene, camera) {
@@ -42,6 +43,8 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     this.inViewMode = false;
 
+    this.initQuads();
+
   }
 
   initEvents() {
@@ -68,43 +71,37 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
   }
 
-  initQuads = ({
+  initQuads() {
+
+    const media = ProjectContent.map((content) => {
+      return content.media;
+    });
+
+    emitter.emit(events.UPDATE_CONTENT_COUNT, media.length);
+
+    media.forEach((media, i) => {
+
+      const quad = new ProjectQuad(
+        this.gl, {
+          media,
+          posOffset: i, //rename or make new prop for index?
+        }
+      );
+
+      quad.setParent(this);
+
+    });
+
+  }
+
+  bindToDom = ({
     referenceElement,
-    media,
     getFirstQuad
   }) => {
-
-    this.setParent(this.scene);
 
     if (referenceElement === null) {
       console.error("reference dom elements not available");
       return;
-    }
-
-    this.media = media;
-
-    if (this.quadsLoaded === false) {
-
-      //create quads for each project video
-      for (let i = 0; i < this.media.length; i++) {
-
-        const video = this.media[i].media;
-
-        const quad = new ProjectQuad(
-          this.gl,
-          video,
-          referenceElement, {
-            posOffset: i, //rename or make new prop for index?
-            // phase: phase
-          }
-        );
-
-        quad.setParent(this);
-
-      }
-
-      this.quadsLoaded = true;
-
     }
 
     this.children.forEach((quad) => {
@@ -157,6 +154,8 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     this.inViewMode = !this.inViewMode;
 
+    uniforms._Entering.value = this.inViewMode ? 1.0 : 0.0;
+
     gsap.to(uniforms._ViewModePhase, {
       value: this.inViewMode ? 1.0 : 0.0,
       duration,
@@ -176,13 +175,13 @@ export default class ProjectQuadMediator extends DomquadMediator {
         uniforms
       } = quad.program;
       uniforms._ViewModePhase.value = 0.0
+      uniforms._Entering.value = 0.0;
 
     });
 
   }
 
   revealQuads = () => {
-
     if (this.revealQuadAnim) this.revealQuadAnim.kill();
 
     this.revealQuadAnim = gsap.timeline({
@@ -204,13 +203,13 @@ export default class ProjectQuadMediator extends DomquadMediator {
     this.revealQuadAnim.to(uniforms._Alpha, {
       duration: 0.1,
       value: 1.0,
-      ease: "sine.in"
+      ease: "power2.in"
     }, "<");
 
     this.revealQuadAnim.to(uniforms._RevealPhase, {
-      duration: 0.85,
+      duration: 1.0,
       value: 1.0,
-      ease: "circ.inOut",
+      ease: "power2.inOut",
     }, "<");
 
   }
@@ -223,9 +222,9 @@ export default class ProjectQuadMediator extends DomquadMediator {
       });
 
       gsap.to(quad.program.uniforms._RevealPhase, {
-        duration: 0.9,
+        duration: 1.0,
         value: 0.0,
-        ease: "circ.inOut",
+        ease: "power2.inOut",
         onComplete: () => {
           gsap.set(quad.program.uniforms._Alpha, {
             value: 0.0

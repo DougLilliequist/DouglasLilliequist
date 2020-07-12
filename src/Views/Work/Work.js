@@ -1,9 +1,12 @@
 import View from "../View.js";
-import contentManager from '../../ContentManager';
 
 import eventEmitter from '../../EventEmitter.js';
 const emitter = eventEmitter.emitter;
 import events from '../../../utils/events.js';
+
+import {
+  ProjectContent
+} from '../../../static/ProjectContent.js';
 
 import StickyComponent from '../../StickyComponent.js';
 
@@ -17,18 +20,16 @@ export default class Work extends View {
   onEnter() {
 
     super.onEnter();
+    this.firstReveal = false;
     this.initReferences();
     this.initEvents();
-
-    if (window.contentLoaded) {
-      this.initDomGL();
-    }
+    this.initDomGL();
 
   }
 
   onEnterCompleted() {
-    super.onEnterCompleted();
 
+    super.onEnterCompleted();
     if (window.contentLoaded) {
       emitter.emit(events.SHOW_CLICKDRAG_CTA);
       this.playEnterAnim();
@@ -45,6 +46,7 @@ export default class Work extends View {
 
   onLeaveCompleted() {
     super.onLeaveCompleted();
+    this.firstReveal = false;
     this.removeStickyTransforms();
     if (this.inViewProjectMode) emitter.emit(events.RESET_QUADS);
     emitter.emit(events.REMOVE_DOMGL);
@@ -59,7 +61,8 @@ export default class Work extends View {
     this.viewProjectButton.stickyTransform = new StickyComponent({
       domElement: this.el.querySelector('.view-project-button__transform'),
       enable: true,
-      event: this.showProject
+      event: this.showProject,
+      includeHoverAnim: true
     });
 
     this.exitButton = this.el.querySelector('.exit-button');
@@ -84,14 +87,12 @@ export default class Work extends View {
 
   initEvents() {
 
-    // this.enableUserInteraction = true;
+    this.enableUserInteraction = true;
     this.showScrollInterface = true;
     this.inScrollMode = false;
     this.inViewProjectMode = false;
-    // this.revealProjectContent = false;
 
-    emitter.on(events.CONTENT_LOADED, this.initDomGL);
-    emitter.on(events.LOADING_ANIM_COMPLETED, () => { //RENAME FUNCTION
+    emitter.on(events.LOADING_ANIM_COMPLETED, () => {
       this.playEnterAnim();
       emitter.emit(events.SHOW_CLICKDRAG_CTA);
     });
@@ -113,9 +114,11 @@ export default class Work extends View {
 
     // this.enableUserInteraction = false;
 
-    emitter.off(events.CONTENT_LOADED, this.initDomGL);
     emitter.off(events.LOADING_ANIM_COMPLETED, this.playEnterAnim);
-    emitter.off(events.LOAD_PROJECT_CONTENT, this.populateContent);
+    emitter.off(events.LOAD_PROJECT_CONTENT, () => {
+      this.playEnterAnim();
+      emitter.emit(events.SHOW_CLICKDRAG_CTA);
+    });
 
     if (!window.isMobile) {
       emitter.off(events.MOUSE_DOWN, this.enableScrollMode);
@@ -144,11 +147,10 @@ export default class Work extends View {
 
   }
 
-  initDomGL = () => {
+  initDomGL() {
 
     const params = {
       referenceElement: this.domGLReferenceElement,
-      media: contentManager.projects,
       getFirstQuad: true
     }
 
@@ -169,25 +171,35 @@ export default class Work extends View {
       tech,
       role,
       link
-    } = contentManager.Projects[contentIndex];
-    document.querySelector('.project-title__title').innerHTML = title;
-    document.getElementById('project_title').innerHTML = title;
-    document.getElementById('project_type').innerHTML = type;
-    document.getElementById('project_year').innerHTML = year;
-    document.getElementById('project_description').innerHTML = description;
-    document.getElementById('project_tech').innerHTML = tech;
+    } = ProjectContent[contentIndex];
 
-    document.getElementById('project_role').innerHTML = role !== null ? role : '';
-    document.getElementById('project_role').style.display = role !== null ? 'inline-block' : 'none';
+    const projectTitleEl = document.querySelector('.project-title__title');
+    const projectTitleViewEl = document.getElementById('project_title');
+    const projectRoleEl = document.getElementById('project_role');
+    const projectTypeEl = document.getElementById('project_type');
+    const projectYearEl = document.getElementById('project_year');
+    const projectDescriptionEl = document.getElementById('project_description');
+    const projectTechEl = document.getElementById('project_tech');
+
+    projectTitleEl.innerHTML = title;
+    projectTitleViewEl.innerHTML = title;
+    projectTypeEl.innerHTML = type;
+    projectYearEl.innerHTML = year;
+    projectDescriptionEl.innerHTML = description;
+    projectTechEl.innerHTML = tech;
+
     if (role === null) {
-      document.getElementById('project_role').innerHTML = role;
+      projectRoleEl.innerHTML = '';
+      projectRoleEl.classList.add('no-role');
+
     } else {
-      document.getElementById('project_role').style.display = "none";
+      projectRoleEl.innerHTML = role;
+      projectRoleEl.classList.remove('no-role');
     }
 
-    const projectLink = document.getElementById('project_link');
-    projectLink.innerHTML = link === '' ? '' : "visit project";
-    projectLink.href = link;
+    const projectLinkEl = document.getElementById('project_link');
+    projectLinkEl.innerHTML = link === '' ? '' : "visit project";
+    projectLinkEl.href = link;
 
   }
 
@@ -195,8 +207,12 @@ export default class Work extends View {
 
     if ((window.hoveringLink && !window.isMobile) || (this.inViewProjectMode && !window.isMobile)) return;
     this.inScrollMode = true;
+    document.body.classList.add('scrolling');
+    this.viewProjectButton.stickyTransform.deActivate();
     emitter.emit(events.ENTER_SCROLL_MODE);
-    this.updateInterface();
+    this.updateInterface({
+      state: false
+    });
 
   }
 
@@ -204,8 +220,12 @@ export default class Work extends View {
 
     if ((window.hoveringLink && !window.isMobile) || (this.inViewProjectMode && !window.isMobile)) return;
     this.inScrollMode = false;
+    document.body.classList.remove('scrolling');
+    this.viewProjectButton.stickyTransform.activate();
     emitter.emit(events.EXIT_SCROLL_MODE);
-    this.updateInterface();
+    this.updateInterface({
+      state: true
+    });
 
   }
 
@@ -215,58 +235,47 @@ export default class Work extends View {
 
     this.enterAnim = gsap.timeline({
       onStart: () => {
-        emitter.emit(events.REVEAL_QUADS);
+        if (this.firstReveal === false) {
+          this.firstReveal = true;
+          emitter.emit(events.REVEAL_QUADS);
+        }
       }
     });
 
-    const ease = "sine.inOut";
-    const startY = 5;
-    const dur = 0.85
+    const ease = "power2.out";
+    const startY = 20;
+    const dur = !this.firstReveal ? 1.5 : 0.85
 
     this.enterAnim.fromTo(this.projectTitleScrolling, {
-      opacity: 0.01,
-      y: -startY,
-    }, {
-      duration: dur,
-      opacity: 0.99,
-      y: 0,
+      opacity: 0,
+      x: 0,
       z: 0,
-      ease: ease
-    }, "<");
-
-    this.enterAnim.fromTo(this.viewProjectButton, {
-      opacity: 0.01,
       y: startY,
     }, {
       duration: dur,
-      opacity: 0.65,
+      opacity: 1,
+      x: 0,
       y: 0,
       z: 0,
-      ease: ease
+      ease: "power2.out"
     }, "<");
 
-    gsap.set(this.projectTitle, {
-      opacity: 0.01,
-    });
+    this.enterAnim.fromTo(this.viewProjectButton, {
+      opacity: 0,
+      x: 0,
+      z: 0,
+      y: startY,
+    }, {
+      duration: dur,
+      opacity: 0.7,
+      x: 0,
+      y: 0,
+      z: 0,
+      ease: "power1.out"
+    }, "<0.1");
 
-    gsap.set(this.projectContentInfo, {
-      opacity: 0.01,
-    });
-
-    gsap.set(this.projectType, {
-      opacity: 0.01,
-    });
-
-    gsap.set(this.projectYear, {
-      opacity: 0.01,
-    });
-
-    gsap.set(this.projectLink, {
-      opacity: 0.01,
-    });
-
-    gsap.set(this.exitButton, {
-      opacity: 0.01,
+    this.updateViewModeStyles({
+      viewing: false
     });
 
   }
@@ -286,7 +295,7 @@ export default class Work extends View {
     if (this.inViewProjectMode) {
 
       this.leaveAnim.to(this.projectTitle, {
-        opacity: 0.01,
+        opacity: 0,
         duration: dur,
         ease: ease,
         z: 0
@@ -295,35 +304,35 @@ export default class Work extends View {
       this.leaveAnim.to(this.projectContentInfo, {
 
         duration: dur,
-        opacity: 0.01,
+        opacity: 0,
         z: 0,
         ease: ease
       }, "<");
 
       this.leaveAnim.to(this.projectType, {
         duration: dur,
-        opacity: 0.01,
+        opacity: 0,
         z: 0,
         ease: ease
       }, "<");
 
       this.leaveAnim.to(this.projectYear, {
         duration: dur,
-        opacity: 0.01,
+        opacity: 0,
         z: 0,
         ease: ease
       }, "<");
 
       this.leaveAnim.to(this.projectLink, {
         duration: dur,
-        opacity: 0.01,
+        opacity: 0,
         z: 0,
         ease: ease
       }, "<");
 
       this.leaveAnim.to(this.exitButton, {
         duration: dur,
-        opacity: 0.01,
+        opacity: 0,
         z: 0,
         ease: ease
       }, "<");
@@ -331,7 +340,7 @@ export default class Work extends View {
     } else {
 
       this.leaveAnim.to(this.projectTitleScrolling, {
-        opacity: 0.01,
+        opacity: 0,
         duration: dur,
         ease: ease,
         z: 0,
@@ -340,7 +349,7 @@ export default class Work extends View {
       this.leaveAnim.to(this.viewProjectButton, {
 
         duration: dur,
-        opacity: 0.01,
+        opacity: 0,
         z: 0,
         ease: ease
       }, "<0.1");
@@ -349,13 +358,15 @@ export default class Work extends View {
 
   }
 
-  updateInterface = () => {
+  updateInterface = ({
+    state
+  }) => {
 
     if (this.interfaceAnim) this.interfaceAnim.kill();
     if (this.enterAnim) this.enterAnim.kill();
 
     this.interfaceAnim = gsap.timeline();
-    this.showScrollInterface = !this.showScrollInterface;
+    this.showScrollInterface = state;
     const pow = "power1.out";
     const duration = 0.25;
 
@@ -363,7 +374,9 @@ export default class Work extends View {
 
       duration,
       ease: pow,
-      opacity: this.showScrollInterface ? 0.99 : 0.01,
+      opacity: this.showScrollInterface ? 1 : 0,
+      x: 0,
+      y: 0,
       z: 0
 
     });
@@ -372,15 +385,18 @@ export default class Work extends View {
 
       duration,
       ease: pow,
-      opacity: this.showScrollInterface ? 0.99 : 0.01,
+      opacity: this.showScrollInterface ? 1 : 0,
+      x: 0,
+      y: 0,
       z: 0
-
     }, "<");
 
   }
 
   showProject = () => {
-    this.updateInterface();
+    this.updateInterface({
+      state: false
+    });
     this.revealProjectContent();
     emitter.emit(events.SHOW_PROJECT);
   }
@@ -393,7 +409,6 @@ export default class Work extends View {
 
   revealProjectContent() {
 
-    // this.killActiveAnimations();
     if (this.revealProjectContentAnim) this.revealProjectContentAnim.kill();
     this.revealProjectContentAnim = gsap.timeline({
       onStart: () => {
@@ -402,6 +417,9 @@ export default class Work extends View {
       },
       onComplete: () => {
         this.exitButton.stickyTransform.activate();
+        this.updateViewModeStyles({
+          viewing: true
+        });
         const projectLink = document.getElementById('project_link');
         if (projectLink.innerHTML === '') return;
         this.projectLink.stickyTransform.activate();
@@ -413,31 +431,31 @@ export default class Work extends View {
 
     this.revealProjectContentAnim.to(this.projectTitle, {
       duration,
-      opacity: 0.99,
+      opacity: 1,
       ease: pow,
       z: 0,
     }, "<");
     this.revealProjectContentAnim.to(this.projectType, {
       duration,
-      opacity: 0.99,
+      opacity: 1,
       ease: pow,
       z: 0,
     }, "<0.02");
     this.revealProjectContentAnim.to(this.projectYear, {
       duration,
-      opacity: 0.99,
+      opacity: 1,
       ease: pow,
       z: 0,
     }, "<0.02");
     this.revealProjectContentAnim.to(this.projectContentInfo, {
-      opacity: 0.99,
+      opacity: 1,
       duration,
       z: 0,
       // stagger: 0.1,
     }, "<0.02")
     this.revealProjectContentAnim.to(this.projectLink, {
       duration,
-      opacity: 0.99,
+      opacity: 1,
       ease: pow,
       z: 0,
     }, "<0.02");
@@ -446,7 +464,7 @@ export default class Work extends View {
 
       duration,
       ease: pow,
-      opacity: 0.99,
+      opacity: 1,
       z: 0,
 
     }, "<0.02");
@@ -455,7 +473,6 @@ export default class Work extends View {
 
   hideProjectContent = () => {
 
-    // this.killActiveAnimations();
     if (this.hideProjectContentAnim) this.hideProjectContentAnim.kill();
     this.hideProjectContentAnim = gsap.timeline({
       onStart: () => {
@@ -463,9 +480,12 @@ export default class Work extends View {
         this.projectLink.stickyTransform.deActivate();
       },
       onComplete: () => {
-        this.inViewProjectMode = false;
-        this.viewProjectButton.stickyTransform.activate();
-        gsap.delayedCall(0.5, this.playEnterAnim);
+
+        gsap.delayedCall(0.5, () => {
+          this.inViewProjectMode = false;
+          this.viewProjectButton.stickyTransform.activate();
+          this.playEnterAnim();
+        })
       }
     });
 
@@ -474,30 +494,30 @@ export default class Work extends View {
 
     this.hideProjectContentAnim.to(this.projectTitle, {
       duration,
-      opacity: 0.01,
+      opacity: 0,
       z: 0,
       ease: pow
     }, "<");
     this.hideProjectContentAnim.to(this.projectType, {
       duration,
-      opacity: 0.01,
+      opacity: 0,
       z: 0,
       ease: pow
     }, "<");
     this.hideProjectContentAnim.to(this.projectYear, {
       duration,
-      opacity: 0.01,
+      opacity: 0,
       z: 0,
       ease: pow
     }, "<");
     this.hideProjectContentAnim.to(this.projectContentInfo, {
       duration,
-      opacity: 0.01,
+      opacity: 0,
       z: 0,
     }, "<")
     this.hideProjectContentAnim.to(this.projectLink, {
       duration,
-      opacity: 0.01,
+      opacity: 0,
       z: 0,
       ease: pow
     }, "<");
@@ -506,18 +526,45 @@ export default class Work extends View {
 
       duration,
       ease: pow,
-      opacity: 0.01,
+      opacity: 0,
       z: 0,
 
     }, "<");
 
   }
 
-  // killActiveAnimations() {
+  updateViewModeStyles({
+    viewing
+  }) {
 
-  //   if (this.enterAnim) this.enterAnim.kill();
-  //   // if (this.scrollAnim) this.scrollAnim.kill();
+    if (!viewing) {
 
-  // }
+      this.projectTitle.classList.add('not-viewing');
 
+      this.projectContentInfo.forEach((info) => {
+        info.classList.add('not-viewing');
+      })
+
+
+      this.projectType.classList.add('not-viewing');
+      this.projectYear.classList.add('not-viewing');
+      this.projectLink.classList.add('not-viewing');
+      this.exitButton.classList.add('not-viewing');
+
+    } else {
+
+      this.projectTitle.classList.remove('not-viewing');
+
+      this.projectContentInfo.forEach((info) => {
+        info.classList.remove('not-viewing');
+      })
+
+      this.projectType.classList.remove('not-viewing');
+      this.projectYear.classList.remove('not-viewing');
+      this.projectLink.classList.remove('not-viewing');
+      this.exitButton.classList.remove('not-viewing');
+
+    }
+
+  }
 }

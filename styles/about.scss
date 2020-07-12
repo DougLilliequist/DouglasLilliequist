@@ -15,7 +15,7 @@
     // max-height: 1440px;
     display: flex;
     justify-content: space-between;
-    z-index: 2;
+    // z-index: 2;
 
     @media screen and (max-width: 414px) and (orientation: portrait) {
         width: 90vw;
@@ -68,6 +68,7 @@
         height: 100%;
         display: flex;
         align-items: center;
+        transform: translate3d(0,0,0);
 
         @media screen and (max-width: 414px) and (orientation: portrait) {
             justify-content: center;
@@ -91,7 +92,7 @@
         
         &__intro {
 
-            pointer-events: none;
+            // pointer-events: none;
             // padding-right: 10%;
 
             @media screen and (min-width: 414px){
@@ -102,8 +103,8 @@
             &__header {
                 @include fluid-type($minWidth, $maxWidth, $minFontSize__about-header, $maxFontSize__about-header);
                 margin-top: 0em;
-                margin-bottom: 0.5em;
-                pointer-events: none;
+                margin-bottom: 1em;
+                // pointer-events: none;
                 
                 @media screen and (max-width: 414px) and (orientation: portrait) {
                     font-size: 8vw;
@@ -114,7 +115,7 @@
             &__body-text {
                 @include fluid-type($minWidth, $maxWidth, $minFontSize__about-body, $maxFontSize__about-body);
                 margin-top: 0;
-                pointer-events: none;
+                // pointer-events: none;
 
                 @media screen and (max-width: 414px) and (orientation: portrait) {
                     font-size: 3vw;
@@ -130,14 +131,13 @@
 
         position: relative;
         margin-top: 2em;
-        transform: translateZ(0);
 
         &__header {
 
             margin-top: 0;
             color: #000000;
             @include fluid-type($minWidth, $maxWidth, $minFontSize__about__links-header, $maxFontSize__about__links-header);
-            pointer-events: none;
+            // pointer-events: none;
 
             
         @media screen and (max-width: 414px) and (orientation: portrait) {
@@ -153,6 +153,7 @@
             &__transform {
 
                 display: inline-block;
+                transform: translate3d(0px,0px,0px);
                 // position: absolute;
             }
 
@@ -162,20 +163,12 @@
                 color:#000000;
 
                 padding: 2vw;
-                opacity: 0.5;
-                transition: .1s;
+                // opacity: 0.5;
                 @include fluid-type($minWidth, $maxWidth, $minFontSize__about__links-body, $maxFontSize__about__links-body);
 
                 @media screen and (max-width: 414px) and (orientation: portrait) {
                     font-size: 3vw;
                 }
-
-                // &:hover {
-                //     opacity: 0.99;
-                //     color: red;
-                //     transition: .1s;
-                //     will-change: opacity;
-                // }
     
             }
 

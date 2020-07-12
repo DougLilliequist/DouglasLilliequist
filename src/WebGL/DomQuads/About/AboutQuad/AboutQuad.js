@@ -2,9 +2,6 @@ import {
   Program
 } from '../../../../../vendors/ogl/src/core/Program';
 import {
-  Vec2
-} from '../../../../../vendors/ogl/src/math/Vec2';
-import {
   Texture
 } from '../../../../../vendors/ogl/src/core/Texture';
 import {
@@ -15,6 +12,10 @@ import DomQuad from "../../../extras/DomQuad/DomQuad";
 const vert = require('./shaders/aboutQuad.vert');
 const frag = require('./shaders/aboutQuad.frag');
 
+import eventEmitter from '../../../../EventEmitter.js';
+const emitter = eventEmitter.emitter;
+import events from '../../../../../utils/events.js';
+
 import {
   gsap
 } from 'gsap';
@@ -23,32 +24,28 @@ import {
 export default class AboutQuad extends DomQuad {
 
   constructor(
-    gl,
-    media,
-    domElement, {
-      widthSegments,
-      heightSegments,
-    } = {}
+    gl, {
+      media
+    }
   ) {
 
-    super(gl, domElement);
+    super(gl);
 
     this.gl = gl;
 
-    this.image = media.image;
+    this.media = media[0];
 
     this.initProgram();
 
   }
 
-  initProgram = () => {
+  initProgram() {
 
     this.texture = new Texture(this.gl, {
       generateMipmaps: false,
     });
 
-    // this.image.onload = () => this.texture.image = this.image;
-    this.texture.image = this.image;
+    if (this.media.imageSrc) this.loadImage();
 
     this.geometry = new Plane(this.gl, {
       width: 2,
@@ -92,9 +89,9 @@ export default class AboutQuad extends DomQuad {
   reveal() {
 
     gsap.to(this.program.uniforms._Alpha, {
-      duration: 0.85,
+      duration: 1.0,
       value: 1.0,
-      ease: "circ.inOut"
+      ease: "power2.inOut"
     });
 
     gsap.set(this.program.uniforms._RevealDirection, {
@@ -106,9 +103,9 @@ export default class AboutQuad extends DomQuad {
   hide() {
 
     gsap.to(this.program.uniforms._Alpha, {
-      duration: 0.9,
+      duration: 1.0,
       value: 0.0,
-      ease: "circ.inOut"
+      ease: "power2.inOut"
     });
 
     gsap.set(this.program.uniforms._RevealDirection, {
@@ -123,5 +120,20 @@ export default class AboutQuad extends DomQuad {
     this.program.uniforms._FlowMap.value = flowMap;
 
   }
+
+  loadImage() {
+    const img = new Image();
+
+    img.crossOrigin = "*";
+
+    img.src = this.media.imageSrc;
+
+    img.onload = () => {
+      this.texture.image = img;
+      emitter.emit(events.TEXTURE_LOADED);
+    };
+
+  }
+
 
 }

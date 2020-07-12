@@ -14,8 +14,9 @@ import {
 
 import {
   Post
-} from '../../vendors/ogl/src/extras/Post.js';
-const fxaa = require('./utils/fxaa.frag');
+} from "../../vendors/ogl/src/extras/Post.js";
+const fxaa = require("./post/fxaa.frag");
+const ripple = require("./post/ripple.frag")
 
 import DomQuadManager from "./DomQuads/DomQuadManager.js";
 
@@ -47,9 +48,7 @@ export default class WebGLContext {
       width: w,
       height: h,
       canvas,
-      // antialias: true,
-      // dpr: 2,
-      powerPreference: "default",
+      powerPreference: "default"
     });
     this.gl = this.renderer.gl;
     this.gl.clearColor(0.9, 0.9, 0.9, 1.0);
@@ -78,7 +77,25 @@ export default class WebGLContext {
 
     this.post = new Post(this.gl);
     this.renderToScreen = false;
-    this.canvasResolution = new Vec2(this.gl.canvas.width, this.gl.canvas.height);
+    this.canvasResolution = new Vec2(
+      width,
+      height
+    );
+
+    // this.post.addPass({
+    //   fragment: ripple,
+    //   uniforms: {
+    //     _Aspect: {
+    //       value: width / height
+    //     },
+    //     _TransitionPhase: {
+    //       value: 0
+    //     },
+    //     _Target: {
+    //       value: new Vec2(0.5, 0.0)
+    //     }
+    //   }
+    // });
 
     this.post.addPass({
       fragment: fxaa,
@@ -88,7 +105,6 @@ export default class WebGLContext {
         }
       }
     });
-
   }
 
   initDomQuadManager() {
@@ -102,23 +118,20 @@ export default class WebGLContext {
   }
 
   initEvents() {
-
     if (!window.isMobile) {
       emitter.on(events.MOUSE_DOWN, this.onMouseDown);
       emitter.on(events.MOUSE_MOVE, this.onMouseMove);
       emitter.on(events.MOUSE_UP, this.onMouseUp);
-
     } else {
-
       emitter.on(events.TOUCH_START, this.onTouchStart);
       emitter.on(events.TOUCH_MOVE, this.onTouchMove);
       emitter.on(events.TOUCH_END, this.onTouchEnd);
       emitter.on(events.TOUCH_CANCEL, this.onTouchEnd);
 
       this.touchCount = 0;
-
     }
 
+    emitter.on(events.PREPARE_UNMOUNT, this.distort);
     emitter.on(events.UPDATE, this.update);
 
     this.isInteracting = false;
@@ -155,7 +168,6 @@ export default class WebGLContext {
   };
 
   onTouchStart = e => {
-
     e.preventDefault();
     this.touchCount++;
     this.isInteracting = true;
@@ -187,8 +199,25 @@ export default class WebGLContext {
     this.touchCount = 0;
   };
 
-  render() {
+  distort = () => {
 
+    // const {
+    //   uniforms
+    // } = this.post.passes[0];
+    // gsap.to(uniforms._TransitionPhase, {
+
+    //   ease: "power1.inOut",
+    //   duration: 2,
+    //   value: 1,
+    //   onComplete: () => {
+    //     uniforms._TransitionPhase.value = 0;
+    //   }
+
+    // });
+
+  }
+
+  render() {
     if (this.renderToScreen === false) {
       this.post.render({
         scene: this.scene,
@@ -207,7 +236,6 @@ export default class WebGLContext {
   update = ({
     deltaTime
   }) => {
-
     this.deltaTime = deltaTime * 0.001;
 
     this.inputDelta.copy(this.inputPos).sub(this.prevInputPos);
@@ -228,7 +256,6 @@ export default class WebGLContext {
     this.render();
 
     this.prevInputPos.copy(this.inputPos);
-
   };
 
   onResize = () => {
@@ -248,7 +275,10 @@ export default class WebGLContext {
       });
 
       this.post.resize();
-      this.post.passes[0].uniforms.uResolution.value.set(this.gl.canvas.width, this.gl.canvas.height);
+      this.post.passes[0].uniforms.uResolution.value.set(
+        this.gl.canvas.width,
+        this.gl.canvas.height
+      );
 
       this.mouseFlowmap.Aspect = w / h;
     });

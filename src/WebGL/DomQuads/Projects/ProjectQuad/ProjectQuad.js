@@ -13,7 +13,6 @@ const vert = require("./shaders/projectQuad.vert");
 const frag = require("./shaders/projectQuad.frag");
 
 import {
-  loopNegativeNumber,
   makeid
 } from "../../../../../utils/Math.js";
 import eventEmitter from "../../../../EventEmitter.js";
@@ -25,15 +24,11 @@ import {
 } from "gsap";
 
 export default class ProjectQuad extends DomQuad {
-  constructor(
-    gl,
+  constructor(gl, {
     media,
-    domElement, {
-      posOffset = 0.0
-    }
-  ) {
-    super(gl,
-      domElement);
+    posOffset = 0
+  }) {
+    super(gl);
 
     this.gl = gl;
 
@@ -43,7 +38,6 @@ export default class ProjectQuad extends DomQuad {
 
     this.index = posOffset; //rename argument
 
-    // this.videos = media;
     this.media = media;
 
     this.video = this.media.video;
@@ -91,13 +85,16 @@ export default class ProjectQuad extends DomQuad {
 
     this.texture = new Texture(this.gl, {
       generateMipmaps: false,
-      width: 512,
-      height: 512,
+      width: 256,
+      height: 256,
       minFilter: this.gl.LINEAR,
       magFilter: this.gl.LINEAR
     });
 
-    this.updateTexture = false;
+    if (this.media.videoSrc !== null && window.isMobile === false)
+      this.loadVideo();
+    if (this.media.imageSrc !== null && window.isMobile) this.loadImage();
+
     const u = {
       _ViewplaneSize: {
         value: this.viewPlaneSize
@@ -124,7 +121,7 @@ export default class ProjectQuad extends DomQuad {
         value: 0.0
       },
       _FlipFlowMapForce: {
-        value: 0.0
+        value: this.media.brightVal
       },
       _ScalePhase: {
         value: 0.0
@@ -133,6 +130,9 @@ export default class ProjectQuad extends DomQuad {
         value: 0.0
       },
       _ViewModePhase: {
+        value: 0.0
+      },
+      _Entering: {
         value: 0.0
       },
       _RevealDirection: {
@@ -146,7 +146,7 @@ export default class ProjectQuad extends DomQuad {
       },
       _Scale: {
         value: 1.0
-      },
+      }
     };
 
     this.program = new Program(this.gl, {
@@ -184,24 +184,21 @@ export default class ProjectQuad extends DomQuad {
   update({
     force
   }) {
-
     if (this.inScrollMode) {
-      // this.positionRestored = false;
       this.position.z += force;
       this.scrollPhase += force;
 
       this.loopPosition();
     } else {
-      // if (this.positionRestored === false) {
       this.restorePosition();
-      // }
     }
 
     this.updateScrollPhase();
     this.visible = this.inBounds();
 
     // if (this.video === null || this.inScrollMode || this.visible === false) return;
-    if (this.video === null || this.video === undefined || this.inScrollMode) return;
+    if (this.video === null || this.video === undefined || this.inScrollMode)
+      return;
     this.updateVideoTexture();
   }
 
@@ -228,7 +225,8 @@ export default class ProjectQuad extends DomQuad {
       this.restoreEase = 0;
       // this.positionRestored = true;
     } else {
-      this.restorePhase = this.program.uniforms._RestorePhase.value = delta / this.restoreDelta;
+      this.restorePhase = this.program.uniforms._RestorePhase.value =
+        delta / this.restoreDelta;
       let fallOff = 1.0 - (1.0 - this.restorePhase) * (1.0 - this.restorePhase);
       this.restoreEase *= 0.1 + (1.0 - 0.1) * fallOff;
     }
@@ -280,17 +278,11 @@ export default class ProjectQuad extends DomQuad {
   }
 
   updateVideoTexture() {
-
-    this.program.uniforms._FlipFlowMapForce.value = this.media.brightVal;
-
+    if (this.isInView === false) return;
     if (this.video.readyState >= this.video.HAVE_ENOUGH_DATA) {
       this.texture.image = this.video;
-      if (this.isInView) {
-        this.updateTexture = !this.updateTexture;
-        this.texture.needsUpdate = this.updateTexture;
-      }
+      this.texture.needsUpdate = true;
     }
-
   }
 
   playVideo = () => {
@@ -307,6 +299,44 @@ export default class ProjectQuad extends DomQuad {
     if (this.video === null || this.video === undefined) return;
     this.video.pause();
   };
+
+  loadVideo() {
+    this.video = document.createElement("video");
+
+    this.video.crossOrigin = "*";
+
+    this.video.addEventListener("loadeddata", () => {
+      if (this.video.readyState >= this.video.HAVE_CURRENT_DATA) {
+        this.texture.image = this.video;
+        this.texture.needsUpdate = true;
+        emitter.emit(events.TEXTURE_LOADED);
+      }
+    });
+
+    this.video.src = this.media.videoSrc;
+
+    this.video.load();
+
+    this.video.muted = true;
+
+    this.video.loop = true;
+
+    this.video.currentTime = 0.1;
+
+  }
+
+  loadImage() {
+    const img = new Image();
+
+    img.crossOrigin = "*";
+
+    img.src = this.media.imageSrc;
+
+    img.onload = () => {
+      this.texture.image = img;
+      emitter.emit(events.TEXTURE_LOADED);
+    };
+  }
 
   inBounds() {
     const roundPosZ = Math.round(this.position.z);

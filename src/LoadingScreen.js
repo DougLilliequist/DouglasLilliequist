@@ -16,14 +16,11 @@ export default class LoadingScreen {
         this.title = document.body.querySelector('.loader__title');
         this.subTitle = document.body.querySelector('.loader__sub-title');
 
-        this.alpha = 0;
-        this.targetAlpha = 0;
-
-        this.title.style.opacity = 0;
-        this.subTitle.style.opacity = 0;
-
         this.title.firstElementChild.innerHTML = "Douglas Lilliequist"
         this.subTitle.firstElementChild.innerHTML = "Creative Technologist"
+
+        this.totalContent = 0;
+        this.contentCount = 0;
 
         this.reveal();
 
@@ -33,20 +30,26 @@ export default class LoadingScreen {
 
     initEvents() {
 
-        emitter.on(events.UPDATE_PROGRESS, this.updateProgressAnim);
-        emitter.on(events.CONTENT_LOADED, this.hide);
+        emitter.on(events.UPDATE_CONTENT_COUNT, (count) => {
+            this.totalContent += count;
+        });
+
+        emitter.on(events.TEXTURE_LOADED, this.updateProgress);
+        // emitter.on(events.UPDATE, this.update);
+        // emitter.on(events.CONTENT_LOADED, this.hide);
 
     }
 
     reveal() {
 
         gsap.fromTo(this.copyContainer, {
-            y: -10,
-            opacity: 0.01
+            y: -50,
+            opacity: 1
         }, {
             delay: 1.0,
             duration: 1.0,
             y: 0.0,
+            z: 0.0,
             opacity: 1.0,
             ease: "power1.out"
         });
@@ -58,40 +61,40 @@ export default class LoadingScreen {
         const hideTl = new gsap.timeline({
             delay: 2.0,
             onComplete: () => {
-                this.el.style.display = "none";
+                this.el.classList.add('loaded');
                 emitter.emit(events.LOADING_ANIM_COMPLETED);
+                window.contentLoaded = true;
+                // emitter.off(events.UPDATE, this.update);
             }
         });
 
         hideTl.to(this.copyContainer, {
             duration: 1.0,
-            // opacity: 0.001,
+            // opacity: 1.001,
             y: 50,
+            z: 0,
             ease: "power2.in"
         });
 
-        hideTl.to(this.el, {
+        // hideTl.to(this.el, {
 
-            duration: 0.5,
-            ease: "power2.inOut"
+        //     duration: 0.5,
+        //     ease: "power2.inOut"
 
-        });
+        // });
 
     }
 
-    updateProgressAnim = (phase) => {
+    updateProgress = (phase) => {
 
-        emitter.on(events.UPDATE, this.update);
-        this.targetAlpha = phase;
-        gsap.delayedCall(0.3, () => {
-            emitter.off(events.UPDATE, this.update);
-        })
+        this.contentCount++;
+        if (this.contentCount === this.totalContent) this.hide();
 
     }
 
     update = () => {
 
-        this.alpha += (this.targetAlpha - this.alpha) * 0.5;
+        this.alpha += (this.targetAlpha - this.alpha) * 0.125;
 
         this.title.style.opacity = this.alpha;
         this.subTitle.style.opacity = this.alpha;
