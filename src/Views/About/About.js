@@ -156,7 +156,8 @@ export default class About extends View {
 
     enterAnim.fromTo(this.header, {
       opacity: 0,
-      y: startY
+      y: startY,
+      z: 0
     }, {
       duration: dur,
       opacity: 1,
@@ -167,7 +168,8 @@ export default class About extends View {
 
     enterAnim.fromTo(this.introText, {
       opacity: 0,
-      y: startY
+      y: startY,
+      z: 0
     }, {
       duration: dur,
       opacity: 1,
@@ -178,7 +180,8 @@ export default class About extends View {
 
     enterAnim.fromTo(this.contactHeader, {
       opacity: 0,
-      y: startY
+      y: startY,
+      z: 0
     }, {
       duration: dur,
       opacity: 1,
@@ -193,7 +196,6 @@ export default class About extends View {
       duration: dur,
       opacity: 1,
       stagger: 0.1,
-      z: 0
     }, "<0.1");
 
   }

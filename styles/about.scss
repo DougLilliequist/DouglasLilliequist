@@ -7,7 +7,7 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate3d(-50%, -50%, 0px);
+    transform: translate(-50%, -50%);
     // width: 60.5vw;
     width: 76vw;
     height: 30.8vw;
@@ -15,7 +15,7 @@
     // max-height: 1440px;
     display: flex;
     justify-content: space-between;
-    z-index: 2;
+    // z-index: 2;
 
     @media screen and (max-width: 414px) and (orientation: portrait) {
         width: 90vw;
@@ -68,6 +68,7 @@
         height: 100%;
         display: flex;
         align-items: center;
+        transform: translate3d(0,0,0);
 
         @media screen and (max-width: 414px) and (orientation: portrait) {
             justify-content: center;
@@ -130,7 +131,6 @@
 
         position: relative;
         margin-top: 2em;
-        transform: translate3d(0px, 0px, 0px);
 
         &__header {
 
@@ -153,6 +153,7 @@
             &__transform {
 
                 display: inline-block;
+                transform: translate3d(0px,0px,0px);
                 // position: absolute;
             }
 
@@ -163,19 +164,11 @@
 
                 padding: 2vw;
                 opacity: 0.5;
-                transition: .1s;
                 @include fluid-type($minWidth, $maxWidth, $minFontSize__about__links-body, $maxFontSize__about__links-body);
 
                 @media screen and (max-width: 414px) and (orientation: portrait) {
                     font-size: 3vw;
                 }
-
-                // &:hover {
-                //     opacity: 0.99;
-                //     color: red;
-                //     transition: .1s;
-                //     will-change: opacity;
-                // }
     
             }
 

@@ -7,7 +7,7 @@
     position: absolute;
     top: 50%;
     left: 4.2vw;
-    transform: translate3d(0%, -50%, 0px);
+    transform: translate3d(0%, -50%, 0);
     // width: 12vw;
     width: 13.65vw;
     height: 30.9vw;
@@ -97,6 +97,7 @@
         position: relative;
         width: 100%;
         margin: 0;
+        transform: translate3d(0,0,0);
 
         &__content {
 
@@ -147,7 +148,7 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate3d(-50%, -50%, 0px);
+        transform: translate3d(-50%, -50%, 0);
         width: 29.23vw;
         height: 20.075vw;
         max-width: 739.06px;
@@ -169,6 +170,7 @@
         position: absolute;
         width: 100%;
         top: -4.35vw;
+        pointer-events: none;
 
         @media screen and (max-width: 414px) and (orientation: portrait) 
         {
@@ -223,7 +225,7 @@
         position: absolute;
         right: -22.5vw;
         top: 50%;
-        transform: translate(0%, -50%);
+        transform: translate3d(0%, -50%, 0);
         // transform: translate3d(0px, -50%, 0px);
         // background-color: black;
 

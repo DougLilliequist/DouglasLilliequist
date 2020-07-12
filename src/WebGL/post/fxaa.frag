@@ -5,9 +5,6 @@
             uniform sampler2D tMap;
             uniform vec2 uResolution;
             varying vec2 vUv;
-            uniform float _Phase;
-            uniform float _Time;
-            #define PI 3.14159265359
             vec4 fxaa(sampler2D tex, vec2 uv, vec2 resolution) {
                 vec2 pixel = vec2(1) / resolution;
                 vec3 l = vec3(0.299, 0.587, 0.114);

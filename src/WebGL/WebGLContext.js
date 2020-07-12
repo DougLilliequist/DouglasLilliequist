@@ -15,7 +15,8 @@ import {
 import {
   Post
 } from "../../vendors/ogl/src/extras/Post.js";
-const fxaa = require("./utils/fxaa.frag");
+const fxaa = require("./post/fxaa.frag");
+const ripple = require("./post/ripple.frag")
 
 import DomQuadManager from "./DomQuads/DomQuadManager.js";
 
@@ -81,17 +82,26 @@ export default class WebGLContext {
       height
     );
 
+    // this.post.addPass({
+    //   fragment: ripple,
+    //   uniforms: {
+    //     _Aspect: {
+    //       value: width / height
+    //     },
+    //     _TransitionPhase: {
+    //       value: 0
+    //     },
+    //     _Target: {
+    //       value: new Vec2(0.5, 0.0)
+    //     }
+    //   }
+    // });
+
     this.post.addPass({
       fragment: fxaa,
       uniforms: {
         uResolution: {
           value: this.canvasResolution
-        },
-        _Time: {
-          value: 0
-        },
-        _Phase: {
-          value: 0
         }
       }
     });
@@ -191,19 +201,19 @@ export default class WebGLContext {
 
   distort = () => {
 
-    const {
-      uniforms
-    } = this.post.passes[0];
-    gsap.to(uniforms._Phase, {
+    // const {
+    //   uniforms
+    // } = this.post.passes[0];
+    // gsap.to(uniforms._TransitionPhase, {
 
-      ease: "power1.out",
-      duration: 1,
-      value: 1,
-      onComplete: () => {
-        uniforms._Phase.value = 0;
-      }
+    //   ease: "power1.inOut",
+    //   duration: 2,
+    //   value: 1,
+    //   onComplete: () => {
+    //     uniforms._TransitionPhase.value = 0;
+    //   }
 
-    });
+    // });
 
   }
 
@@ -229,8 +239,6 @@ export default class WebGLContext {
     this.deltaTime = deltaTime * 0.001;
 
     this.inputDelta.copy(this.inputPos).sub(this.prevInputPos);
-
-    this.post.passes[0].uniforms._Time.value += this.deltaTime;
 
     this.mouseFlowmap.update(this.renderer, {
       dt: this.deltaTime,

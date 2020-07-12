@@ -206,6 +206,7 @@ export default class Work extends View {
 
     if ((window.hoveringLink && !window.isMobile) || (this.inViewProjectMode && !window.isMobile)) return;
     this.inScrollMode = true;
+    document.body.classList.add('scrolling');
     this.viewProjectButton.stickyTransform.deActivate();
     emitter.emit(events.ENTER_SCROLL_MODE);
     this.updateInterface({
@@ -218,6 +219,7 @@ export default class Work extends View {
 
     if ((window.hoveringLink && !window.isMobile) || (this.inViewProjectMode && !window.isMobile)) return;
     this.inScrollMode = false;
+    document.body.classList.remove('scrolling');
     this.viewProjectButton.stickyTransform.activate();
     emitter.emit(events.EXIT_SCROLL_MODE);
     this.updateInterface({
@@ -245,11 +247,13 @@ export default class Work extends View {
 
     this.enterAnim.fromTo(this.projectTitleScrolling, {
       opacity: 0,
+      x: 0,
       z: 0,
       y: -startY,
     }, {
       duration: dur,
       opacity: 1,
+      x: 0,
       y: 0,
       z: 0,
       ease: ease
@@ -257,11 +261,13 @@ export default class Work extends View {
 
     this.enterAnim.fromTo(this.viewProjectButton, {
       opacity: 0,
+      x: 0,
       z: 0,
       y: startY,
     }, {
       duration: dur,
       opacity: 0.65,
+      x: 0,
       y: 0,
       z: 0,
       ease: ease
@@ -368,6 +374,8 @@ export default class Work extends View {
       duration,
       ease: pow,
       opacity: this.showScrollInterface ? 1 : 0,
+      x: 0,
+      y: 0,
       z: 0
 
     });
@@ -377,8 +385,9 @@ export default class Work extends View {
       duration,
       ease: pow,
       opacity: this.showScrollInterface ? 1 : 0,
+      x: 0,
+      y: 0,
       z: 0
-
     }, "<");
 
   }
@@ -442,6 +451,7 @@ export default class Work extends View {
       opacity: 1,
       duration,
       z: 0,
+      // stagger: 0.1,
     }, "<0.02")
     this.revealProjectContentAnim.to(this.projectLink, {
       duration,

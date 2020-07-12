@@ -48,6 +48,7 @@ export default class LoadingScreen {
             delay: 1.0,
             duration: 1.0,
             y: 0.0,
+            z: 0.0,
             opacity: 1.0,
             ease: "power1.out"
         });
@@ -69,15 +70,16 @@ export default class LoadingScreen {
             duration: 1.0,
             // opacity: 1.001,
             y: 50,
+            z: 0,
             ease: "power2.in"
         });
 
-        hideTl.to(this.el, {
+        // hideTl.to(this.el, {
 
-            duration: 0.5,
-            ease: "power2.inOut"
+        //     duration: 0.5,
+        //     ease: "power2.inOut"
 
-        });
+        // });
 
     }
 

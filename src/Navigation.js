@@ -46,6 +46,19 @@ export default class Navigation {
 
         });
 
+        emitter.on(events.ENTER_SCROLL_MODE, () => {
+            this.linkTransforms.forEach((transform) => {
+                transform.classList.add('deactivated');
+                transform.stickyComponent.enable = false;
+            });
+        });
+        emitter.on(events.EXIT_SCROLL_MODE, () => {
+            this.linkTransforms.forEach((transform) => {
+                transform.classList.remove('deactivated');
+                transform.stickyComponent.enable = true;
+            });
+        });
+
         window.viewMediator.on('NAVIGATE_IN', ({
             to,
             location

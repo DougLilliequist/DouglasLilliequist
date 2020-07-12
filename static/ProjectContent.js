@@ -3,6 +3,22 @@ import projectVideos from './video/*.mp4'
 export const ProjectContent = [
 
     {
+        title: 'Crashing Dawn',
+        type: 'Experiment',
+        description: 'Shaded particles with noise sampled curl noise',
+        tech: 'WebGL(THREE.js) / GPGPU',
+        year: 2020,
+        role: null,
+        link: 'https://douglilliequist.github.io/CrashingDawn/',
+        media: {
+            videoSrc: projectVideos.crashingdawn256256_2,
+            imageSrc: null,
+            brightVal: 1.0
+        }
+
+    },
+
+    {
         title: 'Spiritual Beings',
         type: 'Experiment',
         description: 'Beings flocking in a peaceful purgatory',
@@ -29,22 +45,6 @@ export const ProjectContent = [
             videoSrc: projectVideos.sken512512,
             imageSrc: null,
             brightVal: 0.0
-        }
-
-    },
-
-    {
-        title: 'Crashing Dawn',
-        type: 'Experiment',
-        description: 'Shaded particles with noise sampled curl noise',
-        tech: 'WebGL(THREE.js) / GPGPU',
-        year: 2020,
-        role: null,
-        link: 'https://douglilliequist.github.io/CrashingDawn/',
-        media: {
-            videoSrc: projectVideos.crashingdawn512512,
-            imageSrc: null,
-            brightVal: 1.0
         }
 
     },

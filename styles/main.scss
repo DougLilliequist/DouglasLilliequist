@@ -2,10 +2,10 @@
 @import 'typography';
 @import 'mixins';
 
-html {
-    -webkit-user-select: none;
-    user-select: none;
-}
+// html {
+//     -webkit-user-select: none;
+//     user-select: none;
+// }
 
 body {
     width: 100vw;
@@ -20,6 +20,11 @@ body {
 
 .pointer {
     cursor: pointer;
+}
+
+.scrolling {
+    -webkit-user-select: none;
+    user-select: none;
 }
 
 .grid {
@@ -120,7 +125,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    transform: translate3d(0px, 0px, 0px);
+    transform: translate3d(0, 0, 0);
 
     &__clip-section {
         overflow: hidden;
@@ -226,7 +231,7 @@ body {
     overflow: hidden;
     width: 100vw;
     height: 100vh;
-    z-index: 5;
+    z-index: 1;
     background-color: #ffffff;
     transform-origin: center center;
     pointer-events: none;
