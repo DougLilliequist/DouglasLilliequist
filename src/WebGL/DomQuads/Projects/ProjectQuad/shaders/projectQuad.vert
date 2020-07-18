@@ -56,13 +56,13 @@ uniform float _HeightAmp;
 
 void main() {
 
-    vec3 pos = position;
-    pos.xy *= _ViewplaneSize * mix(0.85, 1.0, _Scale) * mix(1.0, 1.535, _ViewModePhase);
-    
+    vec3 pos = position;    
     vec3 col = texture2D(_Image, uv).xyz;
     // float heightMapDistort = (col.x + col.y + col.z) * lumaK;
     float heightMapDistort = dot(col, vec3(0.333, 0.333, 0.333));
     heightMapDistort = mix(heightMapDistort, 1.0 - heightMapDistort, _FlipFlowMapForce);
+
+    pos.xy *= _ViewplaneSize * mix(0.85, 1.0, _Scale) * mix(1.0, 1.535, _ViewModePhase);
 
     vec2 phasePos = position.xy;
     phasePos.xy *= 0.7; //makes quads look better but I dont think this is correct (could have just used any constant)

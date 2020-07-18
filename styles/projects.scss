@@ -32,7 +32,7 @@
 
     &__details {
         position: relative;
-        margin: 3vw 0 0.2vw 0;
+        // margin: 3vw 0 0.2vw 0;
     }
 
     &__year {
@@ -75,7 +75,7 @@
             width: 100%;
                 
             h1 {
-                margin-top: -0.23em;
+                margin-top: 0.5vw;
                 font-size: 1.320vw;
                 font-weight: $black;
                 letter-spacing: 0.05em;
@@ -130,7 +130,7 @@
 
         position: absolute;
         display: inline-block;
-        bottom: -2.5vw;
+        bottom: -1.5vw;
         left: -2.5vw;
 
             a {
@@ -150,10 +150,14 @@
         left: 50%;
         transform: translate3d(-50%, -50%, 0);
         width: 29.23vw;
-        height: 20.075vw;
+        // height: 20.075vw;
+        height: 19vw;
         max-width: 739.06px;
         max-height: 515.79px;
         margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
     
         @media screen and (max-width: 414px) and (orientation: portrait) 
         {
@@ -168,11 +172,24 @@
 
     .project-title {
 
+        // position: absolute;
+        // width: 180%;
+        // // top: -4.35vw;
+        // top: -5.55vw;
+        // pointer-events: none;
+        // position: absolute;
+        // /* width: 180%; */
+        // left: 35.45vw;
+        // top: 10vw;
+        // pointer-events: none;
+        // text-align: center;
+
         position: absolute;
-        width: 100%;
-        // top: -4.35vw;
-        top: -5.55vw;
+        width: 44.85vw;
+        // left: 50vw;
+        top: -5.85vw;
         pointer-events: none;
+        // transform: translate3d(-50%,0,0);
 
         @media screen and (max-width: 414px) and (orientation: portrait) 
         {
@@ -184,7 +201,7 @@
             @include fluid-type($minWidth, $maxWidth, $minFontSize__projects-title-scrolling, $maxFontSize__projects-title-scrolling);
             // font-size: clamp(12px, 2.5vw, 21.5px);
             font-weight: $black;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.21vw;
             text-align: center;
             text-transform: uppercase;
     
@@ -202,11 +219,15 @@
 
     .view-project-button {
 
+        // position: absolute;
+        // bottom: -7.85vw;
+        // transform: translate3d(0,0,0);
+        // display: inline-block;
+
         position: absolute;
-        // bottom: -6.5vw;
-        bottom: -7.85vw;
-        left: 50%;
-        transform: translate3d(-50%, 0px, 0px);
+        bottom: -7.5vw;
+        // left: 50vw;
+        // transform: translate3d(-50%, 0, 0);
         display: inline-block;
 
         // @media screen and (max-width: 414px) and (orientation: portrait) 
@@ -216,10 +237,10 @@
 
         p {
             text-align: center;
-            padding: 2.5vw;
+            padding: 2.25vw;
             margin: 0;
-            font-size: 15px;
-            font-weight: $light;
+            font-size: 1vw;
+            font-weight: 300;
         }
 
     }

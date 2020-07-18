@@ -241,7 +241,8 @@ export default class ProjectQuadMediator extends DomquadMediator {
     flowMap
   }) {
 
-    this.inputForce.y += this.inScrollMode ? inputDelta.y * 0.008 / dt : 0.0;
+    // this.inputForce.y += this.inScrollMode ? inputDelta.y * 0.008 / dt : 0.0;
+    this.inputForce.y += this.inScrollMode ? inputDelta.y * 0.005 / dt : 0.0;
     this.inputForce.y *= (Math.abs(this.inputForce.y) < 0.001) ? 0.0 : this.inputForceInertia;
 
     let i = 0;
