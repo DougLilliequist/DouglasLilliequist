@@ -56,6 +56,8 @@ export default class Work extends View {
 
     this.domGLReferenceElement = this.el.querySelector('.project-video');
     this.projectTitleScrolling = this.el.querySelector('.project-title'); //RENAME
+    this.projectTitleTransform = this.el.querySelector('.project-title__transform');
+    this.projectTitleTransformRect = this.projectTitleTransform.getBoundingClientRect();
 
     this.viewProjectButton = this.el.querySelector('.view-project-button');
     this.viewProjectButton.stickyTransform = new StickyComponent({
@@ -243,11 +245,15 @@ export default class Work extends View {
     });
 
     const ease = "power2.out";
-    const startY = 20;
-    const dur = !this.firstReveal ? 1.5 : 0.85
 
-    this.enterAnim.fromTo(this.projectTitleScrolling, {
-      opacity: 0,
+    const {
+      height
+    } = this.projectTitleTransformRect;
+    const startY = height;
+    const dur = !this.firstReveal ? 1.0 : 0.85
+
+    this.enterAnim.fromTo(this.projectTitleTransform, {
+      // opacity: 0,
       x: 0,
       z: 0,
       y: startY,
@@ -367,16 +373,19 @@ export default class Work extends View {
 
     this.interfaceAnim = gsap.timeline();
     this.showScrollInterface = state;
-    const pow = "power1.out";
-    const duration = 0.25;
+    const ease = this.showScrollInterface ? "power1.out" : "power1.in";
+    const duration = 0.35;
+    const {
+      height
+    } = this.projectTitleTransformRect;
 
-    this.interfaceAnim.to(this.projectTitleScrolling, {
+    this.interfaceAnim.to(this.projectTitleTransform, {
 
       duration,
-      ease: pow,
+      ease,
       opacity: this.showScrollInterface ? 1 : 0,
       x: 0,
-      y: 0,
+      y: this.showScrollInterface ? 0 : height * 0.1,
       z: 0
 
     });
@@ -384,12 +393,12 @@ export default class Work extends View {
     this.interfaceAnim.to(this.viewProjectButton, {
 
       duration,
-      ease: pow,
+      ease,
       opacity: this.showScrollInterface ? 1 : 0,
       x: 0,
       y: 0,
       z: 0
-    }, "<");
+    }, "<0.1");
 
   }
 
@@ -398,22 +407,22 @@ export default class Work extends View {
       state: false
     });
     this.revealProjectContent();
-    emitter.emit(events.SHOW_PROJECT);
   }
 
   closeProject = () => {
 
     this.hideProjectContent();
-    emitter.emit(events.CLOSE_PROJECT);
   }
 
   revealProjectContent() {
 
     if (this.revealProjectContentAnim) this.revealProjectContentAnim.kill();
     this.revealProjectContentAnim = gsap.timeline({
+      // delay: 1.0,
       onStart: () => {
         this.inViewProjectMode = true;
         this.viewProjectButton.stickyTransform.deActivate();
+        // emitter.emit(events.SHOW_PROJECT);
       },
       onComplete: () => {
         this.exitButton.stickyTransform.activate();
@@ -427,14 +436,16 @@ export default class Work extends View {
     });
 
     const pow = "linear";
-    const duration = 0.5;
-
+    const duration = 1.0;
+    this.revealProjectContentAnim.add(() => {
+      emitter.emit(events.SHOW_PROJECT);
+    }, "<")
     this.revealProjectContentAnim.to(this.projectTitle, {
       duration,
       opacity: 1,
       ease: pow,
       z: 0,
-    }, "<");
+    }, "<0.5");
     this.revealProjectContentAnim.to(this.projectType, {
       duration,
       opacity: 1,
@@ -478,6 +489,7 @@ export default class Work extends View {
       onStart: () => {
         this.exitButton.stickyTransform.deActivate();
         this.projectLink.stickyTransform.deActivate();
+        emitter.emit(events.CLOSE_PROJECT);
       },
       onComplete: () => {
 

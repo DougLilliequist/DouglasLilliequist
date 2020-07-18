@@ -39,19 +39,19 @@ uniform float _HeightAmp;
 #define DISTORTSTR 1.2
 #define SCROLLDISTORTSTR 0.6
 #define DISPLACEMENTSTR 0.4
-#define HEIGHTMAPSTR 0.33
+#define HEIGHTMAPSTR 0.5
 #define lumaK 0.33333333333333333
 #define PI 3.14159265359
 
 // #define RIPPLE_SPATIALF 3.0
-#define RIPPLE_SPATIALF 3.5
-#define RIPPLE_TEMPORALF 4.2
+#define RIPPLE_SPATIALF 3.0
+#define RIPPLE_TEMPORALF 8.2
 // #define RIPPLE_TEMPORALF 7.21
 // #define RIPPLE_TEMPORALF 6.21
-#define RIPPLE_AMP 0.125
+#define RIPPLE_AMP 0.1
 // #define HEIGHTMAP_AMP 0.53
 // #define HEIGHTMAP_AMP 0.33
-#define HEIGHTMAP_AMP 0.8
+#define HEIGHTMAP_AMP 1.8
 
 
 void main() {
@@ -59,37 +59,34 @@ void main() {
     vec3 pos = position;    
     vec3 col = texture2D(_Image, uv).xyz;
     // float heightMapDistort = (col.x + col.y + col.z) * lumaK;
-    float heightMapDistort = dot(col, vec3(0.333, 0.333, 0.333));
+    float heightMapDistort = dot(col, vec3(0.299, 0.587, 0.114));
     heightMapDistort = mix(heightMapDistort, 1.0 - heightMapDistort, _FlipFlowMapForce);
 
-    pos.xy *= _ViewplaneSize * mix(0.85, 1.0, _Scale) * mix(1.0, 1.535, _ViewModePhase);
+    pos.xy *= _ViewplaneSize * mix(0.85, 1.0, _Scale) * mix(1.0, 1.535, _ViewModePhase * _ViewModePhase);
 
     vec2 phasePos = position.xy;
-    phasePos.xy *= 0.7; //makes quads look better but I dont think this is correct (could have just used any constant)
-    float phase = 1.0 - (dot(phasePos, phasePos));
-    vPhase = phase;
-    pos.z += (phase * DISPLACEMENTSTR + (heightMapDistort * HEIGHTMAPSTR)) * _ScrollPhase * SCROLLDISTORTSTR;
-    
+    // phasePos.xy *= 0.7; //makes quads look better but I dont think this is correct (could have just used any constant)
+    // float phase = 1.0 - (dot(phasePos, phasePos));
+    float dist = length(phasePos);
+    // float phase = 1.0 - dist;
+    pos.z += ((1.0 - dist) * DISPLACEMENTSTR + (heightMapDistort * HEIGHTMAPSTR)) * _ScrollPhase * SCROLLDISTORTSTR;
+
     float viewmodePhase = _ViewModePhase * 4.0 * (1.0 - _ViewModePhase);
-    float ripplePhase = (1.0 - (cos((RIPPLE_TEMPORALF * _ViewModePhase) + (phase * RIPPLE_SPATIALF * mix(-1.0, 1.0, _Entering))))) * RIPPLE_AMP;
+    float ripplePhase = (1.0 - (cos((RIPPLE_TEMPORALF * _ViewModePhase) + ((1.0 - dist) * RIPPLE_SPATIALF * mix(-1.0, 1.0, _Entering))))) * RIPPLE_AMP;
     ripplePhase *= viewmodePhase;
     pos.z += ripplePhase;
-    pos.z += (phase * heightMapDistort * HEIGHTMAP_AMP) * viewmodePhase;
+    pos.z += (min(0.8, heightMapDistort) * HEIGHTMAP_AMP) * ripplePhase;
 
     mat4 modelViewProjection = projectionMatrix * modelViewMatrix;
     vDistort = vec3(0.0, 0.0, 0.0);
 
-    if(_InView) {
+    vec4 clipPos = modelViewProjection * vec4(pos, 1.0);
+    clipPos.xyz /= clipPos.w;
+    clipPos.xy = clipPos.xy * 0.5 + 0.5;
 
-        vec4 clipPos = modelViewProjection * vec4(pos, 1.0);
-        clipPos.xyz /= clipPos.w;
-        clipPos.xy = clipPos.xy * 0.5 + 0.5;
-
-        vec3 distort = texture2D(_FlowMap, clipPos.xy).xyz * DISTORTSTR;
-        vDistort = distort;
-        pos += distort * max(0.2, heightMapDistort) * _FlowMapPhase * distort.z;
-
-    }
+    vec3 distort = texture2D(_FlowMap, clipPos.xy).xyz * DISTORTSTR;
+    vDistort = distort;
+    pos += distort * max(0.2, heightMapDistort) * _FlowMapPhase * distort.z * (_InView ? 1.0 : 0.0);
 
     gl_Position = modelViewProjection * vec4(pos, 1.0);
     vUv = uv;

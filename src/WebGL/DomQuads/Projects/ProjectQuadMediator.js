@@ -142,24 +142,26 @@ export default class ProjectQuadMediator extends DomquadMediator {
   //toggle values
   updateViewMode = () => {
 
+    // const ease = "sine.inOut"
+
+    this.inViewMode = !this.inViewMode;
+
     const {
       uniforms
     } = this.quadInView.program;
-    const {
-      inViewMode
-    } = this;
-    const duration = 1.25;
-    // const ease = "power1.inOut"
-    const ease = "sine.inOut"
-
-    this.inViewMode = !this.inViewMode;
+    // const duration = this.inViewMode ? 2.0 : 3.0;
+    const duration = 1.8;
+    // const ease = this.inViewMode ? "power2.out" : "sine.in";
+    // const ease = this.inViewMode ? "power2.out" : "sine.inOut";
+    const ease = "sine.inOut";
 
     uniforms._Entering.value = this.inViewMode ? 1.0 : 0.0;
 
     gsap.to(uniforms._ViewModePhase, {
       value: this.inViewMode ? 1.0 : 0.0,
       duration,
-      ease
+      ease,
+      // delay: 0.1
     });
 
   }
