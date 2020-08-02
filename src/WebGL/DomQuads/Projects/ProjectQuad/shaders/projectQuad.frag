@@ -17,6 +17,7 @@ varying vec2 vUv;
 varying vec3 vMvPos;
 varying vec3 vDistort;
 varying float vPhase;
+varying float vDamp;
 
 #define OFFSETAMOUNTX 0.004
 #define OFFSETAMOUNTY 0.001
@@ -36,6 +37,7 @@ void main() {
     vec2 uv = vUv;
     uv -= 0.5;
     uv *= mix(1.0, 0.85, _ScalePhase); //rename uniform
+    uv *= mix(0.5, 1.0, _RevealPhase);
     uv += 0.5;
 
     vec2 flow = vDistort.xy * _FlowMapPhase;
@@ -73,6 +75,7 @@ void main() {
     alpha *= mix(step(vUv.y, _RevealPhase), 1.0 - step((vUv.y * 0.99), 1.0 - _RevealPhase), _RevealDirection);
     if(alpha <= 0.01) discard;
     gl_FragColor = vec4(col, alpha);
-    // gl_FragColor = vec4(vPhase, vPhase, vPhase, alpha);
+    // gl_FragColor = vec4(vDamp, vDamp, vDamp, alpha);
+    // gl_FragColor = vec4(vPhase, vPhase, vPhase, 1.0);
 
 }

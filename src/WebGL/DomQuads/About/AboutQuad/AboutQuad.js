@@ -43,6 +43,10 @@ export default class AboutQuad extends DomQuad {
 
     this.texture = new Texture(this.gl, {
       generateMipmaps: false,
+      minFilter: this.gl.LINEAR,
+      magFilter: this.gl.LINEAR,
+      width: 1024,
+      height: 1024
     });
 
     if (this.media.imageSrc) this.loadImage();
@@ -89,7 +93,7 @@ export default class AboutQuad extends DomQuad {
   reveal() {
 
     gsap.to(this.program.uniforms._Alpha, {
-      duration: 1.0,
+      duration: 2.0,
       value: 1.0,
       ease: "power2.inOut"
     });

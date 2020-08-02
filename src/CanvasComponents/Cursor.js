@@ -83,6 +83,7 @@ export default class Cursor {
 
         this.radius = this.defaultRadius;
 
+        // this.strokeWidth = 0.5;
         this.strokeWidth = 0.5;
 
         this.startAngle = 0;
@@ -390,8 +391,10 @@ export default class Cursor {
     drawCursorCircle() {
 
         this.ctx.beginPath();
+        this.ctx.fillStyle = `rgba(${0.0},${0.0},${0.0}, ${0.0})`;
         this.ctx.arc(this.position.x, this.position.y, this.radius, this.startAngle, this.endAngle, false);
         this.ctx.lineWidth = this.strokeWidth;
+        this.ctx.fill();
         this.ctx.stroke();
         this.ctx.closePath();
 
@@ -453,8 +456,11 @@ export default class Cursor {
 
     update = () => {
 
-        this.position.x += (this.target.x - this.position.x) / 8.0;
-        this.position.y += (this.target.y - this.position.y) / 8.0;
+        this.position.x += (this.target.x - this.position.x) / 3.0;
+        this.position.y += (this.target.y - this.position.y) / 3.0;
+
+        // this.position.x = this.target.x;
+        // this.position.y = this.target.y;
 
         this.delta.x = this.position.x - this.prevPosition.x;
         this.delta.y = this.position.y - this.prevPosition.y;

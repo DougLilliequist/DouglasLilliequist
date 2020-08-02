@@ -47,8 +47,8 @@ export default class About extends View {
   initReferences() {
 
     this.domGLReferenceElement = this.el.querySelector('.portrait-container__portrait');
-    this.header = document.querySelector('.about-copy__intro__header');
-    this.introText = document.querySelector('.about-copy__intro__body-text');
+    this.header = document.querySelector('.about-copy__header');
+    this.introText = document.querySelector('.about-copy__body-text');
     this.contactHeader = document.querySelector('.contact-container__header');
     this.links = document.querySelectorAll('.contact-container__methods__transform');
 

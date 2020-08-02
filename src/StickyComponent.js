@@ -189,8 +189,8 @@ export default class StickyComponent {
         //With this knowledge in mind, by subtracting with the dom elements initial position
         //we move the element to the origin, thus any additional offsets we apply will be a vector in which we use
         //for the translation
-        let translateX = (this.currentPos.x - this.initPos.x) * 0.5;
-        let translateY = (this.currentPos.y - this.initPos.y) * 0.5;
+        let translateX = (this.currentPos.x - this.initPos.x) * 0.25;
+        let translateY = (this.currentPos.y - this.initPos.y) * 0.25;
         this.el.style.transform = `translate3d(${translateX}px, ${translateY}px, 0.0)`;
 
         //final offseted position for component, used as target for i.e cursors
@@ -240,7 +240,7 @@ export default class StickyComponent {
 
         if (this.enable === false) return;
         window.hoveringLink = this.hovered = true;
-        document.body.classList.add('pointer');
+        // document.body.classList.add('pointer');
         emitter.emit(events.HOVERING_STICKY_COMPONENT, {
             rect: this.rect
         });
@@ -259,7 +259,7 @@ export default class StickyComponent {
     removeHoverState = () => {
 
         if (this.enable === false) return;
-        document.body.classList.remove('pointer');
+        // document.body.classList.remove('pointer');
         window.hoveringLink = this.hovered = false;
         emitter.emit(events.LEAVING_STICKY_COMPONENT);
 

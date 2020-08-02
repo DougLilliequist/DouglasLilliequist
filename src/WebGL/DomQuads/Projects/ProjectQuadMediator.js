@@ -209,7 +209,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
     }, "<");
 
     this.revealQuadAnim.to(uniforms._RevealPhase, {
-      duration: 1.0,
+      duration: 2.5,
       value: 1.0,
       ease: "power2.inOut",
     }, "<");
