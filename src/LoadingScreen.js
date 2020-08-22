@@ -43,43 +43,9 @@ export default class LoadingScreen {
 
     reveal() {
 
-        // gsap.fromTo(this.copyContainer, {
-        //     // y: -50,
-        //     opacity: 1
-        // }, {
-        //     delay: 1.0,
-        //     duration: 1.0,
-        //     // y: 0.0,
-        //     z: 0.0,
-        //     opacity: 1.0,
-        //     ease: "power1.out"
-        // });
-
     }
 
     hide = () => {
-
-        // const hideTl = new gsap.timeline({
-        //     delay: 2.0,
-        //     onStart: () => {
-        //         emitter.off(events.UPDATE, this.update);
-        //     },
-        //     onComplete: () => {
-        //         // emitter.off(events.UPDATE, this.update);
-        //         gsap.delayedCall(0.5, () => {
-        //             this.el.classList.add('loaded');
-        //             emitter.emit(events.LOADING_ANIM_COMPLETED);
-        //             window.contentLoaded = true;
-        //         })
-        //     }
-        // });
-
-        // hideTl.to(this.loadingBar, {
-        //     duration: 0.5,
-        //     ease: "power1.out",
-        //     scaleX: 0,
-        //     transformOrigin: "center right"
-        // });
 
         gsap.to(this.loadingBar, {
             delay: 1.5,
@@ -98,21 +64,6 @@ export default class LoadingScreen {
                 })
             }
         });
-
-        // hideTl.to(this.copyContainer, {
-        //     duration: 1.0,
-        //     // opacity: 1.001,
-        //     y: 50,
-        //     z: 0,
-        //     ease: "power2.in"
-        // });
-
-        // hideTl.to(this.el, {
-
-        //     duration: 0.5,
-        //     ease: "power2.inOut"
-
-        // });
 
     }
 

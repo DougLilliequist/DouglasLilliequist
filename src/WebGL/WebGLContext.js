@@ -113,7 +113,7 @@ export default class WebGLContext {
 
   initMouseflowMap() {
     this.mouseFlowmap = new MouseFlowmap(this.gl, {
-      size: 256
+      size: 128
     });
   }
 

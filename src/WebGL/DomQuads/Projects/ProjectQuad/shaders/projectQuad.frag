@@ -43,7 +43,6 @@ void main() {
     uv += 0.5;
 
     vec2 flow = vDistort.xy * _FlowMapPhase;
-    // vec2 flow = texture2D(_FlowMap, vClipPos).xy * _FlowMapPhase;
 
     float inputPhase = _ScrollPhase * 3.0;
     vec2 offsetX = (vec2(1.0 + inputPhase, 0.0)) * OFFSETAMOUNTX;
@@ -53,14 +52,10 @@ void main() {
     vec2 transitionOffsetX = vec2(0.01, 0.0) * viewModePhase * 0.0;
     vec2 transitionOffsetY = vec2(0.0, 0.001) * viewModePhase * 0.0;
 
-    // float r = texture2D(_Image, uv - transitionOffsetX - offsetX - (flow * 0.02)).x;
-    // float g = texture2D(_Image, uv + transitionOffsetY + offsetY + (flow * 0.002)).y;
-    // float b = texture2D(_Image, uv + transitionOffsetX + offsetX + (flow * 0.02)).z;
-
     float r = texture2D(_Image, uv - transitionOffsetX - offsetX - (flow * 0.02)).x;
     float g = texture2D(_Image, uv + transitionOffsetY + offsetY + (flow * 0.002)).y;
     float b = texture2D(_Image, uv + transitionOffsetX + offsetX + (flow * 0.02)).z;
-    // vec3 col = mix(vec3(r,g,b), vec3(1.0,1.0,1.0), 0.05);
+
     vec3 col = vec3(r,g,b);
     col += hash12(vUv * 1000.0 + _Time) * 0.2;
 
@@ -71,9 +66,6 @@ void main() {
     alpha *= _Alpha;
 
     //reveal phase
-    // alpha *= step(abs((vUv.y * 0.99) * 2.0 - 1.0), _RevealPhase);
-    // alpha *= step(vUv.x, _RevealPhase);
-    // alpha *= mix(step(vUv.y, _RevealPhase), step(1.0 - (vUv.x * 0.99), _RevealPhase), _RevealDirection);
     alpha *= mix(step(vUv.y, _ClipRevealPhase), 1.0 - step((vUv.y * 0.99), 1.0 - _ClipRevealPhase), _RevealDirection);
     if(alpha <= 0.01) discard;
     gl_FragColor = vec4(col, alpha);

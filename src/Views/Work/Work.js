@@ -185,24 +185,24 @@ export default class Work extends View {
     const projectDescriptionEl = document.getElementById('project_description');
     const projectTechEl = document.getElementById('project_tech');
 
-    projectTitleEl.innerHTML = title;
-    projectTitleViewEl.innerHTML = title;
-    projectTypeEl.innerHTML = type;
-    projectYearEl.innerHTML = year;
-    projectDescriptionEl.innerHTML = description;
-    projectTechEl.innerHTML = tech;
+    projectTitleEl.innerText = title;
+    projectTitleViewEl.innerText = title;
+    projectTypeEl.innerText = type;
+    projectYearEl.innerText = year;
+    projectDescriptionEl.innerText = description;
+    projectTechEl.innerText = tech;
 
     if (role === null) {
-      projectRoleEl.innerHTML = '';
+      projectRoleEl.innerText = '';
       projectRoleEl.classList.add('no-role');
 
     } else {
-      projectRoleEl.innerHTML = role;
+      projectRoleEl.innerText = role;
       projectRoleEl.classList.remove('no-role');
     }
 
     const projectLinkEl = document.getElementById('project_link');
-    projectLinkEl.innerHTML = link === '' ? '' : "visit project";
+    projectLinkEl.innerText = link === '' ? '' : "visit project";
     projectLinkEl.href = link;
 
   }
@@ -430,7 +430,7 @@ export default class Work extends View {
           viewing: true
         });
         const projectLink = document.getElementById('project_link');
-        if (projectLink.innerHTML === '') return;
+        if (projectLink.innerText === '') return;
         this.projectLink.stickyTransform.activate();
       }
     });

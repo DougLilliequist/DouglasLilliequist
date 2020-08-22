@@ -149,11 +149,8 @@ export default class ProjectQuadMediator extends DomquadMediator {
     const {
       uniforms
     } = this.quadInView.program;
-    // const duration = this.inViewMode ? 2.0 : 3.0;
     const duration = 1.8;
-    // const ease = this.inViewMode ? "power2.out" : "sine.in";
-    // const ease = this.inViewMode ? "power2.out" : "sine.inOut";
-    const ease = "sine.inOut";
+    const ease = "sine.out";
 
     uniforms._Entering.value = this.inViewMode ? 1.0 : 0.0;
 
@@ -161,7 +158,6 @@ export default class ProjectQuadMediator extends DomquadMediator {
       value: this.inViewMode ? 1.0 : 0.0,
       duration,
       ease,
-      // delay: 0.1
     });
 
   }
