@@ -168,6 +168,16 @@ body {
 
     &__clip-section {
         overflow: hidden;
+        display: inline-block;
+    }
+
+    &__loading-bar {
+        width: 20vw;
+        display: inline-block;
+        height: 2px;
+        background-color: black;
+        transform: scaleX(0);
+        // transform: translate(0px, .5vw)
     }
 
     &__copy-container {

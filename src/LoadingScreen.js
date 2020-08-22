@@ -12,15 +12,16 @@ export default class LoadingScreen {
 
         this.el = document.body.querySelector('.loader');
 
-        this.copyContainer = document.body.querySelector('.loader__copy-container');
-        this.title = document.body.querySelector('.loader__title');
-        this.subTitle = document.body.querySelector('.loader__sub-title');
-
-        this.title.firstElementChild.innerHTML = "Douglas Lilliequist"
-        this.subTitle.firstElementChild.innerHTML = "Creative Technologist"
+        this.loadingBar = document.body.querySelector('.loader__loading-bar');
+        gsap.set(this.loadingBar, {
+            scaleX: 0
+        });
 
         this.totalContent = 0;
         this.contentCount = 0;
+
+        this.currentScale = 0;
+        this.targetScale = 0;
 
         this.reveal();
 
@@ -35,46 +36,76 @@ export default class LoadingScreen {
         });
 
         emitter.on(events.TEXTURE_LOADED, this.updateProgress);
-        // emitter.on(events.UPDATE, this.update);
+        emitter.on(events.UPDATE, this.update);
         // emitter.on(events.CONTENT_LOADED, this.hide);
 
     }
 
     reveal() {
 
-        gsap.fromTo(this.copyContainer, {
-            y: -50,
-            opacity: 1
-        }, {
-            delay: 1.0,
-            duration: 1.0,
-            y: 0.0,
-            z: 0.0,
-            opacity: 1.0,
-            ease: "power1.out"
-        });
+        // gsap.fromTo(this.copyContainer, {
+        //     // y: -50,
+        //     opacity: 1
+        // }, {
+        //     delay: 1.0,
+        //     duration: 1.0,
+        //     // y: 0.0,
+        //     z: 0.0,
+        //     opacity: 1.0,
+        //     ease: "power1.out"
+        // });
 
     }
 
     hide = () => {
 
-        const hideTl = new gsap.timeline({
-            delay: 2.0,
+        // const hideTl = new gsap.timeline({
+        //     delay: 2.0,
+        //     onStart: () => {
+        //         emitter.off(events.UPDATE, this.update);
+        //     },
+        //     onComplete: () => {
+        //         // emitter.off(events.UPDATE, this.update);
+        //         gsap.delayedCall(0.5, () => {
+        //             this.el.classList.add('loaded');
+        //             emitter.emit(events.LOADING_ANIM_COMPLETED);
+        //             window.contentLoaded = true;
+        //         })
+        //     }
+        // });
+
+        // hideTl.to(this.loadingBar, {
+        //     duration: 0.5,
+        //     ease: "power1.out",
+        //     scaleX: 0,
+        //     transformOrigin: "center right"
+        // });
+
+        gsap.to(this.loadingBar, {
+            delay: 1.5,
+            duration: 0.5,
+            ease: "power1.out",
+            scaleX: 0,
+            transformOrigin: "center right",
+            onStart: () => {
+                emitter.off(events.UPDATE, this.update);
+            },
             onComplete: () => {
-                this.el.classList.add('loaded');
-                emitter.emit(events.LOADING_ANIM_COMPLETED);
-                window.contentLoaded = true;
-                // emitter.off(events.UPDATE, this.update);
+                gsap.delayedCall(0.5, () => {
+                    this.el.classList.add('loaded');
+                    emitter.emit(events.LOADING_ANIM_COMPLETED);
+                    window.contentLoaded = true;
+                })
             }
         });
 
-        hideTl.to(this.copyContainer, {
-            duration: 1.0,
-            // opacity: 1.001,
-            y: 50,
-            z: 0,
-            ease: "power2.in"
-        });
+        // hideTl.to(this.copyContainer, {
+        //     duration: 1.0,
+        //     // opacity: 1.001,
+        //     y: 50,
+        //     z: 0,
+        //     ease: "power2.in"
+        // });
 
         // hideTl.to(this.el, {
 
@@ -88,16 +119,18 @@ export default class LoadingScreen {
     updateProgress = (phase) => {
 
         this.contentCount++;
+        this.targetScale = this.contentCount / this.totalContent;
         if (this.contentCount === this.totalContent) this.hide();
 
     }
 
     update = () => {
 
-        this.alpha += (this.targetAlpha - this.alpha) * 0.125;
-
-        this.title.style.opacity = this.alpha;
-        this.subTitle.style.opacity = this.alpha;
+        this.currentScale += (this.targetScale - this.currentScale) * 0.1;
+        gsap.set(this.loadingBar, {
+            scaleX: this.currentScale,
+            transformOrigin: "center left"
+        });
 
     }
 
