@@ -53,7 +53,7 @@ varying float vDamp;
 #define RIPPLE_SPATIALF 7.0 
 #define RIPPLE_TEMPORALF 8.0
 
-#define RIPPLE_AMP 0.15
+#define RIPPLE_AMP 0.1
 // #define RIPPLE_AMP 0.1
 
 // #define HEIGHTMAP_AMP 0.53
