@@ -28,6 +28,7 @@ class EventEmitter {
         window.addEventListener("touchcancel", this.onTouchCancel, false);
 
         window.addEventListener("resize", this.onResize);
+        window.addEventListener("orientationchange", this.onResize);
 
         // gsap.config({
         //     force3D: true

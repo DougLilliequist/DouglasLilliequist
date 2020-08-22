@@ -18,9 +18,7 @@ export default class Transition extends Highway.Transition {
 
         from.remove();
         done();
-        transitionSlide.animate({
-            leaving: false
-        });
+
     }
 
     out({
@@ -29,14 +27,12 @@ export default class Transition extends Highway.Transition {
     }) {
 
         emitter.emit(events.PREPARE_UNMOUNT);
-        transitionSlide.animate({
-            leaving: true
-        }).then(() => {
-            done();
+        gsap.to(this, {
+            duration: 1.0,
+            onComplete: () => {
+                done();
+            }
         });
-        // gsap.delayedCall(1.0, () => {
-        //     done();
-        // })
 
     }
 

@@ -4,6 +4,7 @@ import About from "./Views/About/About.js";
 import WebGLContext from "./WebGL/WebGLContext.js";
 
 import LoadingScreen from './LoadingScreen.js';
+import LanscapeCTA from './LandscapeCTA.js';
 import Navigation from './Navigation.js';
 import Cursor from '../src/CanvasComponents/Cursor.js';
 
@@ -27,6 +28,10 @@ export default class App {
 
         if (!window.isMobile) {
             this.cursor = new Cursor();
+        }
+
+        if (window.isMobile) {
+            this.landscpeCTA = new LanscapeCTA();
         }
 
         this.webGLCTX = new WebGLContext({

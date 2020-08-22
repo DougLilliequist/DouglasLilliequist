@@ -3,6 +3,8 @@ precision highp float;
 uniform sampler2D _Image;
 uniform sampler2D _FlowMap;
 uniform float _Alpha;
+uniform float _ClipRevealPhase;
+uniform float _UvScalePhase;
 uniform float _Aspect;
 uniform vec2 _ViewplaneSize;
 
@@ -29,7 +31,7 @@ void main() {
 
     uv -= 0.5;
     // uv.x *= aspect;
-    uv*= mix(0.5, 1.0, _Alpha);
+    uv*= mix(0.5, 1.0, _UvScalePhase);
     uv += 0.5;
 
     vec3 flow = texture2D(_FlowMap, vClipPos).xyz;
@@ -46,6 +48,6 @@ void main() {
     // outPutCol += hash12(vUv * 1000.0) * 0.1;
 
 
-    gl_FragColor = vec4(outPutCol, mix(step(vUv.y, _Alpha), 1.0 - step(vUv.y, 1.0 - _Alpha), _RevealDirection));
+    gl_FragColor = vec4(outPutCol, mix(step(vUv.y, _ClipRevealPhase), 1.0 - step(vUv.y, 1.0 - _ClipRevealPhase), _RevealDirection));
 
 }

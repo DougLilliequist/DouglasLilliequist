@@ -45,6 +45,7 @@ varying float vDamp;
 #define HEIGHTMAPSTR 0.5
 #define lumaK 0.33333333333333333
 #define PI 3.14159265359
+#define HALFPI 3.14159265359 * 0.5
 
 // #define RIPPLE_SPATIALF 3.0
 #define RIPPLE_SPATIALF 3.0
@@ -84,26 +85,13 @@ void main() {
     // float phase = 1.0 - (dot(phasePos, phasePos));
     float dist = length(phasePos);
     // float phase = 1.0 - dist;
-    pos.z += ((1.0 - dist) * DISPLACEMENTSTR + (heightMapDistort * HEIGHTMAPSTR)) * _ScrollPhase * SCROLLDISTORTSTR;
+    // pos.z += ((1.0 - dist) * DISPLACEMENTSTR + (heightMapDistort * HEIGHTMAPSTR)) * _ScrollPhase * SCROLLDISTORTSTR;
+    pos.z += (1.0 - dist) * DISPLACEMENTSTR * _ScrollPhase * SCROLLDISTORTSTR;
 
     //PAGE REVEAL
-    // float target = _RevealPhase - uv.y;
-    // target = 1.0 - abs(target);
-    // target = target;
-    // float scanPhase = smoothstep(0.0, sin(uv.y * PI) * 0.5 + 0.5, target) * (_RevealPhase * 4.0 * (1.0 - _RevealPhase));
-    // pos.z += heightMapDistort * dampen * 1.1 * scanPhase;
-
-    vec2 toTarget = vec2(0.5, 0.0) - uv;
-    float targetDist = length(toTarget) * 0.6;
-    float distPhase = abs((_RevealPhase * _RevealPhase * _RevealPhase) - targetDist);
-    // distPhase *= distPhase;
-
-    float ripple = (1.0 - distPhase) * ((_RevealPhase) * 9.0 * (1.0 - (_RevealPhase)));
-    vPhase = ripple;
-    pos.z += heightMapDistort * dampen * 1.1 * ripple;
-
-
-    // pos.z += heightMapDistort * dampen * 1.1 * ((_RevealPhase * _RevealPhase) * 8.0 * (1.0 - (_RevealPhase * _RevealPhase)));
+    float scanPhase = (_RevealPhase * 4.0 * (1.0 - _RevealPhase));
+    vPhase = scanPhase;
+    pos.z += heightMapDistort * dampen * scanPhase;
 
     //PROJECT VIEW MODE RIPPLE
     float viewmodePhase = _ViewModePhase * 4.0 * (1.0 - _ViewModePhase);
@@ -115,13 +103,17 @@ void main() {
     mat4 modelViewProjection = projectionMatrix * modelViewMatrix;
     
     vDistort = vec3(0.0, 0.0, 0.0);
-    vec4 clipPos = modelViewProjection * vec4(pos, 1.0);
-    clipPos.xyz /= clipPos.w;
-    clipPos.xy = clipPos.xy * 0.5 + 0.5;
 
-    vec3 distort = texture2D(_FlowMap, clipPos.xy).xyz * DISTORTSTR;
-    vDistort = distort;
-    pos += distort * max(0.2, heightMapDistort) * _FlowMapPhase * distort.z * (_InView ? 1.0 : 0.0);
+    if(_InView) {
+        vec4 clipPos = modelViewProjection * vec4(pos, 1.0);
+        clipPos.xyz /= clipPos.w;
+        clipPos.xy = clipPos.xy * 0.5 + 0.5;
+
+        vec3 distort = texture2D(_FlowMap, clipPos.xy).xyz * DISTORTSTR;
+        vDistort = distort;
+        pos += distort * max(0.2, heightMapDistort) * _FlowMapPhase * distort.z;
+    // pos += distort * max(0.2, heightMapDistort) * _FlowMapPhase * distort.z * (_InView ? 1.0 : 0.0);
+    }
 
     gl_Position = modelViewProjection * vec4(pos, 1.0);
     vUv = uv;

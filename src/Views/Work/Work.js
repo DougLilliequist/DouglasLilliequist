@@ -40,13 +40,13 @@ export default class Work extends View {
   onLeave() {
     super.onLeave();
     emitter.emit(events.HIDE_CLICKDRAG_CTA);
-    this.removeEvents();
     this.playLeaveAnim();
   }
 
   onLeaveCompleted() {
     super.onLeaveCompleted();
     this.firstReveal = false;
+    this.removeEvents();
     this.removeStickyTransforms();
     if (this.inViewProjectMode) emitter.emit(events.RESET_QUADS);
     emitter.emit(events.REMOVE_DOMGL);
@@ -61,7 +61,7 @@ export default class Work extends View {
 
     this.viewProjectButton = this.el.querySelector('.view-project-button');
     this.viewProjectButton.stickyTransform = new StickyComponent({
-      domElement: this.el.querySelector('.view-project-button__transform'),
+      domElement: this.viewProjectButton,
       enable: true,
       event: this.showProject,
       includeHoverAnim: true
@@ -69,9 +69,10 @@ export default class Work extends View {
 
     this.exitButton = this.el.querySelector('.exit-button');
     this.exitButton.stickyTransform = new StickyComponent({
-      domElement: this.el.querySelector('.exit-button__transform'),
+      domElement: this.el.querySelector('.exit-button__icon'),
       enable: false,
-      event: this.closeProject
+      event: this.closeProject,
+      includeHoverAnim: true
     });
 
     this.projectTitle = document.getElementById('project_title');
@@ -81,8 +82,9 @@ export default class Work extends View {
 
     this.projectLink = this.el.querySelector(".project-link");
     this.projectLink.stickyTransform = new StickyComponent({
-      domElement: this.el.querySelector('.project-link__transform'),
-      enable: false
+      domElement: this.projectLink,
+      enable: false,
+      includeHoverAnim: true
     });
 
   }
@@ -273,7 +275,7 @@ export default class Work extends View {
       y: startY,
     }, {
       duration: dur,
-      opacity: 0.7,
+      opacity: 1.0,
       x: 0,
       y: 0,
       z: 0,
@@ -374,7 +376,7 @@ export default class Work extends View {
     this.interfaceAnim = gsap.timeline();
     this.showScrollInterface = state;
     const ease = this.showScrollInterface ? "power1.out" : "power1.in";
-    const duration = 0.35;
+    const duration = this.inScrollMode ? 0.2 : 0.35;
     const {
       height
     } = this.projectTitleTransformRect;
@@ -384,7 +386,6 @@ export default class Work extends View {
       duration,
       ease,
       opacity: this.showScrollInterface ? 1 : 0,
-      x: 0,
       y: this.showScrollInterface ? 0 : height * 0.1,
       z: 0
 
@@ -395,10 +396,9 @@ export default class Work extends View {
       duration,
       ease,
       opacity: this.showScrollInterface ? 1 : 0,
-      x: 0,
       y: 0,
       z: 0
-    }, "<0.1");
+    }, this.inScrollMode ? "<" : "<0.1");
 
   }
 

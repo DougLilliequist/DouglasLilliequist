@@ -20,8 +20,7 @@ export default class StickyComponent {
         domElement,
         enable,
         event = null,
-        includeHoverAnim = false,
-        defaultColor = "#000000"
+        includeHoverAnim = false
     }) {
 
         this.el = domElement;
@@ -31,7 +30,6 @@ export default class StickyComponent {
         this.inBounds = false;
         this.onMobile = window.isMobile;
         this.includeHoverAnim = includeHoverAnim;
-        this.defaultColor = defaultColor;
 
         this.w = window.innerWidth;
         this.h = window.innerHeight;
@@ -115,7 +113,7 @@ export default class StickyComponent {
         emitter.on(events.UPDATE, this.update);
         emitter.on(events.RESIZE, this.onResize);
 
-        this.el.addEventListener('mousedown', this.onClick);
+        if (this.event !== null) this.el.addEventListener('mousedown', this.onClick);
         if (this.event !== null && this.onMobile) this.el.addEventListener('touchstart', this.event);
 
         if (this.onMobile) return;
@@ -130,7 +128,7 @@ export default class StickyComponent {
         emitter.off(events.UPDATE, this.update);
         emitter.off(events.RESIZE, this.onResize);
 
-        this.el.removeEventListener('mousedown', this.onClick);
+        if (this.event !== null) this.el.removeEventListener('mousedown', this.onClick);
         if (this.event !== null && this.onMobile) this.el.removeEventListener('touchstart', this.event);
 
         if (this.onMobile) return;
@@ -181,8 +179,8 @@ export default class StickyComponent {
     update = () => {
 
         if (this.onMobile) return;
-        this.updateForce();
         if (this.enable === false) return;
+        this.updateForce();
         if (this.hovered) emitter.emit(events.UPDATE_STICKY_TARGET, {
             target: this.offsetPos,
             rect: this.rect
@@ -195,10 +193,20 @@ export default class StickyComponent {
         if (this.enable === false) return;
         window.hoveringLink = this.hovered = true;
         document.body.classList.add('pointer');
+
         emitter.emit(events.HOVERING_STICKY_COMPONENT, {
             rect: this.rect
         });
-        this.el.classList.add('sticky-hovered');
+
+        if (this.includeHoverAnim) {
+            if (this.hoverAnim) this.hoverAnim.kill();
+            this.hoverAnim = gsap.to(this.el, {
+                duration: 0.5,
+                opacity: 1,
+                z: 0
+            });
+
+        }
 
     }
 
@@ -208,14 +216,22 @@ export default class StickyComponent {
         document.body.classList.remove('pointer');
         window.hoveringLink = this.hovered = false;
         emitter.emit(events.LEAVING_STICKY_COMPONENT);
-        this.el.classList.remove('sticky-hovered');
+
+        if (this.includeHoverAnim) {
+            if (this.hoverAnim) this.hoverAnim.kill();
+            this.hoverAnim = gsap.to(this.el, {
+                duration: 0.5,
+                opacity: 0.7,
+                z: 0
+            });
+
+        }
 
     }
 
     onClick = () => {
 
-        // emitter.emit(events.LINK_SELECTED);
-        // if (this.hovered) this.removeHoverState();
+        emitter.emit(events.LINK_SELECTED);
         if (this.event !== null) this.event();
 
     }

@@ -9,6 +9,8 @@ uniform float _Scale;
 uniform float _Alpha;
 uniform float _RevealPhase;
 uniform float _RevealDirection;
+uniform float _ClipRevealPhase;
+uniform float _UvScalePhase;
 uniform float _ScrollPhase;
 uniform float _ViewModePhase;
 uniform float _Time;
@@ -37,7 +39,7 @@ void main() {
     vec2 uv = vUv;
     uv -= 0.5;
     uv *= mix(1.0, 0.85, _ScalePhase); //rename uniform
-    uv *= mix(0.5, 1.0, _RevealPhase);
+    uv *= mix(0.5, 1.0, _UvScalePhase);
     uv += 0.5;
 
     vec2 flow = vDistort.xy * _FlowMapPhase;
@@ -72,7 +74,7 @@ void main() {
     // alpha *= step(abs((vUv.y * 0.99) * 2.0 - 1.0), _RevealPhase);
     // alpha *= step(vUv.x, _RevealPhase);
     // alpha *= mix(step(vUv.y, _RevealPhase), step(1.0 - (vUv.x * 0.99), _RevealPhase), _RevealDirection);
-    alpha *= mix(step(vUv.y, _RevealPhase), 1.0 - step((vUv.y * 0.99), 1.0 - _RevealPhase), _RevealDirection);
+    alpha *= mix(step(vUv.y, _ClipRevealPhase), 1.0 - step((vUv.y * 0.99), 1.0 - _ClipRevealPhase), _RevealDirection);
     if(alpha <= 0.01) discard;
     gl_FragColor = vec4(col, alpha);
     // gl_FragColor = vec4(vDamp, vDamp, vDamp, alpha);

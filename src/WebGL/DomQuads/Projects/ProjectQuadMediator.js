@@ -189,7 +189,8 @@ export default class ProjectQuadMediator extends DomquadMediator {
     this.revealQuadAnim = gsap.timeline({
       onComplete: () => {
         this.children.forEach((quad) => {
-          quad.program.uniforms._RevealPhase.value = 1.0
+          quad.program.uniforms._ClipRevealPhase.value = 1.0
+          quad.program.uniforms._UvScalePhase.value = 1.0
         });
       }
     })
@@ -214,6 +215,18 @@ export default class ProjectQuadMediator extends DomquadMediator {
       ease: "power2.inOut",
     }, "<");
 
+    this.revealQuadAnim.to(uniforms._UvScalePhase, {
+      duration: 2.5,
+      value: 1.0,
+      ease: "power2.inOut",
+    }, "<");
+
+    this.revealQuadAnim.to(uniforms._ClipRevealPhase, {
+      duration: 2.5,
+      value: 1.0,
+      ease: "power2.inOut",
+    }, "<");
+
   }
 
   hideQuads = () => {
@@ -223,14 +236,14 @@ export default class ProjectQuadMediator extends DomquadMediator {
         value: 1.0
       });
 
-      gsap.to(quad.program.uniforms._RevealPhase, {
+      gsap.to(quad.program.uniforms._ClipRevealPhase, {
         duration: 1.0,
         value: 0.0,
         ease: "power2.inOut",
         onComplete: () => {
-          gsap.set(quad.program.uniforms._Alpha, {
-            value: 0.0
-          });
+          quad.program.uniforms._Alpha.value = 0.0;
+          quad.program.uniforms._RevealPhase.value = 0.0
+          quad.program.uniforms._UvScalePhase.value = 0.0
         }
       });
     });
@@ -244,7 +257,8 @@ export default class ProjectQuadMediator extends DomquadMediator {
   }) {
 
     // this.inputForce.y += this.inScrollMode ? inputDelta.y * 0.008 / dt : 0.0;
-    this.inputForce.y += this.inScrollMode ? inputDelta.y * 0.005 / dt : 0.0;
+    // this.inputForce.y += this.inScrollMode ? inputDelta.y * 0.005 / dt : 0.0;
+    this.inputForce.y += this.inScrollMode ? inputDelta.y * 0.01 / dt : 0.0;
     this.inputForce.y *= (Math.abs(this.inputForce.y) < 0.001) ? 0.0 : this.inputForceInertia;
 
     let i = 0;

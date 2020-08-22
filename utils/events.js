@@ -6,6 +6,7 @@ const events = {
     REVEAL_QUADS: 'reveal_quads',
 
     PREPARE_UNMOUNT: 'prepare_unmount',
+    TRANSITIONING: 'transitioning',
     REMOVE_DOMGL: 'remove_DOMGL',
     LOAD_PROJECT_CONTENT: 'load_Project_Content',
 
@@ -42,8 +43,11 @@ const events = {
     LEAVING_STICKY_COMPONENT: 'leaving_sticky_component',
     UPDATE_STICKY_TARGET: 'update_sticky_target',
 
+    HOVERING_NAV_LINK: 'hovering_nav_link',
+
     HOVERING_LINK: 'hovering_link',
     LEAVING_LINK: 'leaving_link',
+    LINK_SELECTED: 'link_selected',
 
     PLAY_VIDEO: 'play_video',
     PAUSE_VIDEO: 'pause_video',

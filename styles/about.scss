@@ -125,12 +125,12 @@
             cursor: none;
             display: flex;
             flex-direction: row;
+            transform: translate3d(0px,0px,0px);
 
-            &__transform {
+            // &__transform {
 
-                display: inline-block;
-                transform: translate3d(0px,0px,0px);
-            }
+            //     transform: translate3d(0px,0px,0px);
+            // }
 
             &__link {
                 display: inline-block;
@@ -138,7 +138,7 @@
                 color:#000000;
 
                 padding: 1.25vw;
-                cursor: none;
+                // cursor: none;
                 @include fluid-type($minWidth, $maxWidth, $minFontSize__about__links-body, $maxFontSize__about__links-body);
 
                 @media screen and (max-width: 414px) and (orientation: portrait) {

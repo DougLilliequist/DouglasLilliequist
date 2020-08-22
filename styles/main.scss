@@ -5,7 +5,7 @@
 html {
     // -webkit-user-select: none;
     // user-select: none;
-    cursor: none;
+    //cursor: none;
 }
 
 body {
@@ -20,8 +20,42 @@ body {
 
 }
 
+.landscape-cta {
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    overflow: hidden;
+    width: 100vw;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    background-color: rgba($color: #e6e6e6, $alpha: 1.0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @media screen and (max-width: 414px) and (orientation: portrait) {
+        // visibility: visible;
+        transform: scale(1);
+        z-index: 999;
+    }
+
+    @media screen and (max-width: 812px) and (orientation: landscape) {
+        transform: scale(0);
+        z-index: -3;
+    }
+
+    &__text {
+
+        @include fluid-type($minWidth, $maxWidth, $minFontSize__rotate-cta, $maxFontSize__rotate-cta);
+
+    }
+
+}
+
 .pointer {
-    // cursor: pointer;
+    cursor: pointer;
 }
 
 .scrolling {
@@ -120,7 +154,9 @@ body {
 .loader {
     position: absolute;
     width: 100vw;
-    height: 100vh;
+    // height: 100vh;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
     z-index: 100;
     overflow: hidden;
     pointer-events: none;
@@ -198,26 +234,26 @@ body {
         }
         
         .link {
-            text-decoration: none;
             color:#000000;
+            text-decoration: none;
             display: inline-block;
-            padding: 2vw;
+            // padding: 2vw 0 2vw 0;
+            margin: 2vw;
             position: relative;
             font-weight: $semi-bold;
             @include fluid-type($minWidth, $maxWidth, $minFontSize__navigation, $maxFontSize__navigation);
-            opacity: 0.7;
-            transition: opacity 0.5s;
+            opacity: 0.4;
+            // transition: opacity 0.5s;
             text-align: center;
-            cursor: none;
+            // cursor: none;
             // transform: translate3d(0, 0, 0);
 
-            &--active {
+            // &--active {
 
-                opacity: 1.0;
-                transition: opacity 0.5s;
-                // transform: translate3d(0,0,0);
+            //     opacity: 1.0;
+            //     // transform: translate3d(0,0,0);
     
-            }
+            // }
 
             &--disabled {
 
@@ -227,6 +263,13 @@ body {
 
 
         }
+    }
+}
+
+.sticky-hovered {
+    color: #ffffff !important;
+    path {
+        fill: #ffffff !important;
     }
 }
 

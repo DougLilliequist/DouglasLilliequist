@@ -50,7 +50,7 @@ export default class About extends View {
     this.header = document.querySelector('.about-copy__header');
     this.introText = document.querySelector('.about-copy__body-text');
     this.contactHeader = document.querySelector('.contact-container__header');
-    this.links = document.querySelectorAll('.contact-container__methods__transform');
+    this.links = document.querySelectorAll('.contact-container__methods__link');
 
   }
 
@@ -104,9 +104,8 @@ export default class About extends View {
     this.contactHeader.innerHTML = aboutContent.contactHeader;
     this.links.forEach((link, i) => {
 
-      const anchor = link.getElementsByTagName('a')[0];
-      anchor.innerHTML = aboutContent.contactMethods[i].type;
-      anchor.href = aboutContent.contactMethods[i].url;
+      link.innerHTML = aboutContent.contactMethods[i].type;
+      link.href = aboutContent.contactMethods[i].url;
 
     });
 
@@ -183,7 +182,7 @@ export default class About extends View {
       z: 0
     }, {
       duration: dur,
-      opacity: 0.7,
+      opacity: 1.0,
       stagger: 0.1,
       y: 0,
       z: 0,
@@ -201,7 +200,7 @@ export default class About extends View {
 
       onComplete: () => {
         this.links.forEach((link) => {
-          link.children[0].classList.remove('link--enabled');
+          link.classList.remove('link--enabled');
         });
       }
 

@@ -129,6 +129,12 @@ export default class ProjectQuad extends DomQuad {
       _RevealPhase: {
         value: 0.0
       },
+      _ClipRevealPhase: {
+        value: 0.0
+      },
+      _UvScalePhase: {
+        value: 0.0
+      },
       _ViewModePhase: {
         value: 0.0
       },
@@ -160,7 +166,7 @@ export default class ProjectQuad extends DomQuad {
   //consider making the animation faster
   applyScrollMode = () => {
     this.inScrollMode = true;
-    this.animteUniforms({
+    this.animateScrollModeUniforms({
       scale: 0.0,
       alpha: 1.0,
       alphaPhase: 1.0,
@@ -170,7 +176,7 @@ export default class ProjectQuad extends DomQuad {
 
   removeScrollMode = () => {
     this.inScrollMode = false;
-    this.animteUniforms({
+    this.animateScrollModeUniforms({
       scale: 1.0,
       alpha: this.isInView ? 1.0 : 0.0,
       alphaPhase: 0.0,
@@ -216,23 +222,43 @@ export default class ProjectQuad extends DomQuad {
     this.scrollPhase *= Math.abs(this.scrollPhase) < 0.001 ? 0.0 : 0.94;
   }
 
+  // restorePosition() {
+  //   let delta = this.targetPos - this.position.z;
+  //   this.restoreEase = delta * 0.1;
+  //   this.position.z += this.restoreEase;
+
+  //   if (Math.abs(delta) < 0.0001) {
+  //     this.position.z = Math.round(this.position.z);
+  //     this.restoreEase = 0;
+  //     // this.positionRestored = true;
+  //   } else {
+  //     this.restorePhase = delta / this.restoreDelta;
+  //     let fallOff = 1.0 - ((1.0 - this.restorePhase) * (1.0 - this.restorePhase));
+  //     this.restoreEase *= 0.5 + (1.0 - 0.5) * fallOff;
+  //     this.program.uniforms._RestorePhase.value = this.restorePhase;
+  //   }
+  // }
+
   restorePosition() {
     let delta = this.targetPos - this.position.z;
-    this.restoreEase = delta * 0.1;
+
+    this.restorePhase = 1.0 - (delta / this.restoreDelta);
+    let fallOff = 1.0 - (this.restorePhase * this.restorePhase);
+
+    // this.restoreEase = delta * (0.05 + (0.08 - 0.05) * fallOff);
+    this.restoreEase = delta / 10.0;
     this.position.z += this.restoreEase;
-    if (Math.abs(delta) < 0.0001) {
+
+    if (Math.abs(delta) < 0.00001) {
       this.position.z = Math.round(this.position.z);
       this.restoreEase = 0;
       // this.positionRestored = true;
-    } else {
-      this.restorePhase = this.program.uniforms._RestorePhase.value =
-        delta / this.restoreDelta;
-      let fallOff = 1.0 - (1.0 - this.restorePhase) * (1.0 - this.restorePhase);
-      this.restoreEase *= 0.1 + (1.0 - 0.1) * fallOff;
     }
+
+    this.program.uniforms._RestorePhase.value = this.restorePhase;
   }
 
-  animteUniforms({
+  animateScrollModeUniforms({
     scale,
     alpha,
     alphaPhase,
