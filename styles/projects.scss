@@ -132,7 +132,6 @@
                 margin: 0;
                 padding: 2vw;
                 @include fluid-type($minWidth, $maxWidth, $minFontSize__projects-body, $maxFontSize__projects-body);
-                cursor: none;
             }
 
     }
