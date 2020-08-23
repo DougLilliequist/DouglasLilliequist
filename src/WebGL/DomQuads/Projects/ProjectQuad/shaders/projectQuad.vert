@@ -91,7 +91,7 @@ void main() {
     pos.z += (1.0 - dist) * DISPLACEMENTSTR * _ScrollPhase * SCROLLDISTORTSTR;
 
     //PAGE REVEAL
-    float scanPhase = (_RevealPhase * 6.0 * (1.0 - _RevealPhase));
+    float scanPhase = (_RevealPhase * 4.0 * (1.0 - _RevealPhase));
     pos.z += heightMapDistort * dampen * scanPhase;
 
     //PROJECT VIEW MODE RIPPLE
