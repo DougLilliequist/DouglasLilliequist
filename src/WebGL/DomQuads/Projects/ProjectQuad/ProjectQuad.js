@@ -304,7 +304,7 @@ export default class ProjectQuad extends DomQuad {
   }
 
   updateVideoTexture() {
-    if (this.isInView === false) return;
+    if (this.isInView === false || this.inScrollMode) return;
     if (this.video.readyState >= this.video.HAVE_ENOUGH_DATA) {
       this.texture.image = this.video;
       this.texture.needsUpdate = true;
