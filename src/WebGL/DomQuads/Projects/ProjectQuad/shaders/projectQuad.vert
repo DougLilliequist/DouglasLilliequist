@@ -20,7 +20,7 @@ uniform float _Entering;
 
 uniform sampler2D _Image;
 uniform float _Scale;
-uniform bool _InView;
+uniform float _InView;
 
 uniform float _Time;
 
@@ -117,7 +117,7 @@ void main() {
     vec3 distort = texture2D(_FlowMap, clipPos.xy).xyz * DISTORTSTR;
     vDistort = distort;
     // pos += distort * max(0.2, heightMapDistort) * _FlowMapPhase * distort.z;
-    pos += distort * max(0.2, heightMapDistort) * _FlowMapPhase * distort.z * (_InView ? 1.0 : 0.0);
+    pos += distort * max(0.2, heightMapDistort) * _FlowMapPhase * distort.z * _InView;
     // }
 
     gl_Position = modelViewProjection * vec4(pos, 1.0);

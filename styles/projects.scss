@@ -46,6 +46,7 @@
 
     &__details {
         position: relative;
+        transform: translate3d(0,0,0);
         // margin: 3vw 0 0.2vw 0;
     }
 
@@ -78,6 +79,7 @@
 .title-container {
 
     position: relative;
+    transform: translate3d(0,0,0);
 
     // @media screen and (max-width: 414px) {
     //     height: 5%;

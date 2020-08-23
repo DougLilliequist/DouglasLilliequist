@@ -45,6 +45,7 @@ export default class AboutQuad extends DomQuad {
       generateMipmaps: false,
       minFilter: this.gl.LINEAR,
       magFilter: this.gl.LINEAR,
+      // anisotropy: 16,
       width: 1024,
       height: 1024
     });

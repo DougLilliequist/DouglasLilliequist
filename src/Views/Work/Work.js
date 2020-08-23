@@ -87,6 +87,15 @@ export default class Work extends View {
       includeHoverAnim: true
     });
 
+    this.projectTitleText = document.querySelector('.project-title__title');
+    this.projectTitleViewText = document.getElementById('project_title');
+    this.projectRoleText = document.getElementById('project_role');
+    this.projectTypeText = document.getElementById('project_type');
+    this.projectYearText = document.getElementById('project_year');
+    this.projectDescriptionText = document.getElementById('project_description');
+    this.projectTechText = document.getElementById('project_tech');
+    this.projectLinkText = document.getElementById('project_link');
+
   }
 
   initEvents() {
@@ -177,33 +186,25 @@ export default class Work extends View {
       link
     } = ProjectContent[contentIndex];
 
-    const projectTitleEl = document.querySelector('.project-title__title');
-    const projectTitleViewEl = document.getElementById('project_title');
-    const projectRoleEl = document.getElementById('project_role');
-    const projectTypeEl = document.getElementById('project_type');
-    const projectYearEl = document.getElementById('project_year');
-    const projectDescriptionEl = document.getElementById('project_description');
-    const projectTechEl = document.getElementById('project_tech');
-
-    projectTitleEl.innerText = title;
-    projectTitleViewEl.innerText = title;
-    projectTypeEl.innerText = type;
-    projectYearEl.innerText = year;
-    projectDescriptionEl.innerText = description;
-    projectTechEl.innerText = tech;
+    this.projectTitleText.innerText = title;
+    this.projectTitleViewText.innerText = title;
+    this.projectTypeText.innerText = type;
+    this.projectYearText.innerText = year;
+    this.projectDescriptionText.innerText = description;
+    this.projectTechText.innerText = tech;
 
     if (role === null) {
-      projectRoleEl.innerText = '';
-      projectRoleEl.classList.add('no-role');
+      this.projectRoleText.innerText = '';
+      this.projectRoleText.classList.add('no-role');
 
     } else {
-      projectRoleEl.innerText = role;
-      projectRoleEl.classList.remove('no-role');
+      this.projectRoleText.innerText = role;
+      this.projectRoleText.classList.remove('no-role');
     }
 
-    const projectLinkEl = document.getElementById('project_link');
-    projectLinkEl.innerText = link === '' ? '' : "visit project";
-    projectLinkEl.href = link;
+    // const projectLinkEl = document.getElementById('project_link');
+    this.projectLinkText.innerText = link === '' ? '' : "visit project";
+    this.projectLinkText.href = link;
 
   }
 
@@ -309,14 +310,6 @@ export default class Work extends View {
         z: 0
       });
 
-      this.leaveAnim.to(this.projectContentInfo, {
-
-        duration: dur,
-        opacity: 0,
-        z: 0,
-        ease: ease
-      }, "<");
-
       this.leaveAnim.to(this.projectType, {
         duration: dur,
         opacity: 0,
@@ -325,6 +318,14 @@ export default class Work extends View {
       }, "<");
 
       this.leaveAnim.to(this.projectYear, {
+        duration: dur,
+        opacity: 0,
+        z: 0,
+        ease: ease
+      }, "<");
+
+      this.leaveAnim.to(this.projectContentInfo, {
+
         duration: dur,
         opacity: 0,
         z: 0,
@@ -416,19 +417,19 @@ export default class Work extends View {
 
   revealProjectContent() {
 
-    if (this.revealProjectContentAnim) this.revealProjectContentAnim.kill();
+    // if (this.revealProjectContentAnim) this.revealProjectContentAnim.kill();
     this.revealProjectContentAnim = gsap.timeline({
       // delay: 1.0,
       onStart: () => {
         this.inViewProjectMode = true;
         this.viewProjectButton.stickyTransform.deActivate();
+        this.updateViewModeStyles({
+          viewing: true
+        });
         // emitter.emit(events.SHOW_PROJECT);
       },
       onComplete: () => {
         this.exitButton.stickyTransform.activate();
-        this.updateViewModeStyles({
-          viewing: true
-        });
         const projectLink = document.getElementById('project_link');
         if (projectLink.innerText === '') return;
         this.projectLink.stickyTransform.activate();
@@ -440,39 +441,50 @@ export default class Work extends View {
     this.revealProjectContentAnim.add(() => {
       emitter.emit(events.SHOW_PROJECT);
     }, "<")
-    this.revealProjectContentAnim.to(this.projectTitle, {
+    this.revealProjectContentAnim.fromTo(this.projectTitle, {
+      opacity: 0
+    }, {
       duration,
       opacity: 1,
       ease: pow,
       z: 0,
     }, "<0.5");
-    this.revealProjectContentAnim.to(this.projectType, {
+    this.revealProjectContentAnim.fromTo(this.projectType, {
+      opacity: 0
+    }, {
       duration,
       opacity: 1,
       ease: pow,
       z: 0,
     }, "<0.02");
-    this.revealProjectContentAnim.to(this.projectYear, {
+    this.revealProjectContentAnim.fromTo(this.projectYear, {
+      opacity: 0
+    }, {
       duration,
       opacity: 1,
       ease: pow,
       z: 0,
     }, "<0.02");
-    this.revealProjectContentAnim.to(this.projectContentInfo, {
+    this.revealProjectContentAnim.fromTo(this.projectContentInfo, {
+      opacity: 0
+    }, {
       opacity: 1,
       duration,
       z: 0,
       // stagger: 0.1,
     }, "<0.02")
-    this.revealProjectContentAnim.to(this.projectLink, {
+    this.revealProjectContentAnim.fromTo(this.projectLink, {
+      opacity: 0
+    }, {
       duration,
       opacity: 1,
       ease: pow,
       z: 0,
     }, "<0.02");
 
-    this.revealProjectContentAnim.to(this.exitButton, {
-
+    this.revealProjectContentAnim.fromTo(this.exitButton, {
+      opacity: 0,
+    }, {
       duration,
       ease: pow,
       opacity: 1,
@@ -484,7 +496,7 @@ export default class Work extends View {
 
   hideProjectContent = () => {
 
-    if (this.hideProjectContentAnim) this.hideProjectContentAnim.kill();
+    // if (this.hideProjectContentAnim) this.hideProjectContentAnim.kill();
     this.hideProjectContentAnim = gsap.timeline({
       onStart: () => {
         this.exitButton.stickyTransform.deActivate();
@@ -551,29 +563,12 @@ export default class Work extends View {
 
     if (!viewing) {
 
-      this.projectTitle.classList.add('not-viewing');
-
-      this.projectContentInfo.forEach((info) => {
-        info.classList.add('not-viewing');
-      })
-
-
-      this.projectType.classList.add('not-viewing');
-      this.projectYear.classList.add('not-viewing');
-      this.projectLink.classList.add('not-viewing');
+      document.querySelector('.project-container').classList.add('not-viewing');
       this.exitButton.classList.add('not-viewing');
 
     } else {
 
-      this.projectTitle.classList.remove('not-viewing');
-
-      this.projectContentInfo.forEach((info) => {
-        info.classList.remove('not-viewing');
-      })
-
-      this.projectType.classList.remove('not-viewing');
-      this.projectYear.classList.remove('not-viewing');
-      this.projectLink.classList.remove('not-viewing');
+      document.querySelector('.project-container').classList.remove('not-viewing');
       this.exitButton.classList.remove('not-viewing');
 
     }

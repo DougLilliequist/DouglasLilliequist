@@ -145,7 +145,7 @@ export default class ProjectQuad extends DomQuad {
         value: 0.0
       },
       _InView: {
-        value: false
+        value: 0.0
       },
       _Alpha: {
         value: 0.0
@@ -373,8 +373,9 @@ export default class ProjectQuad extends DomQuad {
   inView({
     inViewPosZ
   }) {
-    this.program.uniforms._InView.value = this.isInView =
+    this.isInView =
       Math.round(this.position.z) === inViewPosZ ? true : false;
+    this.program.uniforms._InView.value = this.isInView ? 1.0 : 0.0;
     return this.isInView;
   }
 }
