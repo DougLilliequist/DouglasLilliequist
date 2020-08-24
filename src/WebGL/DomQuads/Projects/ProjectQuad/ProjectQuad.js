@@ -12,6 +12,8 @@ import {
 const vert = require("./shaders/projectQuad.vert");
 const frag = require("./shaders/projectQuad.frag");
 
+import bNoise from '../../../../../static/data/*.png';
+
 import {
   makeid
 } from "../../../../../utils/Math.js";
@@ -22,6 +24,9 @@ import events from "../../../../../utils/events.js";
 import {
   gsap
 } from "gsap";
+import {
+  Vec2
+} from "../../../../../vendors/ogl/src/math/Vec2.js";
 
 export default class ProjectQuad extends DomQuad {
   constructor(gl, {
@@ -91,6 +96,21 @@ export default class ProjectQuad extends DomQuad {
       magFilter: this.gl.LINEAR
     });
 
+    const blueNoise = new Texture(this.gl, {
+      generateMipmaps: false,
+      width: 1024,
+      height: 1024,
+      minFilter: this.gl.NEAREST,
+      magFilter: this.gl.NEAREST,
+      wrapS: this.gl.REPEAT,
+      wrapT: this.gl.REPEAT
+    });
+
+    const bluenoiseImg = new Image();
+    bluenoiseImg.crossOrigin = "*";
+    bluenoiseImg.src = bNoise.blueNoise10241024;
+    bluenoiseImg.onload = () => blueNoise.image = bluenoiseImg;
+
     if (this.media.videoSrc !== null && window.isMobile === false)
       this.loadVideo();
     if (this.media.imageSrc !== null && window.isMobile) this.loadImage();
@@ -107,6 +127,12 @@ export default class ProjectQuad extends DomQuad {
       },
       _FlowMap: {
         value: new Texture(this.gl)
+      },
+      _BlueNoise: {
+        value: blueNoise
+      },
+      _Resolution: {
+        value: new Vec2(this.gl.canvas.width, this.gl.canvas.height)
       },
       _FlowMapPhase: {
         value: 1.0
@@ -159,7 +185,7 @@ export default class ProjectQuad extends DomQuad {
       vertex: vert,
       fragment: frag,
       uniforms: u,
-      transparent: true
+      transparent: false
     });
   };
 
@@ -249,7 +275,7 @@ export default class ProjectQuad extends DomQuad {
     this.restoreEase = delta / 10.0;
     this.position.z += this.restoreEase;
 
-    if (Math.abs(delta) < 0.00001) {
+    if (Math.abs(delta) < 0.001) {
       this.position.z = Math.round(this.position.z);
       this.restoreEase = 0;
       // this.positionRestored = true;
