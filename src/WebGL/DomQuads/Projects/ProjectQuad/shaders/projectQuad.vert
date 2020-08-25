@@ -124,6 +124,7 @@ void main() {
 
     gl_Position = modelViewProjection * vec4(pos, 1.0);
     vUv = uv;
+    // vMvPos = (modelViewMatrix * vec4(position, 1.0)).xyz;
     vMvPos = (modelViewMatrix * vec4(position, 1.0)).xyz;
 
 }

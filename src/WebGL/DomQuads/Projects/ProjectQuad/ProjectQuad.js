@@ -98,8 +98,8 @@ export default class ProjectQuad extends DomQuad {
 
     const blueNoise = new Texture(this.gl, {
       generateMipmaps: false,
-      width: 1024,
-      height: 1024,
+      width: 470,
+      height: 470,
       minFilter: this.gl.NEAREST,
       magFilter: this.gl.NEAREST,
       wrapS: this.gl.REPEAT,
@@ -108,7 +108,7 @@ export default class ProjectQuad extends DomQuad {
 
     const bluenoiseImg = new Image();
     bluenoiseImg.crossOrigin = "*";
-    bluenoiseImg.src = bNoise.blueNoise10241024;
+    bluenoiseImg.src = bNoise.BlueNoise64Tiled;
     bluenoiseImg.onload = () => blueNoise.image = bluenoiseImg;
 
     if (this.media.videoSrc !== null && window.isMobile === false)
@@ -269,10 +269,10 @@ export default class ProjectQuad extends DomQuad {
     let delta = this.targetPos - this.position.z;
 
     this.restorePhase = 1.0 - (delta / this.restoreDelta);
-    let fallOff = 1.0 - (this.restorePhase * this.restorePhase);
+    let fallOff = 1.0 - ((1.0 - this.restorePhase) * (1.0 - this.restorePhase));
 
-    // this.restoreEase = delta * (0.05 + (0.08 - 0.05) * fallOff);
-    this.restoreEase = delta / 10.0;
+    // this.restoreEase = delta * (0.04 + (0.08 - 0.04) * fallOff);
+    this.restoreEase = delta / (20.0 + ((10.0 - 20.0) * fallOff));
     this.position.z += this.restoreEase;
 
     if (Math.abs(delta) < 0.001) {
