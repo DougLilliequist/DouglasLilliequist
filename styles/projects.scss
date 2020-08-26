@@ -165,11 +165,20 @@
     .project-title {
 
         position: absolute;
-        width: 44.85vw;
         pointer-events: none;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        user-select: none;
+        -webkit-user-select: none;
+        transform: translate3d(0,0,0);
+
+
+        &__container {
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 44.85vw;
+
+        }
 
         @media screen and (max-width: 414px) and (orientation: portrait) 
         {
@@ -189,6 +198,30 @@
     
     }
 
+    // .negative-clip {
+        
+    //     position: absolute;
+    //     width: 28.5vw;
+    //     display: inline-block;
+    //     overflow: hidden;
+    //     // z-index: 2;
+    //     h1 {
+    //         color: #ffffff;
+    //     }
+
+    // }
+
+    // .project-title-negative__transform {
+
+    //     position: absolute;
+    //     width: 44.85vw;
+
+    //     h1 {
+    //         color: #ffffff;
+    //     }
+
+    // }
+
     .view-project-button {
 
         transform: translate3d(0,0,0);
@@ -196,6 +229,9 @@
         position: absolute;
         bottom: -7.5vw;
         display: inline-block;
+        user-select: none;
+        -webkit-user-select: none;
+
 
         p {
             text-align: center;

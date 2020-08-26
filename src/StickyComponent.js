@@ -116,6 +116,7 @@ export default class StickyComponent {
         emitter.on(events.RESIZE, this.onResize);
 
         this.el.addEventListener('mousedown', this.onClick);
+        this.el.addEventListener('touchstart', this.onClick);
         if (this.event !== null && this.onMobile) this.el.addEventListener('touchstart', this.event);
 
         if (this.onMobile) return;

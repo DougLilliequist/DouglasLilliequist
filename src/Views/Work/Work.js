@@ -100,7 +100,7 @@ export default class Work extends View {
 
   initEvents() {
 
-    this.enableUserInteraction = true;
+    this.enableUserInteraction = false;
     this.showScrollInterface = true;
     this.inScrollMode = false;
     this.inViewProjectMode = false;
@@ -210,7 +210,10 @@ export default class Work extends View {
 
   enableScrollMode = () => {
 
-    if ((window.hoveringLink && !window.isMobile) || (this.inViewProjectMode && !window.isMobile)) return;
+    if (window.hoveringLink && !window.isMobile) return;
+    if (this.inViewProjectMode && !window.isMobile) return;
+    if (this.enableUserInteraction === false) return;
+
     this.inScrollMode = true;
     document.body.classList.add('scrolling');
     this.viewProjectButton.stickyTransform.deActivate();
@@ -223,7 +226,10 @@ export default class Work extends View {
 
   disableScrollMode = () => {
 
-    if ((window.hoveringLink && !window.isMobile) || (this.inViewProjectMode && !window.isMobile)) return;
+    if (window.hoveringLink && !window.isMobile) return;
+    if (this.inViewProjectMode && !window.isMobile) return;
+    if (this.enableUserInteraction === false) return;
+
     this.inScrollMode = false;
     document.body.classList.remove('scrolling');
     this.viewProjectButton.stickyTransform.activate();
@@ -244,6 +250,9 @@ export default class Work extends View {
           this.firstReveal = true;
           emitter.emit(events.REVEAL_QUADS);
         }
+      },
+      onComplete: () => {
+        this.enableUserInteraction = true;
       }
     });
 
@@ -574,4 +583,5 @@ export default class Work extends View {
     }
 
   }
+
 }

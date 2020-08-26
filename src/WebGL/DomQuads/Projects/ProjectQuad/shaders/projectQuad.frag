@@ -161,29 +161,16 @@ void main() {
     float idleAlpha = smoothstep(MINVIEWDIST, MAXVIEWDIST, len);
     float phase = (len * len) / (6.0 * 6.0);
     float scrollPhase = smoothstep(0.1, 1.0, min(1.0, abs(_ScrollPhase)));
-    // float scrollAlpha = idleAlpha * (1.0 - ((1.0 - phase) * (1.0 - phase) * (1.0 - phase)));
-    // float scrollAlpha = idleAlpha * (1.0 - (phase * phase * phase));
-    // float scrollAlpha = idleAlpha * mix(0.7, 1.0, 2.1165 * phase * (1.0 - (phase * phase * phase)));
     float scrollAlpha = idleAlpha * mix(0.4, 0.7, phase * 4.0 * (1.0 - phase));
-
-    // float scrollAlpha = idleAlpha * mix(0.7, 1.0, phase * (1.0 - (phase * phase * phase)));
     float alpha = mix(idleAlpha, scrollAlpha, scrollPhase);
-    // float alpha = (1.0 - ((1.0 - phase) * (1.0 - phase) * (1.0 - phase)));
-    // float alpha = scrollAlpha;
     alpha *= _Alpha;
-    // alpha *= alpha;
-
-    // vec2 bNoiseCoord = gl_FragCoord.xy/_Resolution;
-    // bNoiseCoord *= _Resolution.x / _Resolution.y;
-    // float bNoise = texture2D(_BlueNoise, bNoiseCoord * 2.0).x;
-    // if(alpha < bNoise) discard;
 
     alpha = dither8x8(gl_FragCoord.xy, alpha);
 
     //reveal phase
     alpha *= mix(step(vUv.y, _ClipRevealPhase), 1.0 - step((vUv.y * 0.9999), 1.0 - _ClipRevealPhase), _RevealDirection);
     if(alpha <= 0.0) discard;
-    gl_FragColor = vec4(col, alpha);
+    gl_FragColor = vec4(col, 1.0);
     // gl_FragColor = vec4(vDamp, vDamp, vDamp, alpha);
     // gl_FragColor = vec4(vPhase, vPhase, vPhase, 1.0);
     // gl_FragColor = vec4(alpha, 0.0, 0.0, 1.0);
