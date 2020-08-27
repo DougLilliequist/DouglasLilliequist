@@ -104,13 +104,14 @@ export default class Work extends View {
     this.showScrollInterface = true;
     this.inScrollMode = false;
     this.inViewProjectMode = false;
+    this.projectIndex = 0;
 
     emitter.on(events.LOADING_ANIM_COMPLETED, () => {
       this.playEnterAnim();
       emitter.emit(events.SHOW_CLICKDRAG_CTA);
     });
 
-    emitter.on(events.LOAD_PROJECT_CONTENT, this.populateContent);
+    emitter.on(events.LOAD_PROJECT_CONTENT, this.updateContentSelection);
 
     if (!window.isMobile) {
       emitter.on(events.MOUSE_DOWN, this.enableScrollMode);
@@ -174,7 +175,19 @@ export default class Work extends View {
 
   }
 
-  populateContent = (contentIndex) => {
+  updateContentSelection = (contentIndex) => {
+
+    this.projectIndex = contentIndex;
+
+    const {
+      title
+    } = ProjectContent[this.projectIndex];
+
+    this.projectTitleText.innerText = title;
+
+  }
+
+  populateContent() {
 
     const {
       title,
@@ -184,9 +197,8 @@ export default class Work extends View {
       tech,
       role,
       link
-    } = ProjectContent[contentIndex];
+    } = ProjectContent[this.projectIndex];
 
-    this.projectTitleText.innerText = title;
     this.projectTitleViewText.innerText = title;
     this.projectTypeText.innerText = type;
     this.projectYearText.innerText = year;
@@ -430,6 +442,7 @@ export default class Work extends View {
     this.revealProjectContentAnim = gsap.timeline({
       // delay: 1.0,
       onStart: () => {
+        this.populateContent();
         this.inViewProjectMode = true;
         this.viewProjectButton.stickyTransform.deActivate();
         this.updateViewModeStyles({

@@ -268,11 +268,11 @@ export default class ProjectQuad extends DomQuad {
   restorePosition() {
     let delta = this.targetPos - this.position.z;
 
-    this.restorePhase = 1.0 - (delta / this.restoreDelta);
+    this.restorePhase = (delta / this.restoreDelta);
     let fallOff = 1.0 - ((1.0 - this.restorePhase) * (1.0 - this.restorePhase));
 
     // this.restoreEase = delta * (0.04 + (0.08 - 0.04) * fallOff);
-    this.restoreEase = delta / (20.0 + ((10.0 - 20.0) * fallOff));
+    this.restoreEase = delta / (16.0 + ((10.0 - 16.0) * fallOff));
     this.position.z += this.restoreEase;
 
     if (Math.abs(delta) < 0.001) {
@@ -281,7 +281,7 @@ export default class ProjectQuad extends DomQuad {
       // this.positionRestored = true;
     }
 
-    this.program.uniforms._RestorePhase.value = this.restorePhase;
+    this.program.uniforms._RestorePhase.value = 1.0 - this.restorePhase;
   }
 
   animateScrollModeUniforms({
