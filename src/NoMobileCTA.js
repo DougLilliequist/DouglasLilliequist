@@ -10,22 +10,29 @@ export default class NoMobileCTA {
         this.el = document.createElement('div');
         this.el.classList.add('no-mobile-cta');
 
-        // this.ctaText = document.createElement('div');
-        // this.ctaText.classList.add('landscape-cta__text');
-        // this.ctaText.innerHTML = "<img src = " >
+        const twitterLink = document.createElement('a');
+        twitterLink.href = "https://twitter.com/DougLilliequist";
+        twitterLink.innerText = "visit my twitter 👀";
+        twitterLink.classList.add('no-mobile-cta__contact-link');
+
+        const emailLink = document.createElement('a');
+        emailLink.href = "mailto:douglas@adventureclub.io";
+        emailLink.innerText = "or say hello 👋";
+        emailLink.target = "_blank";
+        emailLink.classList.add('no-mobile-cta__contact-link');
+        // this.el.appendChild(twitterLink);
 
         const greetingGif = new Image();
-        greetingGif.classList.add('greeting-gif');
+        greetingGif.classList.add('no-mobile-cta__greeting-gif');
 
         greetingGif.crossOrigin = "*";
         greetingGif.onload = () => {
             this.el.appendChild(greetingGif);
+            this.el.appendChild(twitterLink);
+            this.el.appendChild(emailLink);
         }
         greetingGif.src = gif.gaben;
-        document.body.appendChild(greetingGif);
         document.body.appendChild(this.el);
-
-        // this.initEvents();
 
     }
 
