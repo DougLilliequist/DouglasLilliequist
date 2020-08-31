@@ -20,7 +20,7 @@ body {
 
 }
 
-.landscape-cta {
+.no-mobile-cta {
 
     position: fixed;
     top: 0;
@@ -34,23 +34,31 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 999;
 
-    @media screen and (max-width: 414px) and (orientation: portrait) {
-        // visibility: visible;
-        transform: scale(1);
-        z-index: 999;
-    }
+    // @media screen and (max-width: 414px) and (orientation: portrait) {
+    //     // visibility: visible;
+    //     transform: scale(1);
+    //     z-index: 999;
+    // }
 
-    @media screen and (max-width: 812px) and (orientation: landscape) {
-        transform: scale(0);
-        z-index: -3;
-    }
+    // @media screen and (max-width: 812px) and (orientation: landscape) {
+    //     transform: scale(0);
+    //     z-index: -3;
+    // }
 
     &__text {
 
         @include fluid-type($minWidth, $maxWidth, $minFontSize__rotate-cta, $maxFontSize__rotate-cta);
 
     }
+
+}
+
+.greeting-gif {
+
+    width: 75%;
+    height: 75%;
 
 }
 
