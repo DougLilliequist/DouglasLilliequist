@@ -320,7 +320,7 @@ export default class Work extends View {
     this.leaveAnim = gsap.timeline();
 
     const ease = "sine.inOut";
-    const dur = 0.75;
+    const dur = 0.5;
 
     if (this.inViewProjectMode) {
 

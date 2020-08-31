@@ -49,6 +49,7 @@ export default class WebGLContext {
       height: h,
       canvas,
       powerPreference: "default",
+      //powerPreference: "high-performance",
       antialias: window.isMobile ? false : true,
       dpr: window.isMobile ? 2.0 : 1.0
     });
@@ -66,7 +67,7 @@ export default class WebGLContext {
       fov: 35,
       aspect: width / height,
       near: 0.01,
-      far: 5.0
+      far: 4.0
     });
 
     this.camera.position.set(0.0, 0.0, 1.0);

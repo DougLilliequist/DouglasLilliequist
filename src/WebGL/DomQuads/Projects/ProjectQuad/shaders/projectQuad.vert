@@ -73,7 +73,7 @@ void main() {
     vec3 col = texture2D(_Image, texCoord).xyz;
     float heightMapDistort = dot(col, vec3(0.299, 0.587, 0.114));
     heightMapDistort = mix(heightMapDistort, 1.0 - heightMapDistort, _FlipFlowMapForce);
-    float dampen = 1.0 - (smoothstep(0.3, 1.0, heightMapDistort));
+    float dampen = 1.0 - (smoothstep(0.1, 1.0, heightMapDistort));
     vDamp = dampen;
 
     //PROJECT VIEW MODE SCALE
@@ -91,9 +91,11 @@ void main() {
     // pos.z += ((1.0 - dist) * DISPLACEMENTSTR + (heightMapDistort * HEIGHTMAPSTR)) * _ScrollPhase * SCROLLDISTORTSTR;
     pos.z += (1.0 - dist) * DISPLACEMENTSTR * _ScrollPhase * SCROLLDISTORTSTR;
 
-    //PAGE REVEAL
-    float scanPhase = (_RevealPhase * 4.0 * (1.0 - _RevealPhase));
-    pos.z += heightMapDistort * dampen * scanPhase;
+    // //PAGE REVEAL
+    // float scanPhase = (_RevealPhase * 4.0 * (1.0 - _RevealPhase));
+    // // scanPhase = scanPhase * scanPhase;
+    // // pos.z += (1.0 - (cos((_RevealPhase * PI * 2.0) + pos.y) * 0.5 + 0.5)) * 0.3 * scanPhase;
+    // // pos.z += heightMapDistort * smoothstep(0.1, 0.2, heightMapDistort) * scanPhase * dampen;
 
     //PROJECT VIEW MODE RIPPLE
     // vec2 viewModePhasePos = phasePos * 0.45;
