@@ -7,7 +7,7 @@
     position: absolute;
     top: 50%;
     left: 5.15vw;
-    transform: translate(0%, -50%);
+    transform: translate3d(0%, -50%, 0px);
     width: 13.65vw;
     height: 29.9vw;
     max-width: 638px;
@@ -26,13 +26,14 @@
 
     &__details {
         position: relative;
-        transform: translate3d(0,0,0);
+        // transform: translate3d(0px,0px,0px);
         // margin: 3vw 0 0.2vw 0;
     }
 
     &__year {
         position: relative;
         display: inline-block;
+        transform: translate3d(0px,0px,0px);
 
         p {
             @include fluid-type($minWidth, $maxWidth, $minFontSize__projects-details, $maxFontSize__projects-details);
@@ -42,6 +43,7 @@
     &__type {
 
         position: relative;
+        transform: translate3d(0px,0px,0px);
 
         p {
             margin: 0;
@@ -59,7 +61,7 @@
 .title-container {
 
     position: relative;
-    transform: translate3d(0,0,0);
+    transform: translate3d(0px,0px,0px);
 
         &__title {
 
@@ -69,7 +71,7 @@
             h1 {
                 margin: 0 0 2vw 0;
                 font-size: 1.365vw;
-                font-weight: $black;
+                font-weight: $bold;
                 letter-spacing: 0.05em;
                 text-transform: uppercase;
                 
@@ -88,11 +90,11 @@
         position: relative;
         width: 100%;
         margin: 0;
-        transform: translate3d(0,0,0);
 
         &__content {
 
             height: 9.45vw;
+            transform: translate3d(0px,0px,0px);
 
             h3 {
                 font-size: 1vw;
@@ -123,15 +125,16 @@
         // bottom: -1.0vw;
         bottom: -1.8vw;
         left: -1.85vw;
-        transform: translate3d(0,0,0);
+        transform: translate3d(0ox,0px,0px);
 
             .project-link {
                 display: inline-block;
-                text-decoration: none;
+                // text-decoration: none;
                 color:#000000;
                 margin: 0;
                 padding: 2vw;
                 @include fluid-type($minWidth, $maxWidth, $minFontSize__projects-body, $maxFontSize__projects-body);
+
             }
 
     }
@@ -141,7 +144,7 @@
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate3d(-50%, -50%, 0);
+        transform: translate3d(-50%, -50%, 0px);
         width: 28.5vw;
         height: 19vw;
         max-width: 739.06px;
@@ -167,9 +170,8 @@
         position: absolute;
         pointer-events: none;
         user-select: none;
+        transform: translate3d(0px,0px,0px);
         -webkit-user-select: none;
-        transform: translate3d(0,0,0);
-
 
         &__container {
 
@@ -177,6 +179,7 @@
             justify-content: center;
             align-items: center;
             width: 44.85vw;
+            mix-blend-mode: exclusion;
 
         }
 
@@ -188,7 +191,7 @@
         h1 {
             margin: 0;
             @include fluid-type($minWidth, $maxWidth, $minFontSize__projects-title-scrolling, $maxFontSize__projects-title-scrolling);
-            font-weight: $black;
+            font-weight: $bold;
             letter-spacing: 0.1vw;
             text-align: center;
             text-transform: uppercase;
@@ -224,7 +227,7 @@
 
     .view-project-button {
 
-        transform: translate3d(0,0,0);
+        transform: translate3d(0%,0%,0px);
 
         position: absolute;
         bottom: -7.5vw;
@@ -239,6 +242,7 @@
             margin: 0;
             font-size: 1vw;
             font-weight: 300;
+            text-decoration: underline;
         }
 
     }
@@ -248,7 +252,7 @@
         position: absolute;
         right: -24vw;
         top: 50%;
-        transform: translate3d(0%, -50%, 0);
+        transform: translate3d(0%, -50%, 0px);
 
 
         &__icon {

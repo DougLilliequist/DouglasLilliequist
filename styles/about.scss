@@ -7,7 +7,7 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate3d(-50%, -50%, 0px);
     width: 74.25vw;
     height: 29.25vw;
     max-width: 1450px;
@@ -32,7 +32,7 @@
     height: 29.16666667vw;
     max-height: 1024px;
     left: 50%;
-    transform: translate(-50%, 0%);
+    transform: translate3d(-50%, 0%, 0px);
 
     @media screen and (max-width: 414px) and (orientation: portrait) {
         width: 100%;
@@ -58,7 +58,7 @@
         height: 100%;
         display: flex;
         align-items: center;
-        transform: translate3d(0, 0, 0);
+        transform: translate3d(0px, 0px, 0px);
 
         @media screen and (max-width: 414px) and (orientation: portrait) {
             justify-content: center;
@@ -80,7 +80,7 @@
                 left: -0.2vw;
                 @include fluid-type($minWidth, $maxWidth, $minFontSize__about-header, $maxFontSize__about-header);
                 margin: 0 0 0 0;
-                font-weight: $black;                
+                font-weight: $bold;                
                 @media screen and (max-width: 414px) and (orientation: portrait) {
                     font-size: 8vw;
                 }
@@ -105,6 +105,7 @@
         position: absolute;
         position: absolute;
         bottom: 5.85vw;
+        transform: translate3d(0px, 0px, 0px);
 
         &__header {
 

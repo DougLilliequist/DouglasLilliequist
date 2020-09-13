@@ -143,49 +143,41 @@ export default class About extends View {
     enterAnim.fromTo(this.header, {
       opacity: 0,
       y: startY,
-      z: 0
     }, {
       duration: dur,
       opacity: 1,
       y: 0,
-      z: 0,
       ease: ease
     }, "<");
 
     enterAnim.fromTo(this.introText, {
       opacity: 0,
       y: startY,
-      z: 0
     }, {
       duration: dur,
       opacity: 1,
       y: 0,
-      z: 0,
       ease: ease
     }, "<0.05");
 
     enterAnim.fromTo(this.contactHeader, {
       opacity: 0,
       y: startY,
-      z: 0
     }, {
       duration: dur,
       opacity: 1,
       y: 0,
-      z: 0,
       ease: ease
     }, "<0.05");
 
     enterAnim.fromTo(this.links, {
       opacity: 0,
       y: startY,
-      z: 0
     }, {
       duration: dur,
       opacity: 1.0,
       stagger: 0.1,
       y: 0,
-      z: 0,
       ease
     }, "<0.1");
 
@@ -210,7 +202,6 @@ export default class About extends View {
       duration: dur,
       opacity: 0,
       stagger: -0.05,
-      z: 0,
       ease: ease
     }, "<");
 
@@ -218,21 +209,18 @@ export default class About extends View {
       duration: dur,
       opacity: 0,
       ease: ease,
-      z: 0,
     }, "<0.05");
 
     leaveAnim.to(this.introText, {
       duration: dur,
       opacity: 0,
       ease: ease,
-      z: 0,
     }, "<0.05");
 
     leaveAnim.to(this.header, {
       duration: dur,
       opacity: 0,
       ease: ease,
-      z: 0
     }, "<0.05");
 
   }

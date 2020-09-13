@@ -248,31 +248,10 @@ export default class ProjectQuad extends DomQuad {
     this.scrollPhase *= Math.abs(this.scrollPhase) < 0.001 ? 0.0 : 0.94;
   }
 
-  // restorePosition() {
-  //   let delta = this.targetPos - this.position.z;
-  //   this.restoreEase = delta * 0.1;
-  //   this.position.z += this.restoreEase;
-
-  //   if (Math.abs(delta) < 0.0001) {
-  //     this.position.z = Math.round(this.position.z);
-  //     this.restoreEase = 0;
-  //     // this.positionRestored = true;
-  //   } else {
-  //     this.restorePhase = delta / this.restoreDelta;
-  //     let fallOff = 1.0 - ((1.0 - this.restorePhase) * (1.0 - this.restorePhase));
-  //     this.restoreEase *= 0.5 + (1.0 - 0.5) * fallOff;
-  //     this.program.uniforms._RestorePhase.value = this.restorePhase;
-  //   }
-  // }
-
   restorePosition() {
     let delta = this.targetPos - this.position.z;
-
     this.restorePhase = (delta / this.restoreDelta);
-    let fallOff = 1.0 - ((1.0 - this.restorePhase) * (1.0 - this.restorePhase));
-
-    // this.restoreEase = delta * (0.04 + (0.08 - 0.04) * fallOff);
-    this.restoreEase = delta / (16.0 + ((10.0 - 16.0) * fallOff));
+    this.restoreEase = delta / 10.0; //lerp the easeing speed
     this.position.z += this.restoreEase;
 
     if (Math.abs(delta) < 0.001) {

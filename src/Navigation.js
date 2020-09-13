@@ -103,7 +103,7 @@ export default class Navigation {
         }, {
             opacity: 1.0,
             duration: 0.8,
-            // z: 0,
+            z: 0,
             onStart: () => {
                 this.links.forEach((link) => {
                     if (link.href === window.location.href) {

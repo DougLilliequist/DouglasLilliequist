@@ -37,11 +37,11 @@ export const ProjectContent = [
     {
         title: 'Memory Phase',
         type: 'Experiment',
-        description: 'Evanescent AR voxels',
-        tech: 'Unity3D / ARFoundation + ARKit / GPGPU',
-        year: 2019,
+        description: 'Optical flow velocity applied to particles',
+        tech: 'WebGL / Optical Flow / GPGPU',
+        year: 2020,
         role: null,
-        link: '',
+        link: 'https://douglilliequist.github.io/MemoryPhase/',
         media: {
             videoSrc: projectVideos.sken256256,
             imageSrc: img.selfportrait512512,

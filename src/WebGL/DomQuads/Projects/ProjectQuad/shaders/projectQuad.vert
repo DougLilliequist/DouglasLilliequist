@@ -53,7 +53,7 @@ varying float vDamp;
 // #define RIPPLE_SPATIALF 7.0 
 // #define RIPPLE_TEMPORALF 8.0
 
-#define RIPPLE_AMP 0.1
+#define RIPPLE_AMP 0.25
 // #define RIPPLE_AMP 0.1
 
 // #define HEIGHTMAP_AMP 0.53
@@ -81,31 +81,19 @@ void main() {
 
     //SCROLL FORCE
     vec2 phasePos = position.xy;
-    // phasePos.xy *= 0.7; //makes quads look better but I dont think this is correct (could have just used any constant)
-    // float phase = 1.0 - (dot(phasePos, phasePos));
-    // vec2 scrollPhasePos = phasePos * 0.8;
     vec2 scrollPhasePos = phasePos;
     float dist = length(phasePos);
-    // float dist = dot(scrollPhasePos, scrollPhasePos);
-    // float phase = 1.0 - dist;
-    // pos.z += ((1.0 - dist) * DISPLACEMENTSTR + (heightMapDistort * HEIGHTMAPSTR)) * _ScrollPhase * SCROLLDISTORTSTR;
     pos.z += (1.0 - dist) * DISPLACEMENTSTR * _ScrollPhase * SCROLLDISTORTSTR;
-
-    // //PAGE REVEAL
-    // float scanPhase = (_RevealPhase * 4.0 * (1.0 - _RevealPhase));
-    // // scanPhase = scanPhase * scanPhase;
-    // // pos.z += (1.0 - (cos((_RevealPhase * PI * 2.0) + pos.y) * 0.5 + 0.5)) * 0.3 * scanPhase;
-    // // pos.z += heightMapDistort * smoothstep(0.1, 0.2, heightMapDistort) * scanPhase * dampen;
+    pos.z += smoothstep(0.5, 1.0, heightMapDistort) * dampen * 0.7 * _ScrollPhase;
 
     //PROJECT VIEW MODE RIPPLE
-    // vec2 viewModePhasePos = phasePos * 0.45;
     vec2 viewModePhasePos = phasePos;
-    // float dist2 = dot(viewModePhasePos, viewModePhasePos);
-    float dist2 =dist;
+    float viewmodePhase = _ViewModePhase * 4.0 * (1.0 - _ViewModePhase);    
+    float phaseDist = 1.0 - abs((_ViewModePhase * 2.2) - dist);
+    phaseDist = smoothstep(0.0, 1.0, phaseDist);
+    float ripplePhase = phaseDist * RIPPLE_AMP * viewmodePhase;
+    vPhase = phaseDist * viewmodePhase;
 
-    float viewmodePhase = _ViewModePhase * 4.0 * (1.0 - _ViewModePhase);
-    float ripplePhase = (1.0 - (cos((RIPPLE_TEMPORALF * _ViewModePhase) + ((1.0 - dist2) * RIPPLE_SPATIALF * mix(-1.0, 1.0, _Entering))))) * RIPPLE_AMP;
-    ripplePhase *= viewmodePhase;
     pos.z += ripplePhase;
     pos.z += heightMapDistort * HEIGHTMAP_AMP * dampen * ripplePhase;
 
@@ -113,20 +101,18 @@ void main() {
     
     vDistort = vec3(0.0, 0.0, 0.0);
 
-    // if(_InView) {
+    if(_InView == 1.0) {
     vec4 clipPos = modelViewProjection * vec4(pos, 1.0);
     clipPos.xyz /= clipPos.w;
     clipPos.xy = clipPos.xy * 0.5 + 0.5;
 
     vec3 distort = texture2D(_FlowMap, clipPos.xy).xyz * DISTORTSTR;
     vDistort = distort;
-    // pos += distort * max(0.2, heightMapDistort) * _FlowMapPhase * distort.z;
-    pos += distort * max(0.2, heightMapDistort) * _FlowMapPhase * distort.z * _InView;
-    // }
+    pos += distort * max(0.2, heightMapDistort) * _FlowMapPhase * distort.z;
+    }
 
     gl_Position = modelViewProjection * vec4(pos, 1.0);
     vUv = uv;
-    // vMvPos = (modelViewMatrix * vec4(position, 1.0)).xyz;
     vMvPos = (modelViewMatrix * vec4(position, 1.0)).xyz;
 
 }

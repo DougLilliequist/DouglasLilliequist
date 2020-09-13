@@ -40,15 +40,15 @@ export default class Cursor {
 
         this.position = {
 
-            x: 0,
-            y: 0,
+            x: window.innerWidth * 0.5,
+            y: window.innerHeight * 0.5,
 
         }
 
         this.prevPosition = {
 
-            x: 0,
-            y: 0
+            x: window.innerWidth * 0.5,
+            y: window.innerHeight * 0.5,
 
         }
 
@@ -60,8 +60,8 @@ export default class Cursor {
         }
 
         this.inputPos = {
-            x: 0,
-            y: 0
+            x: window.innerWidth * 0.5,
+            y: window.innerHeight * 0.2,
         }
 
         this.target = {
