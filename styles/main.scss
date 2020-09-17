@@ -173,6 +173,14 @@ body {
         transform: scaleX(0);
     }
 
+    &__progress {
+        margin: 0;
+        color: #ffffff;
+        font-size: 1.25vw;
+        font-weight: $semi-bold;
+        
+    }
+
     &__copy-container {
         
         display: flex;
@@ -273,6 +281,8 @@ body {
 
 .deactivated {
     pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .transition-slide {

@@ -58,7 +58,7 @@ varying float vDamp;
 
 // #define HEIGHTMAP_AMP 0.53
 // #define HEIGHTMAP_AMP 0.33
-#define HEIGHTMAP_AMP 3.0
+#define HEIGHTMAP_AMP 1.5
 
 
 void main() {
@@ -73,7 +73,7 @@ void main() {
     vec3 col = texture2D(_Image, texCoord).xyz;
     float heightMapDistort = dot(col, vec3(0.299, 0.587, 0.114));
     heightMapDistort = mix(heightMapDistort, 1.0 - heightMapDistort, _FlipFlowMapForce);
-    float dampen = 1.0 - (smoothstep(0.1, 1.0, heightMapDistort));
+    float dampen = (smoothstep(0.8, 1.0, heightMapDistort));
     vDamp = dampen;
 
     //PROJECT VIEW MODE SCALE
@@ -84,18 +84,18 @@ void main() {
     vec2 scrollPhasePos = phasePos;
     float dist = length(phasePos);
     pos.z += (1.0 - dist) * DISPLACEMENTSTR * _ScrollPhase * SCROLLDISTORTSTR;
-    pos.z += smoothstep(0.5, 1.0, heightMapDistort) * dampen * 0.7 * _ScrollPhase;
+    pos.z += heightMapDistort * dampen * 0.2 * _ScrollPhase;
 
     //PROJECT VIEW MODE RIPPLE
     vec2 viewModePhasePos = phasePos;
     float viewmodePhase = _ViewModePhase * 4.0 * (1.0 - _ViewModePhase);    
-    float phaseDist = 1.0 - abs((_ViewModePhase * 2.2) - dist);
+    float phaseDist = 1.0 - abs((_ViewModePhase * 2.1) - dist);
     phaseDist = smoothstep(0.0, 1.0, phaseDist);
     float ripplePhase = phaseDist * RIPPLE_AMP * viewmodePhase;
     vPhase = phaseDist * viewmodePhase;
 
     pos.z += ripplePhase;
-    pos.z += heightMapDistort * HEIGHTMAP_AMP * dampen * ripplePhase;
+    pos.z += heightMapDistort * HEIGHTMAP_AMP * ripplePhase;
 
     mat4 modelViewProjection = projectionMatrix * modelViewMatrix;
     
