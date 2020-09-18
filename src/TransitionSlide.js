@@ -50,5 +50,5 @@ class TransitionSlide {
 
 }
 
-const transitionSlide = new TransitionSlide();
-export default transitionSlide;
+// const transitionSlide = new TransitionSlide();
+// export default transitionSlide;

@@ -12,6 +12,8 @@ import {
 const vert = require("./shaders/projectQuad.vert");
 const frag = require("./shaders/projectQuad.frag");
 
+import bNoise from '../../../../../static/data/*.png';
+
 import {
   makeid
 } from "../../../../../utils/Math.js";
@@ -22,6 +24,9 @@ import events from "../../../../../utils/events.js";
 import {
   gsap
 } from "gsap";
+import {
+  Vec2
+} from "../../../../../vendors/ogl/src/math/Vec2.js";
 
 export default class ProjectQuad extends DomQuad {
   constructor(gl, {
@@ -91,6 +96,21 @@ export default class ProjectQuad extends DomQuad {
       magFilter: this.gl.LINEAR
     });
 
+    const blueNoise = new Texture(this.gl, {
+      generateMipmaps: false,
+      width: 470,
+      height: 470,
+      minFilter: this.gl.NEAREST,
+      magFilter: this.gl.NEAREST,
+      wrapS: this.gl.REPEAT,
+      wrapT: this.gl.REPEAT
+    });
+
+    const bluenoiseImg = new Image();
+    bluenoiseImg.crossOrigin = "*";
+    bluenoiseImg.src = bNoise.BlueNoise64Tiled;
+    bluenoiseImg.onload = () => blueNoise.image = bluenoiseImg;
+
     if (this.media.videoSrc !== null && window.isMobile === false)
       this.loadVideo();
     if (this.media.imageSrc !== null && window.isMobile) this.loadImage();
@@ -107,6 +127,12 @@ export default class ProjectQuad extends DomQuad {
       },
       _FlowMap: {
         value: new Texture(this.gl)
+      },
+      _BlueNoise: {
+        value: blueNoise
+      },
+      _Resolution: {
+        value: new Vec2(this.gl.canvas.width, this.gl.canvas.height)
       },
       _FlowMapPhase: {
         value: 1.0
@@ -129,6 +155,12 @@ export default class ProjectQuad extends DomQuad {
       _RevealPhase: {
         value: 0.0
       },
+      _ClipRevealPhase: {
+        value: 0.0
+      },
+      _UvScalePhase: {
+        value: 0.0
+      },
       _ViewModePhase: {
         value: 0.0
       },
@@ -139,7 +171,7 @@ export default class ProjectQuad extends DomQuad {
         value: 0.0
       },
       _InView: {
-        value: false
+        value: 0.0
       },
       _Alpha: {
         value: 0.0
@@ -153,14 +185,14 @@ export default class ProjectQuad extends DomQuad {
       vertex: vert,
       fragment: frag,
       uniforms: u,
-      transparent: true
+      transparent: false
     });
   };
 
   //consider making the animation faster
   applyScrollMode = () => {
     this.inScrollMode = true;
-    this.animteUniforms({
+    this.animateScrollModeUniforms({
       scale: 0.0,
       alpha: 1.0,
       alphaPhase: 1.0,
@@ -170,7 +202,7 @@ export default class ProjectQuad extends DomQuad {
 
   removeScrollMode = () => {
     this.inScrollMode = false;
-    this.animteUniforms({
+    this.animateScrollModeUniforms({
       scale: 1.0,
       alpha: this.isInView ? 1.0 : 0.0,
       alphaPhase: 0.0,
@@ -218,21 +250,20 @@ export default class ProjectQuad extends DomQuad {
 
   restorePosition() {
     let delta = this.targetPos - this.position.z;
-    this.restoreEase = delta * 0.1;
+    this.restorePhase = (delta / this.restoreDelta);
+    this.restoreEase = delta / 10.0; //lerp the easeing speed
     this.position.z += this.restoreEase;
-    if (Math.abs(delta) < 0.0001) {
+
+    if (Math.abs(delta) < 0.001) {
       this.position.z = Math.round(this.position.z);
       this.restoreEase = 0;
       // this.positionRestored = true;
-    } else {
-      this.restorePhase = this.program.uniforms._RestorePhase.value =
-        delta / this.restoreDelta;
-      let fallOff = 1.0 - (1.0 - this.restorePhase) * (1.0 - this.restorePhase);
-      this.restoreEase *= 0.1 + (1.0 - 0.1) * fallOff;
     }
+
+    this.program.uniforms._RestorePhase.value = 1.0 - this.restorePhase;
   }
 
-  animteUniforms({
+  animateScrollModeUniforms({
     scale,
     alpha,
     alphaPhase,
@@ -278,7 +309,7 @@ export default class ProjectQuad extends DomQuad {
   }
 
   updateVideoTexture() {
-    if (this.isInView === false) return;
+    if (this.isInView === false || this.inScrollMode) return;
     if (this.video.readyState >= this.video.HAVE_ENOUGH_DATA) {
       this.texture.image = this.video;
       this.texture.needsUpdate = true;
@@ -347,8 +378,9 @@ export default class ProjectQuad extends DomQuad {
   inView({
     inViewPosZ
   }) {
-    this.program.uniforms._InView.value = this.isInView =
+    this.isInView =
       Math.round(this.position.z) === inViewPosZ ? true : false;
+    this.program.uniforms._InView.value = this.isInView ? 1.0 : 0.0;
     return this.isInView;
   }
 }

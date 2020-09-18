@@ -47,10 +47,10 @@ export default class About extends View {
   initReferences() {
 
     this.domGLReferenceElement = this.el.querySelector('.portrait-container__portrait');
-    this.header = document.querySelector('.about-copy__intro__header');
-    this.introText = document.querySelector('.about-copy__intro__body-text');
+    this.header = document.querySelector('.about-copy__header');
+    this.introText = document.querySelector('.about-copy__body-text');
     this.contactHeader = document.querySelector('.contact-container__header');
-    this.links = document.querySelectorAll('.contact-container__methods__transform');
+    this.links = document.querySelectorAll('.contact-container__methods__link');
 
   }
 
@@ -104,9 +104,8 @@ export default class About extends View {
     this.contactHeader.innerHTML = aboutContent.contactHeader;
     this.links.forEach((link, i) => {
 
-      const anchor = link.getElementsByTagName('a')[0];
-      anchor.innerHTML = aboutContent.contactMethods[i].type;
-      anchor.href = aboutContent.contactMethods[i].url;
+      link.innerHTML = aboutContent.contactMethods[i].type;
+      link.href = aboutContent.contactMethods[i].url;
 
     });
 
@@ -144,49 +143,41 @@ export default class About extends View {
     enterAnim.fromTo(this.header, {
       opacity: 0,
       y: startY,
-      z: 0
     }, {
       duration: dur,
       opacity: 1,
       y: 0,
-      z: 0,
       ease: ease
     }, "<");
 
     enterAnim.fromTo(this.introText, {
       opacity: 0,
       y: startY,
-      z: 0
     }, {
       duration: dur,
       opacity: 1,
       y: 0,
-      z: 0,
       ease: ease
     }, "<0.05");
 
     enterAnim.fromTo(this.contactHeader, {
       opacity: 0,
       y: startY,
-      z: 0
     }, {
       duration: dur,
       opacity: 1,
       y: 0,
-      z: 0,
       ease: ease
     }, "<0.05");
 
     enterAnim.fromTo(this.links, {
       opacity: 0,
       y: startY,
-      z: 0
     }, {
       duration: dur,
-      opacity: 0.7,
+      opacity: 1.0,
       stagger: 0.1,
       y: 0,
-      z: 0,
       ease
     }, "<0.1");
 
@@ -201,7 +192,7 @@ export default class About extends View {
 
       onComplete: () => {
         this.links.forEach((link) => {
-          link.children[0].classList.remove('link--enabled');
+          link.classList.remove('link--enabled');
         });
       }
 
@@ -211,7 +202,6 @@ export default class About extends View {
       duration: dur,
       opacity: 0,
       stagger: -0.05,
-      z: 0,
       ease: ease
     }, "<");
 
@@ -219,21 +209,18 @@ export default class About extends View {
       duration: dur,
       opacity: 0,
       ease: ease,
-      z: 0,
     }, "<0.05");
 
     leaveAnim.to(this.introText, {
       duration: dur,
       opacity: 0,
       ease: ease,
-      z: 0,
     }, "<0.05");
 
     leaveAnim.to(this.header, {
       duration: dur,
       opacity: 0,
       ease: ease,
-      z: 0
     }, "<0.05");
 
   }

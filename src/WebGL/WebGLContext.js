@@ -48,10 +48,14 @@ export default class WebGLContext {
       width: w,
       height: h,
       canvas,
-      powerPreference: "default"
+      powerPreference: "default",
+      //powerPreference: "high-performance",
+      antialias: window.isMobile ? false : true,
+      dpr: window.isMobile ? 2.0 : 1.0
     });
     this.gl = this.renderer.gl;
-    this.gl.clearColor(0.9, 0.9, 0.9, 1.0);
+    // this.gl.clearColor(0.9, 0.9, 0.9, 1.0);
+    this.gl.clearColor(0.93, 0.93, 0.93, 1.0);
 
     const {
       width,
@@ -76,7 +80,7 @@ export default class WebGLContext {
     this.scene = new Transform();
 
     this.post = new Post(this.gl);
-    this.renderToScreen = false;
+    this.renderToScreen = true;
     this.canvasResolution = new Vec2(
       width,
       height
@@ -113,7 +117,7 @@ export default class WebGLContext {
 
   initMouseflowMap() {
     this.mouseFlowmap = new MouseFlowmap(this.gl, {
-      size: 256
+      size: 128
     });
   }
 

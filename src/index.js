@@ -4,6 +4,7 @@ import About from "./Views/About/About.js";
 import WebGLContext from "./WebGL/WebGLContext.js";
 
 import LoadingScreen from './LoadingScreen.js';
+import NoMobileCTA from './NoMobileCTA.js';
 import Navigation from './Navigation.js';
 import Cursor from '../src/CanvasComponents/Cursor.js';
 
@@ -20,6 +21,11 @@ export default class App {
         } = browser.parsedResult.platform;
 
         window.isMobile = type !== "desktop";
+
+        if (window.isMobile) {
+            this.noMobileCTA = new NoMobileCTA();
+            return;
+        }
 
         this.loadingScreen = new LoadingScreen();
 

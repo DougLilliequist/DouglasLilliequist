@@ -28,10 +28,11 @@ class EventEmitter {
         window.addEventListener("touchcancel", this.onTouchCancel, false);
 
         window.addEventListener("resize", this.onResize);
+        window.addEventListener("orientationchange", this.onResize);
 
-        // gsap.config({
-        //     force3D: true
-        // });
+        gsap.config({
+            // force3D: false
+        });
         // gsap.ticker.fps(60);
         gsap.ticker.add(this.tick);
         //gsap.ticker.fps(60);

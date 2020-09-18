@@ -17,7 +17,7 @@ uniform mat4 modelViewMatrix;
 varying vec2 vUv;
 varying vec2 vClipPos;
 
-#define DISTORTSTR 0.8
+#define DISTORTSTR 1.1
 #define lumaK 0.33333333333333333
 
 void main() {

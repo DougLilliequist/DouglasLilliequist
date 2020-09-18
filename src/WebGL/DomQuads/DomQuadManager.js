@@ -107,7 +107,7 @@ export default class DomQuadManager {
     resize = () => {
 
         if (this.resizeEvent) this.resizeEvent.kill();
-        this.resizeEvent = gsap.delayedCall(0.1, () => {
+        this.resizeEvent = gsap.delayedCall(0.15, () => {
             this.updateQuadRelations();
         });
 

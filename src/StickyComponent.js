@@ -20,7 +20,8 @@ export default class StickyComponent {
         domElement,
         enable,
         event = null,
-        includeHoverAnim = false
+        includeHoverAnim = false,
+        defaultColor = "#000000"
     }) {
 
         this.el = domElement;
@@ -30,10 +31,7 @@ export default class StickyComponent {
         this.inBounds = false;
         this.onMobile = window.isMobile;
         this.includeHoverAnim = includeHoverAnim;
-
-        // if (this.includeHoverAnim) gsap.set(this.el, {
-        //     opacity: 0.5
-        // });
+        this.defaultColor = defaultColor;
 
         this.w = window.innerWidth;
         this.h = window.innerHeight;
@@ -81,16 +79,6 @@ export default class StickyComponent {
 
         }
 
-        //used for spring force
-        //---------------------
-        // this.force = {
-        //     x: 0,
-        //     y: 0
-        // }
-
-        // this.inertia = 0.8;
-        //---------------------
-
         this.ease = 0.125;
 
         this.getInitPos();
@@ -126,8 +114,12 @@ export default class StickyComponent {
         emitter.on(events.MOUSE_MOVE, this.onMouseMove);
         emitter.on(events.UPDATE, this.update);
         emitter.on(events.RESIZE, this.onResize);
-        if (this.event !== null) this.el.addEventListener('mousedown', this.event);
+
+        this.el.addEventListener('mousedown', this.onClick);
+        this.el.addEventListener('touchstart', this.onClick);
         if (this.event !== null && this.onMobile) this.el.addEventListener('touchstart', this.event);
+
+        if (this.onMobile) return;
         this.el.addEventListener('mouseenter', this.applyHoverState);
         this.el.addEventListener('mouseleave', this.removeHoverState);
 
@@ -138,8 +130,11 @@ export default class StickyComponent {
         emitter.off(events.MOUSE_MOVE, this.onMouseMove);
         emitter.off(events.UPDATE, this.update);
         emitter.off(events.RESIZE, this.onResize);
-        if (this.event !== null) this.el.removeEventListener('mousedown', this.event);
+
+        this.el.removeEventListener('mousedown', this.onClick);
         if (this.event !== null && this.onMobile) this.el.removeEventListener('touchstart', this.event);
+
+        if (this.onMobile) return;
         this.el.removeEventListener('mouseenter', this.applyHoverState);
         this.el.removeEventListener('mouseleave', this.removeHoverState);
 
@@ -152,36 +147,21 @@ export default class StickyComponent {
 
     }
 
-    //redundant?
-    // withinBounds() {
-
-    //     let {
-    //         top,
-    //         left,
-    //         width,
-    //         height
-    //     } = this.rect;
-
-    //     let {
-    //         x,
-    //         y
-    //     } = this.inputPos;
-
-    //     const inBoundsX = x >= left && x <= left + width;
-    //     const inBoundsY = y >= top && y <= top + height;
-
-    //     return inBoundsX && inBoundsY;
-
-    // }
-
     //standard ease
     updateForce() {
 
-        this.targetPos.x = this.hovered ? this.inputPos.x : this.initPos.x;
-        this.targetPos.y = this.hovered ? this.inputPos.y : this.initPos.y;
+        const {
+            targetPos,
+            hovered,
+            inputPos,
+            initPos,
+        } = this;
 
-        this.currentPos.x += (this.targetPos.x - this.currentPos.x) * 0.125;
-        this.currentPos.y += (this.targetPos.y - this.currentPos.y) * 0.125;
+        targetPos.x = hovered ? inputPos.x : initPos.x;
+        targetPos.y = hovered ? inputPos.y : initPos.y;
+
+        this.currentPos.x += (targetPos.x - this.currentPos.x) * 0.125;
+        this.currentPos.y += (targetPos.y - this.currentPos.y) * 0.125;
 
         //counter-intuitive, but working approach:
         //Given that the origin is at the top-left corner (0, 0),
@@ -189,40 +169,15 @@ export default class StickyComponent {
         //With this knowledge in mind, by subtracting with the dom elements initial position
         //we move the element to the origin, thus any additional offsets we apply will be a vector in which we use
         //for the translation
-        let translateX = (this.currentPos.x - this.initPos.x) * 0.5;
-        let translateY = (this.currentPos.y - this.initPos.y) * 0.5;
-        this.el.style.transform = `translate3d(${translateX}px, ${translateY}px, 0.0)`;
+        let translateX = (this.currentPos.x - initPos.x) * 0.25;
+        let translateY = (this.currentPos.y - initPos.y) * 0.25;
+        this.el.style.transform = `translate3d(${translateX}px, ${translateY}px, 0px)`;
 
         //final offseted position for component, used as target for i.e cursors
-        this.offsetPos.x = this.initPos.x + translateX;
-        this.offsetPos.y = this.initPos.y + translateY;
+        this.offsetPos.x = initPos.x + translateX;
+        this.offsetPos.y = initPos.y + translateY;
 
     }
-
-    //spring force
-    // updateForce() {
-
-    //     this.targetPos.x = this.hovered ? this.inputPos.x : this.initPos.x;
-    //     this.targetPos.y = this.hovered ? this.inputPos.y : this.initPos.y;
-
-    //     this.force.x += (this.targetPos.x - this.currentPos.x) * 0.05;
-    //     this.force.y += (this.targetPos.y - this.currentPos.y) * 0.05;
-
-    //     this.currentPos.x += this.force.x;
-    //     this.currentPos.y += this.force.y;
-
-    //     let translateX = (this.currentPos.x - this.initPos.x) * 0.5;
-    //     let translateY = (this.currentPos.y - this.initPos.y) * 0.5;
-
-    //     this.offsetPos.x = this.initPos.x + translateX;
-    //     this.offsetPos.y = this.initPos.y + translateY;
-
-    //     this.el.style.transform = `translate3d(${translateX}px, ${translateY}px, 0.0)`;
-
-    //     this.force.x *= this.inertia;
-    //     this.force.y *= this.inertia;
-
-    // }
 
     update = () => {
 
@@ -244,15 +199,7 @@ export default class StickyComponent {
         emitter.emit(events.HOVERING_STICKY_COMPONENT, {
             rect: this.rect
         });
-
-        if (this.includeHoverAnim) {
-            // if (this.hoverAnim) this.hoverAnim.kill();
-            this.hoverAnim = gsap.to(this.el, {
-                duration: 0.5,
-                opacity: 1
-            });
-
-        }
+        this.el.classList.add('sticky-hovered');
 
     }
 
@@ -262,15 +209,15 @@ export default class StickyComponent {
         document.body.classList.remove('pointer');
         window.hoveringLink = this.hovered = false;
         emitter.emit(events.LEAVING_STICKY_COMPONENT);
+        this.el.classList.remove('sticky-hovered');
 
-        if (this.includeHoverAnim) {
-            // if (this.hoverAnim) this.hoverAnim.kill();
-            this.hoverAnim = gsap.to(this.el, {
-                duration: 0.5,
-                opacity: 0.7
-            });
+    }
 
-        }
+    onClick = () => {
+
+        // emitter.emit(events.LINK_SELECTED);
+        // if (this.hovered) this.removeHoverState();
+        if (this.event !== null) this.event();
 
     }
 

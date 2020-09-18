@@ -43,6 +43,11 @@ export default class AboutQuad extends DomQuad {
 
     this.texture = new Texture(this.gl, {
       generateMipmaps: false,
+      minFilter: this.gl.LINEAR,
+      magFilter: this.gl.LINEAR,
+      // anisotropy: 16,
+      width: 1024,
+      height: 1024
     });
 
     if (this.media.imageSrc) this.loadImage();
@@ -64,6 +69,12 @@ export default class AboutQuad extends DomQuad {
       },
       _FlowMap: {
         value: null
+      },
+      _ClipRevealPhase: {
+        value: 0.0
+      },
+      _UvScalePhase: {
+        value: 0.0
       },
       _Alpha: {
         value: 0.0
@@ -88,28 +99,39 @@ export default class AboutQuad extends DomQuad {
 
   reveal() {
 
-    gsap.to(this.program.uniforms._Alpha, {
-      duration: 1.0,
+    gsap.set(this.program.uniforms._RevealDirection, {
+      value: 0.0
+    });
+
+    gsap.to(this.program.uniforms._ClipRevealPhase, {
+      duration: 2.0,
       value: 1.0,
       ease: "power2.inOut"
     });
 
-    gsap.set(this.program.uniforms._RevealDirection, {
-      value: 0.0
+    gsap.to(this.program.uniforms._UvScalePhase, {
+      duration: 2.0,
+      value: 1.0,
+      ease: "power2.inOut"
     });
 
   }
 
   hide() {
 
-    gsap.to(this.program.uniforms._Alpha, {
-      duration: 1.0,
-      value: 0.0,
-      ease: "power2.inOut"
-    });
-
     gsap.set(this.program.uniforms._RevealDirection, {
       value: 1.0
+    });
+
+    gsap.to(this.program.uniforms._ClipRevealPhase, {
+      duration: 1.0,
+      value: 0.0,
+      ease: "power2.inOut",
+      onComplete: () => {
+        gsap.set(this.program.uniforms._UvScalePhase, {
+          value: 0.0
+        })
+      }
     });
 
   }

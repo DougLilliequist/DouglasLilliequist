@@ -142,24 +142,22 @@ export default class ProjectQuadMediator extends DomquadMediator {
   //toggle values
   updateViewMode = () => {
 
+    // const ease = "sine.inOut"
+
+    this.inViewMode = !this.inViewMode;
+
     const {
       uniforms
     } = this.quadInView.program;
-    const {
-      inViewMode
-    } = this;
-    const duration = 1.25;
-    // const ease = "power1.inOut"
-    const ease = "sine.inOut"
-
-    this.inViewMode = !this.inViewMode;
+    const duration = 1.8;
+    const ease = "sine.out";
 
     uniforms._Entering.value = this.inViewMode ? 1.0 : 0.0;
 
     gsap.to(uniforms._ViewModePhase, {
       value: this.inViewMode ? 1.0 : 0.0,
       duration,
-      ease
+      ease,
     });
 
   }
@@ -187,7 +185,8 @@ export default class ProjectQuadMediator extends DomquadMediator {
     this.revealQuadAnim = gsap.timeline({
       onComplete: () => {
         this.children.forEach((quad) => {
-          quad.program.uniforms._RevealPhase.value = 1.0
+          quad.program.uniforms._ClipRevealPhase.value = 1.0
+          quad.program.uniforms._UvScalePhase.value = 1.0
         });
       }
     })
@@ -207,7 +206,19 @@ export default class ProjectQuadMediator extends DomquadMediator {
     }, "<");
 
     this.revealQuadAnim.to(uniforms._RevealPhase, {
-      duration: 1.0,
+      duration: 2.0,
+      value: 1.0,
+      ease: "power2.inOut",
+    }, "<");
+
+    this.revealQuadAnim.to(uniforms._UvScalePhase, {
+      duration: 2.0,
+      value: 1.0,
+      ease: "power2.inOut",
+    }, "<");
+
+    this.revealQuadAnim.to(uniforms._ClipRevealPhase, {
+      duration: 2.0,
       value: 1.0,
       ease: "power2.inOut",
     }, "<");
@@ -221,14 +232,14 @@ export default class ProjectQuadMediator extends DomquadMediator {
         value: 1.0
       });
 
-      gsap.to(quad.program.uniforms._RevealPhase, {
+      gsap.to(quad.program.uniforms._ClipRevealPhase, {
         duration: 1.0,
         value: 0.0,
         ease: "power2.inOut",
         onComplete: () => {
-          gsap.set(quad.program.uniforms._Alpha, {
-            value: 0.0
-          });
+          quad.program.uniforms._Alpha.value = 0.0;
+          quad.program.uniforms._RevealPhase.value = 0.0
+          quad.program.uniforms._UvScalePhase.value = 0.0
         }
       });
     });
@@ -241,8 +252,9 @@ export default class ProjectQuadMediator extends DomquadMediator {
     flowMap
   }) {
 
-    this.inputForce.y += this.inScrollMode ? inputDelta.y * 0.008 / dt : 0.0;
-    this.inputForce.y *= (Math.abs(this.inputForce.y) < 0.001) ? 0.0 : this.inputForceInertia;
+    // this.inputForce.y += this.inScrollMode ? inputDelta.y * 0.008 / dt : 0.0;
+    // this.inputForce.y += this.inScrollMode ? inputDelta.y * 0.005 / dt : 0.0;
+    this.inputForce.y += this.inScrollMode ? ((inputDelta.y * 0.008) / dt) : 0.0;
 
     let i = 0;
     while (i < this.children.length) {
@@ -256,6 +268,8 @@ export default class ProjectQuadMediator extends DomquadMediator {
       quad.program.uniforms._FlowMap.value = flowMap;
       i++;
     }
+
+    this.inputForce.y *= (Math.abs(this.inputForce.y) < 0.001) ? 0.0 : this.inputForceInertia;
 
   }
 

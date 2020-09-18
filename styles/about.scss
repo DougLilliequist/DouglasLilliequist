@@ -7,15 +7,12 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    // width: 60.5vw;
-    width: 76vw;
-    height: 30.8vw;
+    transform: translate3d(-50%, -50%, 0px);
+    width: 74.25vw;
+    height: 29.25vw;
     max-width: 1450px;
-    // max-height: 1440px;
     display: flex;
     justify-content: space-between;
-    // z-index: 2;
 
     @media screen and (max-width: 414px) and (orientation: portrait) {
         width: 90vw;
@@ -30,11 +27,12 @@
 
 .portrait-container {
 
-    position: relative;
-    width: 29vw;
-    max-width: 512px;
-    max-height: 512px;
-    align-self: center;
+    position: absolute;
+    width: 29.16666667vw;
+    height: 29.16666667vw;
+    max-height: 1024px;
+    left: 50%;
+    transform: translate3d(-50%, 0%, 0px);
 
     @media screen and (max-width: 414px) and (orientation: portrait) {
         width: 100%;
@@ -51,24 +49,16 @@
         height: 100%;
     }
 
-    //https://spin.atomicobject.com/2015/07/14/css-responsive-square/
-    //maintains perfect square
-    &:after {
-        content: "";
-        display: block;
-        padding-bottom: 100%;
-    }
-
 }
 
     .copy-container {
 
         position: relative;
-        width: 48.5%;
+        width: 38.35%;
         height: 100%;
         display: flex;
         align-items: center;
-        transform: translate3d(0,0,0);
+        transform: translate3d(0px, 0px, 0px);
 
         @media screen and (max-width: 414px) and (orientation: portrait) {
             justify-content: center;
@@ -82,30 +72,15 @@
 
     .about-copy {
 
-        position: relative;
-        width: 90%;
-        height: 50%;
-        display: flex;
-        justify-content: center;
-        flex-direction: column;
-
-        
-        &__intro {
-
-            // pointer-events: none;
-            // padding-right: 10%;
-
-            @media screen and (min-width: 414px){
-                padding-right: 10%;
-            }
-
             
             &__header {
+                position: absolute;
+                top: 4.15vw;
+                // top: 2.1vw;
+                left: -0.2vw;
                 @include fluid-type($minWidth, $maxWidth, $minFontSize__about-header, $maxFontSize__about-header);
-                margin-top: 0em;
-                margin-bottom: 1em;
-                // pointer-events: none;
-                
+                margin: 0 0 0 0;
+                font-weight: $bold;                
                 @media screen and (max-width: 414px) and (orientation: portrait) {
                     font-size: 8vw;
                 }
@@ -113,31 +88,30 @@
             }
     
             &__body-text {
+                position: absolute;
+                top: 10.2vw;
+                margin: 0 0 0 0;
                 @include fluid-type($minWidth, $maxWidth, $minFontSize__about-body, $maxFontSize__about-body);
-                margin-top: 0;
-                // pointer-events: none;
-
                 @media screen and (max-width: 414px) and (orientation: portrait) {
                     font-size: 3vw;
                 }
 
             }
 
-        }
-
     }
 
     .contact-container {
 
-        position: relative;
-        margin-top: 2em;
+        position: absolute;
+        position: absolute;
+        bottom: 5.85vw;
+        transform: translate3d(0px, 0px, 0px);
 
         &__header {
 
-            margin-top: 0;
+            margin: 0 0 1vw 0;
             color: #000000;
             @include fluid-type($minWidth, $maxWidth, $minFontSize__about__links-header, $maxFontSize__about__links-header);
-            // pointer-events: none;
 
             
         @media screen and (max-width: 414px) and (orientation: portrait) {
@@ -146,24 +120,26 @@
 
         }
         &__methods {
-     
+    
             position: absolute;
-            left: -2vw;
+            left: -1.25vw;
+            cursor: none;
+            display: flex;
+            flex-direction: row;
+            transform: translate3d(0px,0px,0px);
 
-            &__transform {
+            // &__transform {
 
-                display: inline-block;
-                transform: translate3d(0px,0px,0px);
-                // position: absolute;
-            }
+            //     transform: translate3d(0px,0px,0px);
+            // }
 
             &__link {
                 display: inline-block;
                 text-decoration: none;
                 color:#000000;
 
-                padding: 2vw;
-                // opacity: 0.5;
+                padding: 1.25vw;
+                // cursor: none;
                 @include fluid-type($minWidth, $maxWidth, $minFontSize__about__links-body, $maxFontSize__about__links-body);
 
                 @media screen and (max-width: 414px) and (orientation: portrait) {

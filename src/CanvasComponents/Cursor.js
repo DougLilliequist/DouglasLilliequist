@@ -40,15 +40,15 @@ export default class Cursor {
 
         this.position = {
 
-            x: 0,
-            y: 0,
+            x: window.innerWidth * 0.5,
+            y: window.innerHeight * 0.5,
 
         }
 
         this.prevPosition = {
 
-            x: 0,
-            y: 0
+            x: window.innerWidth * 0.5,
+            y: window.innerHeight * 0.5,
 
         }
 
@@ -60,8 +60,8 @@ export default class Cursor {
         }
 
         this.inputPos = {
-            x: 0,
-            y: 0
+            x: window.innerWidth * 0.5,
+            y: window.innerHeight * 0.2,
         }
 
         this.target = {
@@ -75,7 +75,7 @@ export default class Cursor {
 
         this.inViewProjectMode = false;
 
-        this.defaultRadius = 18.0;
+        this.defaultRadius = 15.0;
 
         this.scrollModeRadius = 22.0;
 
@@ -83,9 +83,16 @@ export default class Cursor {
 
         this.radius = this.defaultRadius;
 
+        // this.strokeWidth = 0.5;
         this.strokeWidth = 0.5;
 
         this.startAngle = 0;
+
+        this.strokeAlpha = 1.0;
+
+        this.fillAlpha = 0.0;
+
+        this.visible = true;
 
         this.hoveringSticky = false;
 
@@ -123,11 +130,11 @@ export default class Cursor {
 
         this.holdMessage = this.createCanvasText({
             word: "Hold",
-            fontSize: 15
+            fontSize: 12
         });
         this.dragMessage = this.createCanvasText({
             word: "Drag",
-            fontSize: 15
+            fontSize: 12
         });
 
         this.ctaPosOffset = {
@@ -175,6 +182,9 @@ export default class Cursor {
         emitter.on(events.HOVERING_STICKY_COMPONENT, this.animateHoverMode);
         emitter.on(events.LEAVING_STICKY_COMPONENT, this.animateLeaveHoverMode);
         emitter.on(events.UPDATE_STICKY_TARGET, this.updateStickyTarget);
+        emitter.on(events.LINK_SELECTED, this.onLinkSelected);
+
+        emitter.on(events.HOVERING_NAV_LINK, this.updateNavlinkState);
 
         emitter.on(events.SHOW_PROJECT, () => this.inViewProjectMode = true);
         emitter.on(events.CLOSE_PROJECT, () => this.inViewProjectMode = false);
@@ -189,8 +199,8 @@ export default class Cursor {
         this.inScrollMode = true;
 
         // if(this.hoveringSticky === false) {
-        this.prevPosition.x = this.target.x;
-        this.prevPosition.y = this.target.y;
+        // this.prevPosition.x = this.target.x;
+        // this.prevPosition.y = this.target.y;
         // }
 
         this.animateScrollMode();
@@ -199,12 +209,13 @@ export default class Cursor {
 
     onMouseMove = (event) => {
 
+        if (this.visible === false) {
+            this.visible = true;
+            this.restoreAlpha();
+        }
+
         this.inputPos.x = event.clientX;
         this.inputPos.y = event.clientY;
-        if (this.hoveringSticky === false) {
-            this.target.x = this.inputPos.x;
-            this.target.y = this.inputPos.y;
-        }
 
         if (this.inScrollMode) {
 
@@ -310,7 +321,8 @@ export default class Cursor {
                 height
             } = rect;
 
-            this.hoverRadius = Math.sqrt(width * width + height * height) * 0.3115;
+            // this.hoverRadius = Math.sqrt((width * width) + (height * height)) * 0.3115;
+            this.hoverRadius = Math.sqrt((width * width) + (height * height)) * 0.35;
 
             if (this.hoverModeAnim) this.hoverModeAnim.kill();
             this.hoverModeAnim = gsap.to(this, {
@@ -318,7 +330,10 @@ export default class Cursor {
                 ease: "power1.out",
                 radius: this.hoverRadius,
                 onStart: () => {
+                    if (this.visible === false) return;
                     this.hideCTAText();
+                    this.strokeAlpha = 0;
+                    this.fillAlpha = 1;
                 }
             });
 
@@ -326,6 +341,7 @@ export default class Cursor {
 
     }
 
+    //fade out cursor here
     animateLeaveHoverMode = () => {
 
         if (this.hoveringSticky) {
@@ -336,12 +352,57 @@ export default class Cursor {
                 ease: "power1.out",
                 radius: this.defaultRadius,
                 onStart: () => {
+
+                    if (this.visible === false) return;
                     this.showCTAText();
-                    this.target.x = this.inputPos.x;
-                    this.target.y = this.inputPos.y;
+                    this.strokeAlpha = 1;
+                    this.fillAlpha = 0;
+
                 }
 
             });
+
+        }
+
+    }
+
+    onLinkSelected = () => {
+        gsap.to(this, {
+            duration: 0.2,
+            ease: "power1.out",
+            alpha: 0.0,
+            radius: this.hoverRadius * 1.2,
+            onComplete: () => {
+                this.visible = false;
+            }
+        });
+    }
+
+    updateNavlinkState = (state) => {
+
+        if (this.navlinkHoverAnim) this.navlinkHoverAnim.kill();
+
+        if (state === true) {
+
+            this.navlinkHoverAnim = gsap.to(this, {
+                duration: 0.2,
+                ease: "power1.out",
+                radius: 0,
+                onStart: () => {
+                    this.hideCTAText();
+                }
+            })
+
+        } else {
+
+            this.navlinkHoverAnim = gsap.to(this, {
+                duration: 0.2,
+                ease: "power1.in",
+                radius: this.defaultRadius,
+                onComplete: () => {
+                    this.showCTAText();
+                }
+            })
 
         }
 
@@ -354,6 +415,20 @@ export default class Cursor {
         } = event;
         this.target.x = target.x;
         this.target.y = target.y;
+
+    }
+
+    restoreAlpha() {
+
+        gsap.to(this, {
+            duration: 0.2,
+            ease: "power1.out",
+            alpha: 1.0,
+            onComplete: () => {
+                this.visible = true;
+            }
+
+        });
 
     }
 
@@ -390,8 +465,11 @@ export default class Cursor {
     drawCursorCircle() {
 
         this.ctx.beginPath();
+        this.ctx.fillStyle = `rgba(${0.0},${0.0},${0.0}, ${this.fillAlpha})`;
+        this.ctx.strokeStyle = `rgba(${0.0},${0.0},${0.0}, ${this.strokeAlpha})`;
         this.ctx.arc(this.position.x, this.position.y, this.radius, this.startAngle, this.endAngle, false);
         this.ctx.lineWidth = this.strokeWidth;
+        this.ctx.fill();
         this.ctx.stroke();
         this.ctx.closePath();
 
@@ -401,10 +479,10 @@ export default class Cursor {
 
         const message = this.inScrollMode ? this.dragMessage : this.holdMessage;
         this.ctx.fillStyle = `rgba(${0.0},${0.0},${0.0}, ${this.ctaTextAlpha})`;
-        this.ctx.font = `${15}px Muli`;
+        this.ctx.font = `${12}px Muli`;
         this.ctx.textBaseline = "middle";
         // this.ctx.fillText(message.word, this.position.x + 40, this.position.y + this.ctaPosOffset.y);
-        this.ctx.fillText(message.word, this.position.x - 80, this.position.y + this.ctaPosOffset.y);
+        this.ctx.fillText(message.word, this.position.x - 60, this.position.y + this.ctaPosOffset.y);
 
     }
 
@@ -453,8 +531,15 @@ export default class Cursor {
 
     update = () => {
 
-        this.position.x += (this.target.x - this.position.x) / 8.0;
-        this.position.y += (this.target.y - this.position.y) / 8.0;
+        this.position.x += (this.target.x - this.position.x) / 6.0;
+        this.position.y += (this.target.y - this.position.y) / 6.0;
+
+        // this.position.x = this.target.x;
+        // this.position.y = this.target.y;
+        if (this.hoveringSticky === false) {
+            this.target.x = this.inputPos.x;
+            this.target.y = this.inputPos.y;
+        }
 
         this.delta.x = this.position.x - this.prevPosition.x;
         this.delta.y = this.position.y - this.prevPosition.y;

@@ -16,22 +16,23 @@ export default class Navigation {
 
         this.links = this.el.querySelectorAll('.link');
 
-        this.linkTransforms = this.el.querySelectorAll('.navigation__links__transform');
+        // this.linkTransforms = this.el.querySelectorAll('.navigation__links__transform');
 
-        this.linkTransforms.forEach((transform) => {
-            transform.stickyComponent = new StickyComponent({
-                domElement: transform,
-                enable: true
-            });
-        });
+        // this.links.forEach((link) => {
+        //     link.stickyComponent = new StickyComponent({
+        //         domElement: link,
+        //         enable: true,
+        //         includeHoverAnim: true
+        //     });
+        // });
 
         this.active = false;
 
         this.initEvents();
 
-        this.updateSelectionState();
+        // this.updateSelectionState();
 
-        this.updateActiveState();
+        // this.updateActiveState();
 
     }
 
@@ -39,23 +40,28 @@ export default class Navigation {
 
         window.hoveringLink = false;
 
-        this.el.childNodes.forEach((link) => {
-
-            link.addEventListener('mouseenter', this.onLinkHover);
-            link.addEventListener('mouseleave', this.onLinkLeave);
-
-        });
+        this.links.forEach((link) => {
+            link.addEventListener('mouseenter', () => {
+                this.onHover(link);
+            });
+            link.addEventListener('mouseleave', () => {
+                this.onLeave(link);
+            });
+            link.addEventListener('click', () => {
+                this.onSelect(link);
+            });
+        })
 
         emitter.on(events.ENTER_SCROLL_MODE, () => {
-            this.linkTransforms.forEach((transform) => {
-                transform.classList.add('deactivated');
-                transform.stickyComponent.enable = false;
+            this.links.forEach((link) => {
+                link.classList.add('deactivated');
+                // link.stickyComponent.enable = false;
             });
         });
         emitter.on(events.EXIT_SCROLL_MODE, () => {
-            this.linkTransforms.forEach((transform) => {
-                transform.classList.remove('deactivated');
-                transform.stickyComponent.enable = true;
+            this.links.forEach((link) => {
+                link.classList.remove('deactivated');
+                // link.stickyComponent.enable = true;
             });
         });
 
@@ -63,12 +69,12 @@ export default class Navigation {
             to,
             location
         }) => {
-
-            this.updateSelectionState(location);
+            // this.updateSelectionState(location);
 
         });
 
         emitter.on(events.LOADING_ANIM_COMPLETED, this.enableLinks);
+        emitter.on(events.TRANSITIONING, this.updateActiveState);
 
     }
 
@@ -77,10 +83,14 @@ export default class Navigation {
         this.links.forEach((link) => {
 
             link.classList.remove('link--active');
+            link.selected = false;
 
             const currentLocation = location ? location.href : window.location.href;
 
-            if (link.href === currentLocation) link.classList.add('link--active');
+            if (link.href === currentLocation) {
+                link.classList.add('link--active');
+                link.selected = true;
+            }
 
         })
 
@@ -93,16 +103,31 @@ export default class Navigation {
         }, {
             opacity: 1.0,
             duration: 0.8,
-            // z: 0,
+            z: 0,
+            onStart: () => {
+                this.links.forEach((link) => {
+                    if (link.href === window.location.href) {
+                        link.selected = true;
+                        gsap.set(link, {
+                            opacity: 1.0
+                        });
+                    }
+                })
+            },
             onComplete: () => {
-                this.active = true;
-                this.updateActiveState();
+                this.updateActiveState({
+                    state: true
+                });
             }
         })
 
     }
 
-    updateActiveState = () => {
+    updateActiveState = ({
+        state
+    }) => {
+
+        this.active = state;
 
         this.links.forEach((link) => {
 
@@ -116,17 +141,61 @@ export default class Navigation {
 
     }
 
-    onLinkHover = () => {
-
-        window.hoveringLink = true;
-        emitter.emit(events.HOVERING_LINK);
+    animateHoverState({
+        link,
+        state
+    }) {
+        if (link.selected) return;
+        if (this.hoverAnim) this.hoverAnim.kill();
+        this.hoverAnim = gsap.to(link, {
+            duration: 0.1,
+            ease: state ? "power1.out" : "power1.in",
+            opacity: state ? 1.0 : 0.4,
+            z: 0
+        });
 
     }
 
-    onLinkLeave = () => {
+    onHover = (link) => {
+        window.hoveringLink = true;
+        emitter.emit(events.HOVERING_NAV_LINK, true);
+        this.animateHoverState({
+            link,
+            state: true
+        });
+
+    }
+
+    onLeave = (link) => {
 
         window.hoveringLink = false;
-        emitter.emit(events.LEAVING_LINK);
+        emitter.emit(events.HOVERING_NAV_LINK, false);
+        this.animateHoverState({
+            link,
+            state: false
+        });
+
+    }
+
+    onSelect = (selectedLink) => {
+
+        this.links.forEach((link) => {
+            if (link === selectedLink) {
+                link.selected = true;
+                gsap.set(link, {
+                    opacity: 1
+                });
+            } else {
+                link.selected = false;
+                gsap.to(link, {
+                    duration: 0.2,
+                    ease: "power1.out",
+                    opacity: 0.4,
+                    z: 0
+                })
+            }
+
+        })
 
     }
 
