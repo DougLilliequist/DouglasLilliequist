@@ -101,15 +101,15 @@ void main() {
     
     vDistort = vec3(0.0, 0.0, 0.0);
 
-    if(_InView == 1.0) {
+    // if(_InView == 1.0) {
     vec4 clipPos = modelViewProjection * vec4(pos, 1.0);
     clipPos.xyz /= clipPos.w;
     clipPos.xy = clipPos.xy * 0.5 + 0.5;
 
     vec3 distort = texture2D(_FlowMap, clipPos.xy).xyz * DISTORTSTR;
     vDistort = distort;
-    pos += distort * max(0.2, heightMapDistort) * _FlowMapPhase * distort.z;
-    }
+    pos += distort * max(0.2, heightMapDistort) * _FlowMapPhase * distort.z * _InView;
+    // }
 
     gl_Position = modelViewProjection * vec4(pos, 1.0);
     vUv = uv;

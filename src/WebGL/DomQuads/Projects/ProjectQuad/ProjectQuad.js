@@ -96,21 +96,6 @@ export default class ProjectQuad extends DomQuad {
       magFilter: this.gl.LINEAR
     });
 
-    const blueNoise = new Texture(this.gl, {
-      generateMipmaps: false,
-      width: 470,
-      height: 470,
-      minFilter: this.gl.NEAREST,
-      magFilter: this.gl.NEAREST,
-      wrapS: this.gl.REPEAT,
-      wrapT: this.gl.REPEAT
-    });
-
-    const bluenoiseImg = new Image();
-    bluenoiseImg.crossOrigin = "*";
-    bluenoiseImg.src = bNoise.BlueNoise64Tiled;
-    bluenoiseImg.onload = () => blueNoise.image = bluenoiseImg;
-
     if (this.media.videoSrc !== null && window.isMobile === false)
       this.loadVideo();
     if (this.media.imageSrc !== null && window.isMobile) this.loadImage();
@@ -127,9 +112,6 @@ export default class ProjectQuad extends DomQuad {
       },
       _FlowMap: {
         value: new Texture(this.gl)
-      },
-      _BlueNoise: {
-        value: blueNoise
       },
       _Resolution: {
         value: new Vec2(this.gl.canvas.width, this.gl.canvas.height)
