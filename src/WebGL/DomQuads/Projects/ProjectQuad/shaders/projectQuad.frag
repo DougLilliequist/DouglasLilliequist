@@ -3,7 +3,6 @@ precision highp float;
 uniform sampler2D _Image;
 uniform sampler2D _FlowMap;
 uniform float _FlowMapPhase;
-uniform sampler2D _BlueNoise;
 uniform vec2 _Resolution;
 
 uniform float _ScalePhase;
@@ -150,14 +149,8 @@ void main() {
     vec3 col = vec3(r,g,b);
     col += hash12(vUv * 1000.0 + _Time) * 0.2;
 
-    // float len = (vMvPos.z * vMvPos.z); 
-    // float idleAlpha = smoothstep(MINVIEWDIST, MAXVIEWDIST, len);
-    // float scrollAlpha = idleAlpha * mix(1.0, 0.5, abs(_ScrollPhase)) * (smoothstep(ALPHAFALLOFFDIST, 0.0, len));
-    // float alpha = mix(idleAlpha, scrollAlpha, abs(_ScrollPhase));
-    // alpha *= _Alpha;
 
-
-    float len = (vMvPos.z * vMvPos.z); //remove the sign
+    float len = (vMvPos.z * vMvPos.z); //removes the sign
     float idleAlpha = smoothstep(MINVIEWDIST, MAXVIEWDIST, len);
     float phase = (len * len) / (6.0 * 6.0);
     float scrollPhase = smoothstep(0.1, 1.0, min(1.0, abs(_ScrollPhase)));
@@ -171,8 +164,5 @@ void main() {
     alpha *= mix(step(vUv.y, _ClipRevealPhase), 1.0 - step((vUv.y * 0.9999), 1.0 - _ClipRevealPhase), _RevealDirection);
     if(alpha <= 0.0) discard;
     gl_FragColor = vec4(col, 1.0);
-    // gl_FragColor = vec4(vDamp, vDamp, vDamp, alpha);
-    // gl_FragColor = vec4(vPhase, vPhase, vPhase, 1.0);
-    // gl_FragColor = vec4(alpha, 0.0, 0.0, 1.0);
 
 }
