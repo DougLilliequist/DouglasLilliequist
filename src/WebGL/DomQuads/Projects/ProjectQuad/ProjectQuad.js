@@ -31,7 +31,8 @@ import {
 export default class ProjectQuad extends DomQuad {
   constructor(gl, {
     media,
-    posOffset = 0
+    posOffset = 0,
+    loopLimit
   }) {
     super(gl);
 
@@ -47,7 +48,8 @@ export default class ProjectQuad extends DomQuad {
 
     this.video = this.media.video;
 
-    this.loopLimit = 6; //hardcoded for now
+    // this.loopLimit = 6; //hardcoded for now
+    this.loopLimit = loopLimit; //hardcoded for now
 
     this.initPos = this.position.z = 0 - posOffset;
 
@@ -234,7 +236,7 @@ export default class ProjectQuad extends DomQuad {
     let delta = this.targetPos - this.position.z;
     this.restorePhase = (delta / this.restoreDelta);
     this.restoreEase = delta / 10.0; //lerp the easeing speed
-    this.position.z += this.restoreEase;
+    this.position.z += this.restoreEase * this.restorePhase;
 
     if (Math.abs(delta) < 0.001) {
       this.position.z = Math.round(this.position.z);

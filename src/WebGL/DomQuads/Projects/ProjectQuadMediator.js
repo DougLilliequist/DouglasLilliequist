@@ -23,7 +23,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     this.quads = [];
 
-    this.quadCount = 5;
+    this.quadCount = 3;
 
     this.quadInView;
 
@@ -37,7 +37,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     this.inScrollMode = false;
 
-    this.minBounds = -5.0;
+    this.minBounds = -3.0;
 
     this.maxBounds = 0.0;
 
@@ -77,14 +77,16 @@ export default class ProjectQuadMediator extends DomquadMediator {
       return content.media;
     });
 
-    emitter.emit(events.UPDATE_CONTENT_COUNT, media.length);
+    let mediaCount = media.length;
+    emitter.emit(events.UPDATE_CONTENT_COUNT, mediaCount);
 
     media.forEach((media, i) => {
 
       const quad = new ProjectQuad(
         this.gl, {
           media,
-          posOffset: i, //rename or make new prop for index?
+          posOffset: i, //rename or make new prop for index?,
+          loopLimit: mediaCount - 1
         }
       );
 

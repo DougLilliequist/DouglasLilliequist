@@ -223,7 +223,7 @@ body {
     position: fixed;
     height: 100vh;
     width: 5.555555556vw;
-    right: 2.65vw;
+    right: 1.65vw;
     transform: translate3d(0px, 0px, 0px);
     z-index: 2;
 
@@ -236,7 +236,7 @@ body {
         justify-content: flex-start;
         align-items: center;
         width: 100%;
-        top: 15.35%;
+        top: 8.35%;
         padding: 0;
         margin: 0;
 
@@ -250,7 +250,7 @@ body {
             display: inline-block;
             margin: 2vw;
             position: relative;
-            font-weight: $semi-bold;
+            font-weight: $light;
             @include fluid-type($minWidth, $maxWidth, $minFontSize__navigation, $maxFontSize__navigation);
             opacity: 0.4;
             text-align: center;
