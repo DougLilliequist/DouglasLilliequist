@@ -1,0 +1,125 @@
+@import 'constants';
+@import 'typography';
+@import 'mixins';
+
+
+.projects {
+
+    // position: absolute;
+
+
+}
+
+.project-content {
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0px);
+    width: 74.30555556vw;
+    height: 37.5vw;
+    mix-blend-mode: exclusion;
+
+}
+
+.project-title {
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0px);
+    display: inline-block;
+
+    &__title {
+        text-transform: uppercase;
+        font-weight: $regular;
+        @include fluid-type($minWidth, $maxWidth, $minFontSize__projects-title, $maxFontSize__projects-title);
+        text-align: center;
+        vertical-align: baseline;
+        margin: 0;
+        color:#ffffff;
+    }
+
+}
+
+.project-misc {
+
+    position: absolute;
+    // top: 38.75%;
+    bottom: 39%;
+
+    &__item {
+
+        &__copy {
+
+            @include fluid-type($minWidth, $maxWidth, $minFontSize__projects-details, $maxFontSize__projects-details);
+            font-weight: $light;
+            color:#ffffff;
+            margin: 0;
+
+        }
+
+    }
+
+}
+
+.project-description {
+
+    position: absolute;
+    width: 38.35%;
+    // top: 46.35%;
+    bottom: 20%;
+
+    &__copy {
+
+        @include fluid-type($minWidth, $maxWidth, $minFontSize__projects-body, $maxFontSize__projects-body);
+        font-weight: $light;
+        color:#ffffff;
+        margin: 0;
+
+    }
+
+}
+
+.project-tech {
+
+    position: absolute;
+    // top: 71%;
+    bottom: 7%;
+    width: 38.35%;
+
+    &__copy {
+        @include fluid-type($minWidth, $maxWidth, $minFontSize__projects-details, $maxFontSize__projects-details);
+        font-weight: $light;
+        color:#ffffff;    
+        margin: 0;
+    }
+
+}
+
+.project-link {
+
+    position: absolute;
+    // top: 83%;
+    bottom: 0%;
+
+    &__link {
+
+        @include fluid-type($minWidth, $maxWidth, $minFontSize__projects-details, $maxFontSize__projects-details);
+        color: #ffffff;
+        // text-decoration: none;
+
+    }
+
+}
+
+.project-video {
+
+    width: 43.75vw;
+    height:27.6388888vw;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0px);
+
+}

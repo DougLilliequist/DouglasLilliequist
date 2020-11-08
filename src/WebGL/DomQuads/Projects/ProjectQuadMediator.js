@@ -290,6 +290,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
         })) {
         quadInView = quad;
         emitter.emit(events.LOAD_PROJECT_CONTENT, quadInView.index);
+        break;
 
       }
       i++;

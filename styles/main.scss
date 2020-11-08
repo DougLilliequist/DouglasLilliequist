@@ -67,23 +67,32 @@ body {
     display: flex;
     justify-content: center;
     pointer-events: none;
+    z-index: 1;
 
-    &__column {
+    &--column {
+        flex-direction: column;
+    }
+
+    &--row {
+        flex-direction: row;
+    }
+
+    &__row {
         height: 100vh;
         width: 5.555555556vw;
         background-color: red;
         opacity: 0.2;
-        margin-left: 1.041666667vw;
-        margin-right:1.041666667vw;
+        margin-left: 1.0416666666vw;
+        margin-right:1.0416666666vw;
     }
 
-    &__row {
-        height: 3.125vw;
+    &__column {
+        height: 3.472222222vw;
         width: 100vw;
         background-color: red;
         opacity: 0.2;
-        margin-top: 1.041666667vw;
-        margin-bottom:1.041666667vw;
+        margin-top: 0.70225vw;
+        margin-bottom:0.70225vw;
     }
 
     // &__row {
@@ -223,7 +232,7 @@ body {
     position: fixed;
     height: 100vh;
     width: 5.555555556vw;
-    right: 1.65vw;
+    right: 3.1vw;
     transform: translate3d(0px, 0px, 0px);
     z-index: 2;
 

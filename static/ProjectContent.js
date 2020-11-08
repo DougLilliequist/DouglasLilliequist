@@ -6,7 +6,7 @@ export const ProjectContent = [
     {
         title: 'Crashing Dawn',
         type: 'Experiment',
-        description: 'Shaded particles with noise sampled curl noise',
+        description: 'Shaded particles',
         tech: 'WebGL(THREE.js) / GPGPU',
         year: 2020,
         role: null,
@@ -53,7 +53,7 @@ export const ProjectContent = [
     {
         title: 'Let\'s Get Physical',
         type: 'Client Project',
-        description: 'Floor projected trails which reacts to the amount of present people and distance from eachother',
+        description: 'Installation project for Frame awards Amsterdam',
         tech: 'Unity3D / Custom GPGPU ribbons / In-house Blob Detection by Yipp Interactive',
         year: 2019,
         role: 'Developer',
