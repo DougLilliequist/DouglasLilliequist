@@ -159,7 +159,7 @@ export default class Cursor {
         fontSize
     }) {
 
-        this.ctx.font = `${fontSize}px Muli`;
+        this.ctx.font = `${fontSize}px Mulish`;
         const messageBounds = this.ctx.measureText(word);
         return {
             word,

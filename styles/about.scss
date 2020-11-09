@@ -13,6 +13,8 @@
     max-width: 1450px;
     display: flex;
     justify-content: space-between;
+    mix-blend-mode: exclusion;
+    color: #ffffff;
 
     @media screen and (max-width: 414px) and (orientation: portrait) {
         width: 90vw;

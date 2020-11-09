@@ -81,7 +81,7 @@ body {
         height: 100vh;
         width: 5.555555556vw;
         background-color: red;
-        opacity: 0.2;
+        opacity: 0.05;
         margin-left: 1.0416666666vw;
         margin-right:1.0416666666vw;
     }
@@ -90,7 +90,7 @@ body {
         height: 3.472222222vw;
         width: 100vw;
         background-color: red;
-        opacity: 0.2;
+        opacity: 0.05;
         margin-top: 0.70225vw;
         margin-bottom:0.70225vw;
     }
@@ -235,6 +235,7 @@ body {
     right: 3.1vw;
     transform: translate3d(0px, 0px, 0px);
     z-index: 2;
+    mix-blend-mode: exclusion;
 
     &__links {
         
@@ -254,7 +255,7 @@ body {
         }
         
         .link {
-            color:#000000;
+            color:#ffffff;
             text-decoration: none;
             display: inline-block;
             margin: 2vw;

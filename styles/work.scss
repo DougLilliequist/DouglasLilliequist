@@ -16,7 +16,9 @@
     top: 50%;
     left: 50%;
     transform: translate3d(-50%, -50%, 0px);
-    width: 74.30555556vw;
+    // width: 74.30555556vw;
+    width: 89.5vw;
+
     height: 37.5vw;
     mix-blend-mode: exclusion;
 
@@ -42,11 +44,20 @@
 
 }
 
-.project-misc {
+.project-info {
 
     position: absolute;
-    // top: 38.75%;
-    bottom: 39%;
+    top: 55%;
+    left: 0%;
+    // width: 23.5%;
+    width: 31.85%;
+    transform: translate3d(0%, -50%, 0px);
+
+}
+
+.project-misc {
+
+    // margin-bottom: 3vw;
 
     &__item {
 
@@ -55,7 +66,7 @@
             @include fluid-type($minWidth, $maxWidth, $minFontSize__projects-details, $maxFontSize__projects-details);
             font-weight: $light;
             color:#ffffff;
-            margin: 0;
+            margin: 0.1vw;
 
         }
 
@@ -65,10 +76,8 @@
 
 .project-description {
 
-    position: absolute;
-    width: 38.35%;
-    // top: 46.35%;
-    bottom: 20%;
+    margin-top: 2vw;
+    margin-bottom: 2vw;
 
     &__copy {
 
@@ -83,11 +92,6 @@
 
 .project-tech {
 
-    position: absolute;
-    // top: 71%;
-    bottom: 7%;
-    width: 38.35%;
-
     &__copy {
         @include fluid-type($minWidth, $maxWidth, $minFontSize__projects-details, $maxFontSize__projects-details);
         font-weight: $light;
@@ -100,7 +104,6 @@
 .project-link {
 
     position: absolute;
-    // top: 83%;
     bottom: 0%;
 
     &__link {
@@ -121,5 +124,22 @@
     top: 50%;
     left: 50%;
     transform: translate3d(-50%, -50%, 0px);
+
+}
+
+.exit-button {
+
+    position: absolute;
+    top: 0%;
+    width: 1vw;
+    height: 1vw;
+
+    &__icon {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
 
 }

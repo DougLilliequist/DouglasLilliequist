@@ -28,7 +28,7 @@ class Projects {
 
         // ProjectContent.map((content, i) => {
 
-            const {title, type, description, tech, year, role, link} = ProjectContent[0];
+            const {title, type, description, tech, year, role, link} = ProjectContent[6];
 
             // const initState = i > 0 ? false : true;
 
