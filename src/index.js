@@ -11,9 +11,12 @@ import Cursor from '../src/CanvasComponents/Cursor.js';
 import Transition from "./Transitions/Transition.js";
 import ViewMediator from "./Views/ViewMediator.js";
 import Bowser from "bowser";
+import globals from '../utils/globals.js';
 
 export default class App {
     constructor() {
+
+        window.globals = globals;
 
         const browser = Bowser.getParser(window.navigator.userAgent);
         const {
@@ -23,19 +26,17 @@ export default class App {
         window.isMobile = type !== "desktop";
 
         if (window.isMobile) {
-            this.noMobileCTA = new NoMobileCTA();
+            new NoMobileCTA();
             return;
         }
 
-        this.loadingScreen = new LoadingScreen();
-
-        window.contentLoaded = false;
+        new LoadingScreen();
 
         if (!window.isMobile) {
             this.cursor = new Cursor();
         }
 
-        this.webGLCTX = new WebGLContext({
+        new WebGLContext({
             canvas: document.querySelector('.webgl-canvas')
         });
 
@@ -45,7 +46,7 @@ export default class App {
             transition: Transition
         });
 
-        this.navigation = new Navigation();
+       new Navigation();
 
     }
 

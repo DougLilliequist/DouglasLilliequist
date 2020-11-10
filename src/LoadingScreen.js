@@ -5,17 +5,13 @@ import events from '../utils/events.js';
 import {
     gsap
 } from 'gsap';
+import globals from '../utils/globals.js';
 
 export default class LoadingScreen {
 
     constructor() {
 
         this.el = document.body.querySelector('.loader');
-
-        // this.loadingBar = document.body.querySelector('.loader__loading-bar');
-        // gsap.set(this.loadingBar, {
-        //     scaleX: 0
-        // });
 
         this.loadingProgress = document.body.querySelector('.loader__progress');
 
@@ -39,7 +35,6 @@ export default class LoadingScreen {
 
         emitter.on(events.TEXTURE_LOADED, this.updateProgress);
         emitter.on(events.UPDATE, this.update);
-        // emitter.on(events.CONTENT_LOADED, this.hide);
 
     }
 
@@ -49,24 +44,6 @@ export default class LoadingScreen {
 
     hide = () => {
 
-        // gsap.to(this.loadingBar, {
-        //     delay: 1.5,
-        //     duration: 0.5,
-        //     ease: "power1.out",
-        //     scaleX: 0,
-        //     transformOrigin: "center right",
-        //     onStart: () => {
-        //         emitter.off(events.UPDATE, this.update);
-        //     },
-        //     onComplete: () => {
-        //         gsap.delayedCall(0.5, () => {
-        //             this.el.classList.add('loaded');
-        //             emitter.emit(events.LOADING_ANIM_COMPLETED);
-        //             window.contentLoaded = true;
-        //         })
-        //     }
-        // });
-
         gsap.to(this.loadingProgress, {
             delay: 1.5,
             duration: 1.0,
@@ -75,8 +52,8 @@ export default class LoadingScreen {
             onComplete: () => {
                 gsap.delayedCall(0.5, () => {
                     this.el.classList.add('loaded');
+                    globals.CONTENT_LOADED = true;
                     emitter.emit(events.LOADING_ANIM_COMPLETED);
-                    window.contentLoaded = true;
                 })
             }
         })
@@ -95,10 +72,6 @@ export default class LoadingScreen {
     update = () => {
 
         this.currentScale += (this.targetScale - this.currentScale) * 0.1;
-        // gsap.set(this.loadingBar, {
-        //     scaleX: this.currentScale,
-        //     transformOrigin: "center left"
-        // });
 
     }
 

@@ -6,12 +6,9 @@ import events from '../../../utils/events.js';
 
 import projects from './Projects.js';
 
-import StickyComponent from '../../StickyComponent.js';
-
 import {
   gsap
 } from 'gsap';
-
 
 export default class Work extends View {
 
@@ -20,6 +17,7 @@ export default class Work extends View {
     super.onEnter();
     this.firstReveal = false;
     this.el.appendChild(projects.el);
+    projects.splitText();
     projects.computeBounds();
     this.initReferences();
     this.initEvents();
@@ -30,8 +28,10 @@ export default class Work extends View {
   onEnterCompleted() {
 
     super.onEnterCompleted();
-    if (window.contentLoaded) {
+    if (globals.CONTENT_LOADED) {
+      this.enableUserInteraction = true;
       emitter.emit(events.SHOW_CLICKDRAG_CTA);
+      this.playEnterAnim();
     }
 
   }
@@ -45,7 +45,7 @@ export default class Work extends View {
     super.onLeaveCompleted();
     this.firstReveal = false;
     this.removeEvents();
-    if (this.inViewProjectMode) emitter.emit(events.RESET_QUADS);
+    if (globals.VIEWING_PROJECT) emitter.emit(events.RESET_QUADS);
     emitter.emit(events.REMOVE_DOMGL);
     this.el.removeChild(projects.el);
   }
@@ -61,12 +61,13 @@ export default class Work extends View {
     this.enableUserInteraction = false;
     this.showScrollInterface = true;
     this.inScrollMode = false;
-    this.inViewProjectMode = false;
+    globals.VIEWING_PROJECT = false;
     this.projectIndex = 0;
 
     emitter.on(events.LOADING_ANIM_COMPLETED, () => {
       this.playEnterAnim();
       emitter.emit(events.SHOW_CLICKDRAG_CTA);
+      this.enableUserInteraction = true;
     });
 
     emitter.on(events.LOAD_PROJECT_CONTENT, this.updateContentSelection);
@@ -84,7 +85,7 @@ export default class Work extends View {
 
   removeEvents() {
 
-    // this.enableUserInteraction = false;
+    this.enableUserInteraction = false;
 
     emitter.off(events.LOADING_ANIM_COMPLETED, this.playEnterAnim);
     emitter.off(events.LOAD_PROJECT_CONTENT, () => {
@@ -133,13 +134,13 @@ export default class Work extends View {
 
   enableScrollMode = () => {
 
-    if (window.hoveringLink && !window.isMobile) return;
-    if (this.inViewProjectMode && !window.isMobile) return;
+    if (globals.HOVERING_LINK && !window.isMobile) return;
+    if (globals.VIEWING_PROJECT && !window.isMobile) return;
     if (this.enableUserInteraction === false) return;
 
     this.inScrollMode = true;
     document.body.classList.add('scrolling');
-    this.viewProjectButton.stickyTransform.deActivate();
+    //this.viewProjectButton.stickyTransform.deActivate();
     emitter.emit(events.ENTER_SCROLL_MODE);
     this.updateInterface({
       state: false
@@ -149,13 +150,13 @@ export default class Work extends View {
 
   disableScrollMode = () => {
 
-    if (window.hoveringLink && !window.isMobile) return;
-    if (this.inViewProjectMode && !window.isMobile) return;
-    if (this.enableUserInteraction === false) return;
+   if (globals.HOVERING_LINK && !window.isMobile) return;
+   if (globals.VIEWING_PROJECT && !window.isMobile) return;
+   if (this.enableUserInteraction === false) return;
 
     this.inScrollMode = false;
     document.body.classList.remove('scrolling');
-    this.viewProjectButton.stickyTransform.activate();
+    //this.viewProjectButton.stickyTransform.activate();
     emitter.emit(events.EXIT_SCROLL_MODE);
     this.updateInterface({
       state: true

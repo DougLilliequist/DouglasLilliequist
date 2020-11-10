@@ -16,29 +16,13 @@ export default class Navigation {
 
         this.links = this.el.querySelectorAll('.link');
 
-        // this.linkTransforms = this.el.querySelectorAll('.navigation__links__transform');
-
-        // this.links.forEach((link) => {
-        //     link.stickyComponent = new StickyComponent({
-        //         domElement: link,
-        //         enable: true,
-        //         includeHoverAnim: true
-        //     });
-        // });
-
         this.active = false;
 
         this.initEvents();
 
-        // this.updateSelectionState();
-
-        // this.updateActiveState();
-
     }
 
     initEvents() {
-
-        window.hoveringLink = false;
 
         this.links.forEach((link) => {
             link.addEventListener('mouseenter', () => {
@@ -150,14 +134,14 @@ export default class Navigation {
         this.hoverAnim = gsap.to(link, {
             duration: 0.1,
             ease: state ? "power1.out" : "power1.in",
-            opacity: state ? 1.0 : 0.4,
+            opacity: state ? 0.7 : 0.4,
             z: 0
         });
 
     }
 
     onHover = (link) => {
-        window.hoveringLink = true;
+        globals.HOVERING_LINK = true;
         emitter.emit(events.HOVERING_NAV_LINK, true);
         this.animateHoverState({
             link,
@@ -168,12 +152,14 @@ export default class Navigation {
 
     onLeave = (link) => {
 
-        window.hoveringLink = false;
+        globals.HOVERING_LINK = false;
         emitter.emit(events.HOVERING_NAV_LINK, false);
         this.animateHoverState({
             link,
             state: false
         });
+
+        console.log(global);
 
     }
 
@@ -192,7 +178,7 @@ export default class Navigation {
                     ease: "power1.out",
                     opacity: 0.4,
                     z: 0
-                })
+                });
             }
 
         })

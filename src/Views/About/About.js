@@ -13,6 +13,7 @@ import StickyComponent from '../../StickyComponent.js';
 import {
   gsap
 } from 'gsap';
+import globals from "../../../utils/globals.js";
 
 export default class About extends View {
   onEnter() {
@@ -24,7 +25,7 @@ export default class About extends View {
   }
   onEnterCompleted() {
     super.onEnterCompleted();
-    if (window.contentLoaded) {
+    if (globals.CONTENT_LOADED) {
       this.playEnterAnim();
     }
   }

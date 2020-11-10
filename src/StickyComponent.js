@@ -194,7 +194,7 @@ export default class StickyComponent {
     applyHoverState = () => {
 
         if (this.enable === false) return;
-        window.hoveringLink = this.hovered = true;
+        globals.HOVERING_LINK = this.hovered = true;
         document.body.classList.add('pointer');
         emitter.emit(events.HOVERING_STICKY_COMPONENT, {
             rect: this.rect
@@ -207,7 +207,7 @@ export default class StickyComponent {
 
         if (this.enable === false) return;
         document.body.classList.remove('pointer');
-        window.hoveringLink = this.hovered = false;
+        globals.HOVERING_LINK = this.hovered = false;
         emitter.emit(events.LEAVING_STICKY_COMPONENT);
         this.el.classList.remove('sticky-hovered');
 

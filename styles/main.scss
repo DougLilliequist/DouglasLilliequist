@@ -247,6 +247,7 @@ body {
         align-items: center;
         width: 100%;
         top: 8.35%;
+        // top: 7.85%;
         padding: 0;
         margin: 0;
 
@@ -258,7 +259,8 @@ body {
             color:#ffffff;
             text-decoration: none;
             display: inline-block;
-            margin: 2vw;
+            // margin: 2vw;
+            margin: 2.2vw;
             position: relative;
             font-weight: $light;
             @include fluid-type($minWidth, $maxWidth, $minFontSize__navigation, $maxFontSize__navigation);

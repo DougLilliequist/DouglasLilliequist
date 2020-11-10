@@ -28,11 +28,12 @@ class Projects {
 
         // ProjectContent.map((content, i) => {
 
-            const {title, type, description, tech, year, role, link} = ProjectContent[6];
+            const {title, type, description, tech, year, role, link} = ProjectContent[3];
 
             // const initState = i > 0 ? false : true;
 
-            const project = new Project(0, true, {
+            const project = new Project(0, {
+                viewing: true,
                 title,
                 type,
                 year,
@@ -57,6 +58,14 @@ class Projects {
 
         }); 
 
+    }
+
+    splitText() {
+        // this.project.map((project) => {
+
+        //     project.splitTextElements();
+
+        // }); 
     }
 
 }
