@@ -3,6 +3,7 @@ import {
   } from '../../../static/ProjectContent.js';
   
   import {Project} from './Project.js';
+  import {ProjectLink} from './ProjectLink.js';
 
 
 class Projects {
@@ -13,27 +14,33 @@ class Projects {
         this.el.classList.add('projects');
         
         this.project = [];
+        // this.link = [];
 
         this.initProjects();
 
+        // this.link.map((link) => {
+        //     this.el.appendChild(link.el);
+        // });
+
         this.project.map((project) => {
-
             this.el.appendChild(project.el);
-
         });
 
     }
 
     initProjects() {
 
-        // ProjectContent.map((content, i) => {
+        ProjectContent.map((content, i) => {
 
-            const {title, type, description, tech, year, role, link} = ProjectContent[3];
+            const {title, type, description, tech, year, role, link} = content;
 
-            // const initState = i > 0 ? false : true;
+            // const projectLink = new ProjectLink(title);
+            // this.link.push(projectLink);
 
-            const project = new Project(0, {
-                viewing: true,
+            const initState = i > 0 ? false : true;
+
+            const project = new Project(i, {
+                viewing: initState,
                 title,
                 type,
                 year,
@@ -45,27 +52,8 @@ class Projects {
 
             this.project.push(project);
 
+        });
 
-        // });
-
-    }
-
-    computeBounds() {
-
-        this.project.map((project) => {
-
-            project.computeBounds();
-
-        }); 
-
-    }
-
-    splitText() {
-        // this.project.map((project) => {
-
-        //     project.splitTextElements();
-
-        // }); 
     }
 
 }

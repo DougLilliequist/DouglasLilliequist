@@ -6,6 +6,7 @@
 .projects {
 
     // position: absolute;
+    mix-blend-mode: exclusion;
 
 
 }
@@ -18,9 +19,12 @@
     transform: translate3d(-50%, -50%, 0px);
     // width: 74.30555556vw;
     width: 89.5vw;
-
     height: 37.5vw;
-    mix-blend-mode: exclusion;
+    z-index: 0;
+
+    &__in-view {
+        z-index: 5;
+    }
 
 }
 
@@ -31,6 +35,7 @@
     left: 50%;
     transform: translate3d(-50%, -50%, 0px);
     display: inline-block;
+    overflow: hidden;
 
     &__title {
         text-transform: uppercase;
@@ -41,6 +46,8 @@
         margin: 0;
         color:#ffffff;
         cursor: pointer;
+        user-select: none;
+        -webkit-user-select: none;
     }
 
 }
@@ -106,13 +113,18 @@
 
     position: absolute;
     bottom: 0%;
+    overflow: hidden;
 
     &__link {
 
         @include fluid-type($minWidth, $maxWidth, $minFontSize__projects-details, $maxFontSize__projects-details);
         color: #ffffff;
+        z-index: 1;
         // text-decoration: none;
+    }
 
+    &__not-active {
+        z-index: 0;
     }
 
 }
@@ -136,6 +148,7 @@
     top: 0%;
     width: 1vw;
     height: 1vw;
+    overflow: hidden;
 
     &__icon {
         cursor: pointer;
@@ -148,7 +161,7 @@
 
 }
 
-.not-viewing {
+.not-in-view {
 
     pointer-events: none;
     user-select: none;

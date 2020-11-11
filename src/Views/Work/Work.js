@@ -17,8 +17,6 @@ export default class Work extends View {
     super.onEnter();
     this.firstReveal = false;
     this.el.appendChild(projects.el);
-    projects.splitText();
-    projects.computeBounds();
     this.initReferences();
     this.initEvents();
     this.initDomGL();
@@ -71,6 +69,8 @@ export default class Work extends View {
     });
 
     emitter.on(events.LOAD_PROJECT_CONTENT, this.updateContentSelection);
+    emitter.on(events.SHOW_PROJECT, this.showProject);
+    emitter.on(events.CLOSE_PROJECT, this.closeProject);
 
     if (!window.isMobile) {
       emitter.on(events.MOUSE_DOWN, this.enableScrollMode);
@@ -92,6 +92,9 @@ export default class Work extends View {
       this.playEnterAnim();
       emitter.emit(events.SHOW_CLICKDRAG_CTA);
     });
+
+    emitter.off(events.SHOW_PROJECT, this.showProject);
+    emitter.off(events.CLOSE_PROJECT, this.closeProject);
 
     if (!window.isMobile) {
       emitter.off(events.MOUSE_DOWN, this.enableScrollMode);
@@ -125,10 +128,7 @@ export default class Work extends View {
   updateContentSelection = (contentIndex) => {
 
     this.projectIndex = contentIndex;
-
-  }
-
-  populateContent() {
+    projects.project[this.projectIndex].showTitle();
 
   }
 
@@ -140,11 +140,8 @@ export default class Work extends View {
 
     this.inScrollMode = true;
     document.body.classList.add('scrolling');
-    //this.viewProjectButton.stickyTransform.deActivate();
+    projects.project[this.projectIndex].hideTitle();
     emitter.emit(events.ENTER_SCROLL_MODE);
-    this.updateInterface({
-      state: false
-    });
 
   }
 
@@ -156,17 +153,14 @@ export default class Work extends View {
 
     this.inScrollMode = false;
     document.body.classList.remove('scrolling');
-    //this.viewProjectButton.stickyTransform.activate();
     emitter.emit(events.EXIT_SCROLL_MODE);
-    this.updateInterface({
-      state: true
-    });
 
   }
 
   playEnterAnim = () => {
 
     emitter.emit(events.REVEAL_QUADS);
+    projects.project[0].showTitle();
 
   }
 
@@ -175,22 +169,19 @@ export default class Work extends View {
 
   }
 
-  updateInterface = ({
-    state
-  }) => {
-
-  }
-
   showProject = () => {
-    this.updateInterface({
-      state: false
-    });
-    this.revealProjectContent();
+
+    globals.VIEWING_PROJECT = true;
+    emitter.emit(events.UPDATE_VIEWMODE, {mode: true});
+    projects.project[this.projectIndex].revealContent();
+    // projects.showProject()
+   
   }
 
   closeProject = () => {
-
-    this.hideProjectContent();
+    globals.VIEWING_PROJECT = false;
+    emitter.emit(events.UPDATE_VIEWMODE, {mode: false});
+    projects.project[this.projectIndex].hideContent();
   }
 
 

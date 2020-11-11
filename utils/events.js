@@ -20,6 +20,7 @@ const events = {
     EXIT_SCROLL_MODE: 'exit_scroll_mode',
     APPLY_SCROLL_MODE_ANIM: 'apply_scroll_mode_anim',
     REMOVE_SCROLL_MODE_ANIM: 'remove_scroll_mode_anim',
+    UPDATE_VIEWMODE: 'update_view_mode',
 
     SHOW_PROJECT: 'show_project',
     CLOSE_PROJECT: 'close_project',

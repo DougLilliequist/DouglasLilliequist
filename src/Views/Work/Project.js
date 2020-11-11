@@ -1,9 +1,9 @@
-import {gsap} from 'gsap';
 import events from '../../../utils/events.js';
 import globals from '../../../utils/globals.js';
 import eventEmitter from '../../EventEmitter.js';
 const emitter = eventEmitter.emitter;
 
+import {gsap} from 'gsap';
 import {SplitText} from '../../../vendors/gsap/SplitText.js';
 gsap.registerPlugin(SplitText);
 
@@ -70,12 +70,14 @@ export class Project {
       this.initExitButton();
 
       this.projectInfoElements.map((container) => {
-
+        this.splitTextElements(container);
         this.projectInfo.appendChild(container.el);
-
       });
 
       this.viewing = viewing;
+      if(this.viewing) {
+        this.el.classList.add('project-content__in-view');
+      }
 
       this.initEvents();
 
@@ -88,7 +90,10 @@ export class Project {
       this.projectTitle.classList.add('project-title__title');
       this.projectTitle.innerText = this.title;
       this.projectTitleContainer.el.appendChild(this.projectTitle);
-      this.splitTextElements(this.projectTitleContainer);
+      // this.splitTextElements(this.projectTitleContainer);
+      gsap.set(this.projectTitle, {
+        yPercent: 100
+      });
 
       this.el.appendChild(this.projectTitleContainer.el);
 
@@ -104,7 +109,7 @@ export class Project {
       this.projectYear.classList.add('project-misc__item__copy');
       this.projectYear.id = "project-year";
       this.projectYearContainer.el.appendChild(this.projectYear);
-      this.splitTextElements(this.projectYearContainer);
+      // this.splitTextElements(this.projectYearContainer);
 
       this.projectTypeContainer = this.createContainerElement({className: 'project-misc__item'});
       this.projectType = document.createElement('p');
@@ -112,7 +117,7 @@ export class Project {
       this.projectType.classList.add('project-misc__item__copy');
       this.projectType.id = "project-type";
       this.projectTypeContainer.el.appendChild(this.projectType);
-      this.splitTextElements(this.projectTypeContainer);
+      // this.splitTextElements(this.projectTypeContainer);
 
       this.projectRoleContainer = this.createContainerElement({className: 'project-misc__item'});
       this.projectRole = document.createElement('p');
@@ -120,7 +125,7 @@ export class Project {
       this.projectRole.classList.add('project-misc__item__copy');
       this.projectRole.id = "project-role";
       this.projectRoleContainer.el.appendChild(this.projectRole);
-      this.splitTextElements(this.projectRoleContainer);
+      // this.splitTextElements(this.projectRoleContainer);
 
       this.miscInfoContainer.el.appendChild(this.projectYearContainer.el);
       this.miscInfoContainer.el.appendChild(this.projectTypeContainer.el);
@@ -137,7 +142,7 @@ export class Project {
       this.projectDescription.classList.add('project-description__copy')
       this.projectDescription.innerHTML = this.description;
       this.projecDescriptionContainer.el.appendChild(this.projectDescription);
-      this.splitTextElements(this.projecDescriptionContainer);
+      // this.splitTextElements(this.projecDescriptionContainer);
 
       this.projectInfoElements.push(this.projecDescriptionContainer);
 
@@ -150,7 +155,7 @@ export class Project {
       this.projectTech.classList.add('project-tech__copy')
       this.projectTech.innerText = this.tech;
       this.projectTechContainer.el.appendChild(this.projectTech);
-      this.splitTextElements(this.projectTechContainer);
+      // this.splitTextElements(this.projectTechContainer);
 
       this.projectInfoElements.push(this.projectTechContainer);
 
@@ -166,8 +171,6 @@ export class Project {
       this.projectLink.target = "_blank";
       this.projectLink.innerText = "visit project";
       this.projectLinkContainer.el.appendChild(this.projectLink);
-      this.splitTextElements(this.projectLinkContainer);
-
       this.el.appendChild(this.projectLinkContainer.el);
 
     }
@@ -178,27 +181,32 @@ export class Project {
       this.exitButton.el.classList.add('exit-button');
       this.exitButton.el.innerHTML = '<svg class = "exit-button__icon" width="12" height="12" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg"><path d="M0.292893 1.70711L24.2929 25.7071L25.7071 24.2929L1.70711 0.292893L0.292893 1.70711ZM24.2929 0.292893L0.292893 24.2929L1.70711 25.7071L25.7071 1.70711L24.2929 0.292893Z" fill="white"/></svg>'
       this.el.appendChild(this.exitButton.el);
-      this.splitTextElements(this.exitButton);
-
+      
     }
 
     initEvents() {
 
-      this.projectTitleContainer.el.addEventListener('click', this.onProjectSelected);
+      this.projectTitleContainer.el.addEventListener('click', this.onClick);
       this.projectTitleContainer.el.addEventListener('mouseenter', this.onHover);
       this.projectTitleContainer.el.addEventListener('mouseleave', this.onLeave);
-
+      
       this.exitButton.el.addEventListener('click', this.onExitClicked);
+      this.exitButton.el.addEventListener('mouseenter', this.onHover);
+      this.exitButton.el.addEventListener('mouseleave', this.onLeave);
+
+      if(this.projectLink) {
+        this.projectLink.addEventListener('mouseenter', this.onHover);
+        this.projectLink.addEventListener('mouseleave', this.onLeave);
+      }
 
     }
 
-    onProjectSelected = () => {
-      globals.VIEWING_PROJECT = true;
+
+    onClick = () => {
       emitter.emit(events.SHOW_PROJECT);
     }
 
     onExitClicked = () => {
-      globals.VIEWING_PROJECT = false;
       emitter.emit(events.CLOSE_PROJECT);
     }
 
@@ -212,13 +220,42 @@ export class Project {
       emitter.emit(events.LEAVING_LINK);
     }
 
-    revealContent() {
+    showTitle = () => {
 
+      gsap.to(this.projectTitle, {
+        ease: "power2.out",
+        duration: 0.5,
+        yPercent: 0,
+        onComplete: () => {
+          this.el.classList.add('project-content__in-view');
+        }
+      });
+
+    }
+
+    hideTitle = () => {
+      gsap.to(this.projectTitle, {
+        ease: "power2.out",
+        duration: 0.5,
+        yPercent: -100,
+        onComplete: () => {
+          gsap.set(this.projectTitle, {
+            yPercent: 100
+          });
+          this.el.classList.remove('project-content__in-view');
+        }
+      });
+    }
+
+    revealContent = () => {
+
+      this.hideTitle();
         
     }
 
     hideContent() {
 
+      this.showTitle();
 
     }
 
@@ -233,11 +270,11 @@ export class Project {
           word.appendChild(container.text[i]);
       });
 
-      // container.text.forEach((word) => {
-      //   gsap.set(word, {
-      //     yPercent: 100
-      //   })
-      // });
+      container.text.forEach((word) => {
+        gsap.set(word, {
+          yPercent: 100
+        })
+      });
 
     }
 
@@ -268,15 +305,15 @@ export class Project {
 
     }
 
-    computeBounds() {
+    // computeBounds() {
 
-      this.projectInfoElements.map((container) => {
+    //   this.projectInfoElements.map((container) => {
 
-        container.bounds = container.el.getBoundingClientRect();
+    //     container.bounds = container.el.getBoundingClientRect();
 
-      });
+    //   });
 
-    }
+    // }
 
     updateViewModeStyles() {
     

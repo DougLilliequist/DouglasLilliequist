@@ -51,8 +51,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     emitter.on(events.ENTER_SCROLL_MODE, this.enterScrollMode);
     emitter.on(events.EXIT_SCROLL_MODE, this.exitScrollMode);
-    emitter.on(events.SHOW_PROJECT, this.updateViewMode);
-    emitter.on(events.CLOSE_PROJECT, this.updateViewMode);
+    emitter.on(events.UPDATE_VIEWMODE, this.updateViewMode);
     emitter.on(events.REVEAL_QUADS, this.revealQuads);
     emitter.on(events.RESET_QUADS, this.resetQuads);
     emitter.on(events.PREPARE_UNMOUNT, this.hideQuads);
@@ -63,8 +62,7 @@ export default class ProjectQuadMediator extends DomquadMediator {
 
     emitter.off(events.ENTER_SCROLL_MODE, this.enterScrollMode);
     emitter.off(events.EXIT_SCROLL_MODE, this.exitScrollMode);
-    emitter.off(events.SHOW_PROJECT, this.updateViewMode);
-    emitter.off(events.CLOSE_PROJECT, this.updateViewMode);
+    emitter.off(events.UPDATE_VIEWMODE, this.updateViewMode);
     emitter.off(events.REVEAL_QUADS, this.revealQuads);
     emitter.off(events.RESET_QUADS, this.resetQuads);
     emitter.off(events.PREPARE_UNMOUNT, this.hideQuads);
@@ -142,11 +140,10 @@ export default class ProjectQuadMediator extends DomquadMediator {
   }
 
   //toggle values
-  updateViewMode = () => {
+  updateViewMode = (args) => {
 
-    // const ease = "sine.inOut"
-
-    this.inViewMode = !this.inViewMode;
+    const {mode} = args;
+    this.inViewMode = mode;
 
     const {
       uniforms
