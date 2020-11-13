@@ -9,6 +9,7 @@ import projects from './Projects.js';
 import {
   gsap
 } from 'gsap';
+import globals from "../../../utils/globals.js";
 
 export default class Work extends View {
 
@@ -171,6 +172,7 @@ export default class Work extends View {
 
   showProject = () => {
 
+    if(globals.VIEWING_PROJECT) return;
     globals.VIEWING_PROJECT = true;
     emitter.emit(events.UPDATE_VIEWMODE, {mode: true});
     projects.project[this.projectIndex].revealContent();
@@ -179,6 +181,7 @@ export default class Work extends View {
   }
 
   closeProject = () => {
+    if(!globals.VIEWING_PROJECT) return;
     globals.VIEWING_PROJECT = false;
     emitter.emit(events.UPDATE_VIEWMODE, {mode: false});
     projects.project[this.projectIndex].hideContent();

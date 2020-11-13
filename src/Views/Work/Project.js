@@ -42,7 +42,7 @@ export class Project {
        * @param link : url if available
        */
 
-      this.projectID = projectID;
+      this.projectID = projectID + 1;
       this.title = title;
       this.year = year;
       this.type = type;
@@ -62,7 +62,9 @@ export class Project {
 
       this.projectInfoElements = [];
 
-      this.initSelectionStateElements();
+      this.initProjectTitle();
+      this.initViewbutton();
+      this.initProjectNumber();
       this.initMiscInfoElements();
       this.initProjectDescription();
       this.initProjectTech();
@@ -83,7 +85,7 @@ export class Project {
 
     }
 
-    initSelectionStateElements() {
+    initProjectTitle() {
 
       this.projectTitleContainer = this.createContainerElement({className: 'project-title'});
       this.projectTitle = document.createElement('h1');
@@ -96,6 +98,36 @@ export class Project {
       });
 
       this.el.appendChild(this.projectTitleContainer.el);
+
+    }
+
+    initViewbutton() {
+
+      this.viewButtonContainer = this.createContainerElement({className: 'view-button'});
+      this.viewButton = document.createElement('p');
+      this.viewButton.classList.add('view-button__button');
+      this.viewButton.innerText = "view";
+      this.viewButtonContainer.el.appendChild(this.viewButton);
+
+      gsap.set(this.viewButton, {
+        yPercent: -100
+      });
+      this.el.appendChild(this.viewButtonContainer.el);
+
+    }
+
+    initProjectNumber() {
+
+      this.projectNumberContainer = this.createContainerElement({className: 'project-number'});
+      this.projectNumber = document.createElement('h1');
+      this.projectNumber.classList.add('project-number__number');
+      this.projectNumber.innerText = this.projectID < 10 ? "0"+this.projectID : this.projectID;
+      this.projectNumberContainer.el.appendChild(this.projectNumber);
+
+      gsap.set(this.projectNumber, {
+        yPercent: -100
+      });
+      this.el.appendChild(this.projectNumberContainer.el);
 
     }
 
@@ -173,6 +205,10 @@ export class Project {
       this.projectLinkContainer.el.appendChild(this.projectLink);
       this.el.appendChild(this.projectLinkContainer.el);
 
+      gsap.set(this.projectLink, {
+        opacity: 0
+      });
+
     }
 
     initExitButton() {
@@ -181,14 +217,30 @@ export class Project {
       this.exitButton.el.classList.add('exit-button');
       this.exitButton.el.innerHTML = '<svg class = "exit-button__icon" width="12" height="12" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg"><path d="M0.292893 1.70711L24.2929 25.7071L25.7071 24.2929L1.70711 0.292893L0.292893 1.70711ZM24.2929 0.292893L0.292893 24.2929L1.70711 25.7071L25.7071 1.70711L24.2929 0.292893Z" fill="white"/></svg>'
       this.el.appendChild(this.exitButton.el);
+
+      gsap.set(this.exitButton.el, {
+        opacity: 0
+      });
       
     }
 
     initEvents() {
 
-      this.projectTitleContainer.el.addEventListener('click', this.onClick);
-      this.projectTitleContainer.el.addEventListener('mouseenter', this.onHover);
-      this.projectTitleContainer.el.addEventListener('mouseleave', this.onLeave);
+      // this.projectTitle.addEventListener('click', this.onClick);
+      // this.projectTitle.addEventListener('mouseenter', this.onHover);
+      // this.projectTitle.addEventListener('mouseleave', this.onLeave);
+      
+      this.viewButton.addEventListener('click', this.onClick);
+      this.viewButton.addEventListener('mouseenter', this.onHover);
+      this.viewButton.addEventListener('mouseleave', this.onLeave);
+      // emitter.on(events.SHOW_PROJECT, event => {
+
+      //   const {desiredProject}  = event
+      //   if(desiredProject === this.projectID) {
+      //     this.revealContent();
+      //   }
+
+      // });
       
       this.exitButton.el.addEventListener('click', this.onExitClicked);
       this.exitButton.el.addEventListener('mouseenter', this.onHover);
@@ -231,6 +283,18 @@ export class Project {
         }
       });
 
+      gsap.to(this.projectNumber, {
+        ease: "power2.out",
+        duration: 0.5,
+        yPercent: 0,
+      });
+
+      gsap.to(this.viewButton, {
+        ease: "power2.out",
+        duration: 0.5,
+        yPercent: 0,
+      });
+
     }
 
     hideTitle = () => {
@@ -245,17 +309,120 @@ export class Project {
           this.el.classList.remove('project-content__in-view');
         }
       });
+
+      gsap.to(this.projectNumber, {
+        ease: "power2.out",
+        duration: 0.5,
+        yPercent: 100,
+        onComplete: () => {
+          gsap.set(this.projectNumber, {
+            yPercent: -100
+          });
+        }
+      });
+
+      gsap.to(this.viewButton, {
+        ease: "power2.out",
+        duration: 0.5,
+        yPercent: 100,
+        onComplete: () => {
+          gsap.set(this.viewButton, {
+            yPercent: -100
+          });
+        }
+      });
+
     }
 
     revealContent = () => {
 
-      this.hideTitle();
+      gsap.to(this.projectTitle, {
+        ease: "power2.out",
+        duration: 0.5,
+        yPercent: -100,
+        onComplete: () => {
+          gsap.set(this.projectTitle, {
+            yPercent: -100
+          });
+        }
+      });
+
+      this.projectInfoElements.map((el) => {
+
+        gsap.fromTo(el.text, 
+          {
+            yPercent: 100 * (Math.random() > 0.5 ? 1.0 : -1.0) 
+          },
+          {
+          yPercent: 0,
+          duration: 0.5,
+          stagger: 0.05
+        });
+
+      });
+
+      gsap.to(this.exitButton.el, {
+        opacity: 1,
+        duration: 0.5
+    });
+
+      gsap.to(this.projectLink, {
+          opacity: 1,
+          duration: 0.5
+      });
+
+      
+      gsap.to(this.projectNumber, {
+        ease: "power2.out",
+        duration: 0.5,
+        yPercent: 100,
+        onComplete: () => {
+          gsap.set(this.projectNumber, {
+            yPercent: -100
+          });
+        }
+      });
+
+      gsap.to(this.viewButton, {
+        ease: "power2.out",
+        duration: 0.5,
+        yPercent: 100,
+        onComplete: () => {
+          gsap.set(this.viewButton, {
+            yPercent: -100
+          });
+        }
+      });
         
     }
 
     hideContent() {
 
       this.showTitle();
+      this.projectInfoElements.map((el) => {
+
+        gsap.to(el.text, {
+          yPercent: 100 * (Math.random() > 0.5 ? 1.0 : -1.0), 
+          duration: 0.5,
+          stagger: 0.05,
+          onComplete: () => {
+            gsap.set(el.text, {
+              yPercent: 100
+            });
+          }
+        });
+
+      });
+
+      gsap.to(this.exitButton.el, {
+        opacity: 0,
+        duration: 0.5
+    });
+
+      gsap.to(this.projectLink, {
+          opacity: 0,
+          duration: 0.5
+      });
 
     }
 

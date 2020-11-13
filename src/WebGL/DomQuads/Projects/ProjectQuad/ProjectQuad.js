@@ -233,17 +233,8 @@ export default class ProjectQuad extends DomQuad {
   }
 
   restorePosition() {
-    let delta = this.targetPos - this.position.z;
-    this.restorePhase = (delta / this.restoreDelta);
-    this.restoreEase = delta / 10.0; //lerp the easeing speed
-    this.position.z += this.restoreEase * this.restorePhase;
 
-    if (Math.abs(delta) < 0.001) {
-      this.position.z = Math.round(this.position.z);
-      this.restoreEase = 0;
-      // this.positionRestored = true;
-    }
-
+    this.position.z += (this.targetPos - this.position.z) / 13.0;
     this.program.uniforms._RestorePhase.value = 1.0 - this.restorePhase;
   }
 
@@ -268,7 +259,7 @@ export default class ProjectQuad extends DomQuad {
       this.program.uniforms._Scale, {
         value: scale,
         duration: 0.35,
-        ease: "power1.out"
+        ease: "power2.inOut"
       },
       "<"
     );

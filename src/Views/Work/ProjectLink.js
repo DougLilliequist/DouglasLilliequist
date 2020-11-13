@@ -2,6 +2,10 @@ import eventEmitter from '../../EventEmitter.js';
 const emitter = eventEmitter.emitter;
 import events from '../../../utils/events.js';
 
+import {
+    ProjectContent
+  } from '../../../static/ProjectContent.js';
+
 import {gsap} from 'gsap';
 import {SplitText} from '../../../vendors/gsap/SplitText.js';
 gsap.registerPlugin(SplitText);
@@ -11,48 +15,91 @@ export class ProjectLink {
     constructor(project) {
 
         this.project = project;
-        this.initElement();
-        this.initEvents();
-
-    }
-
-    initElement() {
 
         this.el = document.createElement('div');
         this.el.classList.add('project-title');
-        this.projectTitle = document.createElement('h1');
-        this.projectTitle.classList.add('project-title__title');
-        this.projectTitle.innerText = this.project;
-        this.el.appendChild(this.projectTitle);
+
+        this.initLinks();
+        // this.initEvents();
 
     }
 
-    initEvents() {
+    initLinks() {
 
-        this.el.addEventListener('click', this.onClick);
-        this.el.addEventListener('mouseenter', this.onHover);
-        this.el.addEventListener('mouseleave', this.onLeave);
+        this.link = []
+
+        ProjectContent.map((content) => {
+
+            const {title} = content;
+
+            const projectLink = document.createElement('h1');
+            projectLink.classList.add('project-title__title');
+            projectLink.innerText = title;
+            
+            projectLink.addEventListener('click', ()=> {
+                emitter.emit(events.SHOW_PROJECT, {desiredProject: title})
+            });
+
+            projectLink.addEventListener('mouseenter', () => {
+                globals.HOVERING_LINK = true;
+                emitter.emit(events.HOVERING_LINK);
+            });
+            
+            projectLink.addEventListener('mouseleave', () => {
+                globals.HOVERING_LINK = false;
+                emitter.emit(events.LEAVING_LINK);
+            });
+
+            gsap.set(projectLink, {
+                yPercent: 100
+            });
+
+            this.link.push(projectLink);
+            this.el.appendChild(projectLink);
+
+        });
 
     }
 
-    onClick = () => {
+    showLink(projectIndex) {
 
-        emitter.emit(events.SHOW_PROJECT, this.project);
+        gsap.to(this.link[projectLink], {
+            duration: 0.5,
+            yPercent: 0
+        });
 
     }
 
-    onHover = () => {
+    hideLink(projectIndex) {
 
-        globals.HOVERING_LINK = true;
-        emitter.emit(events.HOVERING_LINK);
 
-      }
+    }
+
+    // initEvents() {
+
+    //     this.el.addEventListener('mouseenter', this.onHover);
+    //     this.el.addEventListener('mouseleave', this.onLeave);
+
+    // }
+
+    // onClick = () => {
+
+    //     emitter.emit(events.SHOW_PROJECT, this.project);
+
+    // }
+
+    // onHover = () => {
+
+    //     globals.HOVERING_LINK = true;
+    //     emitter.emit(events.HOVERING_LINK);
+
+    //   }
   
-      onLeave = () => {
+    //   onLeave = () => {
 
-        globals.HOVERING_LINK = false;
-        emitter.emit(events.LEAVING_LINK);
+    //     globals.HOVERING_LINK = false;
+    //     emitter.emit(events.LEAVING_LINK);
 
-      }
+    //   }
 
 }

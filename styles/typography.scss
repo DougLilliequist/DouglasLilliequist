@@ -1,7 +1,9 @@
 // @import url('https://fonts.googleapis.com/css2?family=Muli:wght@300;600;700;900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@300;400&display=swap');
-$muli: 'Mulish', sans-serif;
+// @import url('https://fonts.googleapis.com/css2?family=Mulish:wght@300;400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Mulish:wght@200;300;400&display=swap');
+$mulish: 'Mulish', sans-serif;
 
+$extraLight: 200;
 $light: 300;
 $regular: 400;
 $semi-bold: 600;
@@ -33,14 +35,20 @@ $maxFontSize__loading-sub-title: 20px;
 $minFontSize__projects-title-scrolling: 12px;
 $maxFontSize__projects-title-scrolling: 50px;
 
-$minFontSize__projects-title: 20px;
-$maxFontSize__projects-title: 46px;
+$minFontSize__projects-title: 10px;
+// $maxFontSize__projects-title: 46px;
+$maxFontSize__projects-title: 56px;
 
 $minFontSize__projects-header: 8px;
 $maxFontSize__projects-header: 30px;
 
+$minFontSize__projects-number: 8px;
+$maxFontSize__projects-number: 23px;
+
 $minFontSize__projects-body: 7px;
-$maxFontSize__projects-body: 30px;
+// $maxFontSize__projects-body: 30px;
+// $maxFontSize__projects-body: 18px;
+$maxFontSize__projects-body: 18px;
 
 $minFontSize__projects-details: 7px;
 $maxFontSize__projects-details: 13px;

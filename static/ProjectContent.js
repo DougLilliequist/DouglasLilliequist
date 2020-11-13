@@ -4,6 +4,38 @@ import img from './img/*.png';
 export const ProjectContent = [
 
     {
+        title: 'Signature Faces',
+        type: 'Client project',
+        description: 'Virtual makeup line for LOreal Paris in collboration with Virtue Worldwide',
+        tech: 'Lens Studio / Spark AR',
+        year: 2020,
+        role: 'Creative Technologist / Filter Dev / Shader Dev',
+        link: 'https://www.loreal-paris.co.uk/signature-faces',
+        media: {
+            videoSrc: projectVideos.crashingdawn256256,
+            imageSrc: img.selfportrait512512,
+            brightVal: 1.0
+        }
+
+    },
+
+    {
+        title: 'Fabric',
+        type: 'Experiment',
+        description: 'Interactive cloth simulation',
+        tech: 'WebGL(OGL) / GPGPU',
+        year: 2020,
+        role: null,
+        link: 'https://douglilliequist.github.io/Fabric/',
+        media: {
+            videoSrc: projectVideos.crashingdawn256256,
+            imageSrc: img.selfportrait512512,
+            brightVal: 1.0
+        }
+
+    },
+
+    {
         title: 'Crashing Dawn',
         type: 'Experiment',
         description: 'Shaded particles',
