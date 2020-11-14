@@ -67,7 +67,8 @@ void main() {
 
     vec2 texCoord = uv;
     texCoord -= 0.5;
-    texCoord *= mix(0.5, 1.0, _RevealPhase);
+    // texCoord *= mix(0.5, 1.0, _RevealPhase);
+    texCoord *= mix(0.85, 1.0, _RevealPhase);
     texCoord += 0.5;
 
     vec3 col = texture2D(_Image, texCoord).xyz;
@@ -77,7 +78,7 @@ void main() {
     vDamp = dampen;
 
     //PROJECT VIEW MODE SCALE
-    pos.xy *= _ViewplaneSize * mix(0.85, 1.0, _Scale) * mix(1.0, 1.525, _ViewModePhase);
+    pos.xy *= _ViewplaneSize * mix(0.85, 1.0, 1.0) * mix(1.0, 1.525, _ViewModePhase);
 
     //SCROLL FORCE
     vec2 phasePos = position.xy;
@@ -91,7 +92,8 @@ void main() {
     float viewmodePhase = _ViewModePhase * 4.0 * (1.0 - _ViewModePhase);    
     float phaseDist = 1.0 - abs((_ViewModePhase * 2.1) - dist);
     phaseDist = smoothstep(0.0, 1.0, phaseDist);
-    float ripplePhase = phaseDist * RIPPLE_AMP * viewmodePhase;
+    float ripplePhase = cos(phaseDist * HALFPI) * RIPPLE_AMP * viewmodePhase;
+    // float ripplePhase = phaseDist * RIPPLE_AMP * viewmodePhase;
     vPhase = phaseDist * viewmodePhase;
 
     pos.z += ripplePhase;

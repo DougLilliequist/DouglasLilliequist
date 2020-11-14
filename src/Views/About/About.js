@@ -224,7 +224,7 @@ export default class About extends View {
       duration: dur,
       opacity: 0,
       stagger: -0.05,
-      ease: ease
+      ease: "linear"
     }, "<");
 
     leaveAnim.to(this.contactHeader, {

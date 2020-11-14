@@ -98,9 +98,11 @@ export default class ProjectQuad extends DomQuad {
       magFilter: this.gl.LINEAR
     });
 
-    if (this.media.videoSrc !== null && window.isMobile === false)
-      this.loadVideo();
-    if (this.media.imageSrc !== null && window.isMobile) this.loadImage();
+    // if (this.media.videoSrc !== null && window.isMobile === false)
+    //   this.loadVideo();
+    // if (this.media.imageSrc !== null && window.isMobile) this.loadImage();
+
+    if (this.media.videoSrc !== null)this.loadVideo();
 
     const u = {
       _ViewplaneSize: {
