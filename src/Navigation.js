@@ -159,8 +159,6 @@ export default class Navigation {
             state: false
         });
 
-        console.log(global);
-
     }
 
     onSelect = (selectedLink) => {

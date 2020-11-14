@@ -54,12 +54,6 @@ body {
     cursor: pointer;
 }
 
-.scrolling {
-    -webkit-user-select: none;
-    user-select: none;
-    pointer-events: none;
-}
-
 .grid {
 
     position: fixed;
@@ -162,7 +156,8 @@ body {
     pointer-events: none;
     // background-color: rgba($color: #e6e6e6, $alpha: 1.0);
     // background-color: #93acff;
-    background-color: #000000;
+    // background-color: #000000;
+    background-color: #ededed;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -185,7 +180,8 @@ body {
 
     &__progress {
         margin: 0;
-        color: #ffffff;
+        // color: #ffffff;
+        color: #000000;
         font-size: 1.25vw;
         font-weight: $semi-bold;
         
@@ -231,13 +227,14 @@ body {
 .navigation {
 
     position: fixed;
-    height: 100vh;
+    height:  27.85vw;
     width: 5.555555556vw;
+    top: 50%;
     // right: 3.1vw;
     right: 2.88vw;
-    transform: translate3d(0px, 0px, 0px);
+    transform: translate3d(0px, -50%, 0px);
     z-index: 2;
-    mix-blend-mode: exclusion;
+    // mix-blend-mode: exclusion;
 
     &__links {
         
@@ -252,7 +249,7 @@ body {
         // top: 14.5%;
         // top: 14.6%;
         // top: 7.85%;
-        top: 21.75%;
+        top: 0%;
         padding: 0;
         margin: 0;
 
@@ -261,13 +258,13 @@ body {
         }
         
         .link {
-            color:#ffffff;
+            color:#000000;
             text-decoration: none;
             display: inline-block;
             // margin: 2vw;
             // margin: 2.2vw;
-            margin-top: 2vw;
-            margin-bottom: 2vw;
+            //margin-top: 2vw;
+            margin-bottom: 6vw;
             position: relative;
             font-weight: $light;
             @include fluid-type($minWidth, $maxWidth, $minFontSize__navigation, $maxFontSize__navigation);

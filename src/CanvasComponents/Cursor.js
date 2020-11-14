@@ -5,6 +5,7 @@ import events from '../../utils/events';
 import {
     gsap
 } from 'gsap';
+import globals from '../../utils/globals.js';
 
 /**
  * Make this available if not using mobile
@@ -179,8 +180,12 @@ export default class Cursor {
         emitter.on(events.ENTER_SCROLL_MODE, this.onMouseDown);
         emitter.on(events.EXIT_SCROLL_MODE, this.onMouseUp);
 
-        emitter.on(events.HOVERING_STICKY_COMPONENT, this.animateHoverMode);
-        emitter.on(events.LEAVING_STICKY_COMPONENT, this.animateLeaveHoverMode);
+        // emitter.on(events.HOVERING_STICKY_COMPONENT, this.animateHoverMode);
+        // emitter.on(events.LEAVING_STICKY_COMPONENT, this.animateLeaveHoverMode);
+        // emitter.on(events.HOVERING_LINK, this.animateHoverMode);
+        // emitter.on(events.LEAVING_LINK, this.animateLeaveHoverMode);
+        // emitter.on(events.)
+
         emitter.on(events.UPDATE_STICKY_TARGET, this.updateStickyTarget);
         emitter.on(events.LINK_SELECTED, this.onLinkSelected);
 
@@ -479,7 +484,7 @@ export default class Cursor {
 
         const message = this.inScrollMode ? this.dragMessage : this.holdMessage;
         this.ctx.fillStyle = `rgba(${0.0},${0.0},${0.0}, ${this.ctaTextAlpha})`;
-        this.ctx.font = `${12}px Muli`;
+        this.ctx.font = `${12}px Arial`;
         this.ctx.textBaseline = "middle";
         // this.ctx.fillText(message.word, this.position.x + 40, this.position.y + this.ctaPosOffset.y);
         this.ctx.fillText(message.word, this.position.x - 60, this.position.y + this.ctaPosOffset.y);
@@ -524,8 +529,10 @@ export default class Cursor {
 
         this.ctx.clearRect(0, 0, this.width, this.height);
         this.drawCursorCircle();
-        if (this.drawMessage) this.drawCTAText();
         if (this.inScrollMode) this.drawCursorArrows();
+
+        if(globals.CURRENT_VIEW !== "work") return;
+        if (this.drawMessage) this.drawCTAText();
 
     }
 

@@ -77,10 +77,6 @@ void main() {
     vDamp = dampen;
 
     //PROJECT VIEW MODE SCALE
-    // pos.xy *= _ViewplaneSize * mix(0.85, 1.0, _Scale) * mix(1.0, 1.535, _ViewModePhase * _ViewModePhase);
-    // pos.xy *= _ViewplaneSize * mix(0.85, 1.0, _Scale) * mix(1.0, 1.3528, 1.0);
-    // pos.xy *= _ViewplaneSize * mix(0.85, 1.0, _Scale) * mix(1.0, 1.351, _ViewModePhase * _ViewModePhase);
-    // pos.xy *= _ViewplaneSize * mix(0.85, 1.0, _Scale) * mix(1.0, 1.3495, _ViewModePhase);
     pos.xy *= _ViewplaneSize * mix(0.85, 1.0, _Scale) * mix(1.0, 1.525, _ViewModePhase);
 
     //SCROLL FORCE

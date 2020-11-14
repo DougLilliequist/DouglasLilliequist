@@ -14,14 +14,9 @@ class Projects {
         this.el.classList.add('projects');
         
         this.project = [];
-        this.link = [];
+        // this.link = [];
 
-        // this.initLinks();
         this.initProjects();
-
-        // this.link.map((link) => {
-        //     this.el.appendChild(link.el);
-        // });
 
         this.project.map((project) => {
             this.el.appendChild(project.el);
@@ -29,29 +24,11 @@ class Projects {
 
     }
 
-    initLinks() {
-
-        ProjectContent.map((content, i) => {
-
-            const {title} = content;
-            const link = new ProjectLink(title);
-            this.link.push(link);
-
-        });
-
-
-    }
-
     initProjects() {
 
         ProjectContent.map((content, i) => {
 
-            // if(i !== 3) return;
-
             const {title, type, description, tech, year, role, link} = content;
-
-            // const projectLink = new ProjectLink(title);
-            // this.link.push(projectLink);
 
             const initState = i > 0 ? false : true;
 

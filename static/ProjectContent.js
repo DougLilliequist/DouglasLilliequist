@@ -36,6 +36,38 @@ export const ProjectContent = [
     },
 
     {
+        title: 'Memory Phase',
+        type: 'Experiment',
+        description: 'Optical flow velocity applied to particles',
+        tech: 'WebGL(OGL) / Optical Flow / GPGPU',
+        year: 2020,
+        role: null,
+        link: 'https://douglilliequist.github.io/MemoryPhase/',
+        media: {
+            videoSrc: projectVideos.sken256256,
+            imageSrc: img.selfportrait512512,
+            brightVal: 0.0
+        }
+
+    },
+
+    {
+        title: 'This cant be real',
+        type: 'Experiment',
+        description: 'Optical flow and fluid sim madness',
+        tech: 'WebGL(OGL) / Optical Flow',
+        year: 2020,
+        role: null,
+        link: 'https://douglilliequist.github.io/ThisCantBeReal01/',
+        media: {
+            videoSrc: projectVideos.sken256256,
+            imageSrc: img.selfportrait512512,
+            brightVal: 0.0
+        }
+
+    },
+
+    {
         title: 'Crashing Dawn',
         type: 'Experiment',
         description: 'Shaded particles',
@@ -64,22 +96,6 @@ export const ProjectContent = [
             imageSrc: img.selfportrait512512,
             brightVal: 1.0
         }
-    },
-
-    {
-        title: 'Memory Phase',
-        type: 'Experiment',
-        description: 'Optical flow velocity applied to particles',
-        tech: 'WebGL / Optical Flow / GPGPU',
-        year: 2020,
-        role: null,
-        link: 'https://douglilliequist.github.io/MemoryPhase/',
-        media: {
-            videoSrc: projectVideos.sken256256,
-            imageSrc: img.selfportrait512512,
-            brightVal: 0.0
-        }
-
     },
 
     {

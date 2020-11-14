@@ -13,11 +13,19 @@ import StickyComponent from '../../StickyComponent.js';
 import {
   gsap
 } from 'gsap';
+
+import {SplitText} from '../../../vendors/gsap/SplitText.js';
+gsap.registerPlugin(SplitText);
+
 import globals from "../../../utils/globals.js";
 
 export default class About extends View {
   onEnter() {
     super.onEnter();
+
+    globals.CURRENT_VIEW = "about";
+    emitter.emit(events.UPDATE_CURRENT_VIEW);
+
     this.initReferences();
     this.populateContent();
     this.initEvents();
@@ -39,6 +47,11 @@ export default class About extends View {
     super.onLeaveCompleted();
     this.removeEvents();
     emitter.emit(events.REMOVE_DOMGL);
+    
+    this.resetTextSplit(this.header);
+    this.resetTextSplit(this.introText);
+    this.resetTextSplit(this.contactHeader);
+
   }
 
   initOnComplete() {
@@ -62,11 +75,8 @@ export default class About extends View {
     });
 
     this.links.forEach((link) => {
-      link.stickyTransform = new StickyComponent({
-        domElement: link,
-        enable: true,
-        includeHoverAnim: true
-      });
+      link.addEventListener('mouseenter', this.onLinkHover);
+      link.addEventListener('mouseleave', this.onLinkLeave);
     });
 
   }
@@ -74,8 +84,8 @@ export default class About extends View {
   removeEvents() {
 
     this.links.forEach((link) => {
-      link.stickyTransform.deActivate();
-      link.stickyTransform = null;
+      link.removeEventListener('mouseenter', this.onLinkHover);
+      link.removeEventListener('mouseleave', this.onLinkLeave);
     });
 
     emitter.off(events.LOADING_ANIM_COMPLETED, () => {
@@ -103,7 +113,7 @@ export default class About extends View {
     this.header.innerHTML = aboutContent.title;
     this.introText.innerHTML = aboutContent.introText;
     this.contactHeader.innerHTML = aboutContent.contactHeader;
-    this.links.forEach((link, i) => {
+    this.links.forEach((link, i) => { 
 
       link.innerHTML = aboutContent.contactMethods[i].type;
       link.href = aboutContent.contactMethods[i].url;
@@ -114,73 +124,84 @@ export default class About extends View {
 
   onLinkHover = () => {
 
-    emitter.emit(events.HOVERING_LINK);
+    globals.HOVERING_LINK = true;
+    emitter.emit(events.HOVERING_NAV_LINK, true);
 
   }
 
   onLinkLeave = () => {
-
-    emitter.emit(events.LEAVING_LINK);
+    globals.HOVERING_LINK = false;
+    emitter.emit(events.HOVERING_NAV_LINK, false);
 
   }
 
   playEnterAnim() {
 
     const dur = 0.85;
-    const startY = 20;
     const ease = "power1.out";
+    emitter.emit(events.REVEAL_QUADS);
+
+    this.splitTextElements(this.header);
+    this.splitTextElements(this.introText);
+    this.splitTextElements(this.contactHeader);
+
+    // gsap.to(this.introText.text.words, {
+    //   duration: 0.5,
+    //   yPercent: 0,
+    //   stagger: 0.015,
+    // });
+
+    // gsap.to(this.introText.text.words, {
+    //   duration: 0.5,
+    //   yPercent: 0,
+    //   stagger: 0.015,
+    // });
+
+    // gsap.to(this.introText.text.words, {
+    //   duration: 0.5,
+    //   yPercent: 0,
+    //   stagger: 0.015,
+    // });
 
     const enterAnim = gsap.timeline({
       onStart: () => {
-        emitter.emit(events.REVEAL_QUADS);
+        // emitter.emit(events.REVEAL_QUADS);
       },
-      // onComplete: () => {
-      //   this.links.forEach((link) => {
-      //     link.children[0].classList.add('link--enabled');
-      //   });
-      // }
     });
 
-    enterAnim.fromTo(this.header, {
-      opacity: 0,
-      y: startY,
-    }, {
+    enterAnim.to(this.header.text.words,
+      {
       duration: dur,
-      opacity: 1,
-      y: 0,
+      yPercent: 0,
       ease: ease
-    }, "<");
+    });
 
-    enterAnim.fromTo(this.introText, {
-      opacity: 0,
-      y: startY,
-    }, {
+    enterAnim.to(this.introText.text.words,
+    {
       duration: dur,
-      opacity: 1,
-      y: 0,
+      yPercent: 0,
+      stagger: 0.005,
       ease: ease
-    }, "<0.05");
+    }, "<0.5");
 
-    enterAnim.fromTo(this.contactHeader, {
-      opacity: 0,
-      y: startY,
-    }, {
-      duration: dur,
-      opacity: 1,
-      y: 0,
-      ease: ease
-    }, "<0.05");
+    enterAnim.to(this.contactHeader.text.words, 
+      {
+        duration: dur,
+        yPercent: 0,
+        ease: ease,
+        stagger: 0.005
+    }, "<0.5");
 
     enterAnim.fromTo(this.links, {
       opacity: 0,
-      y: startY,
+      yPercent: 100,
     }, {
       duration: dur,
       opacity: 1.0,
       stagger: 0.1,
-      y: 0,
+      yPercent: 0,
       ease
-    }, "<0.1");
+    }, "<0.5");
 
   }
 
@@ -223,6 +244,32 @@ export default class About extends View {
       opacity: 0,
       ease: ease,
     }, "<0.05");
+
+  }
+
+  splitTextElements(el, type = "words") {
+
+    el.textClip = new SplitText(el, {type}),
+    el.text = new SplitText(el, {type}) 
+    
+    el.textClip.words.forEach((word, i) => {
+        word.innerText = "";
+        word.style.overflow = "hidden";
+        word.appendChild(el.text.words[i]);
+    });
+
+    el.text.words.forEach((word) => {
+      gsap.set(word, {
+        yPercent: 100
+      })
+    }); 
+
+  }
+
+  resetTextSplit(el) {
+
+    el.textClip.revert();
+    el.text.revert();
 
   }
 

@@ -1,14 +1,8 @@
 import View from "../View.js";
-
 import eventEmitter from '../../EventEmitter.js';
 const emitter = eventEmitter.emitter;
 import events from '../../../utils/events.js';
-
 import projects from './Projects.js';
-
-import {
-  gsap
-} from 'gsap';
 import globals from "../../../utils/globals.js";
 
 export default class Work extends View {
@@ -16,11 +10,15 @@ export default class Work extends View {
   onEnter() {
 
     super.onEnter();
+
+    globals.CURRENT_VIEW = "work";
+    emitter.emit(events.UPDATE_CURRENT_VIEW);
+
     this.firstReveal = false;
     this.el.appendChild(projects.el);
-    this.initReferences();
+
+    this.initDomGL();    
     this.initEvents();
-    this.initDomGL();
 
   }
 
@@ -38,6 +36,7 @@ export default class Work extends View {
   onLeave() {
     super.onLeave();
     emitter.emit(events.HIDE_CLICKDRAG_CTA);
+    this.playLeaveAnim();
   }
 
   onLeaveCompleted() {
@@ -49,20 +48,15 @@ export default class Work extends View {
     this.el.removeChild(projects.el);
   }
 
-  initReferences() {
-
-    this.domGLReferenceElement = this.el.querySelector('.project-video');
-
-  }
-
   initEvents() {
+
+    this.el.style.cursor = "grab";
 
     this.enableUserInteraction = false;
     this.showScrollInterface = true;
     this.inScrollMode = false;
+    
     globals.VIEWING_PROJECT = false;
-    this.projectIndex = 0;
-
     emitter.on(events.LOADING_ANIM_COMPLETED, () => {
       this.playEnterAnim();
       emitter.emit(events.SHOW_CLICKDRAG_CTA);
@@ -114,6 +108,9 @@ export default class Work extends View {
 
   initDomGL() {
 
+
+    this.domGLReferenceElement = this.el.querySelector('.project-video');
+
     const params = {
       referenceElement: this.domGLReferenceElement,
       getFirstQuad: true
@@ -128,8 +125,13 @@ export default class Work extends View {
 
   updateContentSelection = (contentIndex) => {
 
-    this.projectIndex = contentIndex;
-    projects.project[this.projectIndex].showTitle();
+    globals.PREV_PROJECT_INDEX = globals.CURRENT_PROJECT_INDEX;
+    globals.CURRENT_PROJECT_INDEX = contentIndex;
+    if(globals.CURRENT_PROJECT_INDEX !== globals.PREV_PROJECT_INDEX) {
+      projects.project[globals.PREV_PROJECT_INDEX].updateViewModeStyles({state: false});
+      projects.project[globals.CURRENT_PROJECT_INDEX].updateViewModeStyles({state: true});
+    }
+    projects.project[globals.CURRENT_PROJECT_INDEX].showTitle();
 
   }
 
@@ -140,8 +142,10 @@ export default class Work extends View {
     if (this.enableUserInteraction === false) return;
 
     this.inScrollMode = true;
-    document.body.classList.add('scrolling');
-    projects.project[this.projectIndex].hideTitle();
+    // document.body.classList.add('scrolling');
+    this.el.style.cursor = "grabbing";
+    projects.el.classList.add('scrolling');
+    projects.project[globals.CURRENT_PROJECT_INDEX].hideTitle();
     emitter.emit(events.ENTER_SCROLL_MODE);
 
   }
@@ -153,7 +157,8 @@ export default class Work extends View {
    if (this.enableUserInteraction === false) return;
 
     this.inScrollMode = false;
-    document.body.classList.remove('scrolling');
+    this.el.style.cursor = "grab";
+    projects.el.classList.remove('scrolling');
     emitter.emit(events.EXIT_SCROLL_MODE);
 
   }
@@ -161,12 +166,18 @@ export default class Work extends View {
   playEnterAnim = () => {
 
     emitter.emit(events.REVEAL_QUADS);
-    projects.project[0].showTitle();
+    projects.project[globals.CURRENT_PROJECT_INDEX].updateViewModeStyles({state: true});
+    projects.project[globals.CURRENT_PROJECT_INDEX].showTitle();
 
   }
 
   playLeaveAnim = () => {
 
+    if(globals.VIEWING_PROJECT) {
+      projects.project[globals.CURRENT_PROJECT_INDEX].hideContent();
+    } else {
+      projects.project[globals.CURRENT_PROJECT_INDEX].hideTitle();
+    }
 
   }
 
@@ -175,8 +186,8 @@ export default class Work extends View {
     if(globals.VIEWING_PROJECT) return;
     globals.VIEWING_PROJECT = true;
     emitter.emit(events.UPDATE_VIEWMODE, {mode: true});
-    projects.project[this.projectIndex].revealContent();
-    // projects.showProject()
+    projects.project[globals.CURRENT_PROJECT_INDEX].hideTitle();
+    projects.project[globals.CURRENT_PROJECT_INDEX].revealContent();
    
   }
 
@@ -184,7 +195,8 @@ export default class Work extends View {
     if(!globals.VIEWING_PROJECT) return;
     globals.VIEWING_PROJECT = false;
     emitter.emit(events.UPDATE_VIEWMODE, {mode: false});
-    projects.project[this.projectIndex].hideContent();
+    projects.project[globals.CURRENT_PROJECT_INDEX].showTitle();
+    projects.project[globals.CURRENT_PROJECT_INDEX].hideContent();
   }
 
 

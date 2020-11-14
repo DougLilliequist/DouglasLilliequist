@@ -18,7 +18,7 @@ export default class StickyComponent {
 
     constructor({
         domElement,
-        enable,
+        enable = false,
         event = null,
         includeHoverAnim = false,
         defaultColor = "#000000"
@@ -33,20 +33,9 @@ export default class StickyComponent {
         this.includeHoverAnim = includeHoverAnim;
         this.defaultColor = defaultColor;
 
-        this.w = window.innerWidth;
-        this.h = window.innerHeight;
-
-        this.wK = 1.0 / this.w;
-        this.hK = 1.0 / this.h;
-
-        this.initForceParams();
-        this.initEvents();
-
-        if (enable) {
-            this.activate();
-        } else {
-            this.deActivate();
-        }
+        // if (enable) {
+        //     this.activate();
+        // }
 
     }
 
@@ -81,11 +70,18 @@ export default class StickyComponent {
 
         this.ease = 0.125;
 
-        this.getInitPos();
-
     }
 
     getInitPos() {
+
+        this.w = window.innerWidth;
+        this.h = window.innerHeight;
+
+        this.wK = 1.0 / this.w;
+        this.hK = 1.0 / this.h;
+
+        console.log(this.w);
+        console.log(this.h);
 
         this.rect = this.el.getBoundingClientRect();
 
@@ -116,10 +112,6 @@ export default class StickyComponent {
         emitter.on(events.RESIZE, this.onResize);
 
         this.el.addEventListener('mousedown', this.onClick);
-        this.el.addEventListener('touchstart', this.onClick);
-        if (this.event !== null && this.onMobile) this.el.addEventListener('touchstart', this.event);
-
-        if (this.onMobile) return;
         this.el.addEventListener('mouseenter', this.applyHoverState);
         this.el.addEventListener('mouseleave', this.removeHoverState);
 
@@ -132,9 +124,6 @@ export default class StickyComponent {
         emitter.off(events.RESIZE, this.onResize);
 
         this.el.removeEventListener('mousedown', this.onClick);
-        if (this.event !== null && this.onMobile) this.el.removeEventListener('touchstart', this.event);
-
-        if (this.onMobile) return;
         this.el.removeEventListener('mouseenter', this.applyHoverState);
         this.el.removeEventListener('mouseleave', this.removeHoverState);
 
@@ -195,7 +184,7 @@ export default class StickyComponent {
 
         if (this.enable === false) return;
         globals.HOVERING_LINK = this.hovered = true;
-        document.body.classList.add('pointer');
+        // document.body.classList.add('pointer');
         emitter.emit(events.HOVERING_STICKY_COMPONENT, {
             rect: this.rect
         });
@@ -206,7 +195,7 @@ export default class StickyComponent {
     removeHoverState = () => {
 
         if (this.enable === false) return;
-        document.body.classList.remove('pointer');
+        // document.body.classList.remove('pointer');
         globals.HOVERING_LINK = this.hovered = false;
         emitter.emit(events.LEAVING_STICKY_COMPONENT);
         this.el.classList.remove('sticky-hovered');
@@ -225,6 +214,10 @@ export default class StickyComponent {
 
         this.enable = true;
         this.el.classList.remove('deactivated');
+        this.el.getBoundingClientRect();
+        this.initForceParams();
+        this.getInitPos();
+        this.initEvents();
 
     }
 
@@ -234,6 +227,7 @@ export default class StickyComponent {
         this.enable = false;
         this.hovered = false;
         this.el.classList.add('deactivated');
+        this.removeEvents();
 
     }
 
@@ -241,7 +235,7 @@ export default class StickyComponent {
 
         this.w = window.innerWidth;
         this.h = window.innerHeight;
-        this.rect = this.el.getBoundingClientRect();
+        // this.rect = this.el.getBoundingClientRect();
         this.getInitPos();
 
     }

@@ -19,7 +19,7 @@ export class ProjectLink {
         this.el = document.createElement('div');
         this.el.classList.add('project-title');
 
-        this.initLinks();
+        // this.initLinks();
         // this.initEvents();
 
     }

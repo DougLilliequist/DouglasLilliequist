@@ -38,6 +38,7 @@ const events = {
     TOUCH_MOVE: 'touch_move',
     TOUCH_END: 'touch_end',
 
+    UPDATE_CURRENT_VIEW: 'update_current_view',
     UPDATE: 'update',
 
     HOVERING_STICKY_COMPONENT: 'hovering_sticky_component',

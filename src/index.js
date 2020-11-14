@@ -25,10 +25,10 @@ export default class App {
 
         window.isMobile = type !== "desktop";
 
-        if (window.isMobile) {
-            new NoMobileCTA();
-            return;
-        }
+        // if (window.isMobile) {
+        //     new NoMobileCTA();
+        //     return;
+        // }
 
         new LoadingScreen();
 
