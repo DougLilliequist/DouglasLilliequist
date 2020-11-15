@@ -224,37 +224,94 @@ body {
     transition: 0.5s;
 }
 
+// .navigation {
+
+//     position: fixed;
+//     height:  27.85vw;
+//     width: 5.555555556vw;
+//     top: 50%;
+//     // right: 3.1vw;
+//     right: 2.88vw;
+//     transform: translate3d(0px, -50%, 0px);
+//     z-index: 5;
+//     // mix-blend-mode: exclusion;
+
+//     &__links {
+        
+//         position: absolute;
+//         writing-mode: vertical-lr;
+//         list-style: none;
+//         display: flex;
+//         justify-content: flex-start;
+//         align-items: center;
+//         width: 100%;
+//         // top: 8.35%;
+//         // top: 14.5%;
+//         // top: 14.6%;
+//         // top: 7.85%;
+//         top: 0%;
+//         padding: 0;
+//         margin: 0;
+
+//         li {
+//             display: inline-block;
+//         }
+        
+//         .link {
+//             color:#000000;
+//             text-decoration: none;
+//             display: inline-block;
+//             // margin: 2vw;
+//             // margin: 2.2vw;
+//             //margin-top: 2vw;
+//             margin-bottom: 6vw;
+//             position: relative;
+//             font-weight: $light;
+//             @include fluid-type($minWidth, $maxWidth, $minFontSize__navigation, $maxFontSize__navigation);
+//             opacity: 0.4;
+//             text-align: center;
+//             transform: translate3d(0px, 0px, 0px);
+
+//             &--disabled {
+
+//                 pointer-events: none;
+
+//             }
+
+
+//         }
+//     }
+// }
+
 .navigation {
 
     position: fixed;
-    height:  27.85vw;
-    width: 5.555555556vw;
-    top: 50%;
-    // right: 3.1vw;
-    right: 2.88vw;
-    transform: translate3d(0px, -50%, 0px);
-    z-index: 2;
-    // mix-blend-mode: exclusion;
+    // height: 5.555555556vw;
+    height: 6.2vw;
+    width: 100vw;
+    top: 0;
+    transform: translate3d(0px, 0px, 0px);
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
     &__links {
         
         position: absolute;
-        writing-mode: vertical-lr;
+        // writing-mode: vertical-lr;
         list-style: none;
         display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        width: 100%;
-        // top: 8.35%;
-        // top: 14.5%;
-        // top: 14.6%;
-        // top: 7.85%;
+        justify-content: space-between;
+        align-items: flex-end;
+        width: 89.5%;
+        height: 100%;
         top: 0%;
         padding: 0;
         margin: 0;
 
         li {
-            display: inline-block;
+            // padding: 5vw;
         }
         
         .link {
@@ -264,7 +321,7 @@ body {
             // margin: 2vw;
             // margin: 2.2vw;
             //margin-top: 2vw;
-            margin-bottom: 6vw;
+            // margin-bottom: 6vw;
             position: relative;
             font-weight: $light;
             @include fluid-type($minWidth, $maxWidth, $minFontSize__navigation, $maxFontSize__navigation);

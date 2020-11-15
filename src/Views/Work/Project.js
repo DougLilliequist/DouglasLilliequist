@@ -56,9 +56,9 @@ export class Project {
       this.el = document.createElement('div');
       this.el.classList.add('project-content');
 
-      this.projectInfo = document.createElement('div');
-      this.projectInfo.classList.add('project-info');
-      this.el.appendChild(this.projectInfo);
+      // this.projectInfo = document.createElement('div');
+      // this.projectInfo.classList.add('project-info');
+      // this.el.appendChild(this.projectInfo);
 
       this.projectInfoElements = [];
 
@@ -66,6 +66,7 @@ export class Project {
       this.initViewbutton();
       this.initProjectNumber();
       this.initMiscInfoElements();
+      this.initProjectName();
       this.initProjectDescription();
       this.initProjectTech();
       this.initProjectLink();
@@ -73,9 +74,10 @@ export class Project {
 
       this.projectInfoElements.map((container) => {
         this.splitTextElements(container);
-        this.projectInfo.appendChild(container.el);
+        // this.projectInfo.appendChild(container.el);
+        this.el.appendChild(container.el);
       });
-
+      this.splitTextElements(this.projectNameContainer);
       this.initEvents();
       this.applyInitStyles();
 
@@ -89,6 +91,18 @@ export class Project {
       this.projectTitle.innerText = this.title;
       this.projectTitleContainer.el.appendChild(this.projectTitle);
       this.el.appendChild(this.projectTitleContainer.el);
+
+    }
+
+    initProjectName() {
+
+      this.projectNameContainer = this.createContainerElement({className: 'project-name'});
+      this.projectName = document.createElement('h1');
+      this.projectName.classList.add('project-name__name');
+      this.projectName.innerText = this.title;
+      this.projectNameContainer.el.appendChild(this.projectName);
+      this.el.appendChild(this.projectNameContainer.el);
+      // this.miscInfoContainer.el.appendChild(this.projectNameContainer.el);
 
     }
 
@@ -365,6 +379,15 @@ export class Project {
 
       });
 
+      gsap.fromTo(this.projectNameContainer.text, {
+        yPercent: 100
+      },
+      {
+        yPercent: 0,
+        duration: 0.5,
+        stagger: 0.05
+      });
+
       gsap.to(this.exitButton.el, {
         opacity: this.exitButton.idleAlpha,
         duration: 0.5, 
@@ -403,6 +426,18 @@ export class Project {
           }
         });
 
+      });
+
+      gsap.to(this.projectNameContainer.text,
+      {
+        yPercent: -100,
+        duration: 0.5,
+        stagger: 0.05,
+        onComplete: () => {
+          gsap.set(this.projectNameContainer.text, {
+            yPercent: 100
+          });
+        }
       });
 
       gsap.to(this.exitButton.el, {

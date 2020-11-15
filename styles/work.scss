@@ -97,6 +97,10 @@
 
 .project-misc {
 
+    position: absolute;
+    width: 13.25vw;
+    left: 8.5%;
+
     &__item {
 
         &__copy {
@@ -112,10 +116,34 @@
 
 }
 
+.project-name {
+    
+    position: absolute;
+    width: 13.25vw;
+    left: 8.5%;
+    top: 25%;
+
+    &__name {
+
+        @include fluid-type($minWidth, $maxWidth, $minFontSize__projects-name, $maxFontSize__projects-name);
+        font-weight: $light;
+        color:#000000;
+        margin: 0;
+
+    }
+
+}
+
 .project-description {
 
-    margin-top: 2vw;
-    margin-bottom: 2vw;
+    // margin-top: 2vw;
+    // margin-bottom: 2vw;
+    
+    position: absolute;
+    width: 13.25vw;
+    right: 8.5%;
+    bottom: 16.5%;
+    text-align: right;
 
     &__copy {
 
@@ -130,7 +158,12 @@
 
 .project-tech {
 
-    width: 62.5%;
+    // width: 62.5%;
+    position: absolute;
+    width: 13.25vw;
+    right: 8.5%;
+    bottom: 0%;
+    text-align: right;
 
     &__copy {
         @include fluid-type($minWidth, $maxWidth, $minFontSize__projects-details, $maxFontSize__projects-details);
@@ -145,6 +178,7 @@
 
     position: absolute;
     bottom: 0%;
+    left: 8.5%;
     overflow: hidden;
     transform: translate3d(0px, 0px, 0px);
     display: inline-block;
@@ -218,6 +252,7 @@
 
     position: absolute;
     top: 0%;
+    right: 8.5%;
     width: 1vw;
     height: 1vw;
     overflow: hidden;
