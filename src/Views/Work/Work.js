@@ -4,6 +4,7 @@ const emitter = eventEmitter.emitter;
 import events from '../../../utils/events.js';
 import projects from './Projects.js';
 import globals from "../../../utils/globals.js";
+import gsap from "gsap/gsap-core";
 
 export default class Work extends View {
 
@@ -185,9 +186,11 @@ export default class Work extends View {
 
     if(globals.VIEWING_PROJECT) return;
     globals.VIEWING_PROJECT = true;
-    emitter.emit(events.UPDATE_VIEWMODE, {mode: true});
     projects.project[globals.CURRENT_PROJECT_INDEX].hideTitle();
-    projects.project[globals.CURRENT_PROJECT_INDEX].revealContent();
+    emitter.emit(events.UPDATE_VIEWMODE, {mode: true});
+    gsap.delayedCall(1.0, () => {
+      projects.project[globals.CURRENT_PROJECT_INDEX].revealContent();
+    });
    
   }
 
@@ -195,8 +198,11 @@ export default class Work extends View {
     if(!globals.VIEWING_PROJECT) return;
     globals.VIEWING_PROJECT = false;
     emitter.emit(events.UPDATE_VIEWMODE, {mode: false});
-    projects.project[globals.CURRENT_PROJECT_INDEX].showTitle();
     projects.project[globals.CURRENT_PROJECT_INDEX].hideContent();
+    gsap.delayedCall(1.0, () => {
+      projects.project[globals.CURRENT_PROJECT_INDEX].showTitle();
+    });
+
   }
 
 

@@ -148,6 +148,7 @@ void main() {
 
     vec3 col = vec3(r,g,b);
     col += hash12(vUv * 1000.0 + _Time) * 0.2;
+    col = mix(col, vec3(1.0), mix(0.2, 0.0, _ViewModePhase));
 
 
     float len = (vMvPos.z * vMvPos.z); //removes the sign

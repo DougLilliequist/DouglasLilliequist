@@ -159,6 +159,16 @@ export default class ProjectQuadMediator extends DomquadMediator {
       ease,
     });
 
+    gsap.fromTo(uniforms._RipplePhase, 
+      {
+        value: 0
+      },
+      {
+      value: 1,
+      duration,
+      ease: "power1.inOut",
+    });
+
   }
 
   resetQuads = () => {

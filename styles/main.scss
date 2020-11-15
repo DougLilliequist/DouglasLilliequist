@@ -156,8 +156,8 @@ body {
     pointer-events: none;
     // background-color: rgba($color: #e6e6e6, $alpha: 1.0);
     // background-color: #93acff;
-    // background-color: #000000;
-    background-color: #ededed;
+    background-color: #000000;
+    // background-color: #ededed;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -180,8 +180,8 @@ body {
 
     &__progress {
         margin: 0;
-        // color: #ffffff;
-        color: #000000;
+        color: #ffffff;
+        // color: #000000;
         font-size: 1.25vw;
         font-weight: $semi-bold;
         

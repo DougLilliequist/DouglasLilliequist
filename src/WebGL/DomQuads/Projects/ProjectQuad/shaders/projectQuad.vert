@@ -16,6 +16,7 @@ uniform float _ScrollPhase;
 uniform float _RevealPhase;
 
 uniform float _ViewModePhase;
+uniform float _RipplePhase;
 uniform float _Entering;
 
 uniform sampler2D _Image;
@@ -53,7 +54,8 @@ varying float vDamp;
 // #define RIPPLE_SPATIALF 7.0 
 // #define RIPPLE_TEMPORALF 8.0
 
-#define RIPPLE_AMP 0.25
+// #define RIPPLE_AMP 0.25
+#define RIPPLE_AMP 0.15
 // #define RIPPLE_AMP 0.1
 
 // #define HEIGHTMAP_AMP 0.53
@@ -80,6 +82,7 @@ void main() {
     //PROJECT VIEW MODE SCALE
     pos.xy *= _ViewplaneSize * mix(0.85, 1.0, 1.0) * mix(1.0, 1.525, _ViewModePhase);
 
+
     //SCROLL FORCE
     vec2 phasePos = position.xy;
     vec2 scrollPhasePos = phasePos;
@@ -89,10 +92,10 @@ void main() {
 
     //PROJECT VIEW MODE RIPPLE
     vec2 viewModePhasePos = phasePos;
-    float viewmodePhase = _ViewModePhase * 4.0 * (1.0 - _ViewModePhase);    
-    float phaseDist = 1.0 - abs((_ViewModePhase * 2.1) - dist);
-    phaseDist = smoothstep(0.0, 1.0, phaseDist);
-    float ripplePhase = cos(phaseDist * HALFPI) * RIPPLE_AMP * viewmodePhase;
+    float viewmodePhase = _RipplePhase * 4.0 * (1.0 - _RipplePhase);    
+    float phaseDist = 1.0 - abs((_RipplePhase * 3.0) - dist);
+    // phaseDist = smoothstep(0.0, 1.0, phaseDist);
+    float ripplePhase = cos(phaseDist * PI) * RIPPLE_AMP * viewmodePhase;
     // float ripplePhase = phaseDist * RIPPLE_AMP * viewmodePhase;
     vPhase = phaseDist * viewmodePhase;
 
