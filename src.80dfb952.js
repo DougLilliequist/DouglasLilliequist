@@ -691,6 +691,7 @@ var events = (_events = {
   EXIT_SCROLL_MODE: 'exit_scroll_mode',
   APPLY_SCROLL_MODE_ANIM: 'apply_scroll_mode_anim',
   REMOVE_SCROLL_MODE_ANIM: 'remove_scroll_mode_anim',
+  UPDATE_VIEWMODE: 'update_view_mode',
   SHOW_PROJECT: 'show_project',
   CLOSE_PROJECT: 'close_project',
   MOUSE_DOWN: 'mouse_down',
@@ -700,7 +701,7 @@ var events = (_events = {
   TOUCH_MOVE: 'touch_move',
   TOUCH_END: 'touch_end',
   TOUCH_CANCEL: 'touch_cancel'
-}, (0, _defineProperty2.default)(_events, "TOUCH_START", 'touch_start'), (0, _defineProperty2.default)(_events, "TOUCH_MOVE", 'touch_move'), (0, _defineProperty2.default)(_events, "TOUCH_END", 'touch_end'), (0, _defineProperty2.default)(_events, "UPDATE", 'update'), (0, _defineProperty2.default)(_events, "HOVERING_STICKY_COMPONENT", 'hovering_sticky_component'), (0, _defineProperty2.default)(_events, "LEAVING_STICKY_COMPONENT", 'leaving_sticky_component'), (0, _defineProperty2.default)(_events, "UPDATE_STICKY_TARGET", 'update_sticky_target'), (0, _defineProperty2.default)(_events, "HOVERING_NAV_LINK", 'hovering_nav_link'), (0, _defineProperty2.default)(_events, "HOVERING_LINK", 'hovering_link'), (0, _defineProperty2.default)(_events, "LEAVING_LINK", 'leaving_link'), (0, _defineProperty2.default)(_events, "LINK_SELECTED", 'link_selected'), (0, _defineProperty2.default)(_events, "PLAY_VIDEO", 'play_video'), (0, _defineProperty2.default)(_events, "PAUSE_VIDEO", 'pause_video'), (0, _defineProperty2.default)(_events, "SHOW_CLICKDRAG_CTA", 'show_click-drag_cta'), (0, _defineProperty2.default)(_events, "HIDE_CLICKDRAG_CTA", 'hide_click-drag_cta'), (0, _defineProperty2.default)(_events, "RESIZE", 'resize'), _events);
+}, (0, _defineProperty2.default)(_events, "TOUCH_START", 'touch_start'), (0, _defineProperty2.default)(_events, "TOUCH_MOVE", 'touch_move'), (0, _defineProperty2.default)(_events, "TOUCH_END", 'touch_end'), (0, _defineProperty2.default)(_events, "UPDATE_CURRENT_VIEW", 'update_current_view'), (0, _defineProperty2.default)(_events, "UPDATE", 'update'), (0, _defineProperty2.default)(_events, "HOVERING_STICKY_COMPONENT", 'hovering_sticky_component'), (0, _defineProperty2.default)(_events, "LEAVING_STICKY_COMPONENT", 'leaving_sticky_component'), (0, _defineProperty2.default)(_events, "UPDATE_STICKY_TARGET", 'update_sticky_target'), (0, _defineProperty2.default)(_events, "HOVERING_NAV_LINK", 'hovering_nav_link'), (0, _defineProperty2.default)(_events, "HOVERING_LINK", 'hovering_link'), (0, _defineProperty2.default)(_events, "LEAVING_LINK", 'leaving_link'), (0, _defineProperty2.default)(_events, "LINK_SELECTED", 'link_selected'), (0, _defineProperty2.default)(_events, "PLAY_VIDEO", 'play_video'), (0, _defineProperty2.default)(_events, "PAUSE_VIDEO", 'pause_video'), (0, _defineProperty2.default)(_events, "SHOW_CLICKDRAG_CTA", 'show_click-drag_cta'), (0, _defineProperty2.default)(_events, "HIDE_CLICKDRAG_CTA", 'hide_click-drag_cta'), (0, _defineProperty2.default)(_events, "RESIZE", 'resize'), _events);
 var _default = events;
 exports.default = _default;
 },{"@babel/runtime/helpers/defineProperty":"../../node_modules/@babel/runtime/helpers/defineProperty.js"}],"../../node_modules/gsap/gsap-core.js":[function(require,module,exports) {
@@ -6368,10 +6369,14 @@ var View = /*#__PURE__*/function (_Highway$Renderer) {
 exports.default = View;
 },{"@babel/runtime/helpers/classCallCheck":"../../node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"../../node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"../../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"../../node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"../../node_modules/@babel/runtime/helpers/inherits.js","@dogstudio/highway":"../../node_modules/@dogstudio/highway/build/highway.module.js","../EventEmitter":"../EventEmitter.js","../../utils/events":"../../utils/events.js"}],"../../static/video/crashingdawn256256.mp4":[function(require,module,exports) {
 module.exports = "/crashingdawn256256.bf5d7055.mp4";
+},{}],"../../static/video/fabric256256.mp4":[function(require,module,exports) {
+module.exports = "/fabric256256.fe460a48.mp4";
 },{}],"../../static/video/gnsw256256.mp4":[function(require,module,exports) {
 module.exports = "/gnsw256256.50975337.mp4";
 },{}],"../../static/video/letsgetphysical256256.mp4":[function(require,module,exports) {
 module.exports = "/letsgetphysical256256.61e86d78.mp4";
+},{}],"../../static/video/loreal256256.mp4":[function(require,module,exports) {
+module.exports = "/loreal256256.5f06399d.mp4";
 },{}],"../../static/video/needahand256256.mp4":[function(require,module,exports) {
 module.exports = "/needahand256256.caab5bb0.mp4";
 },{}],"../../static/video/sken256256.mp4":[function(require,module,exports) {
@@ -6381,13 +6386,15 @@ module.exports = "/spiritualbeings256256.617399d3.mp4";
 },{}],"../../static/video/*.mp4":[function(require,module,exports) {
 module.exports = {
   "crashingdawn256256": require("./crashingdawn256256.mp4"),
+  "fabric256256": require("./fabric256256.mp4"),
   "gnsw256256": require("./gnsw256256.mp4"),
   "letsgetphysical256256": require("./letsgetphysical256256.mp4"),
+  "loreal256256": require("./loreal256256.mp4"),
   "needahand256256": require("./needahand256256.mp4"),
   "sken256256": require("./sken256256.mp4"),
   "spiritualbeings256256": require("./spiritualbeings256256.mp4")
 };
-},{"./crashingdawn256256.mp4":"../../static/video/crashingdawn256256.mp4","./gnsw256256.mp4":"../../static/video/gnsw256256.mp4","./letsgetphysical256256.mp4":"../../static/video/letsgetphysical256256.mp4","./needahand256256.mp4":"../../static/video/needahand256256.mp4","./sken256256.mp4":"../../static/video/sken256256.mp4","./spiritualbeings256256.mp4":"../../static/video/spiritualbeings256256.mp4"}],"../../static/img/douglas10241024.png":[function(require,module,exports) {
+},{"./crashingdawn256256.mp4":"../../static/video/crashingdawn256256.mp4","./fabric256256.mp4":"../../static/video/fabric256256.mp4","./gnsw256256.mp4":"../../static/video/gnsw256256.mp4","./letsgetphysical256256.mp4":"../../static/video/letsgetphysical256256.mp4","./loreal256256.mp4":"../../static/video/loreal256256.mp4","./needahand256256.mp4":"../../static/video/needahand256256.mp4","./sken256256.mp4":"../../static/video/sken256256.mp4","./spiritualbeings256256.mp4":"../../static/video/spiritualbeings256256.mp4"}],"../../static/img/douglas10241024.png":[function(require,module,exports) {
 module.exports = "/douglas10241024.195c11a0.png";
 },{}],"../../static/img/*.png":[function(require,module,exports) {
 module.exports = {
@@ -6408,9 +6415,61 @@ var _2 = _interopRequireDefault(require("./img/*.png"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var ProjectContent = [{
+  title: 'Signature Faces',
+  type: 'Client project',
+  description: 'Virtual makeup line for LOreal Paris in collboration with Virtue Worldwide',
+  tech: 'Lens Studio / Spark AR',
+  year: 2020,
+  role: 'Creative Technologist / Filter Dev / Shader Dev',
+  link: 'https://www.loreal-paris.co.uk/signature-faces',
+  media: {
+    videoSrc: _.default.loreal256256,
+    imageSrc: _2.default.selfportrait512512,
+    brightVal: 0.0
+  }
+}, {
+  title: 'Fabric',
+  type: 'Experiment',
+  description: 'Interactive cloth simulation',
+  tech: 'WebGL(OGL) / GPGPU',
+  year: 2020,
+  role: null,
+  link: 'https://douglilliequist.github.io/Fabric/',
+  media: {
+    videoSrc: _.default.fabric256256,
+    imageSrc: _2.default.selfportrait512512,
+    brightVal: 1.0
+  }
+}, {
+  title: 'Memory Phase',
+  type: 'Experiment',
+  description: 'Optical flow velocity applied to particles',
+  tech: 'WebGL(OGL) / Optical Flow / GPGPU',
+  year: 2020,
+  role: null,
+  link: 'https://douglilliequist.github.io/MemoryPhase/',
+  media: {
+    videoSrc: _.default.sken256256,
+    imageSrc: _2.default.selfportrait512512,
+    brightVal: 0.0
+  }
+}, {
+  title: 'This cant be real',
+  type: 'Experiment',
+  description: 'Optical flow and fluid sim madness',
+  tech: 'WebGL(OGL) / Optical Flow',
+  year: 2020,
+  role: null,
+  link: 'https://douglilliequist.github.io/ThisCantBeReal01/',
+  media: {
+    videoSrc: _.default.sken256256,
+    imageSrc: _2.default.selfportrait512512,
+    brightVal: 0.0
+  }
+}, {
   title: 'Crashing Dawn',
   type: 'Experiment',
-  description: 'Shaded particles with noise sampled curl noise',
+  description: 'Shaded particles',
   tech: 'WebGL(THREE.js) / GPGPU',
   year: 2020,
   role: null,
@@ -6434,22 +6493,9 @@ var ProjectContent = [{
     brightVal: 1.0
   }
 }, {
-  title: 'Memory Phase',
-  type: 'Experiment',
-  description: 'Optical flow velocity applied to particles',
-  tech: 'WebGL / Optical Flow / GPGPU',
-  year: 2020,
-  role: null,
-  link: 'https://douglilliequist.github.io/MemoryPhase/',
-  media: {
-    videoSrc: _.default.sken256256,
-    imageSrc: _2.default.selfportrait512512,
-    brightVal: 0.0
-  }
-}, {
   title: 'Let\'s Get Physical',
   type: 'Client Project',
-  description: 'Floor projected trails which reacts to the amount of present people and distance from eachother',
+  description: 'Installation project for Frame awards Amsterdam',
   tech: 'Unity3D / Custom GPGPU ribbons / In-house Blob Detection by Yipp Interactive',
   year: 2019,
   role: 'Developer',
@@ -6500,7 +6546,25 @@ var ProjectContent = [{
   }
 }];
 exports.ProjectContent = ProjectContent;
-},{"./video/*.mp4":"../../static/video/*.mp4","./img/*.png":"../../static/img/*.png"}],"../StickyComponent.js":[function(require,module,exports) {
+},{"./video/*.mp4":"../../static/video/*.mp4","./img/*.png":"../../static/img/*.png"}],"../../utils/globals.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var globals = {
+  CURRENT_VIEW: "work",
+  HOVERING_LINK: false,
+  CONTENT_LOADED: false,
+  HOVERING_NAVLINK: false,
+  VIEWING_PROJECT: false,
+  CURRENT_PROJECT_INDEX: 0,
+  PREV_PROJECT_INDEX: 0
+};
+var _default = globals;
+exports.default = _default;
+},{}],"../StickyComponent.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6540,7 +6604,8 @@ var StickyComponent = /*#__PURE__*/function () {
     var _this = this;
 
     var domElement = _ref.domElement,
-        enable = _ref.enable,
+        _ref$enable = _ref.enable,
+        enable = _ref$enable === void 0 ? false : _ref$enable,
         _ref$event = _ref.event,
         _event = _ref$event === void 0 ? null : _ref$event,
         _ref$includeHoverAnim = _ref.includeHoverAnim,
@@ -6566,8 +6631,8 @@ var StickyComponent = /*#__PURE__*/function () {
     });
     (0, _defineProperty2.default)(this, "applyHoverState", function () {
       if (_this.enable === false) return;
-      window.hoveringLink = _this.hovered = true;
-      document.body.classList.add('pointer');
+      globals.HOVERING_LINK = _this.hovered = true; // document.body.classList.add('pointer');
+
       emitter.emit(_events.default.HOVERING_STICKY_COMPONENT, {
         rect: _this.rect
       });
@@ -6575,9 +6640,9 @@ var StickyComponent = /*#__PURE__*/function () {
       _this.el.classList.add('sticky-hovered');
     });
     (0, _defineProperty2.default)(this, "removeHoverState", function () {
-      if (_this.enable === false) return;
-      document.body.classList.remove('pointer');
-      window.hoveringLink = _this.hovered = false;
+      if (_this.enable === false) return; // document.body.classList.remove('pointer');
+
+      globals.HOVERING_LINK = _this.hovered = false;
       emitter.emit(_events.default.LEAVING_STICKY_COMPONENT);
 
       _this.el.classList.remove('sticky-hovered');
@@ -6591,6 +6656,14 @@ var StickyComponent = /*#__PURE__*/function () {
       _this.enable = true;
 
       _this.el.classList.remove('deactivated');
+
+      _this.el.getBoundingClientRect();
+
+      _this.initForceParams();
+
+      _this.getInitPos();
+
+      _this.initEvents();
     });
     (0, _defineProperty2.default)(this, "deActivate", function () {
       if (_this.hovered) _this.removeHoverState();
@@ -6598,11 +6671,12 @@ var StickyComponent = /*#__PURE__*/function () {
       _this.hovered = false;
 
       _this.el.classList.add('deactivated');
+
+      _this.removeEvents();
     });
     (0, _defineProperty2.default)(this, "onResize", function () {
       _this.w = window.innerWidth;
-      _this.h = window.innerHeight;
-      _this.rect = _this.el.getBoundingClientRect();
+      _this.h = window.innerHeight; // this.rect = this.el.getBoundingClientRect();
 
       _this.getInitPos();
     });
@@ -6612,19 +6686,9 @@ var StickyComponent = /*#__PURE__*/function () {
     this.inBounds = false;
     this.onMobile = window.isMobile;
     this.includeHoverAnim = includeHoverAnim;
-    this.defaultColor = defaultColor;
-    this.w = window.innerWidth;
-    this.h = window.innerHeight;
-    this.wK = 1.0 / this.w;
-    this.hK = 1.0 / this.h;
-    this.initForceParams();
-    this.initEvents();
-
-    if (enable) {
-      this.activate();
-    } else {
-      this.deActivate();
-    }
+    this.defaultColor = defaultColor; // if (enable) {
+    //     this.activate();
+    // }
   }
 
   (0, _createClass2.default)(StickyComponent, [{
@@ -6651,11 +6715,16 @@ var StickyComponent = /*#__PURE__*/function () {
         y: 0
       };
       this.ease = 0.125;
-      this.getInitPos();
     }
   }, {
     key: "getInitPos",
     value: function getInitPos() {
+      this.w = window.innerWidth;
+      this.h = window.innerHeight;
+      this.wK = 1.0 / this.w;
+      this.hK = 1.0 / this.h;
+      console.log(this.w);
+      console.log(this.h);
       this.rect = this.el.getBoundingClientRect();
       var _this$rect = this.rect,
           top = _this$rect.top,
@@ -6675,9 +6744,6 @@ var StickyComponent = /*#__PURE__*/function () {
       emitter.on(_events.default.UPDATE, this.update);
       emitter.on(_events.default.RESIZE, this.onResize);
       this.el.addEventListener('mousedown', this.onClick);
-      this.el.addEventListener('touchstart', this.onClick);
-      if (this.event !== null && this.onMobile) this.el.addEventListener('touchstart', this.event);
-      if (this.onMobile) return;
       this.el.addEventListener('mouseenter', this.applyHoverState);
       this.el.addEventListener('mouseleave', this.removeHoverState);
     }
@@ -6688,8 +6754,6 @@ var StickyComponent = /*#__PURE__*/function () {
       emitter.off(_events.default.UPDATE, this.update);
       emitter.off(_events.default.RESIZE, this.onResize);
       this.el.removeEventListener('mousedown', this.onClick);
-      if (this.event !== null && this.onMobile) this.el.removeEventListener('touchstart', this.event);
-      if (this.onMobile) return;
       this.el.removeEventListener('mouseenter', this.applyHoverState);
       this.el.removeEventListener('mouseleave', this.removeHoverState);
     }
@@ -6723,7 +6787,1429 @@ var StickyComponent = /*#__PURE__*/function () {
 }();
 
 exports.default = StickyComponent;
-},{"@babel/runtime/helpers/classCallCheck":"../../node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"../../node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/defineProperty":"../../node_modules/@babel/runtime/helpers/defineProperty.js","./EventEmitter.js":"../EventEmitter.js","../utils/events.js":"../../utils/events.js","gsap":"../../node_modules/gsap/index.js"}],"Work/Work.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/classCallCheck":"../../node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"../../node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/defineProperty":"../../node_modules/@babel/runtime/helpers/defineProperty.js","./EventEmitter.js":"../EventEmitter.js","../utils/events.js":"../../utils/events.js","gsap":"../../node_modules/gsap/index.js"}],"../../vendors/gsap/utils/strings.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.getText = getText;
+exports.splitInnerHTML = splitInnerHTML;
+exports.emojiSafeSplit = emojiSafeSplit;
+exports.emojiExp = void 0;
+
+/*!
+ * strings: 3.5.1
+ * https://greensock.com
+ *
+ * Copyright 2008-2020, GreenSock. All rights reserved.
+ * Subject to the terms at https://greensock.com/standard-license or for
+ * Club GreenSock members, the agreement issued with that membership.
+ * @author: Jack Doyle, jack@greensock.com
+*/
+
+/* eslint-disable */
+var _trimExp = /(^\s+|\s+$)/g;
+var emojiExp = /([\uD800-\uDBFF][\uDC00-\uDFFF](?:[\u200D\uFE0F][\uD800-\uDBFF][\uDC00-\uDFFF]){2,}|\uD83D\uDC69(?:\u200D(?:(?:\uD83D\uDC69\u200D)?\uD83D\uDC67|(?:\uD83D\uDC69\u200D)?\uD83D\uDC66)|\uD83C[\uDFFB-\uDFFF])|\uD83D\uDC69\u200D(?:\uD83D\uDC69\u200D)?\uD83D\uDC66\u200D\uD83D\uDC66|\uD83D\uDC69\u200D(?:\uD83D\uDC69\u200D)?\uD83D\uDC67\u200D(?:\uD83D[\uDC66\uDC67])|\uD83C\uDFF3\uFE0F\u200D\uD83C\uDF08|(?:\uD83C[\uDFC3\uDFC4\uDFCA]|\uD83D[\uDC6E\uDC71\uDC73\uDC77\uDC81\uDC82\uDC86\uDC87\uDE45-\uDE47\uDE4B\uDE4D\uDE4E\uDEA3\uDEB4-\uDEB6]|\uD83E[\uDD26\uDD37-\uDD39\uDD3D\uDD3E\uDDD6-\uDDDD])(?:\uD83C[\uDFFB-\uDFFF])\u200D[\u2640\u2642]\uFE0F|\uD83D\uDC69(?:\uD83C[\uDFFB-\uDFFF])\u200D(?:\uD83C[\uDF3E\uDF73\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92])|(?:\uD83C[\uDFC3\uDFC4\uDFCA]|\uD83D[\uDC6E\uDC6F\uDC71\uDC73\uDC77\uDC81\uDC82\uDC86\uDC87\uDE45-\uDE47\uDE4B\uDE4D\uDE4E\uDEA3\uDEB4-\uDEB6]|\uD83E[\uDD26\uDD37-\uDD39\uDD3C-\uDD3E\uDDD6-\uDDDF])\u200D[\u2640\u2642]\uFE0F|\uD83C\uDDFD\uD83C\uDDF0|\uD83C\uDDF6\uD83C\uDDE6|\uD83C\uDDF4\uD83C\uDDF2|\uD83C\uDDE9(?:\uD83C[\uDDEA\uDDEC\uDDEF\uDDF0\uDDF2\uDDF4\uDDFF])|\uD83C\uDDF7(?:\uD83C[\uDDEA\uDDF4\uDDF8\uDDFA\uDDFC])|\uD83C\uDDE8(?:\uD83C[\uDDE6\uDDE8\uDDE9\uDDEB-\uDDEE\uDDF0-\uDDF5\uDDF7\uDDFA-\uDDFF])|(?:\u26F9|\uD83C[\uDFCB\uDFCC]|\uD83D\uDD75)(?:\uFE0F\u200D[\u2640\u2642]|(?:\uD83C[\uDFFB-\uDFFF])\u200D[\u2640\u2642])\uFE0F|(?:\uD83D\uDC41\uFE0F\u200D\uD83D\uDDE8|\uD83D\uDC69(?:\uD83C[\uDFFB-\uDFFF])\u200D[\u2695\u2696\u2708]|\uD83D\uDC69\u200D[\u2695\u2696\u2708]|\uD83D\uDC68(?:(?:\uD83C[\uDFFB-\uDFFF])\u200D[\u2695\u2696\u2708]|\u200D[\u2695\u2696\u2708]))\uFE0F|\uD83C\uDDF2(?:\uD83C[\uDDE6\uDDE8-\uDDED\uDDF0-\uDDFF])|\uD83D\uDC69\u200D(?:\uD83C[\uDF3E\uDF73\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]|\u2764\uFE0F\u200D(?:\uD83D\uDC8B\u200D(?:\uD83D[\uDC68\uDC69])|\uD83D[\uDC68\uDC69]))|\uD83C\uDDF1(?:\uD83C[\uDDE6-\uDDE8\uDDEE\uDDF0\uDDF7-\uDDFB\uDDFE])|\uD83C\uDDEF(?:\uD83C[\uDDEA\uDDF2\uDDF4\uDDF5])|\uD83C\uDDED(?:\uD83C[\uDDF0\uDDF2\uDDF3\uDDF7\uDDF9\uDDFA])|\uD83C\uDDEB(?:\uD83C[\uDDEE-\uDDF0\uDDF2\uDDF4\uDDF7])|[#\*0-9]\uFE0F\u20E3|\uD83C\uDDE7(?:\uD83C[\uDDE6\uDDE7\uDDE9-\uDDEF\uDDF1-\uDDF4\uDDF6-\uDDF9\uDDFB\uDDFC\uDDFE\uDDFF])|\uD83C\uDDE6(?:\uD83C[\uDDE8-\uDDEC\uDDEE\uDDF1\uDDF2\uDDF4\uDDF6-\uDDFA\uDDFC\uDDFD\uDDFF])|\uD83C\uDDFF(?:\uD83C[\uDDE6\uDDF2\uDDFC])|\uD83C\uDDF5(?:\uD83C[\uDDE6\uDDEA-\uDDED\uDDF0-\uDDF3\uDDF7-\uDDF9\uDDFC\uDDFE])|\uD83C\uDDFB(?:\uD83C[\uDDE6\uDDE8\uDDEA\uDDEC\uDDEE\uDDF3\uDDFA])|\uD83C\uDDF3(?:\uD83C[\uDDE6\uDDE8\uDDEA-\uDDEC\uDDEE\uDDF1\uDDF4\uDDF5\uDDF7\uDDFA\uDDFF])|\uD83C\uDFF4\uDB40\uDC67\uDB40\uDC62(?:\uDB40\uDC77\uDB40\uDC6C\uDB40\uDC73|\uDB40\uDC73\uDB40\uDC63\uDB40\uDC74|\uDB40\uDC65\uDB40\uDC6E\uDB40\uDC67)\uDB40\uDC7F|\uD83D\uDC68(?:\u200D(?:\u2764\uFE0F\u200D(?:\uD83D\uDC8B\u200D)?\uD83D\uDC68|(?:(?:\uD83D[\uDC68\uDC69])\u200D)?\uD83D\uDC66\u200D\uD83D\uDC66|(?:(?:\uD83D[\uDC68\uDC69])\u200D)?\uD83D\uDC67\u200D(?:\uD83D[\uDC66\uDC67])|\uD83C[\uDF3E\uDF73\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92])|(?:\uD83C[\uDFFB-\uDFFF])\u200D(?:\uD83C[\uDF3E\uDF73\uDF93\uDFA4\uDFA8\uDFEB\uDFED]|\uD83D[\uDCBB\uDCBC\uDD27\uDD2C\uDE80\uDE92]))|\uD83C\uDDF8(?:\uD83C[\uDDE6-\uDDEA\uDDEC-\uDDF4\uDDF7-\uDDF9\uDDFB\uDDFD-\uDDFF])|\uD83C\uDDF0(?:\uD83C[\uDDEA\uDDEC-\uDDEE\uDDF2\uDDF3\uDDF5\uDDF7\uDDFC\uDDFE\uDDFF])|\uD83C\uDDFE(?:\uD83C[\uDDEA\uDDF9])|\uD83C\uDDEE(?:\uD83C[\uDDE8-\uDDEA\uDDF1-\uDDF4\uDDF6-\uDDF9])|\uD83C\uDDF9(?:\uD83C[\uDDE6\uDDE8\uDDE9\uDDEB-\uDDED\uDDEF-\uDDF4\uDDF7\uDDF9\uDDFB\uDDFC\uDDFF])|\uD83C\uDDEC(?:\uD83C[\uDDE6\uDDE7\uDDE9-\uDDEE\uDDF1-\uDDF3\uDDF5-\uDDFA\uDDFC\uDDFE])|\uD83C\uDDFA(?:\uD83C[\uDDE6\uDDEC\uDDF2\uDDF3\uDDF8\uDDFE\uDDFF])|\uD83C\uDDEA(?:\uD83C[\uDDE6\uDDE8\uDDEA\uDDEC\uDDED\uDDF7-\uDDFA])|\uD83C\uDDFC(?:\uD83C[\uDDEB\uDDF8])|(?:\u26F9|\uD83C[\uDFCB\uDFCC]|\uD83D\uDD75)(?:\uD83C[\uDFFB-\uDFFF])|(?:\uD83C[\uDFC3\uDFC4\uDFCA]|\uD83D[\uDC6E\uDC71\uDC73\uDC77\uDC81\uDC82\uDC86\uDC87\uDE45-\uDE47\uDE4B\uDE4D\uDE4E\uDEA3\uDEB4-\uDEB6]|\uD83E[\uDD26\uDD37-\uDD39\uDD3D\uDD3E\uDDD6-\uDDDD])(?:\uD83C[\uDFFB-\uDFFF])|(?:[\u261D\u270A-\u270D]|\uD83C[\uDF85\uDFC2\uDFC7]|\uD83D[\uDC42\uDC43\uDC46-\uDC50\uDC66\uDC67\uDC70\uDC72\uDC74-\uDC76\uDC78\uDC7C\uDC83\uDC85\uDCAA\uDD74\uDD7A\uDD90\uDD95\uDD96\uDE4C\uDE4F\uDEC0\uDECC]|\uD83E[\uDD18-\uDD1C\uDD1E\uDD1F\uDD30-\uDD36\uDDD1-\uDDD5])(?:\uD83C[\uDFFB-\uDFFF])|\uD83D\uDC68(?:\u200D(?:(?:(?:\uD83D[\uDC68\uDC69])\u200D)?\uD83D\uDC67|(?:(?:\uD83D[\uDC68\uDC69])\u200D)?\uD83D\uDC66)|\uD83C[\uDFFB-\uDFFF])|(?:[\u261D\u26F9\u270A-\u270D]|\uD83C[\uDF85\uDFC2-\uDFC4\uDFC7\uDFCA-\uDFCC]|\uD83D[\uDC42\uDC43\uDC46-\uDC50\uDC66-\uDC69\uDC6E\uDC70-\uDC78\uDC7C\uDC81-\uDC83\uDC85-\uDC87\uDCAA\uDD74\uDD75\uDD7A\uDD90\uDD95\uDD96\uDE45-\uDE47\uDE4B-\uDE4F\uDEA3\uDEB4-\uDEB6\uDEC0\uDECC]|\uD83E[\uDD18-\uDD1C\uDD1E\uDD1F\uDD26\uDD30-\uDD39\uDD3D\uDD3E\uDDD1-\uDDDD])(?:\uD83C[\uDFFB-\uDFFF])?|(?:[\u231A\u231B\u23E9-\u23EC\u23F0\u23F3\u25FD\u25FE\u2614\u2615\u2648-\u2653\u267F\u2693\u26A1\u26AA\u26AB\u26BD\u26BE\u26C4\u26C5\u26CE\u26D4\u26EA\u26F2\u26F3\u26F5\u26FA\u26FD\u2705\u270A\u270B\u2728\u274C\u274E\u2753-\u2755\u2757\u2795-\u2797\u27B0\u27BF\u2B1B\u2B1C\u2B50\u2B55]|\uD83C[\uDC04\uDCCF\uDD8E\uDD91-\uDD9A\uDDE6-\uDDFF\uDE01\uDE1A\uDE2F\uDE32-\uDE36\uDE38-\uDE3A\uDE50\uDE51\uDF00-\uDF20\uDF2D-\uDF35\uDF37-\uDF7C\uDF7E-\uDF93\uDFA0-\uDFCA\uDFCF-\uDFD3\uDFE0-\uDFF0\uDFF4\uDFF8-\uDFFF]|\uD83D[\uDC00-\uDC3E\uDC40\uDC42-\uDCFC\uDCFF-\uDD3D\uDD4B-\uDD4E\uDD50-\uDD67\uDD7A\uDD95\uDD96\uDDA4\uDDFB-\uDE4F\uDE80-\uDEC5\uDECC\uDED0-\uDED2\uDEEB\uDEEC\uDEF4-\uDEF8]|\uD83E[\uDD10-\uDD3A\uDD3C-\uDD3E\uDD40-\uDD45\uDD47-\uDD4C\uDD50-\uDD6B\uDD80-\uDD97\uDDC0\uDDD0-\uDDE6])|(?:[#\*0-9\xA9\xAE\u203C\u2049\u2122\u2139\u2194-\u2199\u21A9\u21AA\u231A\u231B\u2328\u23CF\u23E9-\u23F3\u23F8-\u23FA\u24C2\u25AA\u25AB\u25B6\u25C0\u25FB-\u25FE\u2600-\u2604\u260E\u2611\u2614\u2615\u2618\u261D\u2620\u2622\u2623\u2626\u262A\u262E\u262F\u2638-\u263A\u2640\u2642\u2648-\u2653\u2660\u2663\u2665\u2666\u2668\u267B\u267F\u2692-\u2697\u2699\u269B\u269C\u26A0\u26A1\u26AA\u26AB\u26B0\u26B1\u26BD\u26BE\u26C4\u26C5\u26C8\u26CE\u26CF\u26D1\u26D3\u26D4\u26E9\u26EA\u26F0-\u26F5\u26F7-\u26FA\u26FD\u2702\u2705\u2708-\u270D\u270F\u2712\u2714\u2716\u271D\u2721\u2728\u2733\u2734\u2744\u2747\u274C\u274E\u2753-\u2755\u2757\u2763\u2764\u2795-\u2797\u27A1\u27B0\u27BF\u2934\u2935\u2B05-\u2B07\u2B1B\u2B1C\u2B50\u2B55\u3030\u303D\u3297\u3299]|\uD83C[\uDC04\uDCCF\uDD70\uDD71\uDD7E\uDD7F\uDD8E\uDD91-\uDD9A\uDDE6-\uDDFF\uDE01\uDE02\uDE1A\uDE2F\uDE32-\uDE3A\uDE50\uDE51\uDF00-\uDF21\uDF24-\uDF93\uDF96\uDF97\uDF99-\uDF9B\uDF9E-\uDFF0\uDFF3-\uDFF5\uDFF7-\uDFFF]|\uD83D[\uDC00-\uDCFD\uDCFF-\uDD3D\uDD49-\uDD4E\uDD50-\uDD67\uDD6F\uDD70\uDD73-\uDD7A\uDD87\uDD8A-\uDD8D\uDD90\uDD95\uDD96\uDDA4\uDDA5\uDDA8\uDDB1\uDDB2\uDDBC\uDDC2-\uDDC4\uDDD1-\uDDD3\uDDDC-\uDDDE\uDDE1\uDDE3\uDDE8\uDDEF\uDDF3\uDDFA-\uDE4F\uDE80-\uDEC5\uDECB-\uDED2\uDEE0-\uDEE5\uDEE9\uDEEB\uDEEC\uDEF0\uDEF3-\uDEF8]|\uD83E[\uDD10-\uDD3A\uDD3C-\uDD3E\uDD40-\uDD45\uDD47-\uDD4C\uDD50-\uDD6B\uDD80-\uDD97\uDDC0\uDDD0-\uDDE6])\uFE0F)/;
+exports.emojiExp = emojiExp;
+
+function getText(e) {
+  var type = e.nodeType,
+      result = "";
+
+  if (type === 1 || type === 9 || type === 11) {
+    if (typeof e.textContent === "string") {
+      return e.textContent;
+    } else {
+      for (e = e.firstChild; e; e = e.nextSibling) {
+        result += getText(e);
+      }
+    }
+  } else if (type === 3 || type === 4) {
+    return e.nodeValue;
+  }
+
+  return result;
+}
+
+function splitInnerHTML(element, delimiter, trim) {
+  var node = element.firstChild,
+      result = [];
+
+  while (node) {
+    if (node.nodeType === 3) {
+      result.push.apply(result, emojiSafeSplit((node.nodeValue + "").replace(/^\n+/g, "").replace(/\s+/g, " "), delimiter, trim));
+    } else if ((node.nodeName + "").toLowerCase() === "br") {
+      result[result.length - 1] += "<br>";
+    } else {
+      result.push(node.outerHTML);
+    }
+
+    node = node.nextSibling;
+  }
+
+  return result;
+}
+/*
+//smaller kb version that only handles the simpler emoji's, which is often perfectly adequate.
+
+let _emoji = "[\uE000-\uF8FF]|\uD83C[\uDC00-\uDFFF]|\uD83D[\uDC00-\uDFFF]|[\u2694-\u2697]|\uD83E[\uDD10-\uDD5D]|[\uD800-\uDBFF][\uDC00-\uDFFF]",
+	_emojiExp = new RegExp(_emoji),
+	_emojiAndCharsExp = new RegExp(_emoji + "|.", "g"),
+	_emojiSafeSplit = (text, delimiter, trim) => {
+		if (trim) {
+			text = text.replace(_trimExp, "");
+		}
+		return ((delimiter === "" || !delimiter) && _emojiExp.test(text)) ? text.match(_emojiAndCharsExp) : text.split(delimiter || "");
+	};
+ */
+
+
+function emojiSafeSplit(text, delimiter, trim) {
+  text += ""; // make sure it's cast as a string. Someone may pass in a number.
+
+  if (trim) {
+    text = text.replace(_trimExp, "");
+  }
+
+  if (delimiter && delimiter !== "") {
+    return text.replace(/>/g, "&gt;").replace(/</g, "&lt;").split(delimiter);
+  }
+
+  var result = [],
+      l = text.length,
+      i = 0,
+      j,
+      character;
+
+  for (; i < l; i++) {
+    character = text.charAt(i);
+
+    if (character.charCodeAt(0) >= 0xD800 && character.charCodeAt(0) <= 0xDBFF || text.charCodeAt(i + 1) >= 0xFE00 && text.charCodeAt(i + 1) <= 0xFE0F) {
+      //special emoji characters use 2 or 4 unicode characters that we must keep together.
+      j = ((text.substr(i, 12).split(emojiExp) || [])[1] || "").length || 2;
+      character = text.substr(i, j);
+      result.emoji = 1;
+      i += j - 1;
+    }
+
+    result.push(character === ">" ? "&gt;" : character === "<" ? "&lt;" : character);
+  }
+
+  return result;
+}
+},{}],"../../vendors/gsap/SplitText.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.SplitText = void 0;
+
+var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
+
+var _strings = require("./utils/strings.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+/*!
+ * SplitText: 3.5.1
+ * https://greensock.com
+ *
+ * @license Copyright 2008-2020, GreenSock. All rights reserved.
+ * Subject to the terms at https://greensock.com/standard-license or for
+ * Club GreenSock members, the agreement issued with that membership.
+ * @author: Jack Doyle, jack@greensock.com
+*/
+
+/* eslint-disable */
+var _doc,
+    _win,
+    _coreInitted,
+    _stripExp = /(?:\r|\n|\t\t)/g,
+    //find carriage returns, new line feeds and double-tabs.
+_multipleSpacesExp = /(?:\s\s+)/g,
+    _initCore = function _initCore() {
+  _doc = document;
+  _win = window;
+  _coreInitted = 1;
+},
+    _bonusValidated = 1,
+    //<name>SplitText</name>
+_getComputedStyle = function _getComputedStyle(element) {
+  return _win.getComputedStyle(element);
+},
+    _isArray = Array.isArray,
+    _slice = [].slice,
+    _toArray = function _toArray(value, leaveStrings) {
+  //takes any value and returns an array. If it's a string (and leaveStrings isn't true), it'll use document.querySelectorAll() and convert that to an array. It'll also accept iterables like jQuery objects.
+  var type;
+  return _isArray(value) ? value : (type = (0, _typeof2.default)(value)) === "string" && !leaveStrings && value ? _slice.call(_doc.querySelectorAll(value), 0) : value && type === "object" && "length" in value ? _slice.call(value, 0) : value ? [value] : [];
+},
+    _isAbsolute = function _isAbsolute(vars) {
+  return vars.position === "absolute" || vars.absolute === true;
+},
+    //some characters are combining marks (think diacritics/accents in European languages) which involve 2 or 4 characters that combine in the browser to form a single character. Pass in the remaining text and an array of the special characters to search for and if the text starts with one of those special characters, it'll spit back the number of characters to retain (often 2 or 4). Used in the specialChars features that was introduced in 0.6.0.
+_findSpecialChars = function _findSpecialChars(text, chars) {
+  var i = chars.length,
+      s;
+
+  while (--i > -1) {
+    s = chars[i];
+
+    if (text.substr(0, s.length) === s) {
+      return s.length;
+    }
+  }
+},
+    _divStart = " style='position:relative;display:inline-block;'",
+    _cssClassFunc = function _cssClassFunc(cssClass, tag) {
+  if (cssClass === void 0) {
+    cssClass = "";
+  }
+
+  var iterate = ~cssClass.indexOf("++"),
+      num = 1;
+
+  if (iterate) {
+    cssClass = cssClass.split("++").join("");
+  }
+
+  return function () {
+    return "<" + tag + _divStart + (cssClass ? " class='" + cssClass + (iterate ? num++ : "") + "'>" : ">");
+  };
+},
+    _swapText = function _swapText(element, oldText, newText) {
+  var type = element.nodeType;
+
+  if (type === 1 || type === 9 || type === 11) {
+    for (element = element.firstChild; element; element = element.nextSibling) {
+      _swapText(element, oldText, newText);
+    }
+  } else if (type === 3 || type === 4) {
+    element.nodeValue = element.nodeValue.split(oldText).join(newText);
+  }
+},
+    _pushReversed = function _pushReversed(a, merge) {
+  var i = merge.length;
+
+  while (--i > -1) {
+    a.push(merge[i]);
+  }
+},
+    _isBeforeWordDelimiter = function _isBeforeWordDelimiter(e, root, wordDelimiter) {
+  var next;
+
+  while (e && e !== root) {
+    next = e._next || e.nextSibling;
+
+    if (next) {
+      return next.textContent.charAt(0) === wordDelimiter;
+    }
+
+    e = e.parentNode || e._parent;
+  }
+},
+    _deWordify = function _deWordify(e) {
+  var children = _toArray(e.childNodes),
+      l = children.length,
+      i,
+      child;
+
+  for (i = 0; i < l; i++) {
+    child = children[i];
+
+    if (child._isSplit) {
+      _deWordify(child);
+    } else {
+      if (i && child.previousSibling.nodeType === 3) {
+        child.previousSibling.nodeValue += child.nodeType === 3 ? child.nodeValue : child.firstChild.nodeValue;
+      } else if (child.nodeType !== 3) {
+        e.insertBefore(child.firstChild, child);
+      }
+
+      e.removeChild(child);
+    }
+  }
+},
+    _getStyleAsNumber = function _getStyleAsNumber(name, computedStyle) {
+  return parseFloat(computedStyle[name]) || 0;
+},
+    _setPositionsAfterSplit = function _setPositionsAfterSplit(element, vars, allChars, allWords, allLines, origWidth, origHeight) {
+  var cs = _getComputedStyle(element),
+      paddingLeft = _getStyleAsNumber("paddingLeft", cs),
+      lineOffsetY = -999,
+      borderTopAndBottom = _getStyleAsNumber("borderBottomWidth", cs) + _getStyleAsNumber("borderTopWidth", cs),
+      borderLeftAndRight = _getStyleAsNumber("borderLeftWidth", cs) + _getStyleAsNumber("borderRightWidth", cs),
+      padTopAndBottom = _getStyleAsNumber("paddingTop", cs) + _getStyleAsNumber("paddingBottom", cs),
+      padLeftAndRight = _getStyleAsNumber("paddingLeft", cs) + _getStyleAsNumber("paddingRight", cs),
+      lineThreshold = _getStyleAsNumber("fontSize", cs) * (vars.lineThreshold || 0.2),
+      textAlign = cs.textAlign,
+      charArray = [],
+      wordArray = [],
+      lineArray = [],
+      wordDelimiter = vars.wordDelimiter || " ",
+      tag = vars.tag ? vars.tag : vars.span ? "span" : "div",
+      types = vars.type || vars.split || "chars,words,lines",
+      lines = allLines && ~types.indexOf("lines") ? [] : null,
+      words = ~types.indexOf("words"),
+      chars = ~types.indexOf("chars"),
+      absolute = _isAbsolute(vars),
+      linesClass = vars.linesClass,
+      iterateLine = ~(linesClass || "").indexOf("++"),
+      spaceNodesToRemove = [],
+      i,
+      j,
+      l,
+      node,
+      nodes,
+      isChild,
+      curLine,
+      addWordSpaces,
+      style,
+      lineNode,
+      lineWidth,
+      offset;
+
+  if (iterateLine) {
+    linesClass = linesClass.split("++").join("");
+  } //copy all the descendant nodes into an array (we can't use a regular nodeList because it's live and we may need to renest things)
+
+
+  j = element.getElementsByTagName("*");
+  l = j.length;
+  nodes = [];
+
+  for (i = 0; i < l; i++) {
+    nodes[i] = j[i];
+  } //for absolute positioning, we need to record the x/y offsets and width/height for every <div>. And even if we're not positioning things absolutely, in order to accommodate lines, we must figure out where the y offset changes so that we can sense where the lines break, and we populate the lines array.
+
+
+  if (lines || absolute) {
+    for (i = 0; i < l; i++) {
+      node = nodes[i];
+      isChild = node.parentNode === element;
+
+      if (isChild || absolute || chars && !words) {
+        offset = node.offsetTop;
+
+        if (lines && isChild && Math.abs(offset - lineOffsetY) > lineThreshold && (node.nodeName !== "BR" || i === 0)) {
+          //we found some rare occasions where a certain character like &#8209; could cause the offsetTop to be off by 1 pixel, so we build in a threshold.
+          curLine = [];
+          lines.push(curLine);
+          lineOffsetY = offset;
+        }
+
+        if (absolute) {
+          //record offset x and y, as well as width and height so that we can access them later for positioning. Grabbing them at once ensures we don't trigger a browser paint & we maximize performance.
+          node._x = node.offsetLeft;
+          node._y = offset;
+          node._w = node.offsetWidth;
+          node._h = node.offsetHeight;
+        }
+
+        if (lines) {
+          if (node._isSplit && isChild || !chars && isChild || words && isChild || !words && node.parentNode.parentNode === element && !node.parentNode._isSplit) {
+            curLine.push(node);
+            node._x -= paddingLeft;
+
+            if (_isBeforeWordDelimiter(node, element, wordDelimiter)) {
+              node._wordEnd = true;
+            }
+          }
+
+          if (node.nodeName === "BR" && (node.nextSibling && node.nextSibling.nodeName === "BR" || i === 0)) {
+            //two consecutive <br> tags signify a new [empty] line. Also, if the entire block of content STARTS with a <br>, add a line.
+            lines.push([]);
+          }
+        }
+      }
+    }
+  }
+
+  for (i = 0; i < l; i++) {
+    node = nodes[i];
+    isChild = node.parentNode === element;
+
+    if (node.nodeName === "BR") {
+      if (lines || absolute) {
+        node.parentNode && node.parentNode.removeChild(node);
+        nodes.splice(i--, 1);
+        l--;
+      } else if (!words) {
+        element.appendChild(node);
+      }
+
+      continue;
+    }
+
+    if (absolute) {
+      style = node.style;
+
+      if (!words && !isChild) {
+        node._x += node.parentNode._x;
+        node._y += node.parentNode._y;
+      }
+
+      style.left = node._x + "px";
+      style.top = node._y + "px";
+      style.position = "absolute";
+      style.display = "block"; //if we don't set the width/height, things collapse in older versions of IE and the origin for transforms is thrown off in all browsers.
+
+      style.width = node._w + 1 + "px"; //IE is 1px short sometimes. Avoid wrapping
+
+      style.height = node._h + "px";
+    }
+
+    if (!words && chars) {
+      //we always start out wrapping words in their own <div> so that line breaks happen correctly, but here we'll remove those <div> tags if necessary and renest the characters directly into the element rather than inside the word <div>
+      if (node._isSplit) {
+        node._next = node.nextSibling;
+        node.parentNode.appendChild(node); //put it at the end to keep the order correct.
+      } else if (node.parentNode._isSplit) {
+        node._parent = node.parentNode;
+
+        if (!node.previousSibling && node.firstChild) {
+          node.firstChild._isFirst = true;
+        }
+
+        if (node.nextSibling && node.nextSibling.textContent === " " && !node.nextSibling.nextSibling) {
+          //if the last node inside a nested element is just a space (like T<span>nested </span>), remove it otherwise it'll get placed in the wrong order. Don't remove it right away, though, because we need to sense when words/characters are before a space like _isBeforeWordDelimiter(). Removing it now would make that a false negative.
+          spaceNodesToRemove.push(node.nextSibling);
+        }
+
+        node._next = node.nextSibling && node.nextSibling._isFirst ? null : node.nextSibling;
+        node.parentNode.removeChild(node);
+        nodes.splice(i--, 1);
+        l--;
+      } else if (!isChild) {
+        offset = !node.nextSibling && _isBeforeWordDelimiter(node.parentNode, element, wordDelimiter); //if this is the last letter in the word (and we're not breaking by lines and not positioning things absolutely), we need to add a space afterwards so that the characters don't just mash together
+
+        if (node.parentNode._parent) {
+          node.parentNode._parent.appendChild(node);
+        }
+
+        offset && node.parentNode.appendChild(_doc.createTextNode(" "));
+
+        if (tag === "span") {
+          node.style.display = "inline"; //so that word breaks are honored properly.
+        }
+
+        charArray.push(node);
+      }
+    } else if (node.parentNode._isSplit && !node._isSplit && node.innerHTML !== "") {
+      wordArray.push(node);
+    } else if (chars && !node._isSplit) {
+      if (tag === "span") {
+        node.style.display = "inline";
+      }
+
+      charArray.push(node);
+    }
+  }
+
+  i = spaceNodesToRemove.length;
+
+  while (--i > -1) {
+    spaceNodesToRemove[i].parentNode.removeChild(spaceNodesToRemove[i]);
+  }
+
+  if (lines) {
+    //the next 7 lines just give us the line width in the most reliable way and figure out the left offset (if position isn't relative or absolute). We must set the width along with text-align to ensure everything works properly for various alignments.
+    if (absolute) {
+      lineNode = _doc.createElement(tag);
+      element.appendChild(lineNode);
+      lineWidth = lineNode.offsetWidth + "px";
+      offset = lineNode.offsetParent === element ? 0 : element.offsetLeft;
+      element.removeChild(lineNode);
+    }
+
+    style = element.style.cssText;
+    element.style.cssText = "display:none;"; //to improve performance, set display:none on the element so that the browser doesn't have to worry about reflowing or rendering while we're renesting things. We'll revert the cssText later.
+    //we can't use element.innerHTML = "" because that causes IE to literally delete all the nodes and their content even though we've stored them in an array! So we must loop through the children and remove them.
+
+    while (element.firstChild) {
+      element.removeChild(element.firstChild);
+    }
+
+    addWordSpaces = wordDelimiter === " " && (!absolute || !words && !chars);
+
+    for (i = 0; i < lines.length; i++) {
+      curLine = lines[i];
+      lineNode = _doc.createElement(tag);
+      lineNode.style.cssText = "display:block;text-align:" + textAlign + ";position:" + (absolute ? "absolute;" : "relative;");
+
+      if (linesClass) {
+        lineNode.className = linesClass + (iterateLine ? i + 1 : "");
+      }
+
+      lineArray.push(lineNode);
+      l = curLine.length;
+
+      for (j = 0; j < l; j++) {
+        if (curLine[j].nodeName !== "BR") {
+          node = curLine[j];
+          lineNode.appendChild(node);
+          addWordSpaces && node._wordEnd && lineNode.appendChild(_doc.createTextNode(" "));
+
+          if (absolute) {
+            if (j === 0) {
+              lineNode.style.top = node._y + "px";
+              lineNode.style.left = paddingLeft + offset + "px";
+            }
+
+            node.style.top = "0px";
+
+            if (offset) {
+              node.style.left = node._x - offset + "px";
+            }
+          }
+        }
+      }
+
+      if (l === 0) {
+        //if there are no nodes in the line (typically meaning there were two consecutive <br> tags, just add a non-breaking space so that things display properly.
+        lineNode.innerHTML = "&nbsp;";
+      } else if (!words && !chars) {
+        _deWordify(lineNode);
+
+        _swapText(lineNode, String.fromCharCode(160), " ");
+      }
+
+      if (absolute) {
+        lineNode.style.width = lineWidth;
+        lineNode.style.height = node._h + "px";
+      }
+
+      element.appendChild(lineNode);
+    }
+
+    element.style.cssText = style;
+  } //if everything shifts to being position:absolute, the container can collapse in terms of height or width, so fix that here.
+
+
+  if (absolute) {
+    if (origHeight > element.clientHeight) {
+      element.style.height = origHeight - padTopAndBottom + "px";
+
+      if (element.clientHeight < origHeight) {
+        //IE8 and earlier use a different box model - we must include padding and borders
+        element.style.height = origHeight + borderTopAndBottom + "px";
+      }
+    }
+
+    if (origWidth > element.clientWidth) {
+      element.style.width = origWidth - padLeftAndRight + "px";
+
+      if (element.clientWidth < origWidth) {
+        //IE8 and earlier use a different box model - we must include padding and borders
+        element.style.width = origWidth + borderLeftAndRight + "px";
+      }
+    }
+  }
+
+  _pushReversed(allChars, charArray);
+
+  if (words) {
+    _pushReversed(allWords, wordArray);
+  }
+
+  _pushReversed(allLines, lineArray);
+},
+    _splitRawText = function _splitRawText(element, vars, wordStart, charStart) {
+  var tag = vars.tag ? vars.tag : vars.span ? "span" : "div",
+      types = vars.type || vars.split || "chars,words,lines",
+      //words = (types.indexOf("words") !== -1),
+  chars = ~types.indexOf("chars"),
+      absolute = _isAbsolute(vars),
+      wordDelimiter = vars.wordDelimiter || " ",
+      space = wordDelimiter !== " " ? "" : absolute ? "&#173; " : " ",
+      wordEnd = "</" + tag + ">",
+      wordIsOpen = 1,
+      specialChars = vars.specialChars ? typeof vars.specialChars === "function" ? vars.specialChars : _findSpecialChars : null,
+      //specialChars can be an array or a function. For performance reasons, we always set this local "specialChars" to a function to which we pass the remaining text and whatever the original vars.specialChars was so that if it's an array, it works with the _findSpecialChars() function.
+  text,
+      splitText,
+      i,
+      j,
+      l,
+      character,
+      hasTagStart,
+      testResult,
+      container = _doc.createElement("div"),
+      parent = element.parentNode;
+
+  parent.insertBefore(container, element);
+  container.textContent = element.nodeValue;
+  parent.removeChild(element);
+  element = container;
+  text = (0, _strings.getText)(element);
+  hasTagStart = text.indexOf("<") !== -1;
+
+  if (vars.reduceWhiteSpace !== false) {
+    text = text.replace(_multipleSpacesExp, " ").replace(_stripExp, "");
+  }
+
+  if (hasTagStart) {
+    text = text.split("<").join("{{LT}}"); //we can't leave "<" in the string, or when we set the innerHTML, it can be interpreted as a node
+  }
+
+  l = text.length;
+  splitText = (text.charAt(0) === " " ? space : "") + wordStart();
+
+  for (i = 0; i < l; i++) {
+    character = text.charAt(i);
+
+    if (specialChars && (testResult = specialChars(text.substr(i), vars.specialChars))) {
+      // look for any specialChars that were declared. Remember, they can be passed in like {specialChars:["मी", "पा", "है"]} or a function could be defined instead. Either way, the function should return the number of characters that should be grouped together for this "character".
+      character = text.substr(i, testResult || 1);
+      splitText += chars && character !== " " ? charStart() + character + "</" + tag + ">" : character;
+      i += testResult - 1;
+    } else if (character === wordDelimiter && text.charAt(i - 1) !== wordDelimiter && i) {
+      splitText += wordIsOpen ? wordEnd : "";
+      wordIsOpen = 0;
+
+      while (text.charAt(i + 1) === wordDelimiter) {
+        //skip over empty spaces (to avoid making them words)
+        splitText += space;
+        i++;
+      }
+
+      if (i === l - 1) {
+        splitText += space;
+      } else if (text.charAt(i + 1) !== ")") {
+        splitText += space + wordStart();
+        wordIsOpen = 1;
+      }
+    } else if (character === "{" && text.substr(i, 6) === "{{LT}}") {
+      splitText += chars ? charStart() + "{{LT}}" + "</" + tag + ">" : "{{LT}}";
+      i += 5;
+    } else if (character.charCodeAt(0) >= 0xD800 && character.charCodeAt(0) <= 0xDBFF || text.charCodeAt(i + 1) >= 0xFE00 && text.charCodeAt(i + 1) <= 0xFE0F) {
+      //special emoji characters use 2 or 4 unicode characters that we must keep together.
+      j = ((text.substr(i, 12).split(_strings.emojiExp) || [])[1] || "").length || 2;
+      splitText += chars && character !== " " ? charStart() + text.substr(i, j) + "</" + tag + ">" : text.substr(i, j);
+      i += j - 1;
+    } else {
+      splitText += chars && character !== " " ? charStart() + character + "</" + tag + ">" : character;
+    }
+  }
+
+  element.outerHTML = splitText + (wordIsOpen ? wordEnd : "");
+
+  if (hasTagStart) {
+    _swapText(parent, "{{LT}}", "<"); //note: don't perform this on "element" because that gets replaced with all new elements when we set element.outerHTML.
+
+  }
+},
+    _split = function _split(element, vars, wordStart, charStart) {
+  var children = _toArray(element.childNodes),
+      l = children.length,
+      absolute = _isAbsolute(vars),
+      i,
+      child;
+
+  if (element.nodeType !== 3 || l > 1) {
+    vars.absolute = false;
+
+    for (i = 0; i < l; i++) {
+      child = children[i];
+
+      if (child.nodeType !== 3 || /\S+/.test(child.nodeValue)) {
+        if (absolute && child.nodeType !== 3 && _getComputedStyle(child).display === "inline") {
+          //if there's a child node that's display:inline, switch it to inline-block so that absolute positioning works properly (most browsers don't report offsetTop/offsetLeft properly inside a <span> for example)
+          child.style.display = "inline-block";
+          child.style.position = "relative";
+        }
+
+        child._isSplit = true;
+
+        _split(child, vars, wordStart, charStart); //don't split lines on child elements
+
+      }
+    }
+
+    vars.absolute = absolute;
+    element._isSplit = true;
+    return;
+  }
+
+  _splitRawText(element, vars, wordStart, charStart);
+};
+
+var SplitText = /*#__PURE__*/function () {
+  function SplitText(element, vars) {
+    _coreInitted || _initCore();
+    this.elements = _toArray(element);
+    this.chars = [];
+    this.words = [];
+    this.lines = [];
+    this._originals = [];
+    this.vars = vars || {};
+    _bonusValidated && this.split(vars);
+  }
+
+  var _proto = SplitText.prototype;
+
+  _proto.split = function split(vars) {
+    this.isSplit && this.revert();
+    this.vars = vars = vars || this.vars;
+    this._originals.length = this.chars.length = this.words.length = this.lines.length = 0;
+
+    var i = this.elements.length,
+        tag = vars.tag ? vars.tag : vars.span ? "span" : "div",
+        wordStart = _cssClassFunc(vars.wordsClass, tag),
+        charStart = _cssClassFunc(vars.charsClass, tag),
+        origHeight,
+        origWidth,
+        e; //we split in reversed order so that if/when we position:absolute elements, they don't affect the position of the ones after them in the document flow (shifting them up as they're taken out of the document flow).
+
+
+    while (--i > -1) {
+      e = this.elements[i];
+      this._originals[i] = e.innerHTML;
+      origHeight = e.clientHeight;
+      origWidth = e.clientWidth;
+
+      _split(e, vars, wordStart, charStart);
+
+      _setPositionsAfterSplit(e, vars, this.chars, this.words, this.lines, origWidth, origHeight);
+    }
+
+    this.chars.reverse();
+    this.words.reverse();
+    this.lines.reverse();
+    this.isSplit = true;
+    return this;
+  };
+
+  _proto.revert = function revert() {
+    var originals = this._originals;
+
+    if (!originals) {
+      throw "revert() call wasn't scoped properly.";
+    }
+
+    this.elements.forEach(function (e, i) {
+      return e.innerHTML = originals[i];
+    });
+    this.chars = [];
+    this.words = [];
+    this.lines = [];
+    this.isSplit = false;
+    return this;
+  };
+
+  SplitText.create = function create(element, vars) {
+    return new SplitText(element, vars);
+  };
+
+  return SplitText;
+}();
+
+exports.default = exports.SplitText = SplitText;
+SplitText.version = "3.5.1";
+},{"@babel/runtime/helpers/typeof":"../../node_modules/@babel/runtime/helpers/typeof.js","./utils/strings.js":"../../vendors/gsap/utils/strings.js"}],"Work/Project.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Project = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
+
+var _events = _interopRequireDefault(require("../../../utils/events.js"));
+
+var _globals = _interopRequireDefault(require("../../../utils/globals.js"));
+
+var _EventEmitter = _interopRequireDefault(require("../../EventEmitter.js"));
+
+var _StickyComponent = _interopRequireDefault(require("../../StickyComponent.js"));
+
+var _gsap = require("gsap");
+
+var _SplitText = require("../../../vendors/gsap/SplitText.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var emitter = _EventEmitter.default.emitter;
+
+_gsap.gsap.registerPlugin(_SplitText.SplitText);
+/**
+ * 
+ * TODO:
+ * 
+ * Import split text
+ * import exit button SVG
+ * 
+ * build animation functions
+ * 
+ */
+
+
+var Project = /*#__PURE__*/function () {
+  function Project(projectID, _ref) {
+    var _this = this;
+
+    var _ref$viewing = _ref.viewing,
+        viewing = _ref$viewing === void 0 ? false : _ref$viewing,
+        _ref$title = _ref.title,
+        title = _ref$title === void 0 ? '' : _ref$title,
+        _ref$year = _ref.year,
+        year = _ref$year === void 0 ? '' : _ref$year,
+        _ref$type = _ref.type,
+        type = _ref$type === void 0 ? '' : _ref$type,
+        _ref$role = _ref.role,
+        role = _ref$role === void 0 ? '' : _ref$role,
+        _ref$description = _ref.description,
+        description = _ref$description === void 0 ? '' : _ref$description,
+        _ref$tech = _ref.tech,
+        tech = _ref$tech === void 0 ? '' : _ref$tech,
+        _ref$link = _ref.link,
+        link = _ref$link === void 0 ? '' : _ref$link;
+    (0, _classCallCheck2.default)(this, Project);
+    (0, _defineProperty2.default)(this, "onClick", function () {
+      emitter.emit(_events.default.SHOW_PROJECT);
+    });
+    (0, _defineProperty2.default)(this, "onExitClicked", function () {
+      emitter.emit(_events.default.CLOSE_PROJECT);
+    });
+    (0, _defineProperty2.default)(this, "onHover", function () {
+      _globals.default.HOVERING_LINK = true;
+      emitter.emit(_events.default.HOVERING_NAV_LINK, true);
+    });
+    (0, _defineProperty2.default)(this, "onLeave", function () {
+      _globals.default.HOVERING_LINK = false;
+      emitter.emit(_events.default.HOVERING_NAV_LINK, false);
+    });
+    (0, _defineProperty2.default)(this, "onViewButtonHover", function (_ref2) {
+      var state = _ref2.state;
+
+      if (state) {
+        _this.onHover();
+      } else {
+        _this.onLeave();
+      }
+
+      _gsap.gsap.to(_this.viewButton, {
+        duration: 0.3,
+        opacity: state ? _this.viewButton.activeAlpha : _this.viewButton.idleAlpha
+      });
+    });
+    (0, _defineProperty2.default)(this, "onExitButtonHover", function (_ref3) {
+      var state = _ref3.state;
+
+      if (state) {
+        _this.onHover();
+      } else {
+        _this.onLeave();
+      }
+
+      _gsap.gsap.to(_this.exitButton.el, {
+        duration: 0.3,
+        opacity: state ? _this.exitButton.activeAlpha : _this.exitButton.idleAlpha
+      });
+    });
+    (0, _defineProperty2.default)(this, "showTitle", function () {
+      _gsap.gsap.to(_this.projectTitle, {
+        ease: "power2.inOut",
+        duration: 0.75,
+        yPercent: 0
+      });
+
+      _gsap.gsap.to(_this.projectNumber, {
+        ease: "power2.out",
+        duration: 0.5,
+        yPercent: 0
+      });
+
+      _gsap.gsap.to(_this.viewButton, {
+        ease: "power2.out",
+        duration: 0.5,
+        yPercent: 0
+      });
+    });
+    (0, _defineProperty2.default)(this, "hideTitle", function () {
+      _gsap.gsap.to(_this.projectTitle, {
+        ease: "power2.inOut",
+        duration: 0.5,
+        yPercent: 100,
+        onComplete: function onComplete() {
+          _gsap.gsap.set(_this.projectTitle, {
+            yPercent: 100
+          });
+        }
+      });
+
+      _gsap.gsap.to(_this.projectNumber, {
+        ease: "power2.out",
+        duration: 0.5,
+        yPercent: -100,
+        onComplete: function onComplete() {
+          _gsap.gsap.set(_this.projectNumber, {
+            yPercent: -100
+          });
+        }
+      });
+
+      _gsap.gsap.to(_this.viewButton, {
+        ease: "power2.out",
+        duration: 0.5,
+        yPercent: -100,
+        onComplete: function onComplete() {
+          _gsap.gsap.set(_this.viewButton, {
+            yPercent: -100
+          });
+        }
+      });
+    });
+    (0, _defineProperty2.default)(this, "revealContent", function () {
+      _this.projectInfoElements.map(function (el) {
+        _gsap.gsap.fromTo(el.text, {
+          yPercent: 100
+        }, {
+          yPercent: 0,
+          duration: 0.5,
+          stagger: 0.05
+        });
+      });
+
+      _gsap.gsap.to(_this.exitButton.el, {
+        opacity: _this.exitButton.idleAlpha,
+        duration: 0.5,
+        onComplete: function onComplete() {
+          _this.exitButton.el.classList.add('exit-button__active');
+
+          _this.exitButton.el.addEventListener('click', _this.onExitClicked);
+
+          _this.exitButton.el.addEventListener('mouseenter', function () {
+            return _this.onExitButtonHover({
+              state: true
+            });
+          });
+
+          _this.exitButton.el.addEventListener('mouseleave', function () {
+            return _this.onExitButtonHover({
+              state: false
+            });
+          });
+        }
+      });
+
+      _gsap.gsap.to(_this.projectLinkContainer.el, {
+        opacity: 1,
+        duration: 0.5,
+        onComplete: function onComplete() {
+          if (_this.projectLink) _this.projectLink.classList.add('project-link__link__active');
+        }
+      });
+    });
+
+    /**
+     * @param projectID : string
+     * @param title : string
+     * @param year : string
+     * @param type : string
+     * @param role : string
+     * @param description : string
+     * @param tech : string
+     * @param link : url if available
+     */
+    this.projectID = projectID + 1;
+    this.title = title;
+    this.year = year;
+    this.type = type;
+    this.role = role;
+    this.description = description;
+    this.tech = tech;
+    this.link = link;
+    this.el = document.createElement('div');
+    this.el.classList.add('project-content');
+    this.projectInfo = document.createElement('div');
+    this.projectInfo.classList.add('project-info');
+    this.el.appendChild(this.projectInfo);
+    this.projectInfoElements = [];
+    this.initProjectTitle();
+    this.initViewbutton();
+    this.initProjectNumber();
+    this.initMiscInfoElements();
+    this.initProjectDescription();
+    this.initProjectTech();
+    this.initProjectLink();
+    this.initExitButton();
+    this.projectInfoElements.map(function (container) {
+      _this.splitTextElements(container);
+
+      _this.projectInfo.appendChild(container.el);
+    });
+    this.initEvents();
+    this.applyInitStyles();
+  }
+
+  (0, _createClass2.default)(Project, [{
+    key: "initProjectTitle",
+    value: function initProjectTitle() {
+      this.projectTitleContainer = this.createContainerElement({
+        className: 'project-title'
+      });
+      this.projectTitle = document.createElement('h1');
+      this.projectTitle.classList.add('project-title__title');
+      this.projectTitle.innerText = this.title;
+      this.projectTitleContainer.el.appendChild(this.projectTitle);
+      this.el.appendChild(this.projectTitleContainer.el);
+    }
+  }, {
+    key: "initViewbutton",
+    value: function initViewbutton() {
+      this.viewButtonContainer = this.createContainerElement({
+        className: 'view-button'
+      });
+      this.viewButton = document.createElement('p');
+      this.viewButton.classList.add('view-button__button');
+      this.viewButton.innerText = "view";
+      this.viewButtonContainer.el.appendChild(this.viewButton);
+      this.viewButton.idleAlpha = 0.4;
+      this.viewButton.activeAlpha = 1.0;
+      this.el.appendChild(this.viewButtonContainer.el);
+    }
+  }, {
+    key: "initProjectNumber",
+    value: function initProjectNumber() {
+      this.projectNumberContainer = this.createContainerElement({
+        className: 'project-number'
+      });
+      this.projectNumber = document.createElement('h1');
+      this.projectNumber.classList.add('project-number__number');
+      this.projectNumber.innerText = this.projectID < 10 ? "0" + this.projectID : this.projectID;
+      this.projectNumberContainer.el.appendChild(this.projectNumber);
+      this.el.appendChild(this.projectNumberContainer.el);
+    }
+  }, {
+    key: "initMiscInfoElements",
+    value: function initMiscInfoElements() {
+      this.miscInfoContainer = this.createContainerElement({
+        className: 'project-misc'
+      });
+      this.projectYearContainer = this.createContainerElement({
+        className: 'project-misc__item'
+      });
+      this.projectYear = document.createElement('p');
+      this.projectYear.innerText = this.year;
+      this.projectYear.classList.add('project-misc__item__copy');
+      this.projectYear.id = "project-year";
+      this.projectYearContainer.el.appendChild(this.projectYear); // this.splitTextElements(this.projectYearContainer);
+
+      this.projectTypeContainer = this.createContainerElement({
+        className: 'project-misc__item'
+      });
+      this.projectType = document.createElement('p');
+      this.projectType.innerText = this.type;
+      this.projectType.classList.add('project-misc__item__copy');
+      this.projectType.id = "project-type";
+      this.projectTypeContainer.el.appendChild(this.projectType); // this.splitTextElements(this.projectTypeContainer);
+
+      this.projectRoleContainer = this.createContainerElement({
+        className: 'project-misc__item'
+      });
+      this.projectRole = document.createElement('p');
+      this.projectRole.innerText = this.role;
+      this.projectRole.classList.add('project-misc__item__copy');
+      this.projectRole.id = "project-role";
+      this.projectRoleContainer.el.appendChild(this.projectRole); // this.splitTextElements(this.projectRoleContainer);
+
+      this.miscInfoContainer.el.appendChild(this.projectYearContainer.el);
+      this.miscInfoContainer.el.appendChild(this.projectTypeContainer.el);
+      this.miscInfoContainer.el.appendChild(this.projectRoleContainer.el);
+      this.projectInfoElements.push(this.miscInfoContainer);
+    }
+  }, {
+    key: "initProjectDescription",
+    value: function initProjectDescription() {
+      this.projecDescriptionContainer = this.createContainerElement({
+        className: 'project-description'
+      });
+      this.projectDescription = document.createElement('h3');
+      this.projectDescription.classList.add('project-description__copy');
+      this.projectDescription.innerHTML = this.description;
+      this.projecDescriptionContainer.el.appendChild(this.projectDescription); // this.splitTextElements(this.projecDescriptionContainer);
+
+      this.projectInfoElements.push(this.projecDescriptionContainer);
+    }
+  }, {
+    key: "initProjectTech",
+    value: function initProjectTech() {
+      this.projectTechContainer = this.createContainerElement({
+        className: 'project-tech'
+      });
+      this.projectTech = document.createElement('p');
+      this.projectTech.classList.add('project-tech__copy');
+      this.projectTech.innerText = this.tech;
+      this.projectTechContainer.el.appendChild(this.projectTech); // this.splitTextElements(this.projectTechContainer);
+
+      this.projectInfoElements.push(this.projectTechContainer);
+    }
+  }, {
+    key: "initProjectLink",
+    value: function initProjectLink() {
+      this.projectLinkContainer = this.createContainerElement({
+        className: 'project-link'
+      });
+      if (this.link === '') return;
+      this.projectLink = document.createElement('a');
+      this.projectLink.classList.add('project-link__link');
+      this.projectLink.href = this.link;
+      this.projectLink.target = "_blank";
+      this.projectLink.innerText = "visit project";
+      this.projectLinkContainer.el.appendChild(this.projectLink);
+      this.el.appendChild(this.projectLinkContainer.el);
+    }
+  }, {
+    key: "initExitButton",
+    value: function initExitButton() {
+      this.exitButton = this.createContainerElement({
+        className: 'exit-button'
+      });
+      this.exitButton.el.classList.add('exit-button');
+      this.exitButton.el.innerHTML = '<svg class = "exit-button__icon" width="12" height="12" viewBox="0 0 26 26" xmlns="http://www.w3.org/2000/svg"><path d="M0.292893 1.70711L24.2929 25.7071L25.7071 24.2929L1.70711 0.292893L0.292893 1.70711ZM24.2929 0.292893L0.292893 24.2929L1.70711 25.7071L25.7071 1.70711L24.2929 0.292893Z" fill="black"/></svg>';
+      this.exitButton.idleAlpha = 0.7;
+      this.exitButton.activeAlpha = 1.0;
+      this.el.appendChild(this.exitButton.el);
+    }
+  }, {
+    key: "initEvents",
+    value: function initEvents() {
+      var _this2 = this;
+
+      this.viewButton.addEventListener('click', this.onClick);
+      this.viewButton.addEventListener('mouseenter', function () {
+        return _this2.onViewButtonHover({
+          state: true
+        });
+      });
+      this.viewButton.addEventListener('mouseleave', function () {
+        return _this2.onViewButtonHover({
+          state: false
+        });
+      });
+
+      if (this.projectLink) {
+        this.projectLink.addEventListener('mouseenter', this.onHover);
+        this.projectLink.addEventListener('mouseleave', this.onLeave);
+      }
+    }
+  }, {
+    key: "applyInitStyles",
+    value: function applyInitStyles() {
+      _gsap.gsap.set(this.projectTitle, {
+        yPercent: 100
+      });
+
+      _gsap.gsap.set(this.viewButton, {
+        yPercent: -100,
+        opacity: this.viewButton.idleAlpha
+      });
+
+      _gsap.gsap.set(this.projectNumber, {
+        yPercent: -100
+      });
+
+      _gsap.gsap.set(this.projectLinkContainer.el, {
+        opacity: 0
+      });
+
+      _gsap.gsap.set(this.exitButton.el, {
+        opacity: 0
+      });
+    }
+  }, {
+    key: "hideContent",
+    value: function hideContent() {
+      var _this3 = this;
+
+      this.projectInfoElements.map(function (el) {
+        _gsap.gsap.to(el.text, {
+          yPercent: -100,
+          duration: 0.5,
+          stagger: 0.05,
+          onComplete: function onComplete() {
+            _gsap.gsap.set(el.text, {
+              yPercent: 100
+            });
+          }
+        });
+      });
+
+      _gsap.gsap.to(this.exitButton.el, {
+        opacity: 0,
+        duration: 0.5,
+        onStart: function onStart() {
+          _this3.exitButton.el.classList.remove('exit-button__active');
+
+          _this3.exitButton.el.removeEventListener('click', _this3.onExitClicked);
+
+          _this3.exitButton.el.removeEventListener('mouseenter', function () {
+            return _this3.onExitButtonHover({
+              state: true
+            });
+          });
+
+          _this3.exitButton.el.removeEventListener('mouseleave', function () {
+            return _this3.onExitButtonHover({
+              state: false
+            });
+          });
+        }
+      });
+
+      _gsap.gsap.to(this.projectLinkContainer.el, {
+        opacity: 0,
+        duration: 0.5,
+        onStart: function onStart() {
+          if (_this3.projectLink) _this3.projectLink.classList.remove('project-link__link__active');
+        }
+      });
+    }
+  }, {
+    key: "splitTextElements",
+    value: function splitTextElements(container) {
+      var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "words";
+      container.textClip = new _SplitText.SplitText(container.el, {
+        type: type
+      }).words, container.text = new _SplitText.SplitText(container.el, {
+        type: type
+      }).words;
+      container.textClip.forEach(function (word, i) {
+        word.innerText = "";
+        word.style.overflow = "hidden";
+        word.appendChild(container.text[i]);
+      });
+      container.text.forEach(function (word) {
+        _gsap.gsap.set(word, {
+          yPercent: 100
+        });
+      });
+    }
+  }, {
+    key: "updateLinkState",
+    value: function updateLinkState(state) {
+      if (state) {
+        this.projectTitleContainer.classList.add('active');
+      } else {
+        this.projectTitleContainer.classList.remove('active');
+      }
+    }
+    /**
+     * Will be used to define bounds that will be needed for clip reveal animations
+     * @param className : string
+     */
+
+  }, {
+    key: "createContainerElement",
+    value: function createContainerElement(_ref4) {
+      var className = _ref4.className;
+      var el = document.createElement('div');
+      el.classList.add(className);
+      return {
+        el: el,
+        bounds: {},
+        textClip: [],
+        text: []
+      };
+    }
+  }, {
+    key: "updateViewModeStyles",
+    value: function updateViewModeStyles(_ref5) {
+      var state = _ref5.state;
+
+      if (state) {
+        this.el.classList.add('project-content__in-view');
+      } else {
+        this.el.classList.remove('project-content__in-view');
+      }
+    }
+  }]);
+  return Project;
+}();
+
+exports.Project = Project;
+},{"@babel/runtime/helpers/classCallCheck":"../../node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"../../node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/defineProperty":"../../node_modules/@babel/runtime/helpers/defineProperty.js","../../../utils/events.js":"../../utils/events.js","../../../utils/globals.js":"../../utils/globals.js","../../EventEmitter.js":"../EventEmitter.js","../../StickyComponent.js":"../StickyComponent.js","gsap":"../../node_modules/gsap/index.js","../../../vendors/gsap/SplitText.js":"../../vendors/gsap/SplitText.js"}],"Work/ProjectLink.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ProjectLink = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+var _EventEmitter = _interopRequireDefault(require("../../EventEmitter.js"));
+
+var _events = _interopRequireDefault(require("../../../utils/events.js"));
+
+var _ProjectContent = require("../../../static/ProjectContent.js");
+
+var _gsap = require("gsap");
+
+var _SplitText = require("../../../vendors/gsap/SplitText.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var emitter = _EventEmitter.default.emitter;
+
+_gsap.gsap.registerPlugin(_SplitText.SplitText);
+
+var ProjectLink = /*#__PURE__*/function () {
+  function ProjectLink(project) {
+    (0, _classCallCheck2.default)(this, ProjectLink);
+    this.project = project;
+    this.el = document.createElement('div');
+    this.el.classList.add('project-title'); // this.initLinks();
+    // this.initEvents();
+  }
+
+  (0, _createClass2.default)(ProjectLink, [{
+    key: "initLinks",
+    value: function initLinks() {
+      var _this = this;
+
+      this.link = [];
+
+      _ProjectContent.ProjectContent.map(function (content) {
+        var title = content.title;
+        var projectLink = document.createElement('h1');
+        projectLink.classList.add('project-title__title');
+        projectLink.innerText = title;
+        projectLink.addEventListener('click', function () {
+          emitter.emit(_events.default.SHOW_PROJECT, {
+            desiredProject: title
+          });
+        });
+        projectLink.addEventListener('mouseenter', function () {
+          globals.HOVERING_LINK = true;
+          emitter.emit(_events.default.HOVERING_LINK);
+        });
+        projectLink.addEventListener('mouseleave', function () {
+          globals.HOVERING_LINK = false;
+          emitter.emit(_events.default.LEAVING_LINK);
+        });
+
+        _gsap.gsap.set(projectLink, {
+          yPercent: 100
+        });
+
+        _this.link.push(projectLink);
+
+        _this.el.appendChild(projectLink);
+      });
+    }
+  }, {
+    key: "showLink",
+    value: function showLink(projectIndex) {
+      _gsap.gsap.to(this.link[projectLink], {
+        duration: 0.5,
+        yPercent: 0
+      });
+    }
+  }, {
+    key: "hideLink",
+    value: function hideLink(projectIndex) {} // initEvents() {
+    //     this.el.addEventListener('mouseenter', this.onHover);
+    //     this.el.addEventListener('mouseleave', this.onLeave);
+    // }
+    // onClick = () => {
+    //     emitter.emit(events.SHOW_PROJECT, this.project);
+    // }
+    // onHover = () => {
+    //     globals.HOVERING_LINK = true;
+    //     emitter.emit(events.HOVERING_LINK);
+    //   }
+    //   onLeave = () => {
+    //     globals.HOVERING_LINK = false;
+    //     emitter.emit(events.LEAVING_LINK);
+    //   }
+
+  }]);
+  return ProjectLink;
+}();
+
+exports.ProjectLink = ProjectLink;
+},{"@babel/runtime/helpers/classCallCheck":"../../node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"../../node_modules/@babel/runtime/helpers/createClass.js","../../EventEmitter.js":"../EventEmitter.js","../../../utils/events.js":"../../utils/events.js","../../../static/ProjectContent.js":"../../static/ProjectContent.js","gsap":"../../node_modules/gsap/index.js","../../../vendors/gsap/SplitText.js":"../../vendors/gsap/SplitText.js"}],"Work/Projects.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
+var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
+var _ProjectContent = require("../../../static/ProjectContent.js");
+
+var _Project = require("./Project.js");
+
+var _ProjectLink = require("./ProjectLink.js");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Projects = /*#__PURE__*/function () {
+  function Projects() {
+    var _this = this;
+
+    (0, _classCallCheck2.default)(this, Projects);
+    this.el = document.createElement('div');
+    this.el.classList.add('projects');
+    this.project = []; // this.link = [];
+
+    this.initProjects();
+    this.project.map(function (project) {
+      _this.el.appendChild(project.el);
+    });
+  }
+
+  (0, _createClass2.default)(Projects, [{
+    key: "initProjects",
+    value: function initProjects() {
+      var _this2 = this;
+
+      _ProjectContent.ProjectContent.map(function (content, i) {
+        var title = content.title,
+            type = content.type,
+            description = content.description,
+            tech = content.tech,
+            year = content.year,
+            role = content.role,
+            link = content.link;
+        var initState = i > 0 ? false : true;
+        var project = new _Project.Project(i, {
+          viewing: initState,
+          title: title,
+          type: type,
+          year: year,
+          role: role,
+          description: description,
+          tech: tech,
+          link: link
+        });
+
+        _this2.project.push(project);
+      });
+    }
+  }]);
+  return Projects;
+}();
+
+var projects = new Projects();
+var _default = projects;
+exports.default = _default;
+},{"@babel/runtime/helpers/classCallCheck":"../../node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"../../node_modules/@babel/runtime/helpers/createClass.js","../../../static/ProjectContent.js":"../../static/ProjectContent.js","./Project.js":"Work/Project.js","./ProjectLink.js":"Work/ProjectLink.js"}],"Work/Work.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6753,11 +8239,11 @@ var _EventEmitter = _interopRequireDefault(require("../../EventEmitter.js"));
 
 var _events = _interopRequireDefault(require("../../../utils/events.js"));
 
-var _ProjectContent = require("../../../static/ProjectContent.js");
+var _Projects = _interopRequireDefault(require("./Projects.js"));
 
-var _StickyComponent = _interopRequireDefault(require("../../StickyComponent.js"));
+var _globals = _interopRequireDefault(require("../../../utils/globals.js"));
 
-var _gsap = require("gsap");
+var _gsapCore = _interopRequireDefault(require("gsap/gsap-core"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -6783,240 +8269,88 @@ var Work = /*#__PURE__*/function (_View) {
 
     _this = _super.call.apply(_super, [this].concat(args));
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "updateContentSelection", function (contentIndex) {
-      _this.projectIndex = contentIndex;
-      var title = _ProjectContent.ProjectContent[_this.projectIndex].title;
-      _this.projectTitleText.innerText = title;
+      _globals.default.PREV_PROJECT_INDEX = _globals.default.CURRENT_PROJECT_INDEX;
+      _globals.default.CURRENT_PROJECT_INDEX = contentIndex;
+
+      if (_globals.default.CURRENT_PROJECT_INDEX !== _globals.default.PREV_PROJECT_INDEX) {
+        _Projects.default.project[_globals.default.PREV_PROJECT_INDEX].updateViewModeStyles({
+          state: false
+        });
+
+        _Projects.default.project[_globals.default.CURRENT_PROJECT_INDEX].updateViewModeStyles({
+          state: true
+        });
+      }
+
+      _Projects.default.project[_globals.default.CURRENT_PROJECT_INDEX].showTitle();
     });
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "enableScrollMode", function () {
-      if (window.hoveringLink && !window.isMobile) return;
-      if (_this.inViewProjectMode && !window.isMobile) return;
+      if (_globals.default.HOVERING_LINK && !window.isMobile) return;
+      if (_globals.default.VIEWING_PROJECT && !window.isMobile) return;
       if (_this.enableUserInteraction === false) return;
-      _this.inScrollMode = true;
-      document.body.classList.add('scrolling');
+      _this.inScrollMode = true; // document.body.classList.add('scrolling');
 
-      _this.viewProjectButton.stickyTransform.deActivate();
+      _this.el.style.cursor = "grabbing";
+
+      _Projects.default.el.classList.add('scrolling');
+
+      _Projects.default.project[_globals.default.CURRENT_PROJECT_INDEX].hideTitle();
 
       emitter.emit(_events.default.ENTER_SCROLL_MODE);
-
-      _this.updateInterface({
-        state: false
-      });
     });
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "disableScrollMode", function () {
-      if (window.hoveringLink && !window.isMobile) return;
-      if (_this.inViewProjectMode && !window.isMobile) return;
+      if (_globals.default.HOVERING_LINK && !window.isMobile) return;
+      if (_globals.default.VIEWING_PROJECT && !window.isMobile) return;
       if (_this.enableUserInteraction === false) return;
       _this.inScrollMode = false;
-      document.body.classList.remove('scrolling');
+      _this.el.style.cursor = "grab";
 
-      _this.viewProjectButton.stickyTransform.activate();
+      _Projects.default.el.classList.remove('scrolling');
 
       emitter.emit(_events.default.EXIT_SCROLL_MODE);
-
-      _this.updateInterface({
-        state: true
-      });
     });
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "playEnterAnim", function () {
-      _this.showScrollInterface = true;
-      _this.enterAnim = _gsap.gsap.timeline({
-        onStart: function onStart() {
-          if (_this.firstReveal === false) {
-            _this.firstReveal = true;
-            emitter.emit(_events.default.REVEAL_QUADS);
-          }
-        },
-        onComplete: function onComplete() {
-          _this.enableUserInteraction = true;
-        }
+      emitter.emit(_events.default.REVEAL_QUADS);
+
+      _Projects.default.project[_globals.default.CURRENT_PROJECT_INDEX].updateViewModeStyles({
+        state: true
       });
-      var ease = "power2.out";
-      var height = _this.projectTitleTransformRect.height;
-      var startY = height;
-      var dur = !_this.firstReveal ? 1.5 : 0.85;
 
-      _this.enterAnim.fromTo(_this.projectTitleTransform, {
-        y: startY
-      }, {
-        duration: dur,
-        opacity: 1,
-        y: 0,
-        ease: "power2.out"
-      }, "<");
-
-      _this.enterAnim.fromTo(_this.viewProjectButton, {
-        opacity: 0,
-        y: startY
-      }, {
-        duration: dur,
-        opacity: 1.0,
-        y: 0,
-        ease: "power1.out"
-      }, "<0.1");
-
-      _this.updateViewModeStyles({
-        viewing: false
-      });
+      _Projects.default.project[_globals.default.CURRENT_PROJECT_INDEX].showTitle();
     });
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "playLeaveAnim", function () {
-      // this.killActiveAnimations();
-      //not including this to kill animation function
-      //As we don't want this animation to be killable
-      _this.leaveAnim = _gsap.gsap.timeline();
-      var ease = "sine.inOut";
-      var dur = 0.5;
-
-      if (_this.inViewProjectMode) {
-        _this.leaveAnim.to(_this.projectTitle, {
-          opacity: 0,
-          duration: dur,
-          ease: ease
-        });
-
-        _this.leaveAnim.to(_this.projectType, {
-          duration: dur,
-          opacity: 0,
-          ease: ease
-        }, "<");
-
-        _this.leaveAnim.to(_this.projectYear, {
-          duration: dur,
-          opacity: 0,
-          ease: ease
-        }, "<");
-
-        _this.leaveAnim.to(_this.projectContentInfo, {
-          duration: dur,
-          opacity: 0,
-          ease: ease
-        }, "<");
-
-        _this.leaveAnim.to(_this.projectLink, {
-          duration: dur,
-          opacity: 0,
-          ease: ease
-        }, "<");
-
-        _this.leaveAnim.to(_this.exitButton, {
-          duration: dur,
-          opacity: 0,
-          ease: ease
-        }, "<");
+      if (_globals.default.VIEWING_PROJECT) {
+        _Projects.default.project[_globals.default.CURRENT_PROJECT_INDEX].hideContent();
       } else {
-        _this.leaveAnim.to(_this.projectTitleScrolling, {
-          opacity: 0,
-          duration: dur,
-          ease: ease
-        });
-
-        _this.leaveAnim.to(_this.viewProjectButton, {
-          duration: dur,
-          opacity: 0,
-          ease: ease
-        }, "<0.1");
+        _Projects.default.project[_globals.default.CURRENT_PROJECT_INDEX].hideTitle();
       }
     });
-    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "updateInterface", function (_ref) {
-      var state = _ref.state;
-      if (_this.interfaceAnim) _this.interfaceAnim.kill();
-      if (_this.enterAnim) _this.enterAnim.kill();
-      _this.interfaceAnim = _gsap.gsap.timeline();
-      _this.showScrollInterface = state;
-      var ease = _this.showScrollInterface ? "power1.out" : "power1.out";
-      var duration = _this.inScrollMode ? 0.2 : 0.3;
-      var height = _this.projectTitleTransformRect.height;
-
-      _this.interfaceAnim.fromTo(_this.projectTitleTransform, {
-        y: _this.showScrollInterface ? height * 0.2 : 0
-      }, {
-        duration: duration,
-        ease: ease,
-        opacity: _this.showScrollInterface ? 1 : 0,
-        y: _this.showScrollInterface ? 0 : -height * 0.2,
-        z: 0
-      });
-
-      _this.interfaceAnim.to(_this.viewProjectButton, {
-        duration: duration,
-        ease: ease,
-        opacity: _this.showScrollInterface ? 1 : 0,
-        y: 0,
-        z: 0
-      }, _this.inScrollMode ? "<" : "<0.1");
-    });
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "showProject", function () {
-      _this.updateInterface({
-        state: false
+      if (_globals.default.VIEWING_PROJECT) return;
+      _globals.default.VIEWING_PROJECT = true;
+
+      _Projects.default.project[_globals.default.CURRENT_PROJECT_INDEX].hideTitle();
+
+      emitter.emit(_events.default.UPDATE_VIEWMODE, {
+        mode: true
       });
 
-      _this.revealProjectContent();
+      _gsapCore.default.delayedCall(1.0, function () {
+        _Projects.default.project[_globals.default.CURRENT_PROJECT_INDEX].revealContent();
+      });
     });
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "closeProject", function () {
-      _this.hideProjectContent();
-    });
-    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "hideProjectContent", function () {
-      // if (this.hideProjectContentAnim) this.hideProjectContentAnim.kill();
-      _this.hideProjectContentAnim = _gsap.gsap.timeline({
-        onStart: function onStart() {
-          _this.exitButton.stickyTransform.deActivate();
-
-          _this.projectLink.stickyTransform.deActivate();
-
-          emitter.emit(_events.default.CLOSE_PROJECT);
-        },
-        onComplete: function onComplete() {
-          _gsap.gsap.delayedCall(0.5, function () {
-            _this.inViewProjectMode = false;
-
-            _this.viewProjectButton.stickyTransform.activate();
-
-            _this.playEnterAnim();
-          });
-        }
+      if (!_globals.default.VIEWING_PROJECT) return;
+      _globals.default.VIEWING_PROJECT = false;
+      emitter.emit(_events.default.UPDATE_VIEWMODE, {
+        mode: false
       });
-      var pow = "linear";
-      var duration = 0.4;
 
-      _this.hideProjectContentAnim.to(_this.projectTitle, {
-        duration: duration,
-        opacity: 0,
-        z: 0,
-        ease: pow
-      }, "<");
+      _Projects.default.project[_globals.default.CURRENT_PROJECT_INDEX].hideContent();
 
-      _this.hideProjectContentAnim.to(_this.projectType, {
-        duration: duration,
-        opacity: 0,
-        z: 0,
-        ease: pow
-      }, "<");
-
-      _this.hideProjectContentAnim.to(_this.projectYear, {
-        duration: duration,
-        opacity: 0,
-        z: 0,
-        ease: pow
-      }, "<");
-
-      _this.hideProjectContentAnim.to(_this.projectContentInfo, {
-        duration: duration,
-        opacity: 0,
-        z: 0
-      }, "<");
-
-      _this.hideProjectContentAnim.to(_this.projectLink, {
-        duration: duration,
-        opacity: 0,
-        z: 0,
-        ease: pow
-      }, "<");
-
-      _this.hideProjectContentAnim.to(_this.exitButton, {
-        duration: duration,
-        ease: pow,
-        opacity: 0,
-        z: 0
-      }, "<");
+      _gsapCore.default.delayedCall(1.0, function () {
+        _Projects.default.project[_globals.default.CURRENT_PROJECT_INDEX].showTitle();
+      });
     });
     return _this;
   }
@@ -7025,17 +8359,20 @@ var Work = /*#__PURE__*/function (_View) {
     key: "onEnter",
     value: function onEnter() {
       (0, _get2.default)((0, _getPrototypeOf2.default)(Work.prototype), "onEnter", this).call(this);
+      _globals.default.CURRENT_VIEW = "work";
+      emitter.emit(_events.default.UPDATE_CURRENT_VIEW);
       this.firstReveal = false;
-      this.initReferences();
-      this.initEvents();
+      this.el.appendChild(_Projects.default.el);
       this.initDomGL();
+      this.initEvents();
     }
   }, {
     key: "onEnterCompleted",
     value: function onEnterCompleted() {
       (0, _get2.default)((0, _getPrototypeOf2.default)(Work.prototype), "onEnterCompleted", this).call(this);
 
-      if (window.contentLoaded) {
+      if (_globals.default.CONTENT_LOADED) {
+        this.enableUserInteraction = true;
         emitter.emit(_events.default.SHOW_CLICKDRAG_CTA);
         this.playEnterAnim();
       }
@@ -7053,67 +8390,29 @@ var Work = /*#__PURE__*/function (_View) {
       (0, _get2.default)((0, _getPrototypeOf2.default)(Work.prototype), "onLeaveCompleted", this).call(this);
       this.firstReveal = false;
       this.removeEvents();
-      this.removeStickyTransforms();
-      if (this.inViewProjectMode) emitter.emit(_events.default.RESET_QUADS);
+      if (_globals.default.VIEWING_PROJECT) emitter.emit(_events.default.RESET_QUADS);
       emitter.emit(_events.default.REMOVE_DOMGL);
-    }
-  }, {
-    key: "initReferences",
-    value: function initReferences() {
-      this.domGLReferenceElement = this.el.querySelector('.project-video');
-      this.projectTitleScrolling = this.el.querySelector('.project-title'); //RENAME
-
-      this.projectTitleTransform = this.el.querySelector('.project-title__transform');
-      this.projectTitleTransformRect = this.projectTitleTransform.getBoundingClientRect();
-      this.viewProjectButton = this.el.querySelector('.view-project-button');
-      this.viewProjectButton.stickyTransform = new _StickyComponent.default({
-        domElement: this.viewProjectButton,
-        enable: true,
-        event: this.showProject,
-        includeHoverAnim: true
-      });
-      this.exitButton = this.el.querySelector('.exit-button');
-      this.exitButton.stickyTransform = new _StickyComponent.default({
-        domElement: this.el.querySelector('.exit-button__icon'),
-        enable: false,
-        event: this.closeProject,
-        includeHoverAnim: true
-      });
-      this.projectTitle = document.getElementById('project_title');
-      this.projectType = document.getElementById('project_type');
-      this.projectYear = document.getElementById('project_year');
-      this.projectContentInfo = this.el.querySelectorAll('.project-info');
-      this.projectLink = this.el.querySelector(".project-link");
-      this.projectLink.stickyTransform = new _StickyComponent.default({
-        domElement: this.projectLink,
-        enable: false,
-        includeHoverAnim: true
-      });
-      this.projectTitleText = document.querySelector('.project-title__title');
-      this.projectTitleViewText = document.getElementById('project_title');
-      this.projectRoleText = document.getElementById('project_role');
-      this.projectTypeText = document.getElementById('project_type');
-      this.projectYearText = document.getElementById('project_year');
-      this.projectDescriptionText = document.getElementById('project_description');
-      this.projectTechText = document.getElementById('project_tech');
-      this.projectLinkText = document.getElementById('project_link');
+      this.el.removeChild(_Projects.default.el);
     }
   }, {
     key: "initEvents",
     value: function initEvents() {
       var _this2 = this;
 
+      this.el.style.cursor = "grab";
       this.enableUserInteraction = false;
       this.showScrollInterface = true;
       this.inScrollMode = false;
-      this.inViewProjectMode = false;
-      this.projectIndex = 0;
+      _globals.default.VIEWING_PROJECT = false;
       emitter.on(_events.default.LOADING_ANIM_COMPLETED, function () {
         _this2.playEnterAnim();
 
         emitter.emit(_events.default.SHOW_CLICKDRAG_CTA);
+        _this2.enableUserInteraction = true;
       });
       emitter.on(_events.default.LOAD_PROJECT_CONTENT, this.updateContentSelection);
+      emitter.on(_events.default.SHOW_PROJECT, this.showProject);
+      emitter.on(_events.default.CLOSE_PROJECT, this.closeProject);
 
       if (!window.isMobile) {
         emitter.on(_events.default.MOUSE_DOWN, this.enableScrollMode);
@@ -7129,13 +8428,15 @@ var Work = /*#__PURE__*/function (_View) {
     value: function removeEvents() {
       var _this3 = this;
 
-      // this.enableUserInteraction = false;
+      this.enableUserInteraction = false;
       emitter.off(_events.default.LOADING_ANIM_COMPLETED, this.playEnterAnim);
       emitter.off(_events.default.LOAD_PROJECT_CONTENT, function () {
         _this3.playEnterAnim();
 
         emitter.emit(_events.default.SHOW_CLICKDRAG_CTA);
       });
+      emitter.off(_events.default.SHOW_PROJECT, this.showProject);
+      emitter.off(_events.default.CLOSE_PROJECT, this.closeProject);
 
       if (!window.isMobile) {
         emitter.off(_events.default.MOUSE_DOWN, this.enableScrollMode);
@@ -7148,20 +8449,11 @@ var Work = /*#__PURE__*/function (_View) {
     }
   }, {
     key: "removeStickyTransforms",
-    value: function removeStickyTransforms() {
-      this.viewProjectButton.stickyTransform.deActivate();
-      this.exitButton.stickyTransform.deActivate();
-      this.projectLink.stickyTransform.deActivate();
-      this.viewProjectButton.stickyTransform.removeEvents();
-      this.exitButton.stickyTransform.removeEvents();
-      this.projectLink.stickyTransform.removeEvents();
-      this.viewProjectButton.stickyTransform = null;
-      this.exitButton.stickyTransform = null;
-      this.projectLink.stickyTransform = null;
-    }
+    value: function removeStickyTransforms() {}
   }, {
     key: "initDomGL",
     value: function initDomGL() {
+      this.domGLReferenceElement = this.el.querySelector('.project-video');
       var params = {
         referenceElement: this.domGLReferenceElement,
         getFirstQuad: true
@@ -7172,121 +8464,9 @@ var Work = /*#__PURE__*/function (_View) {
       });
     }
   }, {
-    key: "populateContent",
-    value: function populateContent() {
-      var _ProjectContent$this$ = _ProjectContent.ProjectContent[this.projectIndex],
-          title = _ProjectContent$this$.title,
-          type = _ProjectContent$this$.type,
-          year = _ProjectContent$this$.year,
-          description = _ProjectContent$this$.description,
-          tech = _ProjectContent$this$.tech,
-          role = _ProjectContent$this$.role,
-          link = _ProjectContent$this$.link;
-      this.projectTitleViewText.innerText = title;
-      this.projectTypeText.innerText = type;
-      this.projectYearText.innerText = year;
-      this.projectDescriptionText.innerText = description;
-      this.projectTechText.innerText = tech;
-
-      if (role === null) {
-        this.projectRoleText.innerText = '';
-        this.projectRoleText.classList.add('no-role');
-      } else {
-        this.projectRoleText.innerText = role;
-        this.projectRoleText.classList.remove('no-role');
-      } // const projectLinkEl = document.getElementById('project_link');
-
-
-      this.projectLinkText.innerText = link === '' ? '' : "visit project";
-      this.projectLinkText.href = link;
-    }
-  }, {
-    key: "revealProjectContent",
-    value: function revealProjectContent() {
-      var _this4 = this;
-
-      // if (this.revealProjectContentAnim) this.revealProjectContentAnim.kill();
-      this.revealProjectContentAnim = _gsap.gsap.timeline({
-        // delay: 1.0,
-        onStart: function onStart() {
-          _this4.populateContent();
-
-          _this4.inViewProjectMode = true;
-
-          _this4.viewProjectButton.stickyTransform.deActivate();
-
-          _this4.updateViewModeStyles({
-            viewing: true
-          }); // emitter.emit(events.SHOW_PROJECT);
-
-        },
-        onComplete: function onComplete() {
-          _this4.exitButton.stickyTransform.activate();
-
-          var projectLink = document.getElementById('project_link');
-          if (projectLink.innerText === '') return;
-
-          _this4.projectLink.stickyTransform.activate();
-        }
-      });
-      var pow = "linear";
-      var duration = 1.0;
-      this.revealProjectContentAnim.add(function () {
-        emitter.emit(_events.default.SHOW_PROJECT);
-      }, "<");
-      this.revealProjectContentAnim.fromTo(this.projectTitle, {
-        opacity: 0
-      }, {
-        duration: duration,
-        opacity: 1,
-        ease: pow,
-        z: 0
-      }, "<0.5");
-      this.revealProjectContentAnim.fromTo(this.projectType, {
-        opacity: 0
-      }, {
-        duration: duration,
-        opacity: 1,
-        ease: pow,
-        z: 0
-      }, "<0.02");
-      this.revealProjectContentAnim.fromTo(this.projectYear, {
-        opacity: 0
-      }, {
-        duration: duration,
-        opacity: 1,
-        ease: pow,
-        z: 0
-      }, "<0.02");
-      this.revealProjectContentAnim.fromTo(this.projectContentInfo, {
-        opacity: 0
-      }, {
-        opacity: 1,
-        duration: duration,
-        z: 0 // stagger: 0.1,
-
-      }, "<0.02");
-      this.revealProjectContentAnim.fromTo(this.projectLink, {
-        opacity: 0
-      }, {
-        duration: duration,
-        opacity: 1,
-        ease: pow,
-        z: 0
-      }, "<0.02");
-      this.revealProjectContentAnim.fromTo(this.exitButton, {
-        opacity: 0
-      }, {
-        duration: duration,
-        ease: pow,
-        opacity: 1,
-        z: 0
-      }, "<0.02");
-    }
-  }, {
     key: "updateViewModeStyles",
-    value: function updateViewModeStyles(_ref2) {
-      var viewing = _ref2.viewing;
+    value: function updateViewModeStyles(_ref) {
+      var viewing = _ref.viewing;
 
       if (!viewing) {
         document.querySelector('.project-container').classList.add('not-viewing');
@@ -7301,7 +8481,7 @@ var Work = /*#__PURE__*/function (_View) {
 }(_View2.default);
 
 exports.default = Work;
-},{"@babel/runtime/helpers/classCallCheck":"../../node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"../../node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/assertThisInitialized":"../../node_modules/@babel/runtime/helpers/assertThisInitialized.js","@babel/runtime/helpers/get":"../../node_modules/@babel/runtime/helpers/get.js","@babel/runtime/helpers/possibleConstructorReturn":"../../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"../../node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"../../node_modules/@babel/runtime/helpers/inherits.js","@babel/runtime/helpers/defineProperty":"../../node_modules/@babel/runtime/helpers/defineProperty.js","../View.js":"View.js","../../EventEmitter.js":"../EventEmitter.js","../../../utils/events.js":"../../utils/events.js","../../../static/ProjectContent.js":"../../static/ProjectContent.js","../../StickyComponent.js":"../StickyComponent.js","gsap":"../../node_modules/gsap/index.js"}],"../../static/AboutContent.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/classCallCheck":"../../node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"../../node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/assertThisInitialized":"../../node_modules/@babel/runtime/helpers/assertThisInitialized.js","@babel/runtime/helpers/get":"../../node_modules/@babel/runtime/helpers/get.js","@babel/runtime/helpers/possibleConstructorReturn":"../../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"../../node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"../../node_modules/@babel/runtime/helpers/inherits.js","@babel/runtime/helpers/defineProperty":"../../node_modules/@babel/runtime/helpers/defineProperty.js","../View.js":"View.js","../../EventEmitter.js":"../EventEmitter.js","../../../utils/events.js":"../../utils/events.js","./Projects.js":"Work/Projects.js","../../../utils/globals.js":"../../utils/globals.js","gsap/gsap-core":"../../node_modules/gsap/gsap-core.js"}],"../../static/AboutContent.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -7373,6 +8553,10 @@ var _StickyComponent = _interopRequireDefault(require("../../StickyComponent.js"
 
 var _gsap = require("gsap");
 
+var _SplitText = require("../../../vendors/gsap/SplitText.js");
+
+var _globals = _interopRequireDefault(require("../../../utils/globals.js"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _createSuper(Derived) { return function () { var Super = (0, _getPrototypeOf2.default)(Derived), result; if (_isNativeReflectConstruct()) { var NewTarget = (0, _getPrototypeOf2.default)(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2.default)(this, result); }; }
@@ -7380,6 +8564,8 @@ function _createSuper(Derived) { return function () { var Super = (0, _getProtot
 function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
 var emitter = _EventEmitter.default.emitter;
+
+_gsap.gsap.registerPlugin(_SplitText.SplitText);
 
 var About = /*#__PURE__*/function (_View) {
   (0, _inherits2.default)(About, _View);
@@ -7397,10 +8583,12 @@ var About = /*#__PURE__*/function (_View) {
 
     _this = _super.call.apply(_super, [this].concat(args));
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "onLinkHover", function () {
-      emitter.emit(_events.default.HOVERING_LINK);
+      _globals.default.HOVERING_LINK = true;
+      emitter.emit(_events.default.HOVERING_NAV_LINK, true);
     });
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "onLinkLeave", function () {
-      emitter.emit(_events.default.LEAVING_LINK);
+      _globals.default.HOVERING_LINK = false;
+      emitter.emit(_events.default.HOVERING_NAV_LINK, false);
     });
     return _this;
   }
@@ -7409,6 +8597,8 @@ var About = /*#__PURE__*/function (_View) {
     key: "onEnter",
     value: function onEnter() {
       (0, _get2.default)((0, _getPrototypeOf2.default)(About.prototype), "onEnter", this).call(this);
+      _globals.default.CURRENT_VIEW = "about";
+      emitter.emit(_events.default.UPDATE_CURRENT_VIEW);
       this.initReferences();
       this.populateContent();
       this.initEvents();
@@ -7419,7 +8609,7 @@ var About = /*#__PURE__*/function (_View) {
     value: function onEnterCompleted() {
       (0, _get2.default)((0, _getPrototypeOf2.default)(About.prototype), "onEnterCompleted", this).call(this);
 
-      if (window.contentLoaded) {
+      if (_globals.default.CONTENT_LOADED) {
         this.playEnterAnim();
       }
     }
@@ -7435,6 +8625,9 @@ var About = /*#__PURE__*/function (_View) {
       (0, _get2.default)((0, _getPrototypeOf2.default)(About.prototype), "onLeaveCompleted", this).call(this);
       this.removeEvents();
       emitter.emit(_events.default.REMOVE_DOMGL);
+      this.resetTextSplit(this.header);
+      this.resetTextSplit(this.introText);
+      this.resetTextSplit(this.contactHeader);
     }
   }, {
     key: "initOnComplete",
@@ -7459,11 +8652,8 @@ var About = /*#__PURE__*/function (_View) {
         _this2.playEnterAnim();
       });
       this.links.forEach(function (link) {
-        link.stickyTransform = new _StickyComponent.default({
-          domElement: link,
-          enable: true,
-          includeHoverAnim: true
-        });
+        link.addEventListener('mouseenter', _this2.onLinkHover);
+        link.addEventListener('mouseleave', _this2.onLinkLeave);
       });
     }
   }, {
@@ -7472,8 +8662,8 @@ var About = /*#__PURE__*/function (_View) {
       var _this3 = this;
 
       this.links.forEach(function (link) {
-        link.stickyTransform.deActivate();
-        link.stickyTransform = null;
+        link.removeEventListener('mouseenter', _this3.onLinkHover);
+        link.removeEventListener('mouseleave', _this3.onLinkLeave);
       });
       emitter.off(_events.default.LOADING_ANIM_COMPLETED, function () {
         _this3.playEnterAnim();
@@ -7506,57 +8696,58 @@ var About = /*#__PURE__*/function (_View) {
     key: "playEnterAnim",
     value: function playEnterAnim() {
       var dur = 0.85;
-      var startY = 20;
       var ease = "power1.out";
+      emitter.emit(_events.default.REVEAL_QUADS);
+      this.splitTextElements(this.header);
+      this.splitTextElements(this.introText);
+      this.splitTextElements(this.contactHeader); // gsap.to(this.introText.text.words, {
+      //   duration: 0.5,
+      //   yPercent: 0,
+      //   stagger: 0.015,
+      // });
+      // gsap.to(this.introText.text.words, {
+      //   duration: 0.5,
+      //   yPercent: 0,
+      //   stagger: 0.015,
+      // });
+      // gsap.to(this.introText.text.words, {
+      //   duration: 0.5,
+      //   yPercent: 0,
+      //   stagger: 0.015,
+      // });
 
       var enterAnim = _gsap.gsap.timeline({
-        onStart: function onStart() {
-          emitter.emit(_events.default.REVEAL_QUADS);
-        } // onComplete: () => {
-        //   this.links.forEach((link) => {
-        //     link.children[0].classList.add('link--enabled');
-        //   });
-        // }
-
+        onStart: function onStart() {// emitter.emit(events.REVEAL_QUADS);
+        }
       });
 
-      enterAnim.fromTo(this.header, {
-        opacity: 0,
-        y: startY
-      }, {
+      enterAnim.to(this.header.text.words, {
         duration: dur,
-        opacity: 1,
-        y: 0,
+        yPercent: 0,
         ease: ease
-      }, "<");
-      enterAnim.fromTo(this.introText, {
-        opacity: 0,
-        y: startY
-      }, {
+      });
+      enterAnim.to(this.introText.text.words, {
         duration: dur,
-        opacity: 1,
-        y: 0,
+        yPercent: 0,
+        stagger: 0.005,
         ease: ease
-      }, "<0.05");
-      enterAnim.fromTo(this.contactHeader, {
-        opacity: 0,
-        y: startY
-      }, {
+      }, "<0.5");
+      enterAnim.to(this.contactHeader.text.words, {
         duration: dur,
-        opacity: 1,
-        y: 0,
-        ease: ease
-      }, "<0.05");
+        yPercent: 0,
+        ease: ease,
+        stagger: 0.005
+      }, "<0.5");
       enterAnim.fromTo(this.links, {
         opacity: 0,
-        y: startY
+        yPercent: 100
       }, {
         duration: dur,
         opacity: 1.0,
         stagger: 0.1,
-        y: 0,
+        yPercent: 0,
         ease: ease
-      }, "<0.1");
+      }, "<0.5");
     }
   }, {
     key: "playLeaveAnim",
@@ -7578,7 +8769,7 @@ var About = /*#__PURE__*/function (_View) {
         duration: dur,
         opacity: 0,
         stagger: -0.05,
-        ease: ease
+        ease: "linear"
       }, "<");
       leaveAnim.to(this.contactHeader, {
         duration: dur,
@@ -7596,12 +8787,38 @@ var About = /*#__PURE__*/function (_View) {
         ease: ease
       }, "<0.05");
     }
+  }, {
+    key: "splitTextElements",
+    value: function splitTextElements(el) {
+      var type = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : "words";
+      el.textClip = new _SplitText.SplitText(el, {
+        type: type
+      }), el.text = new _SplitText.SplitText(el, {
+        type: type
+      });
+      el.textClip.words.forEach(function (word, i) {
+        word.innerText = "";
+        word.style.overflow = "hidden";
+        word.appendChild(el.text.words[i]);
+      });
+      el.text.words.forEach(function (word) {
+        _gsap.gsap.set(word, {
+          yPercent: 100
+        });
+      });
+    }
+  }, {
+    key: "resetTextSplit",
+    value: function resetTextSplit(el) {
+      el.textClip.revert();
+      el.text.revert();
+    }
   }]);
   return About;
 }(_View2.default);
 
 exports.default = About;
-},{"@babel/runtime/helpers/classCallCheck":"../../node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"../../node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/assertThisInitialized":"../../node_modules/@babel/runtime/helpers/assertThisInitialized.js","@babel/runtime/helpers/get":"../../node_modules/@babel/runtime/helpers/get.js","@babel/runtime/helpers/possibleConstructorReturn":"../../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"../../node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"../../node_modules/@babel/runtime/helpers/inherits.js","@babel/runtime/helpers/defineProperty":"../../node_modules/@babel/runtime/helpers/defineProperty.js","../View.js":"View.js","../../EventEmitter.js":"../EventEmitter.js","../../../utils/events.js":"../../utils/events.js","../../../static/AboutContent.js":"../../static/AboutContent.js","../../StickyComponent.js":"../StickyComponent.js","gsap":"../../node_modules/gsap/index.js"}],"../../node_modules/@babel/runtime/helpers/isNativeFunction.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/classCallCheck":"../../node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"../../node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/assertThisInitialized":"../../node_modules/@babel/runtime/helpers/assertThisInitialized.js","@babel/runtime/helpers/get":"../../node_modules/@babel/runtime/helpers/get.js","@babel/runtime/helpers/possibleConstructorReturn":"../../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"../../node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"../../node_modules/@babel/runtime/helpers/inherits.js","@babel/runtime/helpers/defineProperty":"../../node_modules/@babel/runtime/helpers/defineProperty.js","../View.js":"View.js","../../EventEmitter.js":"../EventEmitter.js","../../../utils/events.js":"../../utils/events.js","../../../static/AboutContent.js":"../../static/AboutContent.js","../../StickyComponent.js":"../StickyComponent.js","gsap":"../../node_modules/gsap/index.js","../../../vendors/gsap/SplitText.js":"../../vendors/gsap/SplitText.js","../../../utils/globals.js":"../../utils/globals.js"}],"../../node_modules/@babel/runtime/helpers/isNativeFunction.js":[function(require,module,exports) {
 function _isNativeFunction(fn) {
   return Function.toString.call(fn).indexOf("[native code]") !== -1;
 }
@@ -14369,9 +15586,9 @@ var Plane = /*#__PURE__*/function (_Geometry) {
 
 exports.Plane = Plane;
 },{"@babel/runtime/helpers/classCallCheck":"../../node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"../../node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/possibleConstructorReturn":"../../node_modules/@babel/runtime/helpers/possibleConstructorReturn.js","@babel/runtime/helpers/getPrototypeOf":"../../node_modules/@babel/runtime/helpers/getPrototypeOf.js","@babel/runtime/helpers/inherits":"../../node_modules/@babel/runtime/helpers/inherits.js","../core/Geometry.js":"../../vendors/ogl/src/core/Geometry.js"}],"../WebGL/DomQuads/Projects/ProjectQuad/shaders/projectQuad.vert":[function(require,module,exports) {
-module.exports = "precision highp float;\n#define GLSLIFY 1\n\nattribute vec3 position;\nattribute vec2 uv;\nattribute vec3 normal;\n\nuniform mat4 projectionMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 modelMatrix;\n\nuniform sampler2D _FlowMap;\nuniform float _FlowMapPhase;\nuniform float _FlipFlowMapForce;\nuniform float _RestorePhase;\nuniform float _ScrollPhase;\nuniform float _RevealPhase;\n\nuniform float _ViewModePhase;\nuniform float _Entering;\n\nuniform sampler2D _Image;\nuniform float _Scale;\nuniform float _InView;\n\nuniform float _Time;\n\nuniform vec2 _ViewplaneSize;\nvarying vec3 vMvPos;\n\nvarying vec2 vUv;\n// varying vec2 vClipPos;\nvarying vec3 vDistort;\nvarying float vPhase;\n\nuniform float _SpatialF;\nuniform float _TemporalF;\nuniform float _Amp;\nuniform float _HeightAmp;\n\nvarying float vDamp;\n\n#define DISTORTSTR 1.2\n#define SCROLLDISTORTSTR 0.6\n#define DISPLACEMENTSTR 0.4\n#define HEIGHTMAPSTR 0.5\n#define lumaK 0.33333333333333333\n#define PI 3.14159265359\n#define HALFPI 3.14159265359 * 0.5\n\n#define RIPPLE_SPATIALF 3.0\n#define RIPPLE_TEMPORALF 8.2\n\n// #define RIPPLE_SPATIALF 7.0 \n// #define RIPPLE_TEMPORALF 8.0\n\n#define RIPPLE_AMP 0.25\n// #define RIPPLE_AMP 0.1\n\n// #define HEIGHTMAP_AMP 0.53\n// #define HEIGHTMAP_AMP 0.33\n#define HEIGHTMAP_AMP 1.5\n\nvoid main() {\n\n    vec3 pos = position;\n\n    vec2 texCoord = uv;\n    texCoord -= 0.5;\n    texCoord *= mix(0.5, 1.0, _RevealPhase);\n    texCoord += 0.5;\n\n    vec3 col = texture2D(_Image, texCoord).xyz;\n    float heightMapDistort = dot(col, vec3(0.299, 0.587, 0.114));\n    heightMapDistort = mix(heightMapDistort, 1.0 - heightMapDistort, _FlipFlowMapForce);\n    float dampen = (smoothstep(0.8, 1.0, heightMapDistort));\n    vDamp = dampen;\n\n    //PROJECT VIEW MODE SCALE\n    pos.xy *= _ViewplaneSize * mix(0.85, 1.0, _Scale) * mix(1.0, 1.535, _ViewModePhase * _ViewModePhase);\n\n    //SCROLL FORCE\n    vec2 phasePos = position.xy;\n    vec2 scrollPhasePos = phasePos;\n    float dist = length(phasePos);\n    pos.z += (1.0 - dist) * DISPLACEMENTSTR * _ScrollPhase * SCROLLDISTORTSTR;\n    pos.z += heightMapDistort * dampen * 0.2 * _ScrollPhase;\n\n    //PROJECT VIEW MODE RIPPLE\n    vec2 viewModePhasePos = phasePos;\n    float viewmodePhase = _ViewModePhase * 4.0 * (1.0 - _ViewModePhase);    \n    float phaseDist = 1.0 - abs((_ViewModePhase * 2.1) - dist);\n    phaseDist = smoothstep(0.0, 1.0, phaseDist);\n    float ripplePhase = phaseDist * RIPPLE_AMP * viewmodePhase;\n    vPhase = phaseDist * viewmodePhase;\n\n    pos.z += ripplePhase;\n    pos.z += heightMapDistort * HEIGHTMAP_AMP * ripplePhase;\n\n    mat4 modelViewProjection = projectionMatrix * modelViewMatrix;\n    \n    vDistort = vec3(0.0, 0.0, 0.0);\n\n    // if(_InView == 1.0) {\n    vec4 clipPos = modelViewProjection * vec4(pos, 1.0);\n    clipPos.xyz /= clipPos.w;\n    clipPos.xy = clipPos.xy * 0.5 + 0.5;\n\n    vec3 distort = texture2D(_FlowMap, clipPos.xy).xyz * DISTORTSTR;\n    vDistort = distort;\n    pos += distort * max(0.2, heightMapDistort) * _FlowMapPhase * distort.z * _InView;\n    // }\n\n    gl_Position = modelViewProjection * vec4(pos, 1.0);\n    vUv = uv;\n    vMvPos = (modelViewMatrix * vec4(position, 1.0)).xyz;\n\n}";
+module.exports = "precision highp float;\n#define GLSLIFY 1\n\nattribute vec3 position;\nattribute vec2 uv;\nattribute vec3 normal;\n\nuniform mat4 projectionMatrix;\nuniform mat4 modelViewMatrix;\nuniform mat4 modelMatrix;\n\nuniform sampler2D _FlowMap;\nuniform float _FlowMapPhase;\nuniform float _FlipFlowMapForce;\nuniform float _RestorePhase;\nuniform float _ScrollPhase;\nuniform float _RevealPhase;\n\nuniform float _ViewModePhase;\nuniform float _RipplePhase;\nuniform float _Entering;\n\nuniform sampler2D _Image;\nuniform float _Scale;\nuniform float _InView;\n\nuniform float _Time;\n\nuniform vec2 _ViewplaneSize;\nvarying vec3 vMvPos;\n\nvarying vec2 vUv;\n// varying vec2 vClipPos;\nvarying vec3 vDistort;\nvarying float vPhase;\n\nuniform float _SpatialF;\nuniform float _TemporalF;\nuniform float _Amp;\nuniform float _HeightAmp;\n\nvarying float vDamp;\n\n#define DISTORTSTR 1.2\n#define SCROLLDISTORTSTR 0.6\n#define DISPLACEMENTSTR 0.4\n#define HEIGHTMAPSTR 0.5\n#define lumaK 0.33333333333333333\n#define PI 3.14159265359\n#define HALFPI 3.14159265359 * 0.5\n\n#define RIPPLE_SPATIALF 3.0\n#define RIPPLE_TEMPORALF 8.2\n\n// #define RIPPLE_SPATIALF 7.0 \n// #define RIPPLE_TEMPORALF 8.0\n\n// #define RIPPLE_AMP 0.25\n#define RIPPLE_AMP 0.15\n// #define RIPPLE_AMP 0.1\n\n// #define HEIGHTMAP_AMP 0.53\n// #define HEIGHTMAP_AMP 0.33\n// #define HEIGHTMAP_AMP 1.5\n#define HEIGHTMAP_AMP 1.9\n\nvoid main() {\n\n    vec3 pos = position;\n\n    vec2 texCoord = uv;\n    texCoord -= 0.5;\n    // texCoord *= mix(0.5, 1.0, _RevealPhase);\n    texCoord *= mix(0.85, 1.0, _RevealPhase);\n    texCoord += 0.5;\n\n    vec3 col = texture2D(_Image, texCoord).xyz;\n    float heightMapDistort = dot(col, vec3(0.299, 0.587, 0.114));\n    heightMapDistort = mix(heightMapDistort, 1.0 - heightMapDistort, _FlipFlowMapForce);\n    float dampen = (smoothstep(0.8, 1.0, heightMapDistort));\n    vDamp = dampen;\n\n    //PROJECT VIEW MODE SCALE\n    pos.xy *= _ViewplaneSize * mix(0.85, 1.0, 1.0) * mix(1.0, 1.525, _ViewModePhase);\n\n    //SCROLL FORCE\n    vec2 phasePos = position.xy;\n    vec2 scrollPhasePos = phasePos;\n    float dist = length(phasePos);\n    pos.z += (1.0 - dist) * DISPLACEMENTSTR * _ScrollPhase * SCROLLDISTORTSTR;\n    pos.z += heightMapDistort * dampen * 0.2 * _ScrollPhase;\n\n    //PROJECT VIEW MODE RIPPLE\n    vec2 viewModePhasePos = phasePos;\n    float viewmodePhase = _RipplePhase * 4.0 * (1.0 - _RipplePhase);    \n    float phaseDist = 1.0 - abs((_RipplePhase * 3.0) - dist);\n    // phaseDist = smoothstep(0.0, 1.0, phaseDist);\n    float ripplePhase = cos(phaseDist * PI) * RIPPLE_AMP * viewmodePhase;\n    // float ripplePhase = phaseDist * RIPPLE_AMP * viewmodePhase;\n    vPhase = phaseDist * viewmodePhase;\n\n    pos.z += ripplePhase;\n    pos.z += heightMapDistort * HEIGHTMAP_AMP * ripplePhase;\n\n    mat4 modelViewProjection = projectionMatrix * modelViewMatrix;\n    \n    vDistort = vec3(0.0, 0.0, 0.0);\n\n    // if(_InView == 1.0) {\n    vec4 clipPos = modelViewProjection * vec4(pos, 1.0);\n    clipPos.xyz /= clipPos.w;\n    clipPos.xy = clipPos.xy * 0.5 + 0.5;\n\n    vec3 distort = texture2D(_FlowMap, clipPos.xy).xyz * DISTORTSTR;\n    vDistort = distort;\n    pos += distort * max(0.2, heightMapDistort) * _FlowMapPhase * distort.z * _InView;\n    // }\n\n    gl_Position = modelViewProjection * vec4(pos, 1.0);\n    vUv = uv;\n    vMvPos = (modelViewMatrix * vec4(position, 1.0)).xyz;\n\n}";
 },{}],"../WebGL/DomQuads/Projects/ProjectQuad/shaders/projectQuad.frag":[function(require,module,exports) {
-module.exports = "precision highp float;\n#define GLSLIFY 1\n\nuniform sampler2D _Image;\nuniform sampler2D _FlowMap;\nuniform float _FlowMapPhase;\nuniform vec2 _Resolution;\n\nuniform float _ScalePhase;\nuniform float _Scale;\nuniform float _Alpha;\nuniform float _RevealPhase;\nuniform float _RevealDirection;\nuniform float _ClipRevealPhase;\nuniform float _UvScalePhase;\nuniform float _ScrollPhase;\nuniform float _ViewModePhase;\nuniform float _Time;\n\nvarying vec2 vUv;\nvarying vec3 vMvPos;\nvarying vec3 vDistort;\nvarying float vPhase;\nvarying float vDamp;\n\n#define OFFSETAMOUNTX 0.004\n#define OFFSETAMOUNTY 0.001\n// #define MINVIEWDIST 0.24\n// #define MAXVIEWDIST 0.5\n// #define ALPHAFALLOFFDIST 30.0\n\n// #define MINVIEWDIST 0.24\n// #define MAXVIEWDIST 0.5\n// #define ALPHAFALLOFFDIST 30.0\n\n// #define MINVIEWDIST 0.25\n#define MINVIEWDIST 0.25\n#define MAXVIEWDIST 0.5\n#define ALPHAFALLOFFDIST 5.0 * 5.0\n\n// #define MINVIEWDIST 0.05\n// #define MAXVIEWDIST 1.0\n// #define ALPHAFALLOFFDIST 50.0\n\nfloat hash12(vec2 p)\n{\n\tvec3 p3  = fract(vec3(p.xyx) * .1031);\n    p3 += dot(p3, p3.yzx + 33.33);\n    return fract((p3.x + p3.y) * p3.z);\n}\n\nfloat dither8x8(vec2 position, float brightness) {\n    int x = int(mod(position.x, 8.0));\n    int y = int(mod(position.y, 8.0));\n    int index = x + y * 8;\n    float limit = 0.0;\n  \n    if (x < 8) {\n      if (index == 0) limit = 0.015625;\n      if (index == 1) limit = 0.515625;\n      if (index == 2) limit = 0.140625;\n      if (index == 3) limit = 0.640625;\n      if (index == 4) limit = 0.046875;\n      if (index == 5) limit = 0.546875;\n      if (index == 6) limit = 0.171875;\n      if (index == 7) limit = 0.671875;\n      if (index == 8) limit = 0.765625;\n      if (index == 9) limit = 0.265625;\n      if (index == 10) limit = 0.890625;\n      if (index == 11) limit = 0.390625;\n      if (index == 12) limit = 0.796875;\n      if (index == 13) limit = 0.296875;\n      if (index == 14) limit = 0.921875;\n      if (index == 15) limit = 0.421875;\n      if (index == 16) limit = 0.203125;\n      if (index == 17) limit = 0.703125;\n      if (index == 18) limit = 0.078125;\n      if (index == 19) limit = 0.578125;\n      if (index == 20) limit = 0.234375;\n      if (index == 21) limit = 0.734375;\n      if (index == 22) limit = 0.109375;\n      if (index == 23) limit = 0.609375;\n      if (index == 24) limit = 0.953125;\n      if (index == 25) limit = 0.453125;\n      if (index == 26) limit = 0.828125;\n      if (index == 27) limit = 0.328125;\n      if (index == 28) limit = 0.984375;\n      if (index == 29) limit = 0.484375;\n      if (index == 30) limit = 0.859375;\n      if (index == 31) limit = 0.359375;\n      if (index == 32) limit = 0.0625;\n      if (index == 33) limit = 0.5625;\n      if (index == 34) limit = 0.1875;\n      if (index == 35) limit = 0.6875;\n      if (index == 36) limit = 0.03125;\n      if (index == 37) limit = 0.53125;\n      if (index == 38) limit = 0.15625;\n      if (index == 39) limit = 0.65625;\n      if (index == 40) limit = 0.8125;\n      if (index == 41) limit = 0.3125;\n      if (index == 42) limit = 0.9375;\n      if (index == 43) limit = 0.4375;\n      if (index == 44) limit = 0.78125;\n      if (index == 45) limit = 0.28125;\n      if (index == 46) limit = 0.90625;\n      if (index == 47) limit = 0.40625;\n      if (index == 48) limit = 0.25;\n      if (index == 49) limit = 0.75;\n      if (index == 50) limit = 0.125;\n      if (index == 51) limit = 0.625;\n      if (index == 52) limit = 0.21875;\n      if (index == 53) limit = 0.71875;\n      if (index == 54) limit = 0.09375;\n      if (index == 55) limit = 0.59375;\n      if (index == 56) limit = 1.0;\n      if (index == 57) limit = 0.5;\n      if (index == 58) limit = 0.875;\n      if (index == 59) limit = 0.375;\n      if (index == 60) limit = 0.96875;\n      if (index == 61) limit = 0.46875;\n      if (index == 62) limit = 0.84375;\n      if (index == 63) limit = 0.34375;\n    }\n  \n    return brightness < limit ? 0.0 : 1.0;\n  }\n\nvoid main() {\n\n    vec2 uv = vUv;\n    uv -= 0.5;\n    uv *= mix(1.0, 0.85, _ScalePhase); //rename uniform\n    uv *= mix(0.5, 1.0, _UvScalePhase);\n    uv += 0.5;\n\n    vec2 flow = vDistort.xy * _FlowMapPhase;\n\n    float inputPhase = _ScrollPhase * 3.0;\n    vec2 offsetX = (vec2(1.0 + inputPhase, 0.0)) * OFFSETAMOUNTX;\n    vec2 offsetY = (vec2(0.0, 1.0 + inputPhase)) * OFFSETAMOUNTY;\n\n    float viewModePhase = (1.0 - abs(_ViewModePhase * 2.0 - 1.0));\n    vec2 transitionOffsetX = vec2(0.01, 0.0) * viewModePhase * 0.0;\n    vec2 transitionOffsetY = vec2(0.0, 0.001) * viewModePhase * 0.0;\n\n    float r = texture2D(_Image, uv - transitionOffsetX - offsetX - (flow * 0.02)).x;\n    float g = texture2D(_Image, uv + transitionOffsetY + offsetY + (flow * 0.002)).y;\n    float b = texture2D(_Image, uv + transitionOffsetX + offsetX + (flow * 0.02)).z;\n\n    vec3 col = vec3(r,g,b);\n    col += hash12(vUv * 1000.0 + _Time) * 0.2;\n\n    float len = (vMvPos.z * vMvPos.z); //removes the sign\n    float idleAlpha = smoothstep(MINVIEWDIST, MAXVIEWDIST, len);\n    float phase = (len * len) / (6.0 * 6.0);\n    float scrollPhase = smoothstep(0.1, 1.0, min(1.0, abs(_ScrollPhase)));\n    float scrollAlpha = idleAlpha * mix(0.4, 0.7, phase * 4.0 * (1.0 - phase));\n    float alpha = mix(idleAlpha, scrollAlpha, scrollPhase);\n    alpha *= _Alpha;\n\n    alpha = dither8x8(gl_FragCoord.xy, alpha);\n\n    //reveal phase\n    alpha *= mix(step(vUv.y, _ClipRevealPhase), 1.0 - step((vUv.y * 0.9999), 1.0 - _ClipRevealPhase), _RevealDirection);\n    if(alpha <= 0.0) discard;\n    gl_FragColor = vec4(col, 1.0);\n\n}";
+module.exports = "precision highp float;\n#define GLSLIFY 1\n\nuniform sampler2D _Image;\nuniform sampler2D _FlowMap;\nuniform float _FlowMapPhase;\nuniform vec2 _Resolution;\n\nuniform float _ScalePhase;\nuniform float _Scale;\nuniform float _Alpha;\nuniform float _RevealPhase;\nuniform float _RevealDirection;\nuniform float _ClipRevealPhase;\nuniform float _UvScalePhase;\nuniform float _ScrollPhase;\nuniform float _ViewModePhase;\nuniform float _Time;\n\nvarying vec2 vUv;\nvarying vec3 vMvPos;\nvarying vec3 vDistort;\nvarying float vPhase;\nvarying float vDamp;\n\n#define OFFSETAMOUNTX 0.004\n#define OFFSETAMOUNTY 0.001\n// #define MINVIEWDIST 0.24\n// #define MAXVIEWDIST 0.5\n// #define ALPHAFALLOFFDIST 30.0\n\n// #define MINVIEWDIST 0.24\n// #define MAXVIEWDIST 0.5\n// #define ALPHAFALLOFFDIST 30.0\n\n// #define MINVIEWDIST 0.25\n#define MINVIEWDIST 0.25\n#define MAXVIEWDIST 0.5\n#define ALPHAFALLOFFDIST 5.0 * 5.0\n\n// #define MINVIEWDIST 0.05\n// #define MAXVIEWDIST 1.0\n// #define ALPHAFALLOFFDIST 50.0\n\nfloat hash12(vec2 p)\n{\n\tvec3 p3  = fract(vec3(p.xyx) * .1031);\n    p3 += dot(p3, p3.yzx + 33.33);\n    return fract((p3.x + p3.y) * p3.z);\n}\n\nfloat dither8x8(vec2 position, float brightness) {\n    int x = int(mod(position.x, 8.0));\n    int y = int(mod(position.y, 8.0));\n    int index = x + y * 8;\n    float limit = 0.0;\n  \n    if (x < 8) {\n      if (index == 0) limit = 0.015625;\n      if (index == 1) limit = 0.515625;\n      if (index == 2) limit = 0.140625;\n      if (index == 3) limit = 0.640625;\n      if (index == 4) limit = 0.046875;\n      if (index == 5) limit = 0.546875;\n      if (index == 6) limit = 0.171875;\n      if (index == 7) limit = 0.671875;\n      if (index == 8) limit = 0.765625;\n      if (index == 9) limit = 0.265625;\n      if (index == 10) limit = 0.890625;\n      if (index == 11) limit = 0.390625;\n      if (index == 12) limit = 0.796875;\n      if (index == 13) limit = 0.296875;\n      if (index == 14) limit = 0.921875;\n      if (index == 15) limit = 0.421875;\n      if (index == 16) limit = 0.203125;\n      if (index == 17) limit = 0.703125;\n      if (index == 18) limit = 0.078125;\n      if (index == 19) limit = 0.578125;\n      if (index == 20) limit = 0.234375;\n      if (index == 21) limit = 0.734375;\n      if (index == 22) limit = 0.109375;\n      if (index == 23) limit = 0.609375;\n      if (index == 24) limit = 0.953125;\n      if (index == 25) limit = 0.453125;\n      if (index == 26) limit = 0.828125;\n      if (index == 27) limit = 0.328125;\n      if (index == 28) limit = 0.984375;\n      if (index == 29) limit = 0.484375;\n      if (index == 30) limit = 0.859375;\n      if (index == 31) limit = 0.359375;\n      if (index == 32) limit = 0.0625;\n      if (index == 33) limit = 0.5625;\n      if (index == 34) limit = 0.1875;\n      if (index == 35) limit = 0.6875;\n      if (index == 36) limit = 0.03125;\n      if (index == 37) limit = 0.53125;\n      if (index == 38) limit = 0.15625;\n      if (index == 39) limit = 0.65625;\n      if (index == 40) limit = 0.8125;\n      if (index == 41) limit = 0.3125;\n      if (index == 42) limit = 0.9375;\n      if (index == 43) limit = 0.4375;\n      if (index == 44) limit = 0.78125;\n      if (index == 45) limit = 0.28125;\n      if (index == 46) limit = 0.90625;\n      if (index == 47) limit = 0.40625;\n      if (index == 48) limit = 0.25;\n      if (index == 49) limit = 0.75;\n      if (index == 50) limit = 0.125;\n      if (index == 51) limit = 0.625;\n      if (index == 52) limit = 0.21875;\n      if (index == 53) limit = 0.71875;\n      if (index == 54) limit = 0.09375;\n      if (index == 55) limit = 0.59375;\n      if (index == 56) limit = 1.0;\n      if (index == 57) limit = 0.5;\n      if (index == 58) limit = 0.875;\n      if (index == 59) limit = 0.375;\n      if (index == 60) limit = 0.96875;\n      if (index == 61) limit = 0.46875;\n      if (index == 62) limit = 0.84375;\n      if (index == 63) limit = 0.34375;\n    }\n  \n    return brightness < limit ? 0.0 : 1.0;\n  }\n\nvoid main() {\n\n    vec2 uv = vUv;\n    uv -= 0.5;\n    uv *= mix(1.0, 0.85, _ScalePhase); //rename uniform\n    uv *= mix(0.5, 1.0, _UvScalePhase);\n    uv += 0.5;\n\n    vec2 flow = vDistort.xy * _FlowMapPhase;\n\n    float inputPhase = _ScrollPhase * 3.0;\n    vec2 offsetX = (vec2(1.0 + inputPhase, 0.0)) * OFFSETAMOUNTX;\n    vec2 offsetY = (vec2(0.0, 1.0 + inputPhase)) * OFFSETAMOUNTY;\n\n    float viewModePhase = (1.0 - abs(_ViewModePhase * 2.0 - 1.0));\n    vec2 transitionOffsetX = vec2(0.01, 0.0) * viewModePhase * 0.0;\n    vec2 transitionOffsetY = vec2(0.0, 0.001) * viewModePhase * 0.0;\n\n    float r = texture2D(_Image, uv - transitionOffsetX - offsetX - (flow * 0.02)).x;\n    float g = texture2D(_Image, uv + transitionOffsetY + offsetY + (flow * 0.002)).y;\n    float b = texture2D(_Image, uv + transitionOffsetX + offsetX + (flow * 0.02)).z;\n\n    vec3 col = vec3(r,g,b);\n    col += hash12(vUv * 1000.0 + _Time) * 0.2;\n    col = mix(col, vec3(1.0), mix(0.2, 0.0, _ViewModePhase));\n\n    float len = (vMvPos.z * vMvPos.z); //removes the sign\n    float idleAlpha = smoothstep(MINVIEWDIST, MAXVIEWDIST, len);\n    float phase = (len * len) / (6.0 * 6.0);\n    float scrollPhase = smoothstep(0.1, 1.0, min(1.0, abs(_ScrollPhase)));\n    float scrollAlpha = idleAlpha * mix(0.4, 0.7, phase * 4.0 * (1.0 - phase));\n    float alpha = mix(idleAlpha, scrollAlpha, scrollPhase);\n    alpha *= _Alpha;\n\n    alpha = dither8x8(gl_FragCoord.xy, alpha);\n\n    //reveal phase\n    alpha *= mix(step(vUv.y, _ClipRevealPhase), 1.0 - step((vUv.y * 0.9999), 1.0 - _ClipRevealPhase), _RevealDirection);\n    if(alpha <= 0.0) discard;\n    gl_FragColor = vec4(col, 1.0);\n\n}";
 },{}],"../../static/data/*.png":[function(require,module,exports) {
 module.exports = {};
 },{}],"../../utils/Math.js":[function(require,module,exports) {
@@ -14472,7 +15689,8 @@ var ProjectQuad = /*#__PURE__*/function (_DomQuad) {
 
     var media = _ref.media,
         _ref$posOffset = _ref.posOffset,
-        posOffset = _ref$posOffset === void 0 ? 0 : _ref$posOffset;
+        posOffset = _ref$posOffset === void 0 ? 0 : _ref$posOffset,
+        loopLimit = _ref.loopLimit;
     (0, _classCallCheck2.default)(this, ProjectQuad);
     _this = _super.call(this, gl);
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "initProgram", function () {
@@ -14488,9 +15706,11 @@ var ProjectQuad = /*#__PURE__*/function (_DomQuad) {
         height: 256,
         minFilter: _this.gl.LINEAR,
         magFilter: _this.gl.LINEAR
-      });
-      if (_this.media.videoSrc !== null && window.isMobile === false) _this.loadVideo();
-      if (_this.media.imageSrc !== null && window.isMobile) _this.loadImage();
+      }); // if (this.media.videoSrc !== null && window.isMobile === false)
+      //   this.loadVideo();
+      // if (this.media.imageSrc !== null && window.isMobile) this.loadImage();
+
+      if (_this.media.videoSrc !== null) _this.loadVideo();
       var u = {
         _ViewplaneSize: {
           value: _this.viewPlaneSize
@@ -14536,6 +15756,9 @@ var ProjectQuad = /*#__PURE__*/function (_DomQuad) {
         },
         _ViewModePhase: {
           value: 0.0
+        },
+        _RipplePhase: {
+          value: 0
         },
         _Entering: {
           value: 0.0
@@ -14602,8 +15825,9 @@ var ProjectQuad = /*#__PURE__*/function (_DomQuad) {
     _this.index = posOffset; //rename argument
 
     _this.media = media;
-    _this.video = _this.media.video;
-    _this.loopLimit = 6; //hardcoded for now
+    _this.video = _this.media.video; // this.loopLimit = 6; //hardcoded for now
+
+    _this.loopLimit = loopLimit; //hardcoded for now
 
     _this.initPos = _this.position.z = 0 - posOffset;
     _this.targetPos = _this.position.z;
@@ -14668,17 +15892,7 @@ var ProjectQuad = /*#__PURE__*/function (_DomQuad) {
   }, {
     key: "restorePosition",
     value: function restorePosition() {
-      var delta = this.targetPos - this.position.z;
-      this.restorePhase = delta / this.restoreDelta;
-      this.restoreEase = delta / 10.0; //lerp the easeing speed
-
-      this.position.z += this.restoreEase;
-
-      if (Math.abs(delta) < 0.001) {
-        this.position.z = Math.round(this.position.z);
-        this.restoreEase = 0; // this.positionRestored = true;
-      }
-
+      this.position.z += (this.targetPos - this.position.z) / 13.0;
       this.program.uniforms._RestorePhase.value = 1.0 - this.restorePhase;
     }
   }, {
@@ -14698,7 +15912,7 @@ var ProjectQuad = /*#__PURE__*/function (_DomQuad) {
       this.scrollModeTl.to(this.program.uniforms._Scale, {
         value: scale,
         duration: 0.35,
-        ease: "power1.out"
+        ease: "power2.inOut"
       }, "<");
       this.scrollModeTl.to(this.program.uniforms._ScalePhase, {
         value: alphaPhase,
@@ -14927,9 +16141,9 @@ var ProjectQuadMediator = /*#__PURE__*/function (_DomquadMediator) {
 
       emitter.emit(_events.default.REMOVE_SCROLL_MODE_ANIM);
     });
-    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "updateViewMode", function () {
-      // const ease = "sine.inOut"
-      _this.inViewMode = !_this.inViewMode;
+    (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "updateViewMode", function (args) {
+      var mode = args.mode;
+      _this.inViewMode = mode;
       var uniforms = _this.quadInView.program.uniforms;
       var duration = 1.8;
       var ease = "sine.out";
@@ -14939,6 +16153,14 @@ var ProjectQuadMediator = /*#__PURE__*/function (_DomquadMediator) {
         value: _this.inViewMode ? 1.0 : 0.0,
         duration: duration,
         ease: ease
+      });
+
+      _gsap.gsap.fromTo(uniforms._RipplePhase, {
+        value: 0
+      }, {
+        value: 1,
+        duration: duration,
+        ease: "power1.inOut"
       });
     });
     (0, _defineProperty2.default)((0, _assertThisInitialized2.default)(_this), "resetQuads", function () {
@@ -15011,14 +16233,14 @@ var ProjectQuadMediator = /*#__PURE__*/function (_DomquadMediator) {
     });
     _this.gl = gl;
     _this.quads = [];
-    _this.quadCount = 5;
+    _this.quadCount = 3;
     _this.quadInView;
     _this.quadSwapped = false;
     _this.position.z = 0.0;
     _this.inputForce = new _Vec.Vec2(0.0, 0.0);
     _this.inputForceInertia = 0.93;
     _this.inScrollMode = false;
-    _this.minBounds = -5.0;
+    _this.minBounds = -3.0;
     _this.maxBounds = 0.0;
     _this.inViewMode = false;
 
@@ -15032,8 +16254,7 @@ var ProjectQuadMediator = /*#__PURE__*/function (_DomquadMediator) {
     value: function initEvents() {
       emitter.on(_events.default.ENTER_SCROLL_MODE, this.enterScrollMode);
       emitter.on(_events.default.EXIT_SCROLL_MODE, this.exitScrollMode);
-      emitter.on(_events.default.SHOW_PROJECT, this.updateViewMode);
-      emitter.on(_events.default.CLOSE_PROJECT, this.updateViewMode);
+      emitter.on(_events.default.UPDATE_VIEWMODE, this.updateViewMode);
       emitter.on(_events.default.REVEAL_QUADS, this.revealQuads);
       emitter.on(_events.default.RESET_QUADS, this.resetQuads);
       emitter.on(_events.default.PREPARE_UNMOUNT, this.hideQuads);
@@ -15043,8 +16264,7 @@ var ProjectQuadMediator = /*#__PURE__*/function (_DomquadMediator) {
     value: function removeEvents() {
       emitter.off(_events.default.ENTER_SCROLL_MODE, this.enterScrollMode);
       emitter.off(_events.default.EXIT_SCROLL_MODE, this.exitScrollMode);
-      emitter.off(_events.default.SHOW_PROJECT, this.updateViewMode);
-      emitter.off(_events.default.CLOSE_PROJECT, this.updateViewMode);
+      emitter.off(_events.default.UPDATE_VIEWMODE, this.updateViewMode);
       emitter.off(_events.default.REVEAL_QUADS, this.revealQuads);
       emitter.off(_events.default.RESET_QUADS, this.resetQuads);
       emitter.off(_events.default.PREPARE_UNMOUNT, this.hideQuads);
@@ -15058,12 +16278,14 @@ var ProjectQuadMediator = /*#__PURE__*/function (_DomquadMediator) {
         return content.media;
       });
 
-      emitter.emit(_events.default.UPDATE_CONTENT_COUNT, media.length);
+      var mediaCount = media.length;
+      emitter.emit(_events.default.UPDATE_CONTENT_COUNT, mediaCount);
       media.forEach(function (media, i) {
         var quad = new _ProjectQuad.default(_this2.gl, {
           media: media,
-          posOffset: i //rename or make new prop for index?
-
+          posOffset: i,
+          //rename or make new prop for index?,
+          loopLimit: mediaCount - 1
         });
         quad.setParent(_this2);
       });
@@ -15110,6 +16332,7 @@ var ProjectQuadMediator = /*#__PURE__*/function (_DomquadMediator) {
         })) {
           quadInView = quad;
           emitter.emit(_events.default.LOAD_PROJECT_CONTENT, quadInView.index);
+          break;
         }
 
         i++;
@@ -15885,8 +17108,10 @@ var WebGLContext = /*#__PURE__*/function () {
         dpr: window.isMobile ? 2.0 : 1.0
       });
       this.gl = this.renderer.gl; // this.gl.clearColor(0.9, 0.9, 0.9, 1.0);
+      // this.gl.clearColor(0.93, 0.93, 0.93, 1.0);
 
-      this.gl.clearColor(0.93, 0.93, 0.93, 1.0);
+      this.gl.clearColor(0.95, 0.95, 0.95, 1.0); // this.gl.clearColor(0.1, 0.1, 0.1, 1.0);
+
       var _this$gl$canvas = this.gl.canvas,
           width = _this$gl$canvas.width,
           height = _this$gl$canvas.height;
@@ -15896,7 +17121,7 @@ var WebGLContext = /*#__PURE__*/function () {
         fov: 35,
         aspect: width / height,
         near: 0.01,
-        far: 5.0
+        far: 3.0
       });
       this.camera.position.set(0.0, 0.0, 1.0);
       this.currentTime = 0;
@@ -16008,6 +17233,8 @@ var _events = _interopRequireDefault(require("../utils/events.js"));
 
 var _gsap = require("gsap");
 
+var _globals = _interopRequireDefault(require("../utils/globals.js"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var emitter = _EventEmitter.default.emitter;
@@ -16018,23 +17245,6 @@ var LoadingScreen = /*#__PURE__*/function () {
 
     (0, _classCallCheck2.default)(this, LoadingScreen);
     (0, _defineProperty2.default)(this, "hide", function () {
-      // gsap.to(this.loadingBar, {
-      //     delay: 1.5,
-      //     duration: 0.5,
-      //     ease: "power1.out",
-      //     scaleX: 0,
-      //     transformOrigin: "center right",
-      //     onStart: () => {
-      //         emitter.off(events.UPDATE, this.update);
-      //     },
-      //     onComplete: () => {
-      //         gsap.delayedCall(0.5, () => {
-      //             this.el.classList.add('loaded');
-      //             emitter.emit(events.LOADING_ANIM_COMPLETED);
-      //             window.contentLoaded = true;
-      //         })
-      //     }
-      // });
       _gsap.gsap.to(_this.loadingProgress, {
         delay: 1.5,
         duration: 1.0,
@@ -16044,8 +17254,8 @@ var LoadingScreen = /*#__PURE__*/function () {
           _gsap.gsap.delayedCall(0.5, function () {
             _this.el.classList.add('loaded');
 
+            _globals.default.CONTENT_LOADED = true;
             emitter.emit(_events.default.LOADING_ANIM_COMPLETED);
-            window.contentLoaded = true;
           });
         }
       });
@@ -16057,16 +17267,9 @@ var LoadingScreen = /*#__PURE__*/function () {
       if (_this.contentCount === _this.totalContent) _this.hide();
     });
     (0, _defineProperty2.default)(this, "update", function () {
-      _this.currentScale += (_this.targetScale - _this.currentScale) * 0.1; // gsap.set(this.loadingBar, {
-      //     scaleX: this.currentScale,
-      //     transformOrigin: "center left"
-      // });
+      _this.currentScale += (_this.targetScale - _this.currentScale) * 0.1;
     });
-    this.el = document.body.querySelector('.loader'); // this.loadingBar = document.body.querySelector('.loader__loading-bar');
-    // gsap.set(this.loadingBar, {
-    //     scaleX: 0
-    // });
-
+    this.el = document.body.querySelector('.loader');
     this.loadingProgress = document.body.querySelector('.loader__progress');
     this.totalContent = 0;
     this.contentCount = 0;
@@ -16085,7 +17288,7 @@ var LoadingScreen = /*#__PURE__*/function () {
         _this2.totalContent += count;
       });
       emitter.on(_events.default.TEXTURE_LOADED, this.updateProgress);
-      emitter.on(_events.default.UPDATE, this.update); // emitter.on(events.CONTENT_LOADED, this.hide);
+      emitter.on(_events.default.UPDATE, this.update);
     }
   }, {
     key: "reveal",
@@ -16095,7 +17298,7 @@ var LoadingScreen = /*#__PURE__*/function () {
 }();
 
 exports.default = LoadingScreen;
-},{"@babel/runtime/helpers/classCallCheck":"../../node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"../../node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/defineProperty":"../../node_modules/@babel/runtime/helpers/defineProperty.js","./EventEmitter.js":"../EventEmitter.js","../utils/events.js":"../../utils/events.js","gsap":"../../node_modules/gsap/index.js"}],"../../static/img/gaben.gif":[function(require,module,exports) {
+},{"@babel/runtime/helpers/classCallCheck":"../../node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"../../node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/defineProperty":"../../node_modules/@babel/runtime/helpers/defineProperty.js","./EventEmitter.js":"../EventEmitter.js","../utils/events.js":"../../utils/events.js","gsap":"../../node_modules/gsap/index.js","../utils/globals.js":"../../utils/globals.js"}],"../../static/img/gaben.gif":[function(require,module,exports) {
 module.exports = "/gaben.bd09244c.gif";
 },{}],"../../static/img/*.gif":[function(require,module,exports) {
 module.exports = {
@@ -16239,7 +17442,7 @@ var Navigation = /*#__PURE__*/function () {
       });
     });
     (0, _defineProperty2.default)(this, "onHover", function (link) {
-      window.hoveringLink = true;
+      globals.HOVERING_LINK = true;
       emitter.emit(_events.default.HOVERING_NAV_LINK, true);
 
       _this.animateHoverState({
@@ -16248,7 +17451,7 @@ var Navigation = /*#__PURE__*/function () {
       });
     });
     (0, _defineProperty2.default)(this, "onLeave", function (link) {
-      window.hoveringLink = false;
+      globals.HOVERING_LINK = false;
       emitter.emit(_events.default.HOVERING_NAV_LINK, false);
 
       _this.animateHoverState({
@@ -16277,18 +17480,9 @@ var Navigation = /*#__PURE__*/function () {
       });
     });
     this.el = document.querySelector('.navigation__links');
-    this.links = this.el.querySelectorAll('.link'); // this.linkTransforms = this.el.querySelectorAll('.navigation__links__transform');
-    // this.links.forEach((link) => {
-    //     link.stickyComponent = new StickyComponent({
-    //         domElement: link,
-    //         enable: true,
-    //         includeHoverAnim: true
-    //     });
-    // });
-
+    this.links = this.el.querySelectorAll('.link');
     this.active = false;
-    this.initEvents(); // this.updateSelectionState();
-    // this.updateActiveState();
+    this.initEvents();
   }
 
   (0, _createClass2.default)(Navigation, [{
@@ -16296,7 +17490,6 @@ var Navigation = /*#__PURE__*/function () {
     value: function initEvents() {
       var _this2 = this;
 
-      window.hoveringLink = false;
       this.links.forEach(function (link) {
         link.addEventListener('mouseenter', function () {
           _this2.onHover(link);
@@ -16351,7 +17544,7 @@ var Navigation = /*#__PURE__*/function () {
       this.hoverAnim = _gsap.gsap.to(link, {
         duration: 0.1,
         ease: state ? "power1.out" : "power1.in",
-        opacity: state ? 1.0 : 0.4,
+        opacity: state ? 0.7 : 0.4,
         z: 0
       });
     }
@@ -16379,6 +17572,8 @@ var _EventEmitter = _interopRequireDefault(require("../EventEmitter.js"));
 var _events = _interopRequireDefault(require("../../utils/events"));
 
 var _gsap = require("gsap");
+
+var _globals = _interopRequireDefault(require("../../utils/globals.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -16677,7 +17872,7 @@ var Cursor = /*#__PURE__*/function () {
     value: function createCanvasText(_ref) {
       var word = _ref.word,
           fontSize = _ref.fontSize;
-      this.ctx.font = "".concat(fontSize, "px Muli");
+      this.ctx.font = "".concat(fontSize, "px Mulish");
       var messageBounds = this.ctx.measureText(word);
       return {
         word: word,
@@ -16695,9 +17890,12 @@ var Cursor = /*#__PURE__*/function () {
       emitter.on(_events.default.HIDE_CLICKDRAG_CTA, this.hideCTAText);
       emitter.on(_events.default.MOUSE_MOVE, this.onMouseMove);
       emitter.on(_events.default.ENTER_SCROLL_MODE, this.onMouseDown);
-      emitter.on(_events.default.EXIT_SCROLL_MODE, this.onMouseUp);
-      emitter.on(_events.default.HOVERING_STICKY_COMPONENT, this.animateHoverMode);
-      emitter.on(_events.default.LEAVING_STICKY_COMPONENT, this.animateLeaveHoverMode);
+      emitter.on(_events.default.EXIT_SCROLL_MODE, this.onMouseUp); // emitter.on(events.HOVERING_STICKY_COMPONENT, this.animateHoverMode);
+      // emitter.on(events.LEAVING_STICKY_COMPONENT, this.animateLeaveHoverMode);
+      // emitter.on(events.HOVERING_LINK, this.animateHoverMode);
+      // emitter.on(events.LEAVING_LINK, this.animateLeaveHoverMode);
+      // emitter.on(events.)
+
       emitter.on(_events.default.UPDATE_STICKY_TARGET, this.updateStickyTarget);
       emitter.on(_events.default.LINK_SELECTED, this.onLinkSelected);
       emitter.on(_events.default.HOVERING_NAV_LINK, this.updateNavlinkState);
@@ -16793,7 +17991,7 @@ var Cursor = /*#__PURE__*/function () {
     value: function drawCTAText() {
       var message = this.inScrollMode ? this.dragMessage : this.holdMessage;
       this.ctx.fillStyle = "rgba(".concat(0.0, ",", 0.0, ",", 0.0, ", ", this.ctaTextAlpha, ")");
-      this.ctx.font = "".concat(12, "px Muli");
+      this.ctx.font = "".concat(12, "px Arial");
       this.ctx.textBaseline = "middle"; // this.ctx.fillText(message.word, this.position.x + 40, this.position.y + this.ctaPosOffset.y);
 
       this.ctx.fillText(message.word, this.position.x - 60, this.position.y + this.ctaPosOffset.y);
@@ -16816,8 +18014,9 @@ var Cursor = /*#__PURE__*/function () {
     value: function draw() {
       this.ctx.clearRect(0, 0, this.width, this.height);
       this.drawCursorCircle();
-      if (this.drawMessage) this.drawCTAText();
       if (this.inScrollMode) this.drawCursorArrows();
+      if (_globals.default.CURRENT_VIEW !== "work") return;
+      if (this.drawMessage) this.drawCTAText();
     }
   }, {
     key: "updateInputphase",
@@ -16830,7 +18029,7 @@ var Cursor = /*#__PURE__*/function () {
 }();
 
 exports.default = Cursor;
-},{"@babel/runtime/helpers/classCallCheck":"../../node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"../../node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/defineProperty":"../../node_modules/@babel/runtime/helpers/defineProperty.js","../EventEmitter.js":"../EventEmitter.js","../../utils/events":"../../utils/events.js","gsap":"../../node_modules/gsap/index.js"}],"../TransitionSlide.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/classCallCheck":"../../node_modules/@babel/runtime/helpers/classCallCheck.js","@babel/runtime/helpers/createClass":"../../node_modules/@babel/runtime/helpers/createClass.js","@babel/runtime/helpers/defineProperty":"../../node_modules/@babel/runtime/helpers/defineProperty.js","../EventEmitter.js":"../EventEmitter.js","../../utils/events":"../../utils/events.js","gsap":"../../node_modules/gsap/index.js","../../utils/globals.js":"../../utils/globals.js"}],"../TransitionSlide.js":[function(require,module,exports) {
 "use strict";
 
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
@@ -17044,29 +18243,29 @@ var _ViewMediator = _interopRequireDefault(require("./Views/ViewMediator.js"));
 
 var _bowser = _interopRequireDefault(require("bowser"));
 
+var _globals = _interopRequireDefault(require("../utils/globals.js"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var App = function App() {
   (0, _classCallCheck2.default)(this, App);
+  window.globals = _globals.default;
 
   var browser = _bowser.default.getParser(window.navigator.userAgent);
 
   var type = browser.parsedResult.platform.type;
-  window.isMobile = type !== "desktop";
+  window.isMobile = type !== "desktop"; // if (window.isMobile) {
+  //     new NoMobileCTA();
+  //     return;
+  // }
 
-  if (window.isMobile) {
-    this.noMobileCTA = new _NoMobileCTA.default();
-    return;
-  }
-
-  this.loadingScreen = new _LoadingScreen.default();
-  window.contentLoaded = false;
+  new _LoadingScreen.default();
 
   if (!window.isMobile) {
     this.cursor = new _Cursor.default();
   }
 
-  this.webGLCTX = new _WebGLContext.default({
+  new _WebGLContext.default({
     canvas: document.querySelector('.webgl-canvas')
   });
   window.viewMediator = new _ViewMediator.default({
@@ -17074,7 +18273,7 @@ var App = function App() {
     about: _About.default,
     transition: _Transition.default
   });
-  this.navigation = new _Navigation.default();
+  new _Navigation.default();
 };
 
 exports.default = App;
@@ -17082,7 +18281,7 @@ exports.default = App;
 window.onload = function () {
   return new App();
 };
-},{"@babel/runtime/helpers/classCallCheck":"../../node_modules/@babel/runtime/helpers/classCallCheck.js","./Views/Work/Work.js":"Work/Work.js","./Views/About/About.js":"About/About.js","./WebGL/WebGLContext.js":"../WebGL/WebGLContext.js","./LoadingScreen.js":"../LoadingScreen.js","./NoMobileCTA.js":"../NoMobileCTA.js","./Navigation.js":"../Navigation.js","../src/CanvasComponents/Cursor.js":"../CanvasComponents/Cursor.js","./Transitions/Transition.js":"../Transitions/Transition.js","./Views/ViewMediator.js":"ViewMediator.js","bowser":"../../node_modules/bowser/es5.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"@babel/runtime/helpers/classCallCheck":"../../node_modules/@babel/runtime/helpers/classCallCheck.js","./Views/Work/Work.js":"Work/Work.js","./Views/About/About.js":"About/About.js","./WebGL/WebGLContext.js":"../WebGL/WebGLContext.js","./LoadingScreen.js":"../LoadingScreen.js","./NoMobileCTA.js":"../NoMobileCTA.js","./Navigation.js":"../Navigation.js","../src/CanvasComponents/Cursor.js":"../CanvasComponents/Cursor.js","./Transitions/Transition.js":"../Transitions/Transition.js","./Views/ViewMediator.js":"ViewMediator.js","bowser":"../../node_modules/bowser/es5.js","../utils/globals.js":"../../utils/globals.js"}],"../../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -17108,9 +18307,9 @@ var checkedAssets, assetsToAccept;
 var parent = module.bundle.parent;
 
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
-  var hostname = "" || location.hostname;
+  var hostname = "192.168.1.109" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62785" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62842" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
