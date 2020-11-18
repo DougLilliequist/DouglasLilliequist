@@ -12,9 +12,9 @@ export const ProjectContent = [
         role: 'Creative Technologist / Filter Dev / Shader Dev',
         link: 'https://www.loreal-paris.co.uk/signature-faces',
         media: {
-            videoSrc: projectVideos.crashingdawn256256,
+            videoSrc: projectVideos.loreal256256,
             imageSrc: img.selfportrait512512,
-            brightVal: 1.0
+            brightVal: 0.0
         }
 
     },
@@ -28,7 +28,7 @@ export const ProjectContent = [
         role: null,
         link: 'https://douglilliequist.github.io/Fabric/',
         media: {
-            videoSrc: projectVideos.crashingdawn256256,
+            videoSrc: projectVideos.fabric256256,
             imageSrc: img.selfportrait512512,
             brightVal: 1.0
         }

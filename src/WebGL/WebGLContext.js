@@ -55,7 +55,8 @@ export default class WebGLContext {
     });
     this.gl = this.renderer.gl;
     // this.gl.clearColor(0.9, 0.9, 0.9, 1.0);
-    this.gl.clearColor(0.93, 0.93, 0.93, 1.0);
+    // this.gl.clearColor(0.93, 0.93, 0.93, 1.0);
+    this.gl.clearColor(0.95, 0.95, 0.95, 1.0);
     // this.gl.clearColor(0.1, 0.1, 0.1, 1.0);
 
     const {

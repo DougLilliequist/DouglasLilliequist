@@ -60,7 +60,8 @@ varying float vDamp;
 
 // #define HEIGHTMAP_AMP 0.53
 // #define HEIGHTMAP_AMP 0.33
-#define HEIGHTMAP_AMP 1.5
+// #define HEIGHTMAP_AMP 1.5
+#define HEIGHTMAP_AMP 1.9
 
 
 void main() {
