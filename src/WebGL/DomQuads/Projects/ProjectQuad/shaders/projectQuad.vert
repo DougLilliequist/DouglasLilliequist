@@ -96,6 +96,7 @@ void main() {
     float viewmodePhase = _RipplePhase * 4.0 * (1.0 - _RipplePhase);    
     float phaseDist = 1.0 - abs((_RipplePhase * 3.0) - dist);
     // phaseDist = smoothstep(0.0, 1.0, phaseDist);
+    // float ripplePhase = cos(phaseDist * PI) * RIPPLE_AMP * viewmodePhase;
     float ripplePhase = cos(phaseDist * PI) * RIPPLE_AMP * viewmodePhase;
     // float ripplePhase = phaseDist * RIPPLE_AMP * viewmodePhase;
     vPhase = phaseDist * viewmodePhase;

@@ -42,6 +42,12 @@
     transform: translate3d(-50%, -50%, 0px);
     display: inline-block;
     overflow: hidden;
+    // position: absolute;
+    // top: 9.75%;
+    // left: 35.15%;
+    // transform: translate3d(-50%, -50%, 0px);
+    // display: inline-block;
+    // overflow: hidden;
 
 
     &__title {
@@ -189,12 +195,19 @@
 
 .view-button {
 
+    // position: absolute;
+    // overflow: hidden;
+    // display: inline-block;
+    // // right: 23.75%;
+    // right: 24.5%;
+    // top: 98%;
+    // transform: translate3d(-50%, -50%, 0px);
+
     position: absolute;
     overflow: hidden;
     display: inline-block;
-    // right: 23.75%;
-    right: 24.5%;
-    top: 98%;
+    right: 23.85%;
+    top: 88.25%;
     transform: translate3d(-50%, -50%, 0px);
 
     &__button {

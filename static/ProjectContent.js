@@ -44,23 +44,7 @@ export const ProjectContent = [
         role: null,
         link: 'https://douglilliequist.github.io/MemoryPhase/',
         media: {
-            videoSrc: projectVideos.sken256256,
-            imageSrc: img.selfportrait512512,
-            brightVal: 0.0
-        }
-
-    },
-
-    {
-        title: 'This cant be real',
-        type: 'Experiment',
-        description: 'Optical flow and fluid sim madness',
-        tech: 'WebGL(OGL) / Optical Flow',
-        year: 2020,
-        role: null,
-        link: 'https://douglilliequist.github.io/ThisCantBeReal01/',
-        media: {
-            videoSrc: projectVideos.sken256256,
+            videoSrc: projectVideos.memoryPhase512512,
             imageSrc: img.selfportrait512512,
             brightVal: 0.0
         }
